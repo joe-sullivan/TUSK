@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	
+    <!-- Really High Level Text -->
+    <string name="app_name">UltimateScoreCard</string>
+    <string name="action_settings">Settings</string>
+    
+    <!-- Text Found on Main Title Page -->
+    <string name="main_title_text">The Ultimate Score Card</string>
+    <string name="basketball_button">Basketball</string>
+    <string name="baseball_button">Baseball</string>
+    <string name="football_button">Football</string>
+    <string name="soccer_button">Soccer</string>
+	<string name="view_statistic_button">View Statistics</string>
+	<string name="options_button">Options</string>
+	<string name="live_tracker_button">Live Tracker</string>
+    
+	<!-- Text for Team Selection Screen -->
+	<string name="home_team_select_title">Choose the Home Team:</string>
+	<string name="away_team_select_title">Choose the Away Team:</string>
+	<string name="delete_team_title">Choose the Team to Remove:</string>
+	<string name="delete_team_button">Delete a Team</string>
+	<string name="create_new_team">Create a New Team</string>
+	
+	<!-- Common sports terms -->
+	<string name="home_name">Home</string>
+    <string name="away_name">Away</string>
+	
+    <!-- Text used in basketball interface -->
+    <string name="basketball_court">Visible image of Basketball Court</string>
+    <string name="court_mask">Hidden Basketball Court Mask</string>
+    <string name="hardwood_floor">Hardwood floor background</string>
+    
+    <string name="rebound_button">Rebound</string>
+    <string name="turnover_button">Turnover</string>
+    <string name="block_button">Block</string>
+    <string name="foul_button">Foul</string>
+    <string name="more_button">More</string>
+     
+    <string name="player_1"> Player 1 </string>
+    <string name="player_2"> Player 2 </string>
+    <string name="player_3"> Player 3 </string>
+    <string name="player_4"> Player 4 </string>
+    <string name="player_5"> Player 5 </string>
+    
+    <string name= "away_points">058</string>
+    <string name= "home_points">063</string>
+    
+</resources>
