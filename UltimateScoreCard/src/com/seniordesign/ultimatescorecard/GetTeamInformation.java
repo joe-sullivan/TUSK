@@ -1,5 +1,10 @@
 package com.seniordesign.ultimatescorecard;
 
+//a simple class with hard-coded names
+//use right now to for the sake of testing interface
+//will be replaced with a class that will retrieve these data from database
+//methods for this class very explanatory
+
 public class GetTeamInformation {
 	
 	public String abbreviation (String teamName){

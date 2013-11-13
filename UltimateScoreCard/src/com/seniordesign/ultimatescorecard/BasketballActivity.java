@@ -19,46 +19,46 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class BasketballActivity extends Activity{
-	FlyOutContainer root;
-	MainActivity mainActivity;
-	TextView homeTextView, awayTextView;
-	Button p1Button, p2Button, p3Button, p4Button, p5Button;
-	private boolean possession = false;				//boolean for tracking possession (false:home, true:away)
-	private GetTeamInformation gpi = new GetTeamInformation();
+	FlyOutContainer _root;
+	MainActivity _mainActivity;
+	TextView _homeTextView, _awayTextView;
+	Button _p1Button, _p2Button, _p3Button, _p4Button, _p5Button;
+	private boolean _possession = false;								//boolean for tracking possession (false:home, true:away)
+	private GetTeamInformation _gpi = new GetTeamInformation();			//see the class to understand it
 	
 	//what the program should do when this page is created
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.root = (FlyOutContainer)this.getLayoutInflater().inflate(R.layout.activity_basketball, null);
-		setContentView(root);
+		this._root = (FlyOutContainer)this.getLayoutInflater().inflate(R.layout.activity_basketball, null);
+		setContentView(_root);
 		
-		String home = getIntent().getExtras().getString("Home");
+		String home = getIntent().getExtras().getString("Home");			//getting the data we had passed in with the codeword
 		String away = getIntent().getExtras().getString("Away");
 		
-		homeTextView = (TextView)findViewById(R.id.homeTextView);
-		if(home != null){
-			homeTextView.setText(gpi.abbreviation(home));
+		_homeTextView = (TextView)findViewById(R.id.homeTextView);			//saving our home and away name text view in a variable
+		if(home != null){													//if we passed a string from previous activity, have the name for the teams appear
+			_homeTextView.setText(_gpi.abbreviation(home));					//if we did not, then use the generic ones
 		}
-		awayTextView = (TextView)findViewById(R.id.awayTextView);
+		_awayTextView = (TextView)findViewById(R.id.awayTextView);
 		if(away != null){
-			awayTextView.setText(gpi.abbreviation(away));
+			_awayTextView.setText(_gpi.abbreviation(away));
 		}
 		
-		p1Button = (Button)findViewById(R.id.homeP1Button);
-		p1Button.setText(gpi.player1(home));
+		_p1Button = (Button)findViewById(R.id.homeP1Button);			//saving a reference for our buttons to a member variable
+		_p1Button.setText(_gpi.player1(home));							//setting the buttons on our slide-out menu with name of players
 		
-		p2Button = (Button)findViewById(R.id.homeP2Button);
-		p2Button.setText(gpi.player2(home));
+		_p2Button = (Button)findViewById(R.id.homeP2Button);
+		_p2Button.setText(_gpi.player2(home));
 		
-		p3Button = (Button)findViewById(R.id.homeP3Button);
-		p3Button.setText(gpi.player3(home));
+		_p3Button = (Button)findViewById(R.id.homeP3Button);
+		_p3Button.setText(_gpi.player3(home));
 		
-		p4Button = (Button)findViewById(R.id.homeP4Button);
-		p4Button.setText(gpi.player4(home));
+		_p4Button = (Button)findViewById(R.id.homeP4Button);
+		_p4Button.setText(_gpi.player4(home));
 		
-		p5Button = (Button)findViewById(R.id.homeP5Button);
-		p5Button.setText(gpi.player5(home));
+		_p5Button = (Button)findViewById(R.id.homeP5Button);
+		_p5Button.setText(_gpi.player5(home));
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class BasketballActivity extends Activity{
 	
 	//when xml:onclick (opening the slide out menu)
 	public void toggleMenu(View v){
-		this.root.toggleMenu();
+		this._root.toggleMenu();
 	}
 
 	//when xml:onclick calls this method (for interactive map)
@@ -88,15 +88,15 @@ public class BasketballActivity extends Activity{
 					int blueValue = Color.blue(pixel);
 					int greenValue = Color.green(pixel);
 					if(redValue > blueValue && redValue > greenValue){					//if red, shot is from 3
-						if(possession){
-							changeScore(homeScoreText, 3);
+						if(_possession){
+							changeScore(homeScoreText, 3);								//home team scored
 						}
 						else {
-							changeScore(awayScoreText, 3);
+							changeScore(awayScoreText, 3);								//away team scored
 						}
 					}
 					else if (blueValue > redValue && blueValue > greenValue){			//if blue, shot is 2 points (in the paint)
-						if(possession){
+						if(_possession){
 							changeScore(homeScoreText, 2);
 						}
 						else {
@@ -104,7 +104,7 @@ public class BasketballActivity extends Activity{
 						}
 					}
 					else if (greenValue > blueValue && greenValue > redValue){			//if green, shot is 2 points (outside the paint)
-						if(possession){
+						if(_possession){
 							changeScore(homeScoreText, 2);
 						}
 						else {
@@ -115,7 +115,7 @@ public class BasketballActivity extends Activity{
 				return false;
 			}
 		});
-		possession = !possession;														//change possessions
+		_possession = !_possession;														//change possessions
 		return false;
 	}
 	
@@ -134,6 +134,7 @@ public class BasketballActivity extends Activity{
 		}
 	}
 	
+	//again handling the back button being pressed, no more explaining needed
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if(keyCode == KeyEvent.KEYCODE_BACK){
@@ -154,7 +155,6 @@ public class BasketballActivity extends Activity{
 										
 				}
 			});
-			
 			alert.show();
 			return true;
 		}
