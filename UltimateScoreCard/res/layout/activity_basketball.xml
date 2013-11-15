@@ -5,53 +5,61 @@
     android:layout_height="match_parent" >
 
  	<!-- flyoutMenuBar settings -->
-    <LinearLayout
+    <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#444488"
-        android:orientation="vertical" >
+        android:background="#444488">
 
-        <Button
-            android:id="@+id/homeP1Button"
+        <TextView
+            android:id="@+id/slideoutTitle"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:onClick="toggleMenu"
-            android:text="@string/player_1" />
-
-        <Button
-            android:id="@+id/homeP2Button"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:onClick="toggleMenu"
-            android:text="@string/player_2" />
-
-        <Button
-            android:id="@+id/homeP3Button"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:onClick="toggleMenu"
-            android:text="@string/player_3" />
+            android:layout_height="wrap_content"
+            android:text="@string/slideout_title"
+           	android:textAppearance="?android:attr/textAppearanceLarge"  />
         
-        <Button
-            android:id="@+id/homeP4Button"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:onClick="toggleMenu"
-            android:text="@string/player_4" />
-        
-        <Button
-            android:id="@+id/homeP5Button"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:onClick="toggleMenu"
-            android:text="@string/player_5" />
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/slideoutTitle"
+            android:layout_alignParentBottom="true"
+        	android:orientation="vertical">
+	        <Button
+	            android:id="@+id/extendButton1"
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent"
+	            android:layout_weight="1"
+	            android:text="@string/player_1" />
+	
+	        <Button
+	            android:id="@+id/extendButton2"
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent"
+	            android:layout_weight="1"
+	            android:text="@string/player_2" />
+	
+	        <Button
+	            android:id="@+id/extendButton3"
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent"
+	            android:layout_weight="1"
+	            android:text="@string/player_3" />
+	        
+	        <Button
+	            android:id="@+id/extendButton4"
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent"
+	            android:layout_weight="1"
+	            android:text="@string/player_4" />
+	        
+	        <Button
+	            android:id="@+id/extendButton5"
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent"
+	            android:layout_weight="1"
+	            android:text="@string/player_5" />
+        </LinearLayout>
+    </RelativeLayout>
   
 	<!-- the main window screen -->
 	<RelativeLayout
@@ -140,6 +148,7 @@
 	        android:layout_toLeftOf="@+id/titleFrame2"
 	        android:layout_alignParentTop="true"
 	        android:layout_above="@+id/interactiveFrame">
+
 	    </RelativeLayout>
 	    
 		<!-- center panel: the interactive courts -->
@@ -164,8 +173,7 @@
 	   		    android:layout_height="wrap_content"
 	   		    android:gravity="center"
 	   		    android:contentDescription="@string/basketball_court"
-	   		    android:src="@drawable/basketballcourt" 
-	   		    android:onClick="interaction"/>
+	   		    android:src="@drawable/basketballcourt" />
 	   		
 	   		<ImageView
 	   		    android:id="@+id/basketballCourtMask"
@@ -184,17 +192,7 @@
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentBottom="true"
 	        android:layout_alignParentLeft="true" >
-	
-	        <Button
-	            android:id="@+id/reboundButton"
-	            style="?android:attr/buttonStyleSmall"
-	            android:layout_width="fill_parent"
-	            android:layout_height="match_parent"
-	            android:layout_weight="1"
-	            android:text="@string/rebound_button"
-	            android:textSize="@dimen/small_text" 
-	            android:onClick="toggleMenu"/>
-	
+		
 	        <Button
 	            android:id="@+id/turnoverButton"
 	            style="?android:attr/buttonStyleSmall"
@@ -203,17 +201,7 @@
 	            android:layout_weight="1"
 	            android:text="@string/turnover_button"
 	            android:textSize="@dimen/small_text" 
-	            android:onClick="toggleMenu"/>
-	
-	        <Button
-	            android:id="@+id/blockButton"
-	            style="?android:attr/buttonStyleSmall"
-	            android:layout_width="fill_parent"
-	            android:layout_height="match_parent"
-	            android:layout_weight="1"
-	            android:text="@string/block_button"
-	            android:textSize="@dimen/small_text" 
-	            android:onClick="toggleMenu"/>
+	            android:onClick="hitOrMiss"/>
 	
 	        <Button
 	            android:id="@+id/foulButton"
@@ -222,8 +210,7 @@
 	            android:layout_height="match_parent"
 	            android:layout_weight="1"
 	            android:text="@string/foul_button"
-	            android:textSize="@dimen/small_text"
-	            android:onClick="toggleMenu" />
+	            android:textSize="@dimen/small_text"/>
 	
 	        <Button
 	            android:id="@+id/moreButton"
@@ -232,7 +219,34 @@
 	            android:layout_height="match_parent"
 	            android:layout_weight="1"
 	            android:text="@string/more_button"
+	            android:textSize="@dimen/small_text" 
+	            android:onClick="viewStatistics"/>
+	    </TableRow>
+	    <TableRow
+	        android:id="@+id/madeAndMissRow"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentBottom="true"
+	        android:layout_alignParentLeft="true" 
+	        android:visibility="gone">
+		
+	        <Button
+	            android:id="@+id/madeButton"
+	            android:layout_width="fill_parent"
+	            android:layout_height="match_parent"
+	            android:layout_weight="1"
+	            android:onClick="hitOrMiss2"
+	            android:text="@string/shot_made_button"
 	            android:textSize="@dimen/small_text" />
+	
+	        <Button
+	            android:id="@+id/missButton"
+	            android:layout_width="fill_parent"
+	            android:layout_height="match_parent"
+	            android:layout_weight="1"
+	            android:text="@string/shot_miss_button"
+	            android:textSize="@dimen/small_text" />
+	        
 	    </TableRow>
 	</RelativeLayout> 
 </com.seniordesign.ultimatescorecard.view.viewgroup.FlyOutContainer>

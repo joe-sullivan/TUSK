@@ -1,135 +1,137 @@
 package com.seniordesign.ultimatescorecard;
 
+import java.io.Serializable;
+
 //a simple class with hard-coded names
 //use right now to for the sake of testing interface
 //will be replaced with a class that will retrieve these data from database
 //methods for this class very explanatory
 
-public class GetTeamInformation {
+public class GetTeamInformation implements Serializable {
+	private static final long serialVersionUID = 3390144989945164475L;
+	private String _homeTeam, _awayTeam;
+	private String _homeAbbr, _awayAbbr;
+	private Player[] _homePlayers, _awayPlayers;
 	
-	public String abbreviation (String teamName){
-		if(teamName.equals("San Antonio Spurs")){
-			return "SA Spurs";
+	public GetTeamInformation(String away, String home){
+		_homeTeam = home;
+		_awayTeam = away;
+		_homeAbbr = setTeamAbbr(_homeTeam);
+		_awayAbbr = setTeamAbbr(_awayTeam);
+		_homePlayers = setTeamPlayers(_homeTeam);
+		_awayPlayers = setTeamPlayers(_awayTeam);
+	}
+	
+	//set the team's player (currently at five)
+	private Player[] setTeamPlayers(String team){
+		Player[] players = new Player[5];
+		if(team.equals("San Antonio Spurs")){
+			players[0] = new Player("Tony Parker");
+			players[1] = new Player("Manu Ginobili");
+			players[2] = new Player("Tiago Splitter");
+			players[3] = new Player("Tim Duncan");
+			players[4] = new Player("Kawhi Leonard");
 		}
-		else if(teamName.equals("Houston Rockets")){
-			return "HOU Rockets";
+		else if(team.equals("Houston Rockets")){
+			players[0] = new Player("Jeremy Lin");
+			players[1] = new Player("James Harden");
+			players[2] = new Player("Omer Asik");
+			players[3] = new Player("Dwight Howard");
+			players[4] = new Player("Chandler Parson");
 		}
-		else if(teamName.equals("Los Angeles Lakers")){
-			return "LA Lakers";
+		else if(team.equals("Dallas Mavericks")){
+			players[0] = new Player("Jose Calderon");
+			players[1] = new Player("Monta Ellis");
+			players[2] = new Player("Samuel Dalembert");
+			players[3] = new Player("Shawn Marion");
+			players[4] = new Player("Dirk Nowitzki");
 		}
-		else if(teamName.equals("New York Knicks")){
-			return "NY Knicks";
+		else if(team.equals("Memphis Grizzlies")){
+			players[0] = new Player("Mike Conley");
+			players[1] = new Player("Tony Allen");
+			players[2] = new Player("Marc Gasol");
+			players[3] = new Player("Zach Randolph");
+			players[4] = new Player("Quincy Pondexter");
 		}
-		else if(teamName.equals("Uconn Huskies")){
-			return "UConn";
+		else {
+			players[0] = new Player("Player 1");
+			players[1] = new Player("Player 2");
+			players[2] = new Player("Player 3");
+			players[3] = new Player("Player 4");
+			players[4] = new Player("Player 5");
+		}
+		return players;
+	}
+	
+	//setting a team's abbreviation
+	private String setTeamAbbr(String team){
+		String abbr;
+		if(team.equals("San Antonio Spurs")){
+			abbr = "SA";
+		}
+		else if(team.equals("Houston Rockets")){
+			abbr = "HOU";
+		}
+		else if(team.equals("Dallas Mavericks")){
+			abbr = "DAL";
+		}
+		else if(team.equals("Memphis Grizzlies")){
+			abbr = "MEM";
+		}
+		else {
+			abbr = null;
+		}
+		return abbr;
+	}
+	
+	//getting the name of a player given team name and which player 
+	public Player getPlayer(String whichTeam, int player){
+		if(whichTeam.equals(_homeTeam)){
+			return _homePlayers[player];
 		}
 		else{
-			return null;
+			return _awayPlayers[player];
 		}
 	}
 	
-	public String player1 (String teamName){
-		if(teamName.equals("San Antonio Spurs")){
-			return "Tony Parker";
-		}
-		else if(teamName.equals("Houston Rockets")){
-			return "Jeremy Lin";
-		}
-		else if(teamName.equals("Los Angeles Lakers")){
-			return "Steve Nash";
-		}
-		else if(teamName.equals("New York Knicks")){
-			return "Raymond Felton";
-		}
-		else if(teamName.equals("Uconn Huskies")){
-			return "Shabazz Napier";
+	//getting the name of a player given team name and which player name
+	public Player getPlayer(String whichTeam, String player){
+		if(whichTeam.equals(_homeTeam)){
+			for(int i=0; i<_homePlayers.length; i++){
+				if(player.equals(_homePlayers[i].getName())){
+					return _homePlayers[i];
+				}
+			}
 		}
 		else{
-			return "Player 1";
+			for(int i=0; i<_awayPlayers.length; i++){
+				if(player.equals(_awayPlayers[i].getName())){
+					return _awayPlayers[i];
+				}
+			}
 		}
+		return null;
 	}
 	
-	public String player2 (String teamName){
-		if(teamName.equals("San Antonio Spurs")){
-			return "Manu Ginobili";
-		}
-		else if(teamName.equals("Houston Rockets")){
-			return "James Harden";
-		}
-		else if(teamName.equals("Los Angeles Lakers")){
-			return "Kobe Bryant";
-		}
-		else if(teamName.equals("New York Knicks")){
-			return "JR Smith";
-		}
-		else if(teamName.equals("Uconn Huskies")){
-			return "Ryan Boatright";
-		}
-		else{
-			return "Player 2";
-		}
+	//Getter and setter for team names
+	public String getHomeTeam(){
+		return _homeTeam;
+	}
+	public void setHomeTeam(String homeTeam){
+		_homeTeam = homeTeam;
+	}
+	public String getAwayTeam(){
+		return _awayTeam;
+	}
+	public void setAwayTeam(String awayTeam){
+		_awayTeam = awayTeam;
 	}
 	
-	public String player3 (String teamName){
-		if(teamName.equals("San Antonio Spurs")){
-			return "Tiago Splitter";
-		}
-		else if(teamName.equals("Houston Rockets")){
-			return "Omer Asik";
-		}
-		else if(teamName.equals("Los Angeles Lakers")){
-			return "Pau Gasol";
-		}
-		else if(teamName.equals("New York Knicks")){
-			return "Tyson Chandler";
-		}
-		else if(teamName.equals("Uconn Huskies")){
-			return "Amida Brimah";
-		}
-		else{
-			return "Player 3";
-		}
+	//Getters for team abbreviations
+	public String getHomeAbbr(){
+		return _homeAbbr;
 	}
-	
-	public String player4 (String teamName){
-		if(teamName.equals("San Antonio Spurs")){
-			return "Tim Duncan";
-		}
-		else if(teamName.equals("Houston Rockets")){
-			return "Dwight Howard";
-		}
-		else if(teamName.equals("Los Angeles Lakers")){
-			return "Chris Kaman";
-		}
-		else if(teamName.equals("New York Knicks")){
-			return "Carmelo Anthony";
-		}
-		else if(teamName.equals("Uconn Huskies")){
-			return "DeAndre Daniels";
-		}
-		else{
-			return "Player 4";
-		}
-	}
-	
-	public String player5 (String teamName){
-		if(teamName.equals("San Antonio Spurs")){
-			return "Kawhi Leonard";
-		}
-		else if(teamName.equals("Houston Rockets")){
-			return "Chandler Parson";
-		}
-		else if(teamName.equals("Los Angeles Lakers")){
-			return "Nick Young";
-		}
-		else if(teamName.equals("New York Knicks")){
-			return "Iman Shumpert";
-		}
-		else if(teamName.equals("Uconn Huskies")){
-			return "Omar Calhoun";
-		}
-		else{
-			return "Player 5";
-		}
+	public String getAwayAbbr(){
+		return _awayAbbr;
 	}
 }

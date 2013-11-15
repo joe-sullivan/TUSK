@@ -53,53 +53,71 @@ public final class R {
         public static final int title=0x7f020009;
     }
     public static final class id {
-        public static final int action_settings=0x7f090029;
-        public static final int awayScoreTextView=0x7f09000b;
-        public static final int awayTextView=0x7f090007;
-        public static final int baseballButton=0x7f090023;
-        public static final int basketballButton=0x7f090022;
-        public static final int basketballCourt=0x7f090011;
-        public static final int basketballCourtMask=0x7f090012;
-        public static final int blockButton=0x7f090015;
-        public static final int bottomButtonsRow=0x7f090021;
-        public static final int buttonRow=0x7f09000f;
-        public static final int createNewTeam=0x7f09001a;
-        public static final int deleteTeamButton=0x7f09001d;
-        public static final int footballButton=0x7f090024;
-        public static final int foulButton=0x7f090016;
-        public static final int hardwoodCourt=0x7f090010;
-        public static final int homeP1Button=0x7f090000;
-        public static final int homeP2Button=0x7f090001;
-        public static final int homeP3Button=0x7f090002;
-        public static final int homeP4Button=0x7f090003;
-        public static final int homeP5Button=0x7f090004;
-        public static final int homeScoreTextView=0x7f09000c;
-        public static final int homeTextView=0x7f09000a;
-        public static final int interactiveFrame=0x7f09000e;
-        public static final int liveTrackerButton=0x7f090028;
-        public static final int moreButton=0x7f090017;
-        public static final int optionButton=0x7f090027;
-        public static final int reboundButton=0x7f090013;
-        public static final int scoresFrame=0x7f090006;
-        public static final int scoresFrame2=0x7f090009;
-        public static final int soccerButton=0x7f090025;
-        public static final int statisticPanel=0x7f09000d;
-        public static final int teamListLayout=0x7f09001c;
-        public static final int teamScrollView=0x7f09001b;
-        public static final int team_selection_title=0x7f090019;
-        public static final int titleFrame=0x7f090005;
-        public static final int titleFrame2=0x7f090008;
-        public static final int titleImageView=0x7f09001e;
-        public static final int titleImageView2=0x7f09001f;
-        public static final int titleRow=0x7f090018;
-        public static final int topButtonsRow=0x7f090020;
+        public static final int action_settings=0x7f09003a;
+        public static final int awayScoreTextView=0x7f09000c;
+        public static final int awayTeamName=0x7f09001c;
+        public static final int awayTextView=0x7f090008;
+        public static final int baseballButton=0x7f090034;
+        public static final int basketballButton=0x7f090033;
+        public static final int basketballCourt=0x7f090012;
+        public static final int basketballCourtMask=0x7f090013;
+        public static final int bottomButtonsRow=0x7f090032;
+        public static final int buttonRow=0x7f090010;
+        public static final int createNewTeam=0x7f09002b;
+        public static final int deleteTeamButton=0x7f09002e;
+        public static final int extendButton1=0x7f090001;
+        public static final int extendButton2=0x7f090002;
+        public static final int extendButton3=0x7f090003;
+        public static final int extendButton4=0x7f090004;
+        public static final int extendButton5=0x7f090005;
+        public static final int footballButton=0x7f090035;
+        public static final int foulButton=0x7f090015;
+        public static final int hardwoodCourt=0x7f090011;
+        public static final int homeScoreTextView=0x7f09000d;
+        public static final int homeTeamName=0x7f090023;
+        public static final int homeTextView=0x7f09000b;
+        public static final int interactiveFrame=0x7f09000f;
+        public static final int liveTrackerButton=0x7f090039;
+        public static final int madeAndMissRow=0x7f090017;
+        public static final int madeButton=0x7f090018;
+        public static final int missButton=0x7f090019;
+        public static final int moreButton=0x7f090016;
+        public static final int optionButton=0x7f090038;
+        public static final int player10Name=0x7f090028;
+        public static final int player1Name=0x7f09001d;
+        public static final int player2Name=0x7f09001e;
+        public static final int player3Name=0x7f09001f;
+        public static final int player4Name=0x7f090020;
+        public static final int player5Name=0x7f090021;
+        public static final int player6Name=0x7f090024;
+        public static final int player7Name=0x7f090025;
+        public static final int player8Name=0x7f090026;
+        public static final int player9Name=0x7f090027;
+        public static final int scoresFrame=0x7f090007;
+        public static final int scoresFrame2=0x7f09000a;
+        public static final int slideoutTitle=0x7f090000;
+        public static final int soccerButton=0x7f090036;
+        public static final int statisticPanel=0x7f09000e;
+        public static final int statisticTitle=0x7f09001a;
+        public static final int team1Players=0x7f09001b;
+        public static final int team2Players=0x7f090022;
+        public static final int teamListLayout=0x7f09002d;
+        public static final int teamScrollView=0x7f09002c;
+        public static final int team_selection_title=0x7f09002a;
+        public static final int titleFrame=0x7f090006;
+        public static final int titleFrame2=0x7f090009;
+        public static final int titleImageView=0x7f09002f;
+        public static final int titleImageView2=0x7f090030;
+        public static final int titleRow=0x7f090029;
+        public static final int topButtonsRow=0x7f090031;
         public static final int turnoverButton=0x7f090014;
-        public static final int viewStatisticButton=0x7f090026;
+        public static final int viewStatisticButton=0x7f090037;
     }
     public static final class layout {
         public static final int activity_basketball=0x7f030000;
-        public static final int activity_choose_team=0x7f030001;
-        public static final int activity_main=0x7f030002;
+        public static final int activity_boxscore=0x7f030001;
+        public static final int activity_choose_team=0x7f030002;
+        public static final int activity_main=0x7f030003;
     }
     public static final class menu {
         public static final int main=0x7f080000;
@@ -110,7 +128,7 @@ public final class R {
          */
         public static final int app_name=0x7f060000;
         public static final int away_name=0x7f060010;
-        public static final int away_points=0x7f06001e;
+        public static final int away_points=0x7f060022;
         public static final int away_team_select_title=0x7f06000b;
         public static final int baseball_button=0x7f060004;
         public static final int basketball_button=0x7f060003;
@@ -128,7 +146,7 @@ public final class R {
         /**  Common sports terms 
          */
         public static final int home_name=0x7f06000f;
-        public static final int home_points=0x7f06001f;
+        public static final int home_points=0x7f060023;
         /**  Text for Team Selection Screen 
          */
         public static final int home_team_select_title=0x7f06000a;
@@ -138,13 +156,23 @@ public final class R {
         public static final int main_title_text=0x7f060002;
         public static final int more_button=0x7f060018;
         public static final int options_button=0x7f060008;
-        public static final int player_1=0x7f060019;
-        public static final int player_2=0x7f06001a;
-        public static final int player_3=0x7f06001b;
-        public static final int player_4=0x7f06001c;
-        public static final int player_5=0x7f06001d;
+        public static final int player_1=0x7f06001d;
+        public static final int player_2=0x7f06001e;
+        public static final int player_3=0x7f06001f;
+        public static final int player_4=0x7f060020;
+        public static final int player_5=0x7f060021;
         public static final int rebound_button=0x7f060014;
+        public static final int shot_cancel_button=0x7f06001b;
+        public static final int shot_made_button=0x7f060019;
+        public static final int shot_miss_button=0x7f06001a;
+        public static final int slideout_title=0x7f06001c;
         public static final int soccer_button=0x7f060006;
+        /**  Statistic showing screen 
+         */
+        public static final int statistic_title=0x7f060024;
+        public static final int stats_away_team_name=0x7f060026;
+        public static final int stats_home_team_name=0x7f060025;
+        public static final int stats_player_name=0x7f060027;
         public static final int turnover_button=0x7f060015;
         public static final int view_statistic_button=0x7f060007;
     }

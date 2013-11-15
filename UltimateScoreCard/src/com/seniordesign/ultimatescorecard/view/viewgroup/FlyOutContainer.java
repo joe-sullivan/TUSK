@@ -17,7 +17,7 @@ public class FlyOutContainer extends LinearLayout {
 	private View content;
 
 	// Layout Constants
-	protected static final int menuMargin = 150;
+	protected static final int menuMargin = 200;
 
 	public enum MenuState {
 		CLOSED, OPEN, CLOSING, OPENING

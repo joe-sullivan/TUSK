@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/statisticTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:padding="@dimen/padding"
+        android:text="@string/statistic_title"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+	
+    <RelativeLayout 
+        android:id="@+id/team1Players"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding"
+        android:layout_below="@+id/statisticTitle">
+        
+	    <TextView
+	        android:id="@+id/awayTeamName"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:padding="@dimen/padding"
+	        android:text="@string/stats_away_team_name" />
+	
+	    <TextView
+	        android:id="@+id/player1Name"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_below="@+id/awayTeamName"
+	        android:paddingRight="@dimen/padding"
+	        android:text="@string/stats_player_name" />
+	
+	    <TextView
+	        android:id="@+id/player2Name"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_below="@+id/player1Name"
+	        android:paddingRight="@dimen/padding"
+	        android:text="@string/stats_player_name" />
+	
+	    <TextView
+	        android:id="@+id/player3Name"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_below="@+id/player2Name"
+	        android:paddingRight="@dimen/padding"
+	        android:text="@string/stats_player_name" />
+	
+	    <TextView
+	        android:id="@+id/player4Name"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_below="@+id/player3Name"
+	        android:paddingRight="@dimen/padding"
+	        android:text="@string/stats_player_name" />
+	
+	    <TextView
+	        android:id="@+id/player5Name"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_below="@+id/player4Name"
+	        android:paddingRight="@dimen/padding"
+	        android:text="@string/stats_player_name" />
+	    
+	</RelativeLayout>
+	<RelativeLayout
+	    android:id="@+id/team2Players"
+	    android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding"
+        android:layout_below="@+id/team1Players">
+	    
+	    <TextView
+	        android:id="@+id/homeTeamName"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:padding="@dimen/padding"
+	        android:text="@string/stats_home_team_name" />
+	
+	    <TextView
+	        android:id="@+id/player6Name"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_below="@+id/homeTeamName"
+	        android:paddingRight="@dimen/padding"
+	        android:text="@string/stats_player_name" />
+	
+	    <TextView
+	        android:id="@+id/player7Name"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_below="@+id/player6Name"
+	        android:paddingRight="@dimen/padding"
+	        android:text="@string/stats_player_name" />
+	
+	    <TextView
+	        android:id="@+id/player8Name"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_below="@+id/player7Name"
+	        android:paddingRight="@dimen/padding"
+	        android:text="@string/stats_player_name" />
+	
+	    <TextView
+	        android:id="@+id/player9Name"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_below="@+id/player8Name"
+	        android:paddingRight="@dimen/padding"
+	        android:text="@string/stats_player_name" />
+	
+	    <TextView
+	        android:id="@+id/player10Name"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_below="@+id/player9Name"
+	        android:paddingRight="@dimen/padding"
+	        android:text="@string/stats_player_name" />
+	</RelativeLayout>
+</RelativeLayout>

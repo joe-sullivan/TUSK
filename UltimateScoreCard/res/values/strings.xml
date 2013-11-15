@@ -36,14 +36,24 @@
     <string name="block_button">Block</string>
     <string name="foul_button">Foul</string>
     <string name="more_button">More</string>
-     
-    <string name="player_1"> Player 1 </string>
-    <string name="player_2"> Player 2 </string>
-    <string name="player_3"> Player 3 </string>
-    <string name="player_4"> Player 4 </string>
-    <string name="player_5"> Player 5 </string>
+    <string name="shot_made_button">Shot Made</string>
+    <string name="shot_miss_button">Shot Missed</string>
+    <string name="shot_cancel_button">Back</string>
     
-    <string name= "away_points">058</string>
-    <string name= "home_points">063</string>
+    <string name="slideout_title">Title</string>
+    <string name="player_1">Player 1</string>
+    <string name="player_2">Player 2</string>
+    <string name="player_3">Player 3</string>
+    <string name="player_4">Player 4</string>
+    <string name="player_5">Player 5</string>
+    
+    <string name="away_points">000</string>
+    <string name="home_points">000</string>
+    
+    <!-- Statistic showing screen -->
+    <string name="statistic_title">Boxscore</string>
+    <string name="stats_home_team_name">Home Team</string>
+    <string name="stats_away_team_name">Away Team</string>
+    <string name="stats_player_name">Player Name: 0 pts, 0 reb, 0 ast</string>
     
 </resources>
