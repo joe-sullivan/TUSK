@@ -17,20 +17,7 @@
             android:layout_height="50dp"
             android:src="@drawable/title" />
     </LinearLayout>
-    
-    <LinearLayout
-        android:layout_width="match_parent"
-    	android:layout_height="wrap_content" >
-
-        <ImageView
-            android:id="@+id/titleImageView2"
-            android:contentDescription="@string/main_title_text"
-            android:padding="@dimen/padding"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:src="@drawable/title" />
-    </LinearLayout>
-    
+      
     <TableRow
         android:id="@+id/topButtonsRow"
         android:layout_above="@+id/bottomButtonsRow"

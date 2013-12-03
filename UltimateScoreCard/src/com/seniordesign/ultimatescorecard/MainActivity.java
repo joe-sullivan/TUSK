@@ -1,19 +1,19 @@
 package com.seniordesign.ultimatescorecard;
 
+
 import android.app.Activity;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
 //this class refers to the main (opening screen)
 public class MainActivity extends Activity{
-	BasketballActivity _basketball = new BasketballActivity();
+	//BasketballActivity _basketball = new BasketballActivity();
 	public Button _basketballButton, _footballButton, _baseballButton, _soccerButton; 						//these are the sport selection buttons
 	public Button _viewStatsButton, _optionsButton, _liveStatButtons; 										//these are set up for the other buttons
 	
@@ -35,18 +35,13 @@ public class MainActivity extends Activity{
 		_soccerButton = (Button) findViewById(R.id.soccerButton);											//referring to the soccer button
 		_soccerButton.setOnClickListener(soccerButtonListener);												//setting a click listener for the button
 	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-	
+		
 	// click listener for basketball button
 	public OnClickListener basketballButtonListener = new OnClickListener(){
 		@Override
 		public void onClick(View view) {																	//on click
 			Intent intent = new Intent(getApplicationContext(), ChooseTeamActivity.class);					//create new intent (you have intentions to do something)
+			intent.putExtra("SPORT", "basketball");
 			startActivity(intent);																			//execute the intent
 		}
 	};
@@ -55,7 +50,9 @@ public class MainActivity extends Activity{
 	public OnClickListener footballButtonListener = new OnClickListener(){
 		@Override
 		public void onClick(View view) {
-			//not implemented yet
+			Intent intent = new Intent(getApplicationContext(), ChooseTeamActivity.class);					//create new intent (you have intentions to do something)
+			intent.putExtra("SPORT", "football");
+			startActivity(intent);	
 		}
 	};
 	
@@ -63,7 +60,9 @@ public class MainActivity extends Activity{
 	public OnClickListener baseballButtonListener = new OnClickListener(){
 		@Override
 		public void onClick(View view) {
-			//not implemented yet														
+			Intent intent = new Intent(getApplicationContext(), ChooseTeamActivity.class);					//create new intent (you have intentions to do something)	
+			intent.putExtra("SPORT", "baseball");
+			startActivity(intent);														
 		}
 	};
 	
@@ -71,7 +70,9 @@ public class MainActivity extends Activity{
 	public OnClickListener soccerButtonListener = new OnClickListener(){
 		@Override
 		public void onClick(View view) {
-			//not implemented yet																
+			Intent intent = new Intent(getApplicationContext(), ChooseTeamActivity.class);					//create new intent (you have intentions to do something)
+			intent.putExtra("SPORT", "soccer");
+			startActivity(intent);																
 		}
 	};
 	
@@ -108,4 +109,6 @@ public class MainActivity extends Activity{
 	public void onBackPressed() {
 		super.onBackPressed();
 	}
+	
+	
 }

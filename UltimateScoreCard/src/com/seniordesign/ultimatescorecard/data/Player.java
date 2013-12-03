@@ -1,4 +1,4 @@
-package com.seniordesign.ultimatescorecard;
+package com.seniordesign.ultimatescorecard.data;
 
 import java.io.Serializable;
 
@@ -15,6 +15,10 @@ public class Player implements Serializable{
 	private int _assists = 0;
 	private int _steals = 0;
 	private int _blocks = 0;
+	private int _turnovers = 0;
+	private int _fouls = 0;
+	private int _techFouls = 0;
+	private int _flagFouls = 0;
 	
 	//getting values about a player
 	public Player (String name){
@@ -22,9 +26,6 @@ public class Player implements Serializable{
 	}
 	public String getName(){
 		return _name;
-	}
-	public int getPoints(){
-		return (_threePtsMade *3) + (_twoPtsMade *2) + _freeThrowMade;
 	}
 	public int getRebounds(){
 		return _rebounds;
@@ -37,6 +38,36 @@ public class Player implements Serializable{
 	}
 	public int getBlocks(){
 		return _blocks;
+	}
+	public int getTurnovers(){
+		return _turnovers;
+	}
+	public int getFTMade(){
+		return _freeThrowMade;
+	}
+	public int getFTMiss(){
+		return _freeThrowMiss;
+	}
+	public int getThreePtsMade(){
+		return _threePtsMade;
+	}
+	public int getThreePtsMiss(){
+		return _threePtsMiss;
+	}
+	public int getTwoPtsMade(){
+		return _twoPtsMade;
+	}
+	public int getTwoPtsMiss(){
+		return _twoPtsMiss;
+	}
+	public int getFouls(){
+		return _fouls;
+	}
+	public int getTechFouls(){
+		return _techFouls;
+	}
+	public int getFlagFouls(){
+		return _flagFouls;
 	}
 	
 	//changing the values in a game
@@ -69,5 +100,17 @@ public class Player implements Serializable{
 	}
 	public void blocksShot(){
 		_blocks++;
+	}
+	public void turnedOver(){
+		_turnovers++;
+	}
+	public void commitFoul(){
+		_fouls++;
+	}
+	public void commitTechFoul(){
+		_techFouls++;
+	}
+	public void commitFlagFoul(){
+		_flagFouls++;
 	}
 }

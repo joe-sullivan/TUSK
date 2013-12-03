@@ -1,4 +1,4 @@
-package com.seniordesign.ultimatescorecard.view.viewgroup;
+package com.seniordesign.ultimatescorecard.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -17,7 +17,7 @@ public class FlyOutContainer extends LinearLayout {
 	private View content;
 
 	// Layout Constants
-	protected static final int menuMargin = 200;
+	protected int menuMargin = 200;
 
 	public enum MenuState {
 		CLOSED, OPEN, CLOSING, OPENING
@@ -39,14 +39,32 @@ public class FlyOutContainer extends LinearLayout {
 	@SuppressLint("NewApi")
 	public FlyOutContainer(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
+		if(getResources().getConfiguration().orientation == 1){
+			menuMargin = 200;
+		}
+		else{
+			menuMargin = 400;
+		}
 	}
 
 	public FlyOutContainer(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		if(getResources().getConfiguration().orientation == 1){
+			menuMargin = 200;
+		}
+		else{
+			menuMargin = 400;
+		}
 	}
 
 	public FlyOutContainer(Context context) {
 		super(context);
+		if(getResources().getConfiguration().orientation == 1){
+			menuMargin = 200;
+		}
+		else{
+			menuMargin = 400;
+		}
 	}
 
 	@Override
@@ -140,6 +158,14 @@ public class FlyOutContainer extends LinearLayout {
 		public void run() {
 			FlyOutContainer.this.adjustContentPosition(FlyOutContainer.this.menuAnimationScroller.computeScrollOffset());
 		}
-
+	}
+	
+	public boolean menuOpened(){
+		if(this.menuCurrentState == MenuState.OPEN){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 }

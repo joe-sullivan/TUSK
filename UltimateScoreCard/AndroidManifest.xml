@@ -11,12 +11,12 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
+        android:label="@string/application_name"
         android:theme="@style/AppTheme" >
         
         <activity
             android:name="com.seniordesign.ultimatescorecard.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/application_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,17 +26,27 @@
         
         <activity
             android:name="com.seniordesign.ultimatescorecard.BasketballActivity"
-            android:label="@string/app_name" >
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/basketball_screen" 
+            android:screenOrientation="portrait">
         </activity>
         
         <activity
             android:name="com.seniordesign.ultimatescorecard.ChooseTeamActivity"
-            android:label="@string/app_name" >
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/choose_team_screen" >
         </activity>
         
         <activity
             android:name="com.seniordesign.ultimatescorecard.BoxscoreActivity"
-            android:label="@string/app_name" >
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/boxscore_screen" >
+        </activity>
+        
+        <activity
+            android:name="com.seniordesign.ultimatescorecard.PlayListActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/boxscore_screen" >
         </activity>
         
     </application>

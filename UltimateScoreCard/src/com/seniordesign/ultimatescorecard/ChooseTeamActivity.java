@@ -1,5 +1,6 @@
 package com.seniordesign.ultimatescorecard;
 
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog.Builder;
@@ -7,14 +8,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.res.Configuration;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 //in sync with activity_choose_team.xml
 public class ChooseTeamActivity extends Activity{
@@ -26,13 +28,15 @@ public class ChooseTeamActivity extends Activity{
 	private boolean _setDelete = false;																	//false = we can delete a team, true = we can't delete a team
 	private String[] _teams = new String[2];															//string of two teams, used for passing names to next activity
 	private TextView _teamSelectTitle;
+	private String _sportType;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_choose_team);
+		_sportType = getIntent().getExtras().getString("SPORT");
 		
-		_teamsEntered = getSharedPreferences("basketballTeamList", MODE_PRIVATE);						//get shared preference, codeword = basketballTeamList
+		_teamsEntered = getSharedPreferences( _sportType+"TeamList" , MODE_PRIVATE);					//get shared preference, codeword = basketballTeamList
 		_prefEditor = _teamsEntered.edit();																//preference editor allows us to edit specified shared preference
 		
 		_teamSelectTitle = (TextView) findViewById(R.id.team_selection_title);							//getting the view of some features implemented in xml
@@ -62,7 +66,7 @@ public class ChooseTeamActivity extends Activity{
 	
 	//getting string from shared preference, parsing it, and add to linear layout
 	private void loadTeams(){
-		String[] names = _teamsEntered.getString("basketballTeamList", null).split(",");
+		String[] names = _teamsEntered.getString(_sportType+"TeamList", null).split(",");
 		for(int i=0; i<names.length; i++){
 			this.addNewTeam(names[i]);
 		}
@@ -76,7 +80,7 @@ public class ChooseTeamActivity extends Activity{
 			sb.append(((TextView)_listOfTeams.getChildAt(i)).getText().toString()+",");					//put all the items in the list in one string separated by commas
 		}
 		if(sb.toString().length() > 0){																	//if our list is NOT empty
-			_prefEditor.putString("basketballTeamList", sb.toString());									//put the string in shared preferences
+			_prefEditor.putString(_sportType+"TeamList", sb.toString());									//put the string in shared preferences
 			_prefEditor.commit();																		//commit the change
 		}
 		else{																							//we no longer have anything in our list
@@ -158,7 +162,19 @@ public class ChooseTeamActivity extends Activity{
 		confirmDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener(){							//the positive yes button
 			@Override
 			public void onClick(DialogInterface arg0, int arg1) {
-				Intent intent = new Intent(getApplicationContext(), BasketballActivity.class);					//create new intent (basketball activity)
+				Intent intent;
+				if(_sportType.equals("soccer")){
+					intent = new Intent(getApplicationContext(), BasketballActivity.class);						//create new intent (basketball activity)
+				}
+				else if (_sportType.equals("football")){
+					intent = new Intent(getApplicationContext(), BasketballActivity.class);
+				}
+				else if (_sportType.equals("baseball")){
+					intent = new Intent(getApplicationContext(), BasketballActivity.class);
+				}
+				else{
+					intent = new Intent(getApplicationContext(), BasketballActivity.class);	
+				}
 				intent.putExtra("home", _teams[0]);																//adding additional items to intent to send to next activity (passing data)
 				intent.putExtra("away", _teams[1]);
 				startActivity(intent);																			//let's go
@@ -183,36 +199,6 @@ public class ChooseTeamActivity extends Activity{
 		textView.setTextSize(24);
 		return textView;
 	}
-	
-	//handling the pressing of the back button, basically the same as that of main activity
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if(keyCode == KeyEvent.KEYCODE_BACK){
-			Builder alert = new Builder(this);
-			alert.setTitle("Return to Main Menu");
-			alert.setMessage("Are you sure?");
-			
-			alert.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					onBackPressed();
-					saveTeams();
-					finish();
-				}
-			});
-			alert.setNegativeButton("No", new DialogInterface.OnClickListener(){
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					//do nothing, just exit dialog box			
-				}
-			});
-			alert.show();
-			return true;
-		}
-		else{
-			return super.onKeyDown(keyCode, event);
-		}
-	}
 
 	//deleting a team from the linear layout we called "listOfTeams"
 	public void deleteATeam(View view){
@@ -223,7 +209,20 @@ public class ChooseTeamActivity extends Activity{
 	}
 	
 	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+	        Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
+	    } 
+		else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+	        Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
+	    }
+	}
+	
+	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
+		saveTeams();
+		finish();
 	}
 }

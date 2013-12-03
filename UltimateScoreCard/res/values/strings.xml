@@ -2,7 +2,10 @@
 <resources>
 	
     <!-- Really High Level Text -->
-    <string name="app_name">UltimateScoreCard</string>
+    <string name="application_name">UltimateScoreCard</string>
+    <string name="basketball_screen">Basketball</string>
+    <string name="choose_team_screen">Choose Team</string>
+    <string name="boxscore_screen">Boxscore</string>
     <string name="action_settings">Settings</string>
     
     <!-- Text Found on Main Title Page -->
@@ -25,6 +28,9 @@
 	<!-- Common sports terms -->
 	<string name="home_name">Home</string>
     <string name="away_name">Away</string>
+    <string name="possession_marker">Possession Markers</string>
+    <string name="start_game">Start Game</string>
+    <string name="quarter">1ST</string>
 	
     <!-- Text used in basketball interface -->
     <string name="basketball_court">Visible image of Basketball Court</string>
@@ -33,12 +39,11 @@
     
     <string name="rebound_button">Rebound</string>
     <string name="turnover_button">Turnover</string>
-    <string name="block_button">Block</string>
-    <string name="foul_button">Foul</string>
-    <string name="more_button">More</string>
-    <string name="shot_made_button">Shot Made</string>
-    <string name="shot_miss_button">Shot Missed</string>
-    <string name="shot_cancel_button">Back</string>
+    <string name="choice_one">Choice One</string>
+    <string name="choice_two">Choice Two</string>
+    <string name="choice_three">Choice Three</string>
+    <string name="choice_four">Choice Four</string>
+    <string name="choice_five">Choice Five</string>
     
     <string name="slideout_title">Title</string>
     <string name="player_1">Player 1</string>
@@ -55,5 +60,8 @@
     <string name="stats_home_team_name">Home Team</string>
     <string name="stats_away_team_name">Away Team</string>
     <string name="stats_player_name">Player Name: 0 pts, 0 reb, 0 ast</string>
+    <string name="play_by_play_view">See Play-by-Play</string>
+    
+    <string name="statistic_title2">Play-By-Play</string>
     
 </resources>
