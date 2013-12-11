@@ -15,4 +15,7 @@
     <color name="brown">#663605</color>
     <color name="gray">#A2A2A3</color>
     <color name="white">#FFFFFF</color>
+    
+    <color name="robin_egg_blue">#00CCCC</color>
+    
 </resources>

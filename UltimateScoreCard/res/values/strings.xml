@@ -64,4 +64,11 @@
     
     <string name="statistic_title2">Play-By-Play</string>
     
+    <!-- Substituion screen texts -->
+    <string name="substitution_title">Substitution</string>
+    <string name="home_sub_text">Home Team</string>
+    <string name="away_sub_text">Away Team</string>
+    <string name="player_generic">Player</string>
+    <string name="stat_generic">Stats</string>
+    
 </resources>

@@ -113,4 +113,39 @@ public class Player implements Serializable{
 	public void commitFlagFoul(){
 		_flagFouls++;
 	}
+	
+	//calculated stats
+	public int pointScored(){
+		return (_threePtsMade*3) + (_twoPtsMade*2) + _freeThrowMade;
+	}
+	
+	public int fieldGoalMade(){
+		return _threePtsMade + _twoPtsMade;
+	}
+	
+	public int fieldGoalAttempted(){
+		return _threePtsMade + _twoPtsMade + _threePtsMiss + _twoPtsMiss;
+	}
+	
+	public int freeThrowAttempted(){
+		return _freeThrowMade + _freeThrowMiss;
+	}
+	
+	public double freeThrowPCT(){
+		if(freeThrowAttempted() > 0){
+			return (double) _freeThrowMade / freeThrowAttempted();
+		}
+		else{
+			return 0.0;
+		}
+	}
+	
+	public double fieldGoalPCT(){
+		if(fieldGoalAttempted() > 0){
+			return (double) fieldGoalMade() / fieldGoalAttempted();
+		}
+		else{
+			return 0.0;
+		}
+	}
 }

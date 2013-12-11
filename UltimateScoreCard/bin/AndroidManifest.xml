@@ -38,13 +38,19 @@
         </activity>
         
         <activity
-            android:name="com.seniordesign.ultimatescorecard.BoxscoreActivity"
+            android:name="com.seniordesign.ultimatescorecard.stats.StatsActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/boxscore_screen" >
+        </activity>
+                
+        <activity
+            android:name="com.seniordesign.ultimatescorecard.substitution.SubstitutionActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/boxscore_screen" >
         </activity>
         
         <activity
-            android:name="com.seniordesign.ultimatescorecard.PlayListActivity"
+            android:name="com.seniordesign.ultimatescorecard.stats.IndividualStatActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/boxscore_screen" >
         </activity>

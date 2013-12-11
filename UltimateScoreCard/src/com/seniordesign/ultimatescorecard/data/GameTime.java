@@ -129,4 +129,13 @@ public class GameTime implements Serializable {
 	public void willKeepPossession(boolean which){
 		_keepPossession = which;
 	}
+	
+	public Team getTheHomeTeam(){
+		return _homeTeam;
+	}
+	
+	public Team getTheAwayTeam(){
+		return _awayTeam;
+	}
+	
 }

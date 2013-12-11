@@ -1,7 +1,6 @@
 package com.seniordesign.ultimatescorecard.clock;
 
 import android.os.Handler;
-import android.util.Log;
 import android.widget.TextView;
 
 public class GameClock {
@@ -17,7 +16,7 @@ public class GameClock {
 		_status = false;
 		initialize();
 	}
-	
+
 	public void start(){
 		_status = true;
 	}
@@ -32,7 +31,6 @@ public class GameClock {
 	
 	public void initialize(){
 		final Handler handler = new Handler();
-		Log.e("Timer", "initialized");
 		final Runnable counter = new Runnable(){
 			@Override
 			public void run() {
@@ -40,6 +38,7 @@ public class GameClock {
 				if(_status){
 					if(_millisInFuture <= 0){
 						_textView.setText("00:00");
+						_status = false;
 					}
 					else{
 						_textView.setText(displayTime(secToMin(sec), remainSec(sec)));
@@ -55,6 +54,16 @@ public class GameClock {
 		handler.postDelayed(counter, _countDownInterval);
 	}
 	
+	public boolean isStarted(){
+		return _status;
+	}
+	
+	public void restartTimer(long millisInFuture){
+		_millisInFuture =  millisInFuture;
+		_textView.setText(displayTime(secToMin(_millisInFuture/1000), remainSec(_millisInFuture/1000)));
+		initialize();
+	}
+		
 	private int secToMin(long seconds){
 		return (int) (seconds/60);
 	}

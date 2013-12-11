@@ -1,6 +1,9 @@
 package com.seniordesign.ultimatescorecard;
 
 
+import com.seniordesign.ultimatescorecard.data.GameTime;
+import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog.Builder;
@@ -34,7 +37,7 @@ public class ChooseTeamActivity extends Activity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_choose_team);
-		_sportType = getIntent().getExtras().getString("SPORT");
+		_sportType = getIntent().getExtras().getString(StaticFinalVars.SPORT_TYPE);
 		
 		_teamsEntered = getSharedPreferences( _sportType+"TeamList" , MODE_PRIVATE);					//get shared preference, codeword = basketballTeamList
 		_prefEditor = _teamsEntered.edit();																//preference editor allows us to edit specified shared preference
@@ -175,8 +178,7 @@ public class ChooseTeamActivity extends Activity{
 				else{
 					intent = new Intent(getApplicationContext(), BasketballActivity.class);	
 				}
-				intent.putExtra("home", _teams[0]);																//adding additional items to intent to send to next activity (passing data)
-				intent.putExtra("away", _teams[1]);
+				intent.putExtra(StaticFinalVars.GAME_INFO, new GameTime(_teams[0], _teams[1]));
 				startActivity(intent);																			//let's go
 			}
 		});

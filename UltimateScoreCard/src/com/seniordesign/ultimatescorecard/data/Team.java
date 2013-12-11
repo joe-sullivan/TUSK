@@ -51,6 +51,11 @@ public class Team implements Serializable{
 			players.add(new Player("Tiago Splitter"));
 			players.add(new Player("Tim Duncan"));
 			players.add(new Player("Kawhi Leonard"));
+			players.add(new Player("Patty Mills"));
+			players.add(new Player("Danny Green"));
+			players.add(new Player("Marco Belinelli"));
+			players.add(new Player("Boris Diaw"));
+			players.add(new Player("Matt Bonner"));
 		}
 		else if(team.equals("Houston Rockets")){
 			players.add(new Player("Jeremy Lin"));
@@ -58,6 +63,11 @@ public class Team implements Serializable{
 			players.add(new Player("Omer Asik"));
 			players.add(new Player("Dwight Howard"));
 			players.add(new Player("Chandler Parson"));
+			players.add(new Player("Patrick Beverley"));
+			players.add(new Player("Aaron Brooks"));
+			players.add(new Player("Omri Casspi"));
+			players.add(new Player("Terrence Jones"));
+			players.add(new Player("Donatas Motijunas"));
 		}
 		else if(team.equals("Dallas Mavericks")){
 			players.add(new Player("Jose Calderon"));
@@ -65,6 +75,11 @@ public class Team implements Serializable{
 			players.add(new Player("Samuel Dalembert"));
 			players.add(new Player("Shawn Marion"));
 			players.add(new Player("Dirk Nowitzki"));
+			players.add(new Player("Devin Harris"));
+			players.add(new Player("Vince Carter"));
+			players.add(new Player("DeJuan Blair"));
+			players.add(new Player("Wayne Ellington"));
+			players.add(new Player("Brandon Wright"));
 		}
 		else if(team.equals("Memphis Grizzlies")){
 			players.add(new Player("Mike Conley"));
@@ -72,6 +87,12 @@ public class Team implements Serializable{
 			players.add(new Player("Marc Gasol"));
 			players.add(new Player("Zach Randolph"));
 			players.add(new Player("Quincy Pondexter"));
+			players.add(new Player("Kosta Koufos"));
+			players.add(new Player("Mike Miller"));
+			players.add(new Player("Jerryd Bayless"));
+			players.add(new Player("Tayshaun Prince"));
+			players.add(new Player("Ed Davis"));
+			
 		}
 		else if(team.equals("New Orleans Hornets")){
 			players.add(new Player("Jrue Holliday"));
@@ -79,6 +100,11 @@ public class Team implements Serializable{
 			players.add(new Player("Jason Smith"));
 			players.add(new Player("Anthony Davis"));
 			players.add(new Player("Al-Farouq Aminu"));
+			players.add(new Player("Austin Rivers"));
+			players.add(new Player("Anthony Morrow"));
+			players.add(new Player("Tyreke Evans"));
+			players.add(new Player("Ryan Anderson"));
+			players.add(new Player("Jeff Withey"));
 		}
 		else {
 			players.add(new Player("Player 1"));
@@ -86,6 +112,11 @@ public class Team implements Serializable{
 			players.add(new Player("Player 3"));
 			players.add(new Player("Player 4"));
 			players.add(new Player("Player 5"));
+			players.add(new Player("Player 6"));
+			players.add(new Player("Player 7"));
+			players.add(new Player("Player 8"));
+			players.add(new Player("Player 9"));
+			players.add(new Player("Player 10"));
 		}
 	}
 	
@@ -100,6 +131,15 @@ public class Team implements Serializable{
 			}
 		}
 		return null;
+	}
+	
+	public int getPlayerAsPositionInArray(String player){
+		for(int i=0; i<players.size(); i++){
+			if(player.equals(players.get(i).getName())){
+				return i;
+			}
+		}
+		return -1;
 	}
 	
 	public Player getPlayerOnCourt(String player){
@@ -147,6 +187,10 @@ public class Team implements Serializable{
 		return _teamTurnovers;
 	}
 	
+	public int numberPlayers(){
+		return players.size();
+	}
+	
 	public void scoreChange(int points, String playerName){
 		increaseScore(points);
 		if(points == 3){
@@ -157,6 +201,16 @@ public class Team implements Serializable{
 		}
 		else{
 			getPlayer(playerName).madeFreeThrow();
+		}
+	}
+	
+	public void swapPlayer(String playerIn, String playerOut){
+		int i = getPlayerAsPositionInArray(playerIn);
+		int j = getPlayerAsPositionInArray(playerOut);
+		if(i >= 0 && i<players.size() && j >= 0 && j<players.size()){
+			Player temp = players.get(i);
+			players.set(i, players.get(j));
+			players.set(j, temp);
 		}
 	}
 }

@@ -49,6 +49,10 @@ public class GameLog implements Serializable {
 		_thePlay = "Stolen by " + stlBy + " from "+ stlFrom;
 	}
 	
+	public void blocking (String blkBy, String blkAgainst){
+		_thePlay = blkAgainst + " blocked by " + blkBy ;
+	}
+	
 	public void foulCommitted (String player, int foulType){
 		switch(foulType){
 		case 1:

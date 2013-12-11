@@ -1,6 +1,8 @@
 package com.seniordesign.ultimatescorecard;
 
 
+import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
+
 import android.app.Activity;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
@@ -13,7 +15,6 @@ import android.widget.Button;
 
 //this class refers to the main (opening screen)
 public class MainActivity extends Activity{
-	//BasketballActivity _basketball = new BasketballActivity();
 	public Button _basketballButton, _footballButton, _baseballButton, _soccerButton; 						//these are the sport selection buttons
 	public Button _viewStatsButton, _optionsButton, _liveStatButtons; 										//these are set up for the other buttons
 	
@@ -41,7 +42,7 @@ public class MainActivity extends Activity{
 		@Override
 		public void onClick(View view) {																	//on click
 			Intent intent = new Intent(getApplicationContext(), ChooseTeamActivity.class);					//create new intent (you have intentions to do something)
-			intent.putExtra("SPORT", "basketball");
+			intent.putExtra(StaticFinalVars.SPORT_TYPE, "basketball");
 			startActivity(intent);																			//execute the intent
 		}
 	};
@@ -51,7 +52,7 @@ public class MainActivity extends Activity{
 		@Override
 		public void onClick(View view) {
 			Intent intent = new Intent(getApplicationContext(), ChooseTeamActivity.class);					//create new intent (you have intentions to do something)
-			intent.putExtra("SPORT", "football");
+			intent.putExtra(StaticFinalVars.SPORT_TYPE, "football");
 			startActivity(intent);	
 		}
 	};
@@ -61,7 +62,7 @@ public class MainActivity extends Activity{
 		@Override
 		public void onClick(View view) {
 			Intent intent = new Intent(getApplicationContext(), ChooseTeamActivity.class);					//create new intent (you have intentions to do something)	
-			intent.putExtra("SPORT", "baseball");
+			intent.putExtra(StaticFinalVars.SPORT_TYPE, "baseball");
 			startActivity(intent);														
 		}
 	};
@@ -71,7 +72,7 @@ public class MainActivity extends Activity{
 		@Override
 		public void onClick(View view) {
 			Intent intent = new Intent(getApplicationContext(), ChooseTeamActivity.class);					//create new intent (you have intentions to do something)
-			intent.putExtra("SPORT", "soccer");
+			intent.putExtra(StaticFinalVars.SPORT_TYPE, "soccer");
 			startActivity(intent);																
 		}
 	};
