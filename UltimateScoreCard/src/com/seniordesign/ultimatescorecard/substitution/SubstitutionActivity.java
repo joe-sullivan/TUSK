@@ -1,7 +1,7 @@
 package com.seniordesign.ultimatescorecard.substitution;
 
 import com.seniordesign.ultimatescorecard.R;
-import com.seniordesign.ultimatescorecard.data.GameTime;
+import com.seniordesign.ultimatescorecard.data.BasketballGameTime;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
 
 import android.app.Activity;
@@ -15,7 +15,7 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 public class SubstitutionActivity extends FragmentActivity{
-	private GameTime _gti;
+	private BasketballGameTime _gti;
 	private Fragment _active = new ActivePageFragment();
 	private Fragment _bench = new BenchPageFragment();
 	private boolean _homeTeam = true;
@@ -26,7 +26,7 @@ public class SubstitutionActivity extends FragmentActivity{
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_substitution);
-		_gti = (GameTime) getIntent().getSerializableExtra(StaticFinalVars.SUB_INFO);
+		_gti = (BasketballGameTime) getIntent().getSerializableExtra(StaticFinalVars.SUB_INFO);
 		
 		TextView view = (TextView)findViewById(R.id.homeTeamSubText);
 		view.setOnClickListener(setHomeTeam);
@@ -99,7 +99,7 @@ public class SubstitutionActivity extends FragmentActivity{
 		transaction.commit();
 	}
 	
-	public GameTime getTeamInfo(){
+	public BasketballGameTime getTeamInfo(){
 		return _gti;
 	}
 	

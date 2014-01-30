@@ -1,8 +1,8 @@
 package com.seniordesign.ultimatescorecard.substitution;
 
 import com.seniordesign.ultimatescorecard.R;
-import com.seniordesign.ultimatescorecard.data.GameTime;
-import com.seniordesign.ultimatescorecard.data.Team;
+import com.seniordesign.ultimatescorecard.data.BasketballGameTime;
+import com.seniordesign.ultimatescorecard.data.BasketballTeam;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,8 +26,8 @@ public class BenchPageFragment extends Fragment{
 		setPlayer(((SubstitutionActivity)getActivity()).getTeamInfo(), ((SubstitutionActivity)getActivity()).getHomeTeam());
 	}
 
-	private void setPlayer(GameTime gti, boolean status){
-		Team team = null;
+	private void setPlayer(BasketballGameTime gti, boolean status){
+		BasketballTeam team = null;
 		if(status){
 			team = gti.getTheHomeTeam();
 		}

@@ -1,7 +1,7 @@
 package com.seniordesign.ultimatescorecard.stats;
 
 import com.seniordesign.ultimatescorecard.R;
-import com.seniordesign.ultimatescorecard.data.Team;
+import com.seniordesign.ultimatescorecard.data.BasketballTeam;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
 
 import android.content.Intent;
@@ -47,7 +47,7 @@ public class BoxscoreFragment extends Fragment{
 	
 	private void addTextViews(){
 		LinearLayout layout = ((LinearLayout) getView().findViewById(R.id.playerListLayout));
-		Team team = null;
+		BasketballTeam team = null;
 		if(_lookingAtHome){
 			team = ((StatsActivity) getActivity()).getGameInfo().getTheHomeTeam();
 		}

@@ -32,6 +32,13 @@
         </activity>
         
         <activity
+            android:name="com.seniordesign.ultimatescorecard.FootballActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/basketball_screen" 
+            android:screenOrientation="portrait">
+        </activity>
+        
+        <activity
             android:name="com.seniordesign.ultimatescorecard.ChooseTeamActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/choose_team_screen" >

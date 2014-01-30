@@ -235,7 +235,6 @@
 	   		    android:id="@+id/basketballCourtMask"
 	   		    android:layout_width="match_parent"
 	   		    android:layout_height="match_parent"
-	   		    android:layout_alignParentTop="true"
 	   		    android:contentDescription="@string/court_mask"
 	   		    android:src="@drawable/basketballcourtmask"
 	   		    android:visibility="invisible" />

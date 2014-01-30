@@ -1,7 +1,8 @@
 package com.seniordesign.ultimatescorecard;
 
 
-import com.seniordesign.ultimatescorecard.data.GameTime;
+import com.seniordesign.ultimatescorecard.data.BasketballGameTime;
+import com.seniordesign.ultimatescorecard.data.FootballGameTime;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
 
 import android.annotation.SuppressLint;
@@ -47,6 +48,9 @@ public class ChooseTeamActivity extends Activity{
 		_deleteButton = (Button) findViewById (R.id.deleteTeamButton);
 		
 		if(_teamsEntered.getString("basketballTeamList", null) != null){								//read from shared preference to get saved team names if any
+			loadTeams();
+		}
+		if(_teamsEntered.getString("footballTeamList", null) != null){								//read from shared preference to get saved team names if any
 			loadTeams();
 		}
 	}	
@@ -170,15 +174,17 @@ public class ChooseTeamActivity extends Activity{
 					intent = new Intent(getApplicationContext(), BasketballActivity.class);						//create new intent (basketball activity)
 				}
 				else if (_sportType.equals("football")){
-					intent = new Intent(getApplicationContext(), BasketballActivity.class);
+					intent = new Intent(getApplicationContext(), FootballActivity.class);
+					intent.putExtra(StaticFinalVars.GAME_INFO, new FootballGameTime(_teams[0], _teams[1]));
 				}
 				else if (_sportType.equals("baseball")){
 					intent = new Intent(getApplicationContext(), BasketballActivity.class);
 				}
 				else{
 					intent = new Intent(getApplicationContext(), BasketballActivity.class);	
+					intent.putExtra(StaticFinalVars.GAME_INFO, new BasketballGameTime(_teams[0], _teams[1]));
 				}
-				intent.putExtra(StaticFinalVars.GAME_INFO, new GameTime(_teams[0], _teams[1]));
+				
 				startActivity(intent);																			//let's go
 			}
 		});

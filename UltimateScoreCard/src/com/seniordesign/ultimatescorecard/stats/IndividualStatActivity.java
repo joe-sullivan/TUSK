@@ -1,8 +1,8 @@
 package com.seniordesign.ultimatescorecard.stats;
 
 import com.seniordesign.ultimatescorecard.R;
-import com.seniordesign.ultimatescorecard.data.Player;
-import com.seniordesign.ultimatescorecard.data.Team;
+import com.seniordesign.ultimatescorecard.data.BasketballPlayer;
+import com.seniordesign.ultimatescorecard.data.BasketballTeam;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
 
 import android.os.Bundle;
@@ -16,9 +16,9 @@ public class IndividualStatActivity extends FragmentActivity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_individual);
 		
-		Team team = (Team) getIntent().getSerializableExtra(StaticFinalVars.TEAM_INFO);
+		BasketballTeam team = (BasketballTeam) getIntent().getSerializableExtra(StaticFinalVars.TEAM_INFO);
 		String name = getIntent().getStringExtra(StaticFinalVars.PLAYER_NAME);
-		Player player =	team.getPlayer(name);
+		BasketballPlayer player =	team.getPlayer(name);
 		
 		((TextView)findViewById(R.id.playerName)).setText(player.getName());
 		((TextView)findViewById(R.id.teamName)).setText(team.getTeamName());

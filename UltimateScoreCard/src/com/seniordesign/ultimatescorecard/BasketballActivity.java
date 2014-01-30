@@ -2,7 +2,7 @@ package com.seniordesign.ultimatescorecard;
 
 import com.seniordesign.ultimatescorecard.data.DoubleParamOnClickListener;
 import com.seniordesign.ultimatescorecard.data.GameLog;
-import com.seniordesign.ultimatescorecard.data.GameTime;
+import com.seniordesign.ultimatescorecard.data.BasketballGameTime;
 import com.seniordesign.ultimatescorecard.stats.StatsActivity;
 import com.seniordesign.ultimatescorecard.substitution.SubstitutionActivity;
 import com.seniordesign.ultimatescorecard.view.FlyOutContainer;
@@ -49,7 +49,7 @@ public class BasketballActivity extends Activity{
 	Button _option1Button, _option2Button, _option3Button, _option4Button, _option5Button;
 
 	private GameClock _gameClock;															//strings containing name of home and away team
-	private GameTime _gti;
+	private BasketballGameTime _gti;
 	private GameLog _gameLog = new GameLog();
 	private ShotIconAdder _iconAdder;
 	
@@ -58,7 +58,7 @@ public class BasketballActivity extends Activity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		_root = (FlyOutContainer)this.getLayoutInflater().inflate(R.layout.activity_basketball, null);	//root is modified view with fly-out container														
-		_gti = (GameTime) getIntent().getSerializableExtra(StaticFinalVars.GAME_INFO); 					//get our team informations class
+		_gti = (BasketballGameTime) getIntent().getSerializableExtra(StaticFinalVars.GAME_INFO); 					//get our team informations class
 		setContentView(_root);
 		
 		_awayTextView = (TextView)findViewById(R.id.awayTextView);									//referencing the different views displayed via their id
@@ -80,6 +80,7 @@ public class BasketballActivity extends Activity{
 		
 		_basketballCourt = (ImageView)findViewById(R.id.basketballCourt);
 		_basketballCourtMask = (ImageView)findViewById(R.id.basketballCourtMask);
+		
 		_bitmap = ((BitmapDrawable) _basketballCourtMask.getDrawable()).getBitmap();				//bitmap of our courtMask, needed for map to work
 		
 		_homeLayout = (RelativeLayout)findViewById(R.id.homeShotIcons);
@@ -186,18 +187,23 @@ public class BasketballActivity extends Activity{
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
 			if(event.getAction() == MotionEvent.ACTION_DOWN){									//need this if statement to keep method execution to one
-				int pixel = _bitmap.getPixel((int)event.getX(), (int)event.getY());				//get where the user touches
+				double wRatio = (double)_bitmap.getWidth()/_basketballCourtMask.getWidth();
+				double hRatio = (double)_bitmap.getHeight()/ _basketballCourtMask.getHeight();
+				int pixel = _bitmap.getPixel((int)(event.getX()*wRatio), (int)(event.getY()*hRatio));				//get where the user touches
 				int redValue = Color.red(pixel);												//get the color of that location and divide it into RGB values
 				int blueValue = Color.blue(pixel);
 				int greenValue = Color.green(pixel);
 				_iconAdder.setShotLocation((int)event.getX(), (int)event.getY());
 				if(redValue > blueValue && redValue > greenValue){								//red is the three point range
+					//Log.e("COLOR", "RED");
 					setMadeMissListeners(3);														//we call our button swap method
 				}
 				else if (blueValue > redValue && blueValue > greenValue){						//blue and green are 2 points (blue mean in the paint)
+					//Log.e("COLOR", "BLUE");
 					setMadeMissListeners(2);
 				}
 				else if (greenValue > blueValue && greenValue > redValue){
+					//Log.e("COLOR", "GREEN");
 					setMadeMissListeners(2);
 				}
 			}
@@ -1046,7 +1052,7 @@ public class BasketballActivity extends Activity{
 		super.onActivityResult(requestCode, resultCode, data);
 		if(requestCode == SUBSTITUTION_CODE){
 			if(resultCode == Activity.RESULT_OK){
-				_gti = (GameTime)data.getSerializableExtra(StaticFinalVars.SUB_INFO);
+				_gti = (BasketballGameTime)data.getSerializableExtra(StaticFinalVars.SUB_INFO);
 			}
 		}
 	}

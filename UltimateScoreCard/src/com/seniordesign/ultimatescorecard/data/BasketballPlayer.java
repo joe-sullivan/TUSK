@@ -2,7 +2,7 @@ package com.seniordesign.ultimatescorecard.data;
 
 import java.io.Serializable;
 
-public class Player implements Serializable{
+public class BasketballPlayer implements Serializable{
 	private static final long serialVersionUID = 8138078955965364135L;
 	private String _name;
 	private int _threePtsMade = 0;
@@ -21,7 +21,7 @@ public class Player implements Serializable{
 	private int _flagFouls = 0;
 	
 	//getting values about a player
-	public Player (String name){
+	public BasketballPlayer (String name){
 		_name = name;
 	}
 	public String getName(){
