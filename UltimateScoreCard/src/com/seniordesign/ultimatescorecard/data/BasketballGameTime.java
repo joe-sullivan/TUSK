@@ -7,7 +7,7 @@ public class BasketballGameTime extends GameTime {
 	private boolean _foulOnPlay = false;
 	private boolean _keepPossession = false;
 		
-	public BasketballGameTime(String away, String home){
+	public BasketballGameTime(String home, String away){
 		_homeTeam = new BasketballTeam(home, true);
 		_awayTeam = new BasketballTeam(away, false);
 	}
@@ -109,4 +109,19 @@ public class BasketballGameTime extends GameTime {
 		return _awayTeam;
 	}
 	
+	public String getTeamPossession(boolean flip){
+		if(flip){
+			if(_possession)
+				return getAwayAbbr();
+			else
+				return getHomeAbbr();
+		}
+		else{
+			if(_possession)
+				return getHomeAbbr();
+			else
+				return getAwayAbbr();
+		}
+		
+	}
 }

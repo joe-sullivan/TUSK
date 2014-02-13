@@ -6,9 +6,10 @@ public class FootballGameTime extends GameTime{
 	private FootballTeam _awayTeam;
 	private boolean _possession = true;
 	private boolean _sideOfField = true;
-	private int _lineOfScrimmage = -1;
+	private boolean _kickOff = false;
+	private int _lineOfScrimmage = 20;
 	private int _down = 1;
-	private int toGo = 10;
+	private int toGo = -1;
 	private String _gameStatus = "pre-game";
 		
 	public FootballGameTime(String away, String home){
@@ -122,4 +123,12 @@ public class FootballGameTime extends GameTime{
 	public boolean getPossession(){
 		return _possession;
 	}	
+	
+	public void setKickOff(boolean cond){
+		_kickOff = cond;
+	}
+	
+	public boolean getKickOff(){
+		return _kickOff;
+	}
 }

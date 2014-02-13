@@ -119,6 +119,10 @@ public class FootballTeam extends Team{
 		return players.get(player);
 	}
 	
+	public ArrayList<FootballPlayer> getRoster(){
+		return players;
+	}
+	
 	public FootballPlayer getPlayer(String player){
 		for(int i=0; i<players.size(); i++){
 			if(player.equals(players.get(i).getName())){

@@ -20,6 +20,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,7 +46,7 @@ public class BasketballActivity extends Activity{
 	TextView _homeScoreTextView, _awayScoreTextView;
 	ImageView _basketballCourt, _basketballCourtMask;
 	Bitmap _bitmap;
-	Button _p1Button, _p2Button, _p3Button, _p4Button, _p5Button, _otherButton;
+	Button _p1Button, _p2Button, _p3Button, _p4Button, _p5Button, _otherButton, _otherButton2;
 	Button _option1Button, _option2Button, _option3Button, _option4Button, _option5Button;
 
 	private GameClock _gameClock;															//strings containing name of home and away team
@@ -93,6 +94,7 @@ public class BasketballActivity extends Activity{
 		_p4Button = (Button)findViewById(R.id.extendButton4);
 		_p5Button = (Button)findViewById(R.id.extendButton5);
 		_otherButton = new Button(this);
+		_otherButton2 = new Button(this);
 		
 		_option1Button = (Button)findViewById(R.id.optionButton1);								//more buttons and setting onClick listeners
 		_option2Button = (Button)findViewById(R.id.optionButton2);
@@ -100,20 +102,18 @@ public class BasketballActivity extends Activity{
 		_option4Button = (Button)findViewById(R.id.optionButton4);									//again these are buttons, this set is hidden initially
 		_option5Button = (Button)findViewById(R.id.optionButton5);
 		
-		_option1Button.setText("Turnover");
-		_option2Button.setText("Fouls");
-		_option3Button.setText("Block Shot");
+		disableMainSettings();
 	}
 	
 //[BBARV]:Add/Remove Views------------------------------------------------------------------------------------------------------------------------------------
 /*A dedicated section to add and remove views from the screen. */
 	
 	//adding a view to the screen
-	private void addView(View view, String text){		
+	private void addView(View view, String text, Button button){		
 		LinearLayout slideoutButtons = (LinearLayout)view;
 		LayoutParams parameters = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 1.0f);
-		_otherButton.setText(text);
-		slideoutButtons.addView(_otherButton, parameters);
+		button.setText(text);
+		slideoutButtons.addView(button, parameters);
 	}
 	
 	//removing a view from the screen
@@ -215,7 +215,7 @@ public class BasketballActivity extends Activity{
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
 			if(event.getAction() == MotionEvent.ACTION_DOWN){
-				resetFeatures();
+				startClock();
 			}
 			return false;
 		}
@@ -227,20 +227,18 @@ public class BasketballActivity extends Activity{
  their visibility values.*/
 	
 	private void setMainSettings(){
-		buttonSwap(true);
+		buttonSwap(false);
 		_basketballCourt.setOnTouchListener(courtInteraction);
-		setTextAndListener(_option1Button, turnoverListener, "Turnover");
-		setTextAndListener(_option2Button, foulListener, "Fouled");
-		setTextAndListener(_option3Button, blockListener, "Block Shot");
+		setTextAndListener(_option4Button, turnoverListener, "Turnover");
+		setTextAndListener(_option5Button, foulListener, "On Floor Foul");
 		zeroTimeDisabler();
 	}
 	
 	public void disableMainSettings(){
-		buttonSwap(true);
+		buttonSwap(false);
 		_basketballCourt.setOnTouchListener(null);
-		setTextAndListener(_option1Button, null, "Turnover");
-		setTextAndListener(_option2Button, null, "Fouled");
-		setTextAndListener(_option3Button, null, "Block Shot");
+		setTextAndListener(_option4Button, null, "Turnover");
+		setTextAndListener(_option5Button, null, "On Floor Foul");
 	}
 	
 	//change the text and clickListeners for the hidden row - made or miss shot (after interactive court is touched)
@@ -248,11 +246,19 @@ public class BasketballActivity extends Activity{
 		buttonSwap(true);
 		_basketballCourt.setOnTouchListener(cancelListener);
 		setTextAndListener(_option1Button, madeListener(points), "Shot Made");
-		setTextAndListener(_option2Button, missListener(points), "Shot Missed");
+		setTextAndListener(_option2Button, blockmissListener(points), "Shot Missed");
 		setTextAndListener(_option3Button, shootingFoulListener(points), "Fouled");
-		zeroTimeDisabler();
-																										
-	}
+		zeroTimeDisabler();																								
+	} 
+	
+	private void setBlockMissListeners(int points){
+		buttonSwap(true);
+		_basketballCourt.setOnTouchListener(cancelListener);
+		setTextAndListener(_option1Button, null, "Blocked?");
+		setTextAndListener(_option2Button, blockListener(points), "Yes");
+		setTextAndListener(_option3Button, missListener(points), "No");
+		zeroTimeDisabler();																								
+	} 
 	
 	//change the text and clickListeners for the hidden row - steal or un-forced turnover (when turnover button is clicked)
 	private void setTurnoverOptionListener(){
@@ -296,11 +302,19 @@ public class BasketballActivity extends Activity{
 		setTextAndListener(_option5Button, missListener(points), "Shot Miss");
 	}
 	
-	private void setFTOptionListener(int value, String str){
+	private void setFoulBonusListener(){
+		buttonSwap(true);
+		_basketballCourt.setOnTouchListener(null);
+		setTextAndListener(_option1Button, noBonusListener, "No-Bonus");
+		setTextAndListener(_option2Button, oneAndOneListener, "1-and-1");
+		setTextAndListener(_option3Button, twoShotsListener, "2-shots");
+	}
+	
+	private void setFTOptionListener(int value, String str, boolean oneAndOne){
 		buttonSwap(false);
 		_basketballCourt.setOnTouchListener(null);
 		setTextAndListener(_option4Button, FTMadeListener(value, str), "Free Throw Made");
-		setTextAndListener(_option5Button, FTMissListener(value, str), "Free Throw Miss");
+		setTextAndListener(_option5Button, FTMissListener(value, str, oneAndOne), "Free Throw Miss");
 	}
 		
 	private void setTextAndListener(Button button, OnClickListener listener, String text){
@@ -347,12 +361,22 @@ public class BasketballActivity extends Activity{
 		OnClickListener missListener = new DoubleParamOnClickListener(value, null){
 			@Override
 			public void onClick(View v) {
-				_iconAdder.setShotHitMiss(_gti.getPossession(), false);
 				toggleMenu(missFGPlayerSelectListener(this.getValue()), "Missed by:");
 			}
 		};
 		return missListener;
 	}
+	public OnClickListener blockmissListener(int value){
+		OnClickListener missListener = new DoubleParamOnClickListener(value, null){
+			@Override
+			public void onClick(View v) {
+				_iconAdder.setShotHitMiss(_gti.getPossession(), false);
+				setBlockMissListeners(this.getValue());
+			}
+		};
+		return missListener;
+	}
+	
 	
 //[BBPSB]:Points Scored By--------------------------------------------------------------------------------------------------------------------------------------	
 /* After clicking whether made or miss (see [BBFGA]:Field Goal Attempted), the program will prompt the user to select
@@ -366,8 +390,10 @@ public class BasketballActivity extends Activity{
 			public void onClick(View view) {
 				_gameLog.shooting(this.getValue(), true, ((TextView)view).getText().toString());
 				_gti.scoreChange(_gti.getPossession(), this.getValue(), ((TextView)view).getText().toString());						//change the score and update player points
-				addView((View)view.getParent(), "No Assist");
+				
+				addView((View)view.getParent(), "No Assist", _otherButton);
 				_otherButton.setOnClickListener(noAssistListener(this.getValue(), ((TextView)view).getText().toString()));
+				
 				((Button)view).setEnabled(false);
 				changeMenu(assistListener(this.getValue(), ((TextView)view).getText().toString()), "Assisted by:");
 			}
@@ -392,8 +418,12 @@ public class BasketballActivity extends Activity{
 					else{ 
 						_gti.getPlayer(((TextView)view).getText().toString()).missTwo();
 					}
-					addView((View)view.getParent(), "O-Rebound");
-					_otherButton.setOnClickListener(offReboundListener);
+										
+					addView((View)view.getParent(), _gti.getTeamPossession(true)+" Rebound", _otherButton);
+					_otherButton.setOnClickListener(teamReboundListener);						
+					addView((View)view.getParent(), "O-Rebound", _otherButton2);
+					_otherButton2.setOnClickListener(offReboundListener);
+					
 					changeMenu(reboundListener, "Rebound by:");						//change the fly-out menu to ask for rebound
 					setSlideOutButtonText(!_gti.getPossession());
 				}
@@ -413,7 +443,7 @@ public class BasketballActivity extends Activity{
 		public void onClick(View view) {	
 			_gameLog.rebounding(((TextView)view).getText().toString());
 			_gti.getPlayer(((TextView)view).getText().toString()).grabRebound();			//increase player rebound total				
-			if(_otherButton.getText().equals("O-Rebound")){									//if O-Rebound is on screen, then the play must have been a D-Rebound
+			if(_otherButton2.getText().equals("O-Rebound")){									//if O-Rebound is on screen, then the play must have been a D-Rebound
 				changePossession();															//after D-Rebound, we change possession
 			}
 			recordActivity();																//record the activity
@@ -421,7 +451,7 @@ public class BasketballActivity extends Activity{
 				_gti.setFoulVariable(false);												//no longer a foul play
 				_gameClockView.setOnClickListener(timerClickListener);
 			}															
-			resetFeatures();
+			startClock();
 		}
 	};
 	
@@ -429,14 +459,25 @@ public class BasketballActivity extends Activity{
 	public OnClickListener offReboundListener = new OnClickListener(){
 		@Override
 		public void onClick(View view) {
-			if(_otherButton.getText().equals("O-Rebound")){	
+			if(_otherButton2.getText().equals("O-Rebound")){	
 				setSlideOutButtonText(_gti.getPossession());
-				_otherButton.setText("D-Rebound");
+				_otherButton.setText(_gti.getTeamPossession(true)+" Rebound");
+				_otherButton2.setText("D-Rebound");
 			}
 			else{	
 				setSlideOutButtonText(!_gti.getPossession());
-				_otherButton.setText("O-Rebound");
+				_otherButton.setText(_gti.getTeamPossession(true)+" Rebound");
+				_otherButton2.setText("O-Rebound");
 			}
+		}
+	};
+	
+	//in toggle menu, selecting which player grabbed the rebound
+	public OnClickListener teamReboundListener = new OnClickListener(){
+		@Override
+		public void onClick(View view) {
+			changePossession();
+			resetFeatures();
 		}
 	};
 	
@@ -618,8 +659,31 @@ public class BasketballActivity extends Activity{
 	public OnClickListener defensiveFoulListener = new OnClickListener(){
 		@Override
 		public void onClick(View view) {
+			 setFoulBonusListener();
+		}
+	};
+	
+	public OnClickListener noBonusListener = new OnClickListener(){
+		@Override
+		public void onClick(View view) {
 			setSlideOutButtonText(!_gti.getPossession());
-			toggleMenu(fouledByListener(0, "Defensive Foul"), "Fouled By");
+			toggleMenu(fouledByListener(0, "No-Bonus"), "Fouled By");
+		}
+	};
+	
+	public OnClickListener oneAndOneListener = new OnClickListener(){
+		@Override
+		public void onClick(View view) {
+			setSlideOutButtonText(!_gti.getPossession());
+			toggleMenu(fouledByListener(0, "One-and-One"), "Fouled By");
+		}
+	};
+	
+	public OnClickListener twoShotsListener = new OnClickListener(){
+		@Override
+		public void onClick(View view) {
+			setSlideOutButtonText(!_gti.getPossession());
+			toggleMenu(fouledByListener(0, "Two-Shots"), "Fouled By");
 		}
 	};
 	
@@ -690,40 +754,53 @@ public class BasketballActivity extends Activity{
 				}
 				recordActivity();
 				_basketballCourt.setOnTouchListener(null);
+				
 				if(this.getString().equals("Offensive Foul")){
 					changePossession();
 					_root.toggleMenu();
 					resetFeatures();
 				}
-				else if(this.getString().equals("Defensive Foul")){
+				if(this.getString().equals("No-Bonus")){
+					_root.toggleMenu();
+					resetFeatures();
+				}
+				else if(this.getString().equals("One-and-One")){
 					setSlideOutButtonText(_gti.getPossession());
-					changeMenu(wasFouledListener(2, this.getString()), "Fouled");
+					changeMenu(wasFouledListener(2, this.getString(), true), "Fouled");
+				}
+				else if(this.getString().equals("Two-Shots")){
+					setSlideOutButtonText(_gti.getPossession());
+					changeMenu(wasFouledListener(2, this.getString(), false), "Fouled");
 				}
 				else if(this.getString().equals("Intentional Foul")){
 					_gti.willKeepPossession(true);
 					setSlideOutButtonText(_gti.getPossession());
-					changeMenu(wasFouledListener(2, this.getString()), "Fouled");
+					changeMenu(wasFouledListener(2, this.getString(), false), "Fouled");
 				}
 				else if (this.getString().equals("Technical Foul") || this.getString().equals("Flagrant Foul")){
 					_gti.willKeepPossession(true);
 					setSlideOutButtonText(_gti.getPossession());
-					changeMenu(wasFouledListener(2, this.getString()), "Free Throws By");
+					changeMenu(wasFouledListener(2, this.getString(), false), "Free Throws By");
 				}
 				else{
-					setFTOptionListener(this.getValue(), this.getString());
-					_root.toggleMenu();
-				}
-				
+					if(this.getValue() > 0){
+						setFTOptionListener(this.getValue(), this.getString(), false);
+						_root.toggleMenu();
+					}
+					else{
+						Log.e("FoulByListener ERROR", "Value passed in is zero");
+					}
+				}				
 			}
 		};
 		return fouledByListener;
 	}
 	
-	public OnClickListener wasFouledListener(int value, String str){
+	public OnClickListener wasFouledListener(int value, String str, final boolean oneAndOne){
 		OnClickListener wasFouledListener = new DoubleParamOnClickListener(value, str){
 			@Override
 			public void onClick(View view){
-				setFTOptionListener(this.getValue(), ((Button)view).getText().toString());
+				setFTOptionListener(this.getValue(), ((Button)view).getText().toString(), oneAndOne);
 				setSlideOutButtonText(!_gti.getPossession());													//set Slide Out Buttons to opposing team because they may rebound a missed FT
 				_root.toggleMenu();
 			}
@@ -746,10 +823,11 @@ public class BasketballActivity extends Activity{
 					}
 					resetFeatures();
 					disableMainSettings();
+					startClock();
 				}
 				else{
 					_option4Button.setOnClickListener(FTMadeListener(this.getValue()-1, this.getString()));
-					_option5Button.setOnClickListener(FTMissListener(this.getValue()-1, this.getString()));					
+					_option5Button.setOnClickListener(FTMissListener(this.getValue()-1, this.getString(), false));					
 				}
 			}
 			
@@ -757,7 +835,7 @@ public class BasketballActivity extends Activity{
 		return FTMadeListener;
 	}
 	
-	public OnClickListener FTMissListener(int value, String str){
+	public OnClickListener FTMissListener(int value, String str, final boolean oneAndOne){
 		OnClickListener FTMissListener = new DoubleParamOnClickListener(value, str){
 			@Override
 			public void onClick(View view) {				
@@ -765,21 +843,23 @@ public class BasketballActivity extends Activity{
 				_gti.getPlayer(this.getString()).missFreeThrow();
 				recordActivity();
 				view.setOnClickListener(FTMadeListener(this.getValue()-1, this.getString()));
-				if(this.getValue() == 1){
+				if(this.getValue() == 1 || oneAndOne){
 					if(_gti.keepPossession()){
 						resetFeatures();
 						disableMainSettings();
 					}
 					else{
-						addView((View)_p1Button.getParent(), "O-Rebound");
-						_otherButton.setOnClickListener(offReboundListener);
+						addView((View)_p1Button.getParent(), _gti.getTeamPossession(true)+" Rebound", _otherButton);
+						_otherButton.setOnClickListener(teamReboundListener);
+						addView((View)_p1Button.getParent(), "O-Rebound", _otherButton2);
+						_otherButton2.setOnClickListener(offReboundListener);
+						
 						toggleMenu(reboundListener,"Rebound By:");
-						startClock();
 					}
 				}
-				else{
+				else{					
 					_option4Button.setOnClickListener(FTMadeListener(this.getValue()-1, this.getString()));
-					_option5Button.setOnClickListener(FTMissListener(this.getValue()-1, this.getString()));
+					_option5Button.setOnClickListener(FTMissListener(this.getValue()-1, this.getString(), false));
 				}
 			}
 		};
@@ -787,29 +867,40 @@ public class BasketballActivity extends Activity{
 	}
 	
 //[BBBS]: Block Shots Listener---------------------------------------------------------------------------------------------------------------------------------------
-		
-	private OnClickListener blockListener = new OnClickListener(){
-		@Override
-		public void onClick(View v) {
-			setSlideOutButtonText(!_gti.getPossession());
-			toggleMenu(blockByListener, "Blocked By:");
-		}
-	};
 	
-	private OnClickListener blockByListener = new OnClickListener(){
-		@Override
-		public void onClick(View v) {
-			_gti.getPlayer(((TextView)v).getText().toString()).blocksShot();			
-			changeMenu(blockAgainstListener(((TextView)v).getText().toString()), "Blocked Against:");
-			setSlideOutButtonText(_gti.getPossession());
-		}
-	};
+	private OnClickListener blockListener (final int points){
+		OnClickListener blockListener = new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				setSlideOutButtonText(!_gti.getPossession());
+				toggleMenu(blockByListener(points), "Blocked By:");
+			}
+		};
+		return blockListener;
+	}
 	
-	private OnClickListener blockAgainstListener(String name){
+	private OnClickListener blockByListener (final int points){
+		OnClickListener blockByListener = new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				_gti.getPlayer(((TextView)v).getText().toString()).blocksShot();			
+				changeMenu(blockAgainstListener(((TextView)v).getText().toString(), points), "Blocked Against:");
+				setSlideOutButtonText(_gti.getPossession());
+			}
+		};
+		return blockByListener;
+	}
+	
+	private OnClickListener blockAgainstListener(String name, final int points){
 		OnClickListener blockAgainstListener = new DoubleParamOnClickListener(0, name){
 			@Override
 			public void onClick(View v) {
-				_gti.getPlayer(((TextView)v).getText().toString()).missTwo();
+				if(points == 2){
+					_gti.getPlayer(((TextView)v).getText().toString()).missTwo();
+				}
+				else {
+					_gti.getPlayer(((TextView)v).getText().toString()).missThree();
+				}
 				_gameLog.blocking(this.getString(), ((TextView)v).getText().toString());
 				changePossession();
 				recordActivity();
@@ -875,12 +966,14 @@ public class BasketballActivity extends Activity{
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				_gti.setPossession(false);
+				startClock();
 			}
 		});
 		tipOffAlert.setNegativeButton("Home", new DialogInterface.OnClickListener(){
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				_gti.setPossession(true);
+				startClock();
 			}
 		});
 		tipOffAlert.show();	
@@ -930,6 +1023,9 @@ public class BasketballActivity extends Activity{
 		_gameClockView.setOnClickListener(timerClickListener);
 		if(_otherButton.getParent() != null){	
 			removeView(_otherButton);			
+		}
+		if(_otherButton2.getParent() != null){	
+			removeView(_otherButton2);			
 		}
 		if(_root.menuOpened()){		
 			_root.toggleMenu();

@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class GameTime implements Serializable{
 	private static final long serialVersionUID = -2473466007467908254L;
 	protected boolean _gameStarted = false;
-	protected boolean _possession = false;
+	protected boolean _possession = false;				//true=home, false=away
 	
 	public boolean isGameStarted(){
 		return _gameStarted;

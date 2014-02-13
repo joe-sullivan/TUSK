@@ -1,21 +1,27 @@
 package com.seniordesign.ultimatescorecard;
 
 import com.seniordesign.ultimatescorecard.data.FootballGameTime;
+import com.seniordesign.ultimatescorecard.data.FootballPlayer;
 import com.seniordesign.ultimatescorecard.view.FlyOutContainer;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 public class FootballActivity extends Activity{
@@ -77,6 +83,7 @@ public class FootballActivity extends Activity{
 	
 	private void kickOffButtonSet(){
 		buttonSwap(true);
+		_gti.setKickOff(true);
 		setTextAndListener(_option1Button, kickOffListener(), "Kick Off");
 		setTextAndListener(_option2Button, onsideKickListener(), "Onside Kick");
 		setTextAndListener(_option3Button, penaltyListener("kickoff"), "Penalty");
@@ -251,9 +258,7 @@ public class FootballActivity extends Activity{
 			@Override
 			public void onClick(View view) {
 				_gti.changePossession();
-				_fieldActive = true;
-				disableButtons();
-				offenseButtonSet();
+				selectPlayerDialog("kick return");
 			}
 		};
 		return returnKickListener;
@@ -263,9 +268,7 @@ public class FootballActivity extends Activity{
 		OnClickListener passListener = new OnClickListener(){
 			@Override
 			public void onClick(View view) {
-				_fieldActive = true;
-				disableButtons();
-				passOptionButtonSet();
+				selectPlayerDialog("passing");
 			}
 		};
 		return passListener;
@@ -275,7 +278,7 @@ public class FootballActivity extends Activity{
 		OnClickListener rushListener = new OnClickListener(){
 			@Override
 			public void onClick(View view) {
-				
+				selectPlayerDialog("rushing");
 			}
 		};
 		return rushListener;
@@ -398,22 +401,29 @@ public class FootballActivity extends Activity{
 			@Override
 			public void onClick(View v) {
 				if(_fieldActive){
-					if(_gti.getLOS_Layout() < 0){
-						_gti.setToGo(10);
+					if(_gti.getKickOff()){
+						_gti.setLineOfScrimmage(value);
+						executeEditField(_gti.getLOS_Layout(), LINEOFSCRIMMAGE);
+						_gti.setKickOff(false);
 					}
 					else{
-						editField(_gti.getLOS_Layout(), _gti.getToGo(), true);
-						if(_gti.getToGo()-(_gti.getLOS_Layout()-50-value) > 0){
-							_gti.setToGo(_gti.getToGo()-(_gti.getLOS_Layout()-50-value));
-						}
-						else{
+						if(_gti.getLOS_Layout() < 0){
 							_gti.setToGo(10);
 						}
+						else{
+							editField(_gti.getLOS_Layout(), _gti.getToGo(), true);
+							if(_gti.getToGo()-(_gti.getLOS_Layout()-50-value) > 0){
+								_gti.setToGo(_gti.getToGo()-(_gti.getLOS_Layout()-50-value));
+							}
+							else{
+								_gti.setToGo(10);
+							}
+						}
+						_gti.setLineOfScrimmage(value);
+						editField(_gti.getLOS_Layout(), _gti.getToGo(), false);
 					}
-					_gti.setLineOfScrimmage(value);
 					enableButtons();
 					_fieldActive = false;	
-					editField(_gti.getLOS_Layout(), _gti.getToGo(), false);
 				}
 			}
 		};
@@ -544,5 +554,51 @@ public class FootballActivity extends Activity{
 		layout.addView(tv2);
 		layout.addView(tv3);
 		return layout;
+	}
+	
+	private void selectPlayerDialog(final String event){
+		Builder builder = new Builder(this);
+		builder.setTitle("Choose A Player:");
+		final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String> (this,
+				android.R.layout.select_dialog_singlechoice);
+		
+		if(_gti.getPossession()){
+			for(FootballPlayer fp : _gti.getTheHomeTeam().getRoster()){
+				arrayAdapter.add(fp.getName());
+			}
+		}
+		else{
+			for(FootballPlayer fp : _gti.getTheAwayTeam().getRoster()){
+				arrayAdapter.add(fp.getName());
+			}
+		}
+		
+		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+				enableButtons();
+			}
+		});
+		
+		builder.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				String player = arrayAdapter.getItem(which);	
+				_fieldActive = true;
+				disableButtons();
+				if(event.equals("kick return")){
+					offenseButtonSet();
+				}
+				else if (event.equals("passing")){
+					passOptionButtonSet();
+				}
+				else if (event.equals("rushing")){
+					
+				}
+			}
+		});
+		builder.show();
 	}
 }
