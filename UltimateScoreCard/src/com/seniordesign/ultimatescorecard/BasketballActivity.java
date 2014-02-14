@@ -476,7 +476,9 @@ public class BasketballActivity extends Activity{
 	public OnClickListener teamReboundListener = new OnClickListener(){
 		@Override
 		public void onClick(View view) {
-			changePossession();
+			if(((Button)view).getText().equals(_gti.getTeamPossession(true)+" Rebound")){
+				changePossession();
+			}
 			resetFeatures();
 		}
 	};
