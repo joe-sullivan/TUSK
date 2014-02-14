@@ -1,7 +1,7 @@
 package com.seniordesign.ultimatescorecard;
 
 import com.seniordesign.ultimatescorecard.data.DoubleParamOnClickListener;
-import com.seniordesign.ultimatescorecard.data.GameLog;
+import com.seniordesign.ultimatescorecard.data.BasketballGameLog;
 import com.seniordesign.ultimatescorecard.data.BasketballGameTime;
 import com.seniordesign.ultimatescorecard.stats.StatsActivity;
 import com.seniordesign.ultimatescorecard.substitution.SubstitutionActivity;
@@ -51,7 +51,7 @@ public class BasketballActivity extends Activity{
 
 	private GameClock _gameClock;															//strings containing name of home and away team
 	private BasketballGameTime _gti;
-	private GameLog _gameLog = new GameLog();
+	private BasketballGameLog _gameLog = new BasketballGameLog();
 	private ShotIconAdder _iconAdder;
 	
 	//on creation of the page, trying to save all items that will appear on screen into a member variable
@@ -443,7 +443,7 @@ public class BasketballActivity extends Activity{
 		public void onClick(View view) {	
 			_gameLog.rebounding(((TextView)view).getText().toString());
 			_gti.getPlayer(((TextView)view).getText().toString()).grabRebound();			//increase player rebound total				
-			if(_otherButton2.getText().equals("O-Rebound")){									//if O-Rebound is on screen, then the play must have been a D-Rebound
+			if(_otherButton2.getText().equals("O-Rebound")){								//if O-Rebound is on screen, then the play must have been a D-Rebound
 				changePossession();															//after D-Rebound, we change possession
 			}
 			recordActivity();																//record the activity
@@ -461,7 +461,7 @@ public class BasketballActivity extends Activity{
 		public void onClick(View view) {
 			if(_otherButton2.getText().equals("O-Rebound")){	
 				setSlideOutButtonText(_gti.getPossession());
-				_otherButton.setText(_gti.getTeamPossession(true)+" Rebound");
+				_otherButton.setText(_gti.getTeamPossession(false)+" Rebound");
 				_otherButton2.setText("D-Rebound");
 			}
 			else{	
@@ -902,9 +902,13 @@ public class BasketballActivity extends Activity{
 					_gti.getPlayer(((TextView)v).getText().toString()).missThree();
 				}
 				_gameLog.blocking(this.getString(), ((TextView)v).getText().toString());
-				changePossession();
-				recordActivity();
-				resetFeatures();
+								
+				addView((View)_p1Button.getParent(), _gti.getTeamPossession(true)+" Rebound", _otherButton);
+				_otherButton.setOnClickListener(teamReboundListener);
+				addView((View)_p1Button.getParent(), "O-Rebound", _otherButton2);
+				_otherButton2.setOnClickListener(offReboundListener);
+				changeMenu(reboundListener, "Rebound By:");
+				setSlideOutButtonText(!_gti.getPossession());
 			}
 		};
 		return blockAgainstListener;

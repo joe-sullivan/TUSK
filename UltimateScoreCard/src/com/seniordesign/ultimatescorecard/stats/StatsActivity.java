@@ -1,7 +1,7 @@
 package com.seniordesign.ultimatescorecard.stats;
 
 import com.seniordesign.ultimatescorecard.R;
-import com.seniordesign.ultimatescorecard.data.GameLog;
+import com.seniordesign.ultimatescorecard.data.BasketballGameLog;
 import com.seniordesign.ultimatescorecard.data.BasketballGameTime;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
 
@@ -14,7 +14,7 @@ public class StatsActivity extends FragmentActivity{
 	private ViewPager _pager;
 	private PagerAdapter _pagerAdapter;
 	private BasketballGameTime _gti;
-	private GameLog _gameLog;
+	private BasketballGameLog _gameLog;
 
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +22,7 @@ public class StatsActivity extends FragmentActivity{
         setContentView(R.layout.activity_stats);
 
         _gti = (BasketballGameTime) getIntent().getSerializableExtra(StaticFinalVars.GAME_INFO);
-        _gameLog = (GameLog) getIntent().getSerializableExtra(StaticFinalVars.GAME_LOG);
+        _gameLog = (BasketballGameLog) getIntent().getSerializableExtra(StaticFinalVars.GAME_LOG);
         int value = getIntent().getIntExtra(StaticFinalVars.DISPLAY_TYPE, 0);
         
         _pager = (ViewPager) findViewById(R.id.statsPager);
@@ -35,7 +35,7 @@ public class StatsActivity extends FragmentActivity{
     	return _gti;
     }
     
-    public GameLog getGameLog(){
+    public BasketballGameLog getGameLog(){
     	return _gameLog;
     }
 }

@@ -1,5 +1,7 @@
 package com.seniordesign.ultimatescorecard;
 
+import com.seniordesign.ultimatescorecard.clock.GameClock;
+import com.seniordesign.ultimatescorecard.data.FootballGameLog;
 import com.seniordesign.ultimatescorecard.data.FootballGameTime;
 import com.seniordesign.ultimatescorecard.data.FootballPlayer;
 import com.seniordesign.ultimatescorecard.view.FlyOutContainer;
@@ -39,7 +41,9 @@ public class FootballActivity extends Activity{
 	ScrollView _fieldScroll;
 	LinearLayout _fieldOfPlay;
 	
+	private GameClock _gameClock;
 	private FootballGameTime _gti;
+	private FootballGameLog _gameLog;
 	private boolean _fieldActive = false;
 	
 	@Override
@@ -47,6 +51,7 @@ public class FootballActivity extends Activity{
 		super.onCreate(savedInstanceState);
 		_root = (FlyOutContainer)this.getLayoutInflater().inflate(R.layout.activity_football, null);													
 		_gti = (FootballGameTime) getIntent().getSerializableExtra(StaticFinalVars.GAME_INFO); 	
+		_gameLog = new FootballGameLog();
 		setContentView(_root);
 		
 		_awayTextView = (TextView)findViewById(R.id.awayTextView);
@@ -76,14 +81,12 @@ public class FootballActivity extends Activity{
 		_option5Button = (Button)findViewById(R.id.optionButton5);
 		
 		kickOffButtonSet();
-					
 	}
 	
 //-----------------------------------------------------------------------------------------------------------------------------------------
 	
 	private void kickOffButtonSet(){
 		buttonSwap(true);
-		_gti.setKickOff(true);
 		setTextAndListener(_option1Button, kickOffListener(), "Kick Off");
 		setTextAndListener(_option2Button, onsideKickListener(), "Onside Kick");
 		setTextAndListener(_option3Button, penaltyListener("kickoff"), "Penalty");
@@ -136,11 +139,11 @@ public class FootballActivity extends Activity{
 		setTextAndListener(_option3Button, penaltyListener("return"), "Penalty");
 	}
 	
-	private void passOptionButtonSet(){
+	private void passOptionButtonSet(String passer){
 		buttonSwap(true);
-		setTextAndListener(_option1Button, completePassListener(), "Complete");
-		setTextAndListener(_option2Button, incompletePassListener(), "Incomplete");
-		setTextAndListener(_option3Button, qbSackedListener(), "QB Sacked");
+		setTextAndListener(_option1Button, completePassListener(passer), "Complete");
+		setTextAndListener(_option2Button, incompletePassListener(passer), "Incomplete");
+		setTextAndListener(_option3Button, qbSackedListener(passer), "QB Sacked");
 	}
 	
 	private void setTextAndListener(Button button, OnClickListener listener, String text){
@@ -182,8 +185,8 @@ public class FootballActivity extends Activity{
 			@Override
 			public void onClick(View view) {
 				_fieldActive = true;
-				disableButtons();
 				catchKickButtonSet();
+				disableButtons();
 			}
 		};
 		return kickOffListener;
@@ -213,9 +216,7 @@ public class FootballActivity extends Activity{
 		OnClickListener onsideKickListener = new OnClickListener(){
 			@Override
 			public void onClick(View view) {
-				_fieldActive = true;
-				disableButtons();
-				onsideKickButtonSet();
+				
 			}
 		};
 		return onsideKickListener;
@@ -225,7 +226,7 @@ public class FootballActivity extends Activity{
 		OnClickListener onsideKickSuccessListener = new OnClickListener(){
 			@Override
 			public void onClick(View view) {
-				offenseButtonSet();
+				
 			}
 		};
 		return onsideKickSuccessListener;
@@ -235,8 +236,7 @@ public class FootballActivity extends Activity{
 		OnClickListener onsideKickFailedListener = new OnClickListener(){
 			@Override
 			public void onClick(View view) {
-				_gti.changePossession();
-				offenseButtonSet();
+				
 			}
 		};
 		return onsideKickFailedListener;
@@ -246,8 +246,7 @@ public class FootballActivity extends Activity{
 		OnClickListener fairCatchListener = new OnClickListener(){
 			@Override
 			public void onClick(View view) {
-				_gti.changePossession();
-				offenseButtonSet();
+				
 			}
 		};
 		return fairCatchListener;
@@ -257,8 +256,8 @@ public class FootballActivity extends Activity{
 		OnClickListener returnKickListener = new OnClickListener(){
 			@Override
 			public void onClick(View view) {
-				_gti.changePossession();
-				selectPlayerDialog("kick return");
+				_gti.returning(true);
+				selectPlayerDialog("returning");
 			}
 		};
 		return returnKickListener;
@@ -294,7 +293,7 @@ public class FootballActivity extends Activity{
 		return penaltyListener;
 	}
 	
-	private OnClickListener qbSackedListener(){
+	private OnClickListener qbSackedListener(final String passer){
 		OnClickListener qbSackedListener = new OnClickListener(){
 			@Override
 			public void onClick(View view) {
@@ -304,7 +303,7 @@ public class FootballActivity extends Activity{
 		return qbSackedListener;
 	}
 	
-	private OnClickListener completePassListener(){
+	private OnClickListener completePassListener(final String passer){
 		OnClickListener completePassListener = new OnClickListener(){
 			@Override
 			public void onClick(View view) {
@@ -314,7 +313,7 @@ public class FootballActivity extends Activity{
 		return completePassListener;
 	}
 	
-	private OnClickListener incompletePassListener(){
+	private OnClickListener incompletePassListener(final String passer){
 		OnClickListener incompletePassListener = new OnClickListener(){
 			@Override
 			public void onClick(View view) {
@@ -396,34 +395,24 @@ public class FootballActivity extends Activity{
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 	
-	private OnClickListener fieldListener(final int value){
+	private OnClickListener fieldListener(final int value, final String direction){
 		OnClickListener fieldListener = new OnClickListener(){
 			@Override
 			public void onClick(View v) {
 				if(_fieldActive){
-					if(_gti.getKickOff()){
-						_gti.setLineOfScrimmage(value);
-						executeEditField(_gti.getLOS_Layout(), LINEOFSCRIMMAGE);
-						_gti.setKickOff(false);
-					}
-					else{
-						if(_gti.getLOS_Layout() < 0){
-							_gti.setToGo(10);
-						}
-						else{
-							editField(_gti.getLOS_Layout(), _gti.getToGo(), true);
-							if(_gti.getToGo()-(_gti.getLOS_Layout()-50-value) > 0){
-								_gti.setToGo(_gti.getToGo()-(_gti.getLOS_Layout()-50-value));
-							}
-							else{
-								_gti.setToGo(10);
-							}
-						}
-						_gti.setLineOfScrimmage(value);
-						editField(_gti.getLOS_Layout(), _gti.getToGo(), false);
-					}
+					if(_gti.getDownDistance()[0] != 0){
+						editField(_gti.getLineOfScrimmage(), RESET, RESET);
+						_gameLog.formRecord(_gti.getLineOfScrimmage()-value, direction);
+						_gameLog.recordActivity(_gti.getDownDistance()[0]+" and "+_gti.getDownDistance()[1]);
+					}									
+					_gti.setLineOfScrimmage(value);
+					editField(value, LINEOFSCRIMMAGE, FIRSTDOWNLINE);
 					enableButtons();
-					_fieldActive = false;	
+					_fieldActive = false;
+					
+				}
+				if(_gti.isReturned()){
+					_gti.returning(false);
 				}
 			}
 		};
@@ -431,29 +420,17 @@ public class FootballActivity extends Activity{
 	}
 	
 	private void createField(){
-		for(int i=-50; i<=50; i++){
+		for(int i=0; i<=100; i++){
 			_fieldOfPlay.addView(createYard(i, RESET));
 		}
 	}
 	
-	private void editField(int LOS, int toGo, boolean reset){
-		if(reset){
-			executeEditField(LOS, RESET);
-			if(LOS-toGo > -50){
-				executeEditField(LOS-toGo, RESET);
-			}
-		}
-		else{
-			executeEditField(LOS, LINEOFSCRIMMAGE);
-			if(LOS-toGo > -50){
-				executeEditField(LOS-toGo, FIRSTDOWNLINE);
-			}
-		}
-	}
-	
-	private void executeEditField(int line, String color){
+	private void editField(int line, String color, String color2){
 		_fieldOfPlay.removeViewAt(line);
-		_fieldOfPlay.addView(createYard(line-50, color), line);
+		_fieldOfPlay.addView(createYard(50-Math.abs(50-line), color), line);
+		
+		_fieldOfPlay.removeViewAt(line-_gti.getDownDistance()[1]);
+		_fieldOfPlay.addView(createYard(50-Math.abs(50-(line-_gti.getDownDistance()[1])), color2), line-_gti.getDownDistance()[1]);
 	}
 	
 	private LinearLayout createYard(int line, String color){
@@ -465,7 +442,7 @@ public class FootballActivity extends Activity{
 		
 		TextView tv1 = new TextView(this);
 		tv1.setLayoutParams(params);
-		tv1.setOnClickListener(fieldListener(line));
+		tv1.setOnClickListener(fieldListener(line, "left"));
 		
 		if(color.equals(FIRSTDOWNLINE)){
 			tv1.setBackgroundResource(R.drawable.football_left_yellow);
@@ -484,29 +461,29 @@ public class FootballActivity extends Activity{
 		
 		TextView tv2 = new TextView(this);
 		tv2.setLayoutParams(params);
-		tv2.setOnClickListener(fieldListener(line));
+		tv2.setOnClickListener(fieldListener(line, "middle"));
 		tv2.setGravity(Gravity.CENTER);
 		
 		if(color.equals(FIRSTDOWNLINE)){
 			tv2.setBackgroundResource(R.drawable.football_middle_yellow);
 			tv2.setTextColor(getResources().getColor(R.color.yellow));
-			tv2.setText((50-Math.abs(line))+"");
+			tv2.setText((50-Math.abs(50-line))+"");
 			
 		}
 		else if(color.equals(LINEOFSCRIMMAGE)){
 			tv2.setBackgroundResource(R.drawable.football_middle_blue);
 			tv2.setTextColor(getResources().getColor(R.color.blue));
-			tv2.setText((50-Math.abs(line))+"");
+			tv2.setText((50-Math.abs(50-line))+"");
 		}
 		else{
 			tv2.setTextColor(getResources().getColor(R.color.white));
 			if(line%50 == 0){
 				tv2.setBackgroundResource(R.drawable.football_middlehash);
 				tv2.setGravity(Gravity.CENTER);
-				if(line==0){
+				if(line==50){
 					tv2.setText("Midfield");	
 				}
-				else if(line==-50){
+				else if(line==0){
 					if(_gti.getAwayTeam().split(" ").length > 2){
 						tv2.setText(_gti.getAwayTeam().split(" ")[0] +" "+ _gti.getAwayTeam().split(" ")[1]);
 					}
@@ -526,7 +503,7 @@ public class FootballActivity extends Activity{
 			
 			else if(line%5 == 0){
 				tv2.setBackgroundResource(R.drawable.football_middle);
-				tv2.setText((50-Math.abs(line))+"");					
+				tv2.setText((50-Math.abs(50-line))+"");					
 			}
 			else{
 				tv2.setBackgroundResource(R.drawable.football_middlehash);
@@ -534,7 +511,7 @@ public class FootballActivity extends Activity{
 		}
 		TextView tv3 = new TextView(this);
 		tv3.setLayoutParams(params);
-		tv3.setOnClickListener(fieldListener(line));
+		tv3.setOnClickListener(fieldListener(line, "right"));
 		if(color.equals(FIRSTDOWNLINE)){
 			tv3.setBackgroundResource(R.drawable.football_right_yellow);
 		}
@@ -555,10 +532,12 @@ public class FootballActivity extends Activity{
 		layout.addView(tv3);
 		return layout;
 	}
+
+//------------------------------------------------------------------------------------------------------------------------------------
 	
 	private void selectPlayerDialog(final String event){
 		Builder builder = new Builder(this);
-		builder.setTitle("Choose A Player:");
+		builder.setTitle(titleChooser(event));
 		final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String> (this,
 				android.R.layout.select_dialog_singlechoice);
 		
@@ -585,20 +564,74 @@ public class FootballActivity extends Activity{
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				String player = arrayAdapter.getItem(which);	
-				_fieldActive = true;
+				String player = arrayAdapter.getItem(which);
 				disableButtons();
-				if(event.equals("kick return")){
-					offenseButtonSet();
-				}
-				else if (event.equals("passing")){
-					passOptionButtonSet();
-				}
-				else if (event.equals("rushing")){
-					
-				}
+				eventHandler(event, player);
 			}
 		});
 		builder.show();
+	}
+	
+	private String titleChooser(String type){
+		if(type.equals("passing")){
+			return "Passer";
+		}
+		else if (type.equals("rushing")){
+			return "Rusher";
+		}
+		else if (type.equals("receiving")){
+			return "Receiver";	
+		}
+		else if (type.equals("defending")){
+			return "Defender";
+		}
+		else if (type.equals("returning")){
+			return "Returner";
+		}
+		else if (type.equals("kicking")){
+			return "Kicker";
+		}
+		else if (type.equals("punting")){
+			return "Punter";
+		}
+		else{
+			return "ERROR";
+		}
+	}
+	
+	private void eventHandler(String type, String player){
+		if(type.equals("passing")){
+			_fieldActive = false;
+			passOptionButtonSet(player);
+			selectPlayerDialog("receiving");
+			_gameLog.setPlayer1(player, type);
+		}
+		else if (type.equals("rushing")){
+			_fieldActive = true;
+			offenseButtonSet();
+			_gameLog.setPlayer1(player, type);
+		}
+		else if (type.equals("receiving")){
+			_fieldActive = true;
+			offenseButtonSet();
+			_gameLog.setPlayer2(player);
+		}
+		else if (type.equals("defending")){
+			
+		}
+		else if (type.equals("returning")){
+			_fieldActive = true;
+			offenseButtonSet();
+			_gameLog.setPlayer1(player, type);
+		}
+		else if (type.equals("kicking")){
+			
+		}
+		else if (type.equals("punting")){
+			
+		}
+		else{
+			
+		}
 	}
 }

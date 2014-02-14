@@ -1,18 +1,16 @@
 package com.seniordesign.ultimatescorecard.data;
 
+import android.util.Log;
+
 public class FootballGameTime extends GameTime{
 	private static final long serialVersionUID = 3840132882537431776L;
 	private FootballTeam _homeTeam;
 	private FootballTeam _awayTeam;
-	private boolean _possession = true;
-	private boolean _sideOfField = true;
-	private boolean _kickOff = false;
-	private int _lineOfScrimmage = 20;
-	private int _down = 1;
-	private int toGo = -1;
-	private String _gameStatus = "pre-game";
+	private String[] _lineOfScrimmage = new String[]{"OWN","0"};
+	private int[] _downDistance = new int[]{0,0};
+	private boolean _aReturn = false;
 		
-	public FootballGameTime(String away, String home){
+	public FootballGameTime(String home, String away){
 		_homeTeam = new FootballTeam(home, true);
 		_awayTeam = new FootballTeam(away, false);
 	}
@@ -71,64 +69,72 @@ public class FootballGameTime extends GameTime{
 	
 	public FootballTeam getTheAwayTeam(){
 		return _awayTeam;
-	}
-	
-	public void setLineOfScrimmage(int value){
-		if(value < 0){
-			_sideOfField = true;
-			
-		}
-		else{
-			_sideOfField = false;
-		}
-		_lineOfScrimmage = (int)(50-Math.abs(value));
-	}
-	
-	public String getLineOfScrimmage(){
-		if(_sideOfField){
-			return "Home "+_lineOfScrimmage;
-		}
-		else{
-			return "Away "+_lineOfScrimmage;
-		}
-	}
-	
-	public int getLOS_Layout(){
-		if(_sideOfField){
-			return _lineOfScrimmage;
-		}
-		else{
-			return 100-_lineOfScrimmage;
-		}
-	}
-	public int getToGo(){
-		return toGo;
-	}
-	public void setToGo(int newValue){
-		toGo = newValue;
-	}
-	
-	public void setGameStatus(String gameStatus){
-		_gameStatus = gameStatus;
-	}
-	
-	public String getGameStatus(){
-		return _gameStatus;
-	}
-	
-	public void changePossession(){
-		_possession = !_possession;
-	}
-	
-	public boolean getPossession(){
-		return _possession;
 	}	
 	
-	public void setKickOff(boolean cond){
-		_kickOff = cond;
+	public void setLineOfScrimmage (int viewNum){
+		if (yardsGained(viewNum) >= _downDistance[1] || _downDistance[0] == 0 || isReturned()){
+			_downDistance[0] = 1;
+			_downDistance[1] = 10;
+		}
+		else if (_downDistance[0] >= 4){
+			changePossession();
+			_downDistance[0] = 1;
+			_downDistance[1] = 10;
+			if(_lineOfScrimmage[0].equals("OWN")) {
+				_lineOfScrimmage[0] = "OPP";
+			}
+			else if(_lineOfScrimmage[0].equals("OPP")){
+				_lineOfScrimmage[0] = "OWN";
+			}
+			else{
+				_lineOfScrimmage[0] = "MID";
+			}
+		}
+		else{
+			_downDistance[0]++;
+			_downDistance[1]-= yardsGained(viewNum);
+		}
+		
+		if(viewNum < 50){
+			_lineOfScrimmage[0] = "OPP";
+			_lineOfScrimmage[1] = viewNum+"";
+		}
+		else if (viewNum == 50){
+			_lineOfScrimmage[0] = "MID";
+			_lineOfScrimmage[1] = "50";
+		}
+		else{
+			_lineOfScrimmage[0] = "OWN";
+			_lineOfScrimmage[1] = 100-viewNum+"";
+		}
+		Log.e("POSSESSION:", getPossession()+"!");
 	}
 	
-	public boolean getKickOff(){
-		return _kickOff;
+	public int getLineOfScrimmage (){
+		if(_lineOfScrimmage[0].equals("OPP")){
+			return Integer.parseInt(_lineOfScrimmage[1]);
+		}
+		else if(_lineOfScrimmage[0].equals("MID")){
+			return 50;
+		}
+		else{
+			return (Integer.parseInt(_lineOfScrimmage[1])-100)*-1;
+		}
+	}
+	
+	public int[] getDownDistance(){
+		return _downDistance;
+	}
+	
+	private int yardsGained(int viewNum){
+		return getLineOfScrimmage() - viewNum;
+	}
+	
+	public boolean isReturned(){
+		return _aReturn;
+	}
+	
+	public void returning (boolean aReturn){
+		_aReturn = aReturn;
 	}
 }
