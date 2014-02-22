@@ -583,17 +583,18 @@ public class BasketballActivity extends Activity{
 		@Override
 		public void onClick(View view) {
 			_gti.getPlayer(((Button)view).getText().toString()).turnedOver();
+			String stlBy = ((Button)view).getText().toString();
 			setSlideOutButtonText(_gti.getPossession());
-			changeMenu(stealFromListener(((Button)view).getText().toString()), "Stolen From");
+			changeMenu(stealFromListener(stlBy), "Stolen From: ");
 		}
 	};
 	
 	//in toggle menu, listener for selecting who the ball was stolen from
-	private OnClickListener stealFromListener(String player){
+	private OnClickListener stealFromListener(final String player){
 		OnClickListener stealFromListener = new DoubleParamOnClickListener(0, player){
 			@Override
 			public void onClick(View view) {
-				_gameLog.stealing(this.getString(), ((Button)view).getText().toString());
+				_gameLog.stealing(player, ((Button)view).getText().toString());
 				_gti.getPlayer(((Button)view).getText().toString()).stealsBall();
 				recordActivity();
 				changePossession();

@@ -1,4 +1,4 @@
-package com.seniordesign.ultimatescorecard.sqlite.basketball;
+package com.seniordesign.ultimatescorecard.sqlite.helper;
 
 import java.io.Serializable;
 

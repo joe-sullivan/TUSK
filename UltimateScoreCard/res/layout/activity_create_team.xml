@@ -19,7 +19,6 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/teamCreationTitle"
         android:hint="Enter Team Name" >
-
         <requestFocus />
     </EditText>
 
@@ -31,15 +30,24 @@
         android:layout_below="@+id/teamNameEditText"
         android:hint="Abbreviation" />
 
+    <EditText
+        android:id="@+id/coachNameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/teamAbbrEditText"
+		android:hint="Coach Name"/>
+
     <ScrollView
         android:id="@+id/playerScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/teamAbbr" >
+        android:layout_below="@+id/coachNameEditText" 
+        android:layout_above="@+id/playerCreation" >
 
         <LinearLayout
-            android:id="@+id/playerCreation"
+            android:id="@+id/playerList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >

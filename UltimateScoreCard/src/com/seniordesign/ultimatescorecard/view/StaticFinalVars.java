@@ -6,6 +6,13 @@ public class StaticFinalVars {
 	//main screen to choose team activity
 	public static final String SPORT_TYPE = "sportType";
 	
+	//create team activity
+	public static final String CREATE_EDIT = "createEdit";
+	public static final String TEAM_NAME = "teamName";
+	public static final String OLD_TEAM_NAME = "oldTeamName";
+	public static final int CREATE_TEAM_CODE = 1;
+	public static final int EDIT_TEAM_CODE = 2;
+
 	//choose team activity to score keeping interface
 	public static final String HOME_TEAM = "home";
 	public static final String AWAY_TEAM = "away";

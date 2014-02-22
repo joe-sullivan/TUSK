@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballGameStats;
-import com.seniordesign.ultimatescorecard.sqlite.basketball.ShotChartCoords;
 import com.seniordesign.ultimatescorecard.sqlite.helper.*;
 
 import android.os.Bundle;

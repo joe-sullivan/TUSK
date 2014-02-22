@@ -45,6 +45,13 @@
         </activity>
         
         <activity
+            android:name="com.seniordesign.ultimatescorecard.CreateTeamActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:label="@string/choose_team_screen" >
+        </activity>
+        
+        <activity
             android:name="com.seniordesign.ultimatescorecard.stats.StatsActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/boxscore_screen" >

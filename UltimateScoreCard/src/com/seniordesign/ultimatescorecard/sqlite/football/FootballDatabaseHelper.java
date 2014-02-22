@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballGameStats;
-import com.seniordesign.ultimatescorecard.sqlite.basketball.ShotChartCoords;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
 import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
+import com.seniordesign.ultimatescorecard.sqlite.helper.ShotChartCoords;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 
 import android.content.ContentValues;

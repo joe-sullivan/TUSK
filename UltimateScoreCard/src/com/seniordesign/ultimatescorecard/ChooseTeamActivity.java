@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import com.seniordesign.ultimatescorecard.data.BasketballGameTime;
 import com.seniordesign.ultimatescorecard.data.FootballGameTime;
+import com.seniordesign.ultimatescorecard.sqlite.DatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
@@ -39,7 +40,7 @@ public class ChooseTeamActivity extends Activity{
 	private TextView _teamSelectTitle;
 	private String _sportType;
 	//databases
-	public BasketballDatabaseHelper _basketball_db;
+	public DatabaseHelper _db;
 
 	
 	@Override
@@ -49,8 +50,9 @@ public class ChooseTeamActivity extends Activity{
 		_sportType = getIntent().getExtras().getString(StaticFinalVars.SPORT_TYPE);
 		
 		//databases
-		_basketball_db = new BasketballDatabaseHelper(getApplicationContext());
-
+		if(_sportType.equals("basketball")){
+			_db = new BasketballDatabaseHelper(getApplicationContext());
+		}
 		_teamSelectTitle = (TextView) findViewById(R.id.team_selection_title);							//getting the view of some features implemented in xml
 		_listOfTeams = (LinearLayout) findViewById (R.id.teamListLayout);
 		_deleteButton = (Button) findViewById (R.id.deleteTeamButton);
@@ -78,13 +80,8 @@ public class ChooseTeamActivity extends Activity{
 	
 	//getting string from shared preference, parsing it, and add to linear layout
 	private void loadTeams(){
-		if(_sportType.equals("basketball"))
-			teams = (ArrayList<Teams>) _basketball_db.getAllTeams();
-		//else if(_sportType.equals("football"))
-		//	teams = (ArrayList<Teams>) _football_db.getAllTeams();
-		else{
-			//databases
-		}
+		//databases
+		teams = (ArrayList<Teams>) _db.getAllTeams();
 		for(Teams t: teams){
 			this.addNewTeam(t.gettname());
 		}
@@ -107,30 +104,26 @@ public class ChooseTeamActivity extends Activity{
 		}
 	}
 	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		_listOfTeams.removeAllViews();
+		loadTeams();
+	}
+
 	//when the create a team button is pressed, this method is executed
 	public void addViews(View v){
-		Builder teamCreate = new Builder(this);															//prompt user to enter team name
-		teamCreate.setTitle("Team Creation");
-		teamCreate.setMessage("Please enter team name.");
-		
-		final EditText input = new EditText(this);														//create a edit text box for the message box
-		teamCreate.setView(input);
-		
-		teamCreate.setPositiveButton("OK", new DialogInterface.OnClickListener(){						//a OK button
-			@Override
-			public void onClick(DialogInterface arg0, int arg1) {										//giving our OK button some functionalities
-				if(input.getText().toString().length() > 0){
-					addNewTeam(input.getText().toString());												//calling our addNewTeam method to actually add the team
-				}
-			}
-		});
-		teamCreate.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){					//a CANCEL button
-			@Override
-			public void onClick(DialogInterface arg0, int arg1) {
-				//do nothing, just exit dialog box
-			}
-		});
-		teamCreate.show();
+		Intent intent = new Intent(getApplicationContext(), CreateTeamActivity.class);
+		if(!_selectAwayTeam){
+			intent.putExtra(StaticFinalVars.CREATE_EDIT, "");
+			intent.putExtra(StaticFinalVars.SPORT_TYPE, _sportType);
+			startActivityForResult(intent, StaticFinalVars.CREATE_TEAM_CODE);	
+		}
+		else{
+			intent.putExtra(StaticFinalVars.CREATE_EDIT, _teams[0].gettname());
+			intent.putExtra(StaticFinalVars.SPORT_TYPE, _sportType);
+			startActivityForResult(intent, StaticFinalVars.EDIT_TEAM_CODE);	
+		}
 	}
 	
 	//actually add a new team (list item) to our view
@@ -143,6 +136,16 @@ public class ChooseTeamActivity extends Activity{
 				textView.setTextColor(getResources().getColor(R.color.white));
 				if(_setDelete){																					//removing the item, we're in delete mode
 					_listOfTeams.removeView(textView);
+					
+					Teams curTeam = null;
+					for(Teams t: teams){
+						if(t.gettname().equals(textView.getText())){
+							curTeam = t;
+							break;
+						}
+					}
+					_db.deleteTeam(curTeam.gettid());
+					
 					_setDelete = false;
 					_teamSelectTitle.setText(getResources().getString(R.string.home_team_select_title));
 				}
@@ -230,6 +233,7 @@ public class ChooseTeamActivity extends Activity{
 	//deleting a team from the linear layout we called "listOfTeams"
 	public void deleteATeam(View view){
 		if(_listOfTeams.getChildCount() > 0){																		//as long as we have items to delete, then we can use this
+			
 			_teamSelectTitle.setText(getResources().getString(R.string.delete_team_title));
 			_setDelete = true;											
 		}
@@ -249,7 +253,7 @@ public class ChooseTeamActivity extends Activity{
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
-		saveTeams();
+		//saveTeams();
 		finish();
 	}
 }

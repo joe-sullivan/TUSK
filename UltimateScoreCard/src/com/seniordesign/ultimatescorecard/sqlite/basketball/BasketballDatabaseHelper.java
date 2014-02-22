@@ -6,9 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.seniordesign.ultimatescorecard.data.BasketballPlayer;
+import com.seniordesign.ultimatescorecard.sqlite.DatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
 import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
+import com.seniordesign.ultimatescorecard.sqlite.helper.ShotChartCoords;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 
 import android.content.ContentValues;
@@ -19,7 +21,7 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class BasketballDatabaseHelper extends SQLiteOpenHelper implements Serializable{
+public class BasketballDatabaseHelper extends DatabaseHelper implements Serializable{
 
 	/**
 	 * 
@@ -191,8 +193,8 @@ public class BasketballDatabaseHelper extends SQLiteOpenHelper implements Serial
         // insert row
         long g_id = db.insert(TABLE_GAMES, null, values);
         
-        List<BasketballPlayer> home_players = getPlayersTeam(game.gethomeid());
-        List<BasketballPlayer> away_players = getPlayersTeam(game.getawayid());
+        List<Players> home_players = getPlayersTeam2(game.gethomeid());
+        List<Players> away_players = getPlayersTeam2(game.getawayid());
 
         for(Players player : home_players){
         	createGameStats(player.getpid(), g_id);
@@ -663,6 +665,8 @@ public class BasketballDatabaseHelper extends SQLiteOpenHelper implements Serial
         return players;
 	}
 	
+//NOT NECESSARY BECAUSE OF SUPERCLASS
+	/*	
 	public List<Players> getPlayersTeam2(long t_id){
 	    SQLiteDatabase db = this.getReadableDatabase();
 		List<Players> players = new ArrayList<Players>();
@@ -689,7 +693,7 @@ public class BasketballDatabaseHelper extends SQLiteOpenHelper implements Serial
         
         return players;
 	}
-	
+*/	
 	public List<BasketballPlayer> getAllPlayers(){
 	    SQLiteDatabase db = this.getReadableDatabase();
 		List<BasketballPlayer> players = new ArrayList<BasketballPlayer>();
@@ -718,298 +722,7 @@ public class BasketballDatabaseHelper extends SQLiteOpenHelper implements Serial
 
         return players;
 	}
-	
-	// Delete a Player
-	public void deletePlayer(long p_id) {
-	    SQLiteDatabase db = this.getWritableDatabase();
-	    db.delete(TABLE_PLAYERS, KEY_P_ID + " = " + p_id, null);
-	}
-		
-	
-	// Delete Players on a team
-	public void deletePlayers(long t_id) {
-	    SQLiteDatabase db = this.getWritableDatabase();
-	    db.delete(TABLE_PLAYERS, KEY_T_ID + " = ?",
-	            new String[] { String.valueOf(t_id) });
-	}
-	
-	// -------------------SHOT_CHART_COORDS table methods ------------------ //
-	
-	//create a row of shot chart coordinates
-	public long createShot(ShotChartCoords shot){
-		SQLiteDatabase db = this.getWritableDatabase();
-		 
-        ContentValues values = new ContentValues();
-        values.put(KEY_A_ID, shot.getaid());
-        values.put(KEY_G_ID, shot.getgid());
-        values.put(KEY_P_ID, shot.getpid());
-        values.put(KEY_X, shot.getx());
-        values.put(KEY_Y, shot.gety());
-        values.put(KEY_MADE, shot.getmade());
 
-        // insert row
-        long row = db.insert(TABLE_SHOT_CHART_COORDS, null, values);
- 
-        return row;
-	}
-	
-	public List<ShotChartCoords> getAllShots(){
-	    SQLiteDatabase db = this.getReadableDatabase();
-		List<ShotChartCoords> shots = new ArrayList<ShotChartCoords>();
-		String selectQuery = "SELECT * FROM " + TABLE_SHOT_CHART_COORDS;
-        
-        Log.i(LOG, selectQuery);
-        
-        Cursor c = db.rawQuery(selectQuery, null);
-        
-        if (c!=null)
-        	c.moveToFirst();
-        
-        do {
-        	//create the instance of Players using cursor information
-		    ShotChartCoords shot = new ShotChartCoords();
-		    shot.setaid(c.getLong(c.getColumnIndex(KEY_A_ID)));
-		    shot.setgid((c.getLong(c.getColumnIndex(KEY_G_ID))));		    
-		    shot.setpid((c.getLong(c.getColumnIndex(KEY_P_ID))));
-		    shot.setx((c.getInt(c.getColumnIndex(KEY_X))));
-		    shot.sety((c.getInt(c.getColumnIndex(KEY_Y))));
-		    shot.setmade((c.getString(c.getColumnIndex(KEY_MADE))));
-
-            // adding to players list
-		    shots.add(shot);
-        } while(c.moveToNext());
-        
-        return shots;
-	}
-	
-	public List<ShotChartCoords> getAllTeamShots(long t_id){
-	    SQLiteDatabase db = this.getReadableDatabase();
-		List<ShotChartCoords> shots = new ArrayList<ShotChartCoords>();
-		String selectQuery = "SELECT * FROM " + TABLE_SHOT_CHART_COORDS + " NATURAL JOIN " + TABLE_PLAYERS 
-				+ " WHERE " + KEY_T_ID + " = " + t_id;
-        
-        Log.i(LOG, selectQuery);
-        
-        Cursor c = db.rawQuery(selectQuery, null);
-        
-        if (c!=null)
-        	c.moveToFirst();
-        
-        do {
-        	//create the instance of Players using cursor information
-		    ShotChartCoords shot = new ShotChartCoords();
-		    shot.setaid(c.getLong(c.getColumnIndex(KEY_A_ID)));
-		    shot.setgid((c.getLong(c.getColumnIndex(KEY_G_ID))));		    
-		    shot.setpid((c.getLong(c.getColumnIndex(KEY_P_ID))));
-		    shot.setx((c.getInt(c.getColumnIndex(KEY_X))));
-		    shot.sety((c.getInt(c.getColumnIndex(KEY_Y))));
-		    shot.setmade((c.getString(c.getColumnIndex(KEY_MADE))));
-		    
-            // adding to players list
-		    shots.add(shot);
-        } while(c.moveToNext());
-        
-        return shots;
-	}
-	
-	public List<ShotChartCoords> getAllPlayerShots(long p_id){
-	    SQLiteDatabase db = this.getReadableDatabase();
-		List<ShotChartCoords> shots = new ArrayList<ShotChartCoords>();
-		String selectQuery = "SELECT * FROM " + TABLE_SHOT_CHART_COORDS + "WHERE " + KEY_P_ID + " = " + p_id;
-        
-        Log.i(LOG, selectQuery);
-        
-        Cursor c = db.rawQuery(selectQuery, null);
-        
-        if (c!=null)
-        	c.moveToFirst();
-        
-        do {
-        	//create the instance of Players using cursor information
-		    ShotChartCoords shot = new ShotChartCoords();
-		    shot.setaid(c.getLong(c.getColumnIndex(KEY_A_ID)));
-		    shot.setgid((c.getLong(c.getColumnIndex(KEY_G_ID))));		    
-		    shot.setpid((c.getLong(c.getColumnIndex(KEY_P_ID))));
-		    shot.setx((c.getInt(c.getColumnIndex(KEY_X))));
-		    shot.sety((c.getInt(c.getColumnIndex(KEY_Y))));
-		    shot.setmade((c.getString(c.getColumnIndex(KEY_MADE))));
-
-            // adding to players list
-		    shots.add(shot);
-        } while(c.moveToNext());
-        
-        return shots;
-	}
-	
-	public List<ShotChartCoords> getAllTeamShotsGame(long t_id, long g_id){
-	    SQLiteDatabase db = this.getReadableDatabase();
-		List<ShotChartCoords> shots = new ArrayList<ShotChartCoords>();
-		String selectQuery = "SELECT * FROM " + TABLE_SHOT_CHART_COORDS + " NATURAL JOIN " + TABLE_PLAYERS  
-				+ " WHERE " + KEY_T_ID + " = " + t_id + " AND " + KEY_G_ID + " = " + g_id;
-        
-        Log.i(LOG, selectQuery);
-        
-        Cursor c = db.rawQuery(selectQuery, null);
-        
-        if (c!=null)
-        	c.moveToFirst();
-        
-        do {
-        	//create the instance of Players using cursor information
-		    ShotChartCoords shot = new ShotChartCoords();
-		    shot.setaid(c.getLong(c.getColumnIndex(KEY_A_ID)));
-		    shot.setgid((c.getLong(c.getColumnIndex(KEY_G_ID))));		    
-		    shot.setpid((c.getLong(c.getColumnIndex(KEY_P_ID))));
-		    shot.setx((c.getInt(c.getColumnIndex(KEY_X))));
-		    shot.sety((c.getInt(c.getColumnIndex(KEY_Y))));
-		    shot.setmade((c.getString(c.getColumnIndex(KEY_MADE))));
-
-            // adding to players list
-		    shots.add(shot);
-        } while(c.moveToNext());
-        
-        return shots;
-	}
-	
-	public List<ShotChartCoords> getAllPlayerShotsGame(long p_id, long g_id){
-	    SQLiteDatabase db = this.getReadableDatabase();
-		List<ShotChartCoords> shots = new ArrayList<ShotChartCoords>();
-		String selectQuery = "SELECT * FROM " + TABLE_SHOT_CHART_COORDS +  
-				" WHERE " + KEY_P_ID + " = " + p_id + " AND " + KEY_G_ID + " = " + g_id;
-        
-        Log.i(LOG, selectQuery);
-        
-        Cursor c = db.rawQuery(selectQuery, null);
-        
-        if (c!=null)
-        	c.moveToFirst();
-        
-        do {
-        	//create the instance of Players using cursor information
-		    ShotChartCoords shot = new ShotChartCoords();
-		    shot.setaid(c.getLong(c.getColumnIndex(KEY_A_ID)));
-		    shot.setgid((c.getLong(c.getColumnIndex(KEY_G_ID))));		    
-		    shot.setpid((c.getLong(c.getColumnIndex(KEY_P_ID))));
-		    shot.setx((c.getInt(c.getColumnIndex(KEY_X))));
-		    shot.sety((c.getInt(c.getColumnIndex(KEY_Y))));
-		    shot.setmade((c.getString(c.getColumnIndex(KEY_MADE))));
-
-            // adding to players list
-		    shots.add(shot);
-        } while(c.moveToNext());
-        
-        return shots;
-	}
-	
-	// Delete a Shot
-	public void deleteShot(long a_id) {
-	    SQLiteDatabase db = this.getWritableDatabase();
-	    db.delete(TABLE_SHOT_CHART_COORDS, KEY_A_ID + " = " + a_id, null);
-	}
-	
-		
-	// ----------------------- TEAMS table methods ------------------------- //
-
-	public long createTeams(Teams team){
-		SQLiteDatabase db = this.getWritableDatabase();
-		 
-        ContentValues values = new ContentValues();
-        //values.put(KEY_T_ID, team.gettid());
-        values.put(KEY_T_NAME, team.gettname());
-        values.put(KEY_ABBV, team.getabbv());
-        values.put(KEY_C_NAME, team.getcname());
-        values.put(KEY_SPORT, team.getSport());
-
-
-        // insert row
-        long p_id = db.insert(TABLE_TEAMS, null, values);
- 
-        return p_id;
-	}
-	
-	//get single team with id
-	public Teams getTeam(long t_id) {
-	    SQLiteDatabase db = this.getReadableDatabase();
-	    //create query to select game
-	    String selectQuery = "SELECT  * FROM " + TABLE_TEAMS + 
-	    	" WHERE " + KEY_T_ID + " = " + t_id;
-	    //Log the query
-	    Log.i(LOG, selectQuery);
-	    //perform the query and store data in cursor
-	    Cursor c = db.rawQuery(selectQuery, null);
-	    //set cursor to beginning
-	    if (c != null)
-	        c.moveToFirst();
-	    //create the instance of Teams using cursor information
-	    Teams team = new Teams();
-	    team.settid(c.getLong(c.getColumnIndex(KEY_T_ID)));
-	    team.settname((c.getString(c.getColumnIndex(KEY_T_NAME))));
-	    team.setabbv((c.getString(c.getColumnIndex(KEY_ABBV))));
-	    team.setcname((c.getString(c.getColumnIndex(KEY_C_NAME))));
-	    team.setsport((c.getString(c.getColumnIndex(KEY_SPORT))));
-	 
-	    return team;
-	}
-	
-	//get single team with name
-	public Teams getTeam(String t_name) {
-	    SQLiteDatabase db = this.getReadableDatabase();
-	    //create query to select game
-	    String selectQuery = "SELECT  * FROM " + TABLE_TEAMS + 
-	    	" WHERE " + KEY_T_NAME + " = " + t_name;
-	    //Log the query
-	    Log.i(LOG, selectQuery);
-	    //perform the query and store data in cursor
-	    Cursor c = db.rawQuery(selectQuery, null);
-	    //set cursor to beginning
-	    if (c != null)
-	        c.moveToFirst();
-	    //create the instance of Teams using cursor information
-	    Teams team = new Teams();
-	    team.settid(c.getLong(c.getColumnIndex(KEY_T_ID)));
-	    team.settname((c.getString(c.getColumnIndex(KEY_T_NAME))));
-	    team.setabbv((c.getString(c.getColumnIndex(KEY_ABBV))));
-	    team.setcname((c.getString(c.getColumnIndex(KEY_C_NAME))));
-	    team.setsport((c.getString(c.getColumnIndex(KEY_SPORT))));
-	 
-	    return team;
-	}
-	
-	public List<Teams> getAllTeams(){
-	    SQLiteDatabase db = this.getReadableDatabase();
-		List<Teams> teams = new ArrayList<Teams>();
-		String selectQuery = "SELECT * FROM " + TABLE_TEAMS;
-        
-        Log.i(LOG, selectQuery);
-        
-        Cursor c = db.rawQuery(selectQuery, null);
-        
-        if (c!=null)
-        	c.moveToFirst();
-        
-        do {
-        	//create the instance of Players using cursor information
-		    Teams team = new Teams();
-		    team.settid(c.getLong(c.getColumnIndex(KEY_T_ID)));
-		    team.settname((c.getString(c.getColumnIndex(KEY_T_NAME))));
-		    team.setabbv((c.getString(c.getColumnIndex(KEY_ABBV))));
-		    team.setcname((c.getString(c.getColumnIndex(KEY_C_NAME))));
-		    team.setsport((c.getString(c.getColumnIndex(KEY_SPORT))));
-		   
-            // adding to players list
-		    teams.add(team);
-        } while(c.moveToNext());
-        
-        return teams;
-	}
-	
-	// Delete a Team
-	public void deleteTeam(long t_id) {
-		deletePlayers(t_id);
-	    SQLiteDatabase db = this.getWritableDatabase();
-	    db.delete(TABLE_TEAMS, KEY_T_ID + " = ?",
-	            new String[] { String.valueOf(t_id) });
-	}
 	
 	
 	
