@@ -11,7 +11,11 @@ public class StaticFinalVars {
 	public static final String AWAY_TEAM = "away";
 	
 	//score keeping interface to statistics page 
+	public static final String GAME_TIME = "gameTime";
 	public static final String GAME_INFO = "gameInfo";
+	public static final String GAME_TEST = "gameTest";
+
+	public static final String GAME_ID = "game_id";
 	public static final String GAME_LOG = "gameLog";
 	public static final String DISPLAY_TYPE = "display";
 	
@@ -20,6 +24,7 @@ public class StaticFinalVars {
 	
 	//statistics (box) page to individual stats page
 	public static final String TEAM_INFO = "teamInfo";
+	public static final String PLAYERS_INFO = "playersInfo";
 	public static final String PLAYER_NAME = "playerName";
 	
 }

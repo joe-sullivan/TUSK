@@ -2,6 +2,9 @@ package com.seniordesign.ultimatescorecard.data;
 
 import java.util.ArrayList;
 
+import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
+import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
+
 public class BasketballGameLog extends GameLog {;
 	private static final long serialVersionUID = 1439589895554308837L;
 	
@@ -82,4 +85,18 @@ public class BasketballGameLog extends GameLog {;
 			_thePlay = player + " missed Free Throw";
 		}
 	}
+	
+	//UPDATE THIS WITH DATABASE
+	public void recordActivity(String time){
+		if(time.equals("Restart Clock")){
+			PlayByPlay pbp = new PlayByPlay(g_id, _thePlay + ".", time, null, 0, 0);
+			((BasketballDatabaseHelper) _db).createPlayByPlay(pbp);
+		}
+		else{
+			_timeStamp = time;
+			PlayByPlay pbp = new PlayByPlay(g_id,"(" + _timeStamp + ")" + _thePlay + ".", time, null, 0, 0);
+			((BasketballDatabaseHelper) _db).createPlayByPlay(pbp);
+		}
+	}
+	
 }

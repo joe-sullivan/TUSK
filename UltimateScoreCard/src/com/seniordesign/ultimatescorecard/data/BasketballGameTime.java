@@ -1,15 +1,72 @@
 package com.seniordesign.ultimatescorecard.data;
 
+import java.util.ArrayList;
+
+import android.content.Context;
+
+import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
+import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
+import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
+import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
+
 
 public class BasketballGameTime extends GameTime {
 	private static final long serialVersionUID = -8188939132700576156L;
 	private BasketballTeam _homeTeam, _awayTeam;
 	private boolean _foulOnPlay = false;
 	private boolean _keepPossession = false;
+	//databases
+	public BasketballDatabaseHelper _basketball_db;
+	private long g_id;
+	private Context _context;
+	private Teams _home, _away;
+	private ArrayList<BasketballPlayer> _homeTeamPlayers, _awayTeamPlayers;
+	private long _home_t_id, _away_t_id;
+	public BasketballGameInfo _gameInfo;
+	private ArrayList<Players> _homeTeamPlayersPull, _awayTeamPlayersPull;
 		
-	public BasketballGameTime(String home, String away){
-		_homeTeam = new BasketballTeam(home, true);
-		_awayTeam = new BasketballTeam(away, false);
+	public BasketballGameTime(Teams home, Teams away){
+		//databases
+		_home = home;
+		_away = away;
+	}	
+	
+	public void setContext(Context context){
+		_context = context;
+	}
+	
+	public long createTeams(){
+		_basketball_db = new BasketballDatabaseHelper(_context);
+		_homeTeam = new BasketballTeam(_home.gettname(), true);
+		_awayTeam = new BasketballTeam(_away.gettname(), false);
+
+		_home_t_id = _home.gettid();
+		_away_t_id = _away.gettid();
+		
+		g_id = _basketball_db.createGame(new Games(_home_t_id, _away_t_id, "INSERT DATE HERE"));
+
+		_homeTeamPlayers = (ArrayList<BasketballPlayer>) _basketball_db.getPlayersTeam(_home_t_id);
+		_awayTeamPlayers = (ArrayList<BasketballPlayer>) _basketball_db.getPlayersTeam(_away_t_id);
+		_homeTeam.setData(g_id, _home, _homeTeamPlayers);
+		_awayTeam.setData(g_id, _away, _awayTeamPlayers);
+		_homeTeam.setTeamAbbr();
+		_awayTeam.setTeamAbbr();
+		_homeTeamPlayersPull = (ArrayList<Players>) _basketball_db.getPlayersTeam2(_home_t_id);
+		_awayTeamPlayersPull = (ArrayList<Players>) _basketball_db.getPlayersTeam2(_away_t_id);
+		_gameInfo = new BasketballGameInfo(_home, _away, _homeTeamPlayersPull, _awayTeamPlayersPull, g_id);
+
+		return g_id;
+	}
+	
+	public BasketballGameInfo getGameInfo(){
+		return _gameInfo;
+	}
+	
+	public void setGameInfo(BasketballGameInfo gameInfo){
+		_gameInfo = gameInfo;
+		_homeTeam.setTeamOrder(_gameInfo.getHomePlayers());
+		_awayTeam.setTeamOrder(_gameInfo.getAwayPlayers());
+
 	}
 	
 	//getting the name of a player given team name and which player 
@@ -25,12 +82,12 @@ public class BasketballGameTime extends GameTime {
 	//getting the name of a player given only player name
 	public BasketballPlayer getPlayer(String player){
 		for(int i=0; i<5; i++){
-			if(player.equals(_homeTeam.getPlayer(i).getName())){
+			if(player.equals(_homeTeam.getPlayer(i).getpname())){
 				return _homeTeam.getPlayer(i);
 			}
 		}
 		for(int i=0; i<5; i++){
-			if(player.equals(_awayTeam.getPlayer(i).getName())){
+			if(player.equals(_awayTeam.getPlayer(i).getpname())){
 				return _awayTeam.getPlayer(i);
 			}
 		}
@@ -123,5 +180,9 @@ public class BasketballGameTime extends GameTime {
 				return getAwayAbbr();
 		}
 		
+	}
+	
+	public long getgid(){
+		return g_id;
 	}
 }

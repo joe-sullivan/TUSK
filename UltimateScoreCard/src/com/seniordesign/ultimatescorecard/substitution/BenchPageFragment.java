@@ -1,6 +1,7 @@
 package com.seniordesign.ultimatescorecard.substitution;
 
 import com.seniordesign.ultimatescorecard.R;
+import com.seniordesign.ultimatescorecard.data.BasketballGameInfo;
 import com.seniordesign.ultimatescorecard.data.BasketballGameTime;
 import com.seniordesign.ultimatescorecard.data.BasketballTeam;
 
@@ -26,33 +27,150 @@ public class BenchPageFragment extends Fragment{
 		setPlayer(((SubstitutionActivity)getActivity()).getTeamInfo(), ((SubstitutionActivity)getActivity()).getHomeTeam());
 	}
 
-	private void setPlayer(BasketballGameTime gti, boolean status){
-		BasketballTeam team = null;
+	private void setPlayer(BasketballGameInfo gameInfo, boolean status){
+		//homeTeam
 		if(status){
-			team = gti.getTheHomeTeam();
+			if(!(gameInfo.getHomePlayers().size()<6)){
+				TextView view1 = ((TextView) getView().findViewById(R.id.bench1Name));
+				view1.setText(gameInfo.getPlayer(5,status).getpname());
+				view1.setOnClickListener(swapPageListener);
+				
+				if(!(gameInfo.getHomePlayers().size()<7)){
+
+					TextView view2 = ((TextView) getView().findViewById(R.id.bench2Name));
+					view2.setText(gameInfo.getPlayer(6,status).getpname());
+					view2.setOnClickListener(swapPageListener);
+					
+					if(!(gameInfo.getHomePlayers().size()<8)){
+	
+						TextView view3 = ((TextView) getView().findViewById(R.id.bench3Name));
+						view3.setText(gameInfo.getPlayer(7,status).getpname());
+						view3.setOnClickListener(swapPageListener);
+						
+						if(!(gameInfo.getHomePlayers().size()<9)){
+		
+							TextView view4 = ((TextView) getView().findViewById(R.id.bench4Name));
+							view4.setText(gameInfo.getPlayer(8,status).getpname());
+							view4.setOnClickListener(swapPageListener);
+							
+							if(!(gameInfo.getHomePlayers().size()<10)){
+			
+								TextView view5 = ((TextView) getView().findViewById(R.id.bench5Name));
+								view5.setText(gameInfo.getPlayer(9,status).getpname());
+								view5.setOnClickListener(swapPageListener);
+								
+								if(!(gameInfo.getHomePlayers().size()<11)){
+									
+									TextView view6 = ((TextView) getView().findViewById(R.id.bench6Name));
+									view6.setText(gameInfo.getPlayer(10,status).getpname());
+									view6.setOnClickListener(swapPageListener);
+									
+									if(!(gameInfo.getHomePlayers().size()<12)){
+										
+										TextView view7 = ((TextView) getView().findViewById(R.id.bench7Name));
+										view7.setText(gameInfo.getPlayer(11,status).getpname());
+										view7.setOnClickListener(swapPageListener);
+										
+										if(!(gameInfo.getHomePlayers().size()<13)){
+											
+											TextView view8 = ((TextView) getView().findViewById(R.id.bench8Name));
+											view8.setText(gameInfo.getPlayer(12,status).getpname());
+											view8.setOnClickListener(swapPageListener);
+											
+											if(!(gameInfo.getHomePlayers().size()<14)){
+												
+												TextView view9 = ((TextView) getView().findViewById(R.id.bench9Name));
+												view9.setText(gameInfo.getPlayer(13,status).getpname());
+												view9.setOnClickListener(swapPageListener);
+												
+												if(!(gameInfo.getHomePlayers().size()<15)){
+													
+													TextView view10 = ((TextView) getView().findViewById(R.id.bench10Name));
+													view10.setText(gameInfo.getPlayer(14,status).getpname());
+													view10.setOnClickListener(swapPageListener);
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
 		}
-		else{
-			team = gti.getTheAwayTeam();
+		//awayTeam
+		if(!status){
+			if(!(gameInfo.getAwayPlayers().size()<6)){
+				TextView view1 = ((TextView) getView().findViewById(R.id.bench1Name));
+				view1.setText(gameInfo.getPlayer(5,status).getpname());
+				view1.setOnClickListener(swapPageListener);
+				
+				if(!(gameInfo.getAwayPlayers().size()<7)){
+
+					TextView view2 = ((TextView) getView().findViewById(R.id.bench2Name));
+					view2.setText(gameInfo.getPlayer(6,status).getpname());
+					view2.setOnClickListener(swapPageListener);
+					
+					if(!(gameInfo.getAwayPlayers().size()<8)){
+	
+						TextView view3 = ((TextView) getView().findViewById(R.id.bench3Name));
+						view3.setText(gameInfo.getPlayer(7,status).getpname());
+						view3.setOnClickListener(swapPageListener);
+						
+						if(!(gameInfo.getAwayPlayers().size()<9)){
+		
+							TextView view4 = ((TextView) getView().findViewById(R.id.bench4Name));
+							view4.setText(gameInfo.getPlayer(8,status).getpname());
+							view4.setOnClickListener(swapPageListener);
+							
+							if(!(gameInfo.getAwayPlayers().size()<10)){
+			
+								TextView view5 = ((TextView) getView().findViewById(R.id.bench5Name));
+								view5.setText(gameInfo.getPlayer(9,status).getpname());
+								view5.setOnClickListener(swapPageListener);
+								
+								if(!(gameInfo.getAwayPlayers().size()<11)){
+									
+									TextView view6 = ((TextView) getView().findViewById(R.id.bench6Name));
+									view6.setText(gameInfo.getPlayer(10,status).getpname());
+									view6.setOnClickListener(swapPageListener);
+									
+									if(!(gameInfo.getAwayPlayers().size()<12)){
+										
+										TextView view7 = ((TextView) getView().findViewById(R.id.bench7Name));
+										view7.setText(gameInfo.getPlayer(11,status).getpname());
+										view7.setOnClickListener(swapPageListener);
+										
+										if(!(gameInfo.getAwayPlayers().size()<13)){
+											
+											TextView view8 = ((TextView) getView().findViewById(R.id.bench8Name));
+											view8.setText(gameInfo.getPlayer(12,status).getpname());
+											view8.setOnClickListener(swapPageListener);
+											
+											if(!(gameInfo.getAwayPlayers().size()<14)){
+												
+												TextView view9 = ((TextView) getView().findViewById(R.id.bench9Name));
+												view9.setText(gameInfo.getPlayer(13,status).getpname());
+												view9.setOnClickListener(swapPageListener);
+												
+												if(!(gameInfo.getAwayPlayers().size()<15)){
+													
+													TextView view10 = ((TextView) getView().findViewById(R.id.bench10Name));
+													view10.setText(gameInfo.getPlayer(14,status).getpname());
+													view10.setOnClickListener(swapPageListener);
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
 		}
-		TextView view1 = ((TextView) getView().findViewById(R.id.bench1Name));
-		view1.setText(team.getPlayer(5).getName());
-		view1.setOnClickListener(swapPageListener);
 		
-		TextView view2 = ((TextView) getView().findViewById(R.id.bench2Name));
-		view2.setText(team.getPlayer(6).getName());
-		view2.setOnClickListener(swapPageListener);
-		
-		TextView view3 = ((TextView) getView().findViewById(R.id.bench3Name));
-		view3.setText(team.getPlayer(7).getName());
-		view3.setOnClickListener(swapPageListener);
-		
-		TextView view4 = ((TextView) getView().findViewById(R.id.bench4Name));
-		view4.setText(team.getPlayer(8).getName());
-		view4.setOnClickListener(swapPageListener);
-		
-		TextView view5 = ((TextView) getView().findViewById(R.id.bench5Name));
-		view5.setText(team.getPlayer(9).getName());
-		view5.setOnClickListener(swapPageListener);
 	}
 	
 	public void refresh(){

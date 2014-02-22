@@ -1,5 +1,7 @@
 package com.seniordesign.ultimatescorecard.data;
 
+import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
+
 import android.util.Log;
 
 public class FootballGameTime extends GameTime{
@@ -10,9 +12,9 @@ public class FootballGameTime extends GameTime{
 	private int[] _downDistance = new int[]{0,0};
 	private boolean _aReturn = false;
 		
-	public FootballGameTime(String home, String away){
-		_homeTeam = new FootballTeam(home, true);
-		_awayTeam = new FootballTeam(away, false);
+	public FootballGameTime(Teams home, Teams away){
+		_homeTeam = new FootballTeam(home.gettname(), true);
+		_awayTeam = new FootballTeam(away.gettname(), false);
 	}
 		
 	//Getter and setter for team names

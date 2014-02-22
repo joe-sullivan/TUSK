@@ -1,8 +1,10 @@
 package com.seniordesign.ultimatescorecard.substitution;
 
 import com.seniordesign.ultimatescorecard.R;
+import com.seniordesign.ultimatescorecard.data.BasketballGameInfo;
 import com.seniordesign.ultimatescorecard.data.BasketballGameTime;
 import com.seniordesign.ultimatescorecard.data.BasketballTeam;
+import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,32 +28,25 @@ public class ActivePageFragment extends Fragment{
 		refresh();
 	}
 
-	private void setPlayer(BasketballGameTime gti, boolean status){
-		BasketballTeam team = null;
-		if(status){
-			team = gti.getTheHomeTeam();
-		}
-		else{
-			team = gti.getTheAwayTeam();
-		}
+	private void setPlayer(BasketballGameInfo gameInfo, boolean status){
 		TextView view1 = ((TextView) getView().findViewById(R.id.active1Name));
-		view1.setText(team.getPlayer(0).getName());
+		view1.setText(gameInfo.getPlayer(0,status).getpname());
 		view1.setOnClickListener(swapPageListener);
 		
 		TextView view2 = ((TextView) getView().findViewById(R.id.active2Name));
-		view2.setText(team.getPlayer(1).getName());
+		view2.setText(gameInfo.getPlayer(1,status).getpname());
 		view2.setOnClickListener(swapPageListener);
 		
 		TextView view3 = ((TextView) getView().findViewById(R.id.active3Name));
-		view3.setText(team.getPlayer(2).getName());
+		view3.setText(gameInfo.getPlayer(2,status).getpname());
 		view3.setOnClickListener(swapPageListener);
 		
 		TextView view4 = ((TextView) getView().findViewById(R.id.active4Name));
-		view4.setText(team.getPlayer(3).getName());
+		view4.setText(gameInfo.getPlayer(3,status).getpname());
 		view4.setOnClickListener(swapPageListener);
 		
 		TextView view5 = ((TextView) getView().findViewById(R.id.active5Name));
-		view5.setText(team.getPlayer(4).getName());
+		view5.setText(gameInfo.getPlayer(4,status).getpname());
 		view5.setOnClickListener(swapPageListener);
 	}
 	

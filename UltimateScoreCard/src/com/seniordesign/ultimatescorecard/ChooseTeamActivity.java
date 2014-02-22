@@ -1,8 +1,12 @@
 package com.seniordesign.ultimatescorecard;
 
 
+import java.util.ArrayList;
+
 import com.seniordesign.ultimatescorecard.data.BasketballGameTime;
 import com.seniordesign.ultimatescorecard.data.FootballGameTime;
+import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
+import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
 
 import android.annotation.SuppressLint;
@@ -30,9 +34,13 @@ public class ChooseTeamActivity extends Activity{
 	private Editor _prefEditor;																			//use the preference editor to edit the shared preference
 	private boolean _selectAwayTeam = false;															//false = select Home team, true = select Away team
 	private boolean _setDelete = false;																	//false = we can delete a team, true = we can't delete a team
-	private String[] _teams = new String[2];															//string of two teams, used for passing names to next activity
+	private Teams[] _teams = new Teams[2];																//Array of two Teams, used for passing teams to next activity
+	private ArrayList<Teams> teams = null;
 	private TextView _teamSelectTitle;
 	private String _sportType;
+	//databases
+	public BasketballDatabaseHelper _basketball_db;
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +48,10 @@ public class ChooseTeamActivity extends Activity{
 		setContentView(R.layout.activity_choose_team);
 		_sportType = getIntent().getExtras().getString(StaticFinalVars.SPORT_TYPE);
 		
+		//databases
+		_basketball_db = new BasketballDatabaseHelper(getApplicationContext());
+		
+		//unnecessary?
 		_teamsEntered = getSharedPreferences( _sportType+"TeamList" , MODE_PRIVATE);					//get shared preference, codeword = basketballTeamList
 		_prefEditor = _teamsEntered.edit();																//preference editor allows us to edit specified shared preference
 		
@@ -73,9 +85,15 @@ public class ChooseTeamActivity extends Activity{
 	
 	//getting string from shared preference, parsing it, and add to linear layout
 	private void loadTeams(){
-		String[] names = _teamsEntered.getString(_sportType+"TeamList", null).split(",");
-		for(int i=0; i<names.length; i++){
-			this.addNewTeam(names[i]);
+		if(_sportType.equals("basketball"))
+			teams = (ArrayList<Teams>) _basketball_db.getAllTeams();
+		//else if(_sportType.equals("football"))
+		//	teams = (ArrayList<Teams>) _football_db.getAllTeams();
+		else{
+			//databases
+		}
+		for(Teams t: teams){
+			this.addNewTeam(t.gettname());
 		}
 	}
 
@@ -136,14 +154,22 @@ public class ChooseTeamActivity extends Activity{
 					_teamSelectTitle.setText(getResources().getString(R.string.home_team_select_title));
 				}
 				else if(!_selectAwayTeam){																		//we are selecting home team, now change interface to prompt for away team selection
-					_teams[0] = textView.getText().toString();
+					for(Teams t: teams){
+						if(t.gettname().equals(textView.getText().toString())){
+							_teams[0] = t;
+						}
+					}
 					_teamSelectTitle.setText(getResources().getString(R.string.away_team_select_title));
 					_selectAwayTeam = true;
 					_deleteButton.setEnabled(false);															//when one team is selected, disable the delete feature
 				}
 				else{																							//not in delete mode, so one team was selected
-					if(_teams[0] != textView.getText().toString()){	
-						_teams[1] = textView.getText().toString();												//add the second team to the string array
+					if(!_teams[0].gettname().equals(textView.getText().toString())){	
+						for(Teams t: teams){
+							if(t.gettname().equals(textView.getText().toString())){
+								_teams[1] = t;
+							}
+						}												//add the second team to the string array
 						confirmTeams(textView);																	//call confirmTeam method to got to next activity
 					}
 					else{																						//basically, here, we're cancelling our selection
@@ -164,7 +190,7 @@ public class ChooseTeamActivity extends Activity{
 	public void confirmTeams(final TextView tv){
 		Builder confirmDialog = new Builder(this);																//building a dialog box for this
 		confirmDialog.setTitle("Team Selection Confirmation");
-		confirmDialog.setMessage("Keeping scores for "+ _teams[1] + " vs. " + _teams[0] + "?");
+		confirmDialog.setMessage("Keeping scores for "+ _teams[1].gettname() + " vs. " + _teams[0].gettname() + "?");
 				
 		confirmDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener(){							//the positive yes button
 			@Override
@@ -182,7 +208,7 @@ public class ChooseTeamActivity extends Activity{
 				}
 				else{
 					intent = new Intent(getApplicationContext(), BasketballActivity.class);	
-					intent.putExtra(StaticFinalVars.GAME_INFO, new BasketballGameTime(_teams[0], _teams[1]));
+					intent.putExtra(StaticFinalVars.GAME_TIME, new BasketballGameTime(_teams[0], _teams[1]));
 				}
 				
 				startActivity(intent);																			//let's go

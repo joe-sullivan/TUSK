@@ -3,12 +3,16 @@ package com.seniordesign.ultimatescorecard.data;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import android.database.sqlite.SQLiteOpenHelper;
+
 public class GameLog implements Serializable{
 	private static final long serialVersionUID = 2437099151521151044L;
 	protected ArrayList<String> _gameLog;
 	protected int _logSize = 0;
 	protected String _thePlay;
-	protected String _timeStamp;	
+	protected String _timeStamp;
+	protected SQLiteOpenHelper _db;
+	protected long g_id;
 	
 	public void removeFromLog(int items){
 		for(int i=0; i<items; i++){
@@ -28,6 +32,14 @@ public class GameLog implements Serializable{
 		return _logSize;
 	}
 	
+	public void setdb(SQLiteOpenHelper db){
+		_db = db;
+	}
+	
+	public void setgid(long gid){
+		g_id = gid;
+	}
+	
 	public void recordActivity(String time){
 		if(time.equals("Restart Clock")){
 			_gameLog.add(_thePlay+ ".");
@@ -37,4 +49,5 @@ public class GameLog implements Serializable{
 			_gameLog.add("(" + _timeStamp + ")" + _thePlay+ ".");
 		}
 	}
+	
 }

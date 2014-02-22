@@ -1,8 +1,13 @@
 package com.seniordesign.ultimatescorecard.stats;
 
+import java.util.ArrayList;
+
 import com.seniordesign.ultimatescorecard.R;
+import com.seniordesign.ultimatescorecard.data.BasketballGameInfo;
 import com.seniordesign.ultimatescorecard.data.BasketballGameLog;
 import com.seniordesign.ultimatescorecard.data.BasketballGameTime;
+import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
+import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
 
 import android.os.Bundle;
@@ -13,16 +18,19 @@ import android.support.v4.view.ViewPager;
 public class StatsActivity extends FragmentActivity{
 	private ViewPager _pager;
 	private PagerAdapter _pagerAdapter;
-	private BasketballGameTime _gti;
-	private BasketballGameLog _gameLog;
+	private BasketballGameInfo _gameInfo;
+	private ArrayList<PlayByPlay> _gameLog;
 
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stats);
-
-        _gti = (BasketballGameTime) getIntent().getSerializableExtra(StaticFinalVars.GAME_INFO);
-        _gameLog = (BasketballGameLog) getIntent().getSerializableExtra(StaticFinalVars.GAME_LOG);
+        /*
+        long _gameTest = (Long) getIntent().getExtra(StaticFinalVars.GAME_TEST);
+*/
+        _gameInfo = (BasketballGameInfo) getIntent().getSerializableExtra(StaticFinalVars.GAME_INFO);
+        _gameLog = (ArrayList<PlayByPlay>) getIntent().getSerializableExtra(StaticFinalVars.GAME_LOG);
+       
         int value = getIntent().getIntExtra(StaticFinalVars.DISPLAY_TYPE, 0);
         
         _pager = (ViewPager) findViewById(R.id.statsPager);
@@ -31,11 +39,11 @@ public class StatsActivity extends FragmentActivity{
         _pager.setCurrentItem(value);
     }
 
-    public BasketballGameTime getGameInfo(){
-    	return _gti;
+    public BasketballGameInfo getGameInfo(){
+    	return _gameInfo;
     }
     
-    public BasketballGameLog getGameLog(){
+    public ArrayList<PlayByPlay> getGameLog(){
     	return _gameLog;
     }
 }

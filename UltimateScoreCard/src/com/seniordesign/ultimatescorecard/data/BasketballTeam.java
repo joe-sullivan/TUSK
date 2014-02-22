@@ -2,33 +2,28 @@ package com.seniordesign.ultimatescorecard.data;
 
 import java.util.ArrayList;
 
+import com.seniordesign.ultimatescorecard.sqlite.basketball.*;
+import com.seniordesign.ultimatescorecard.sqlite.helper.*;
+
 public class BasketballTeam extends Team{
 	private static final long serialVersionUID = -4547516998953968383L;
 	private int _teamFouls = 0;
 	private ArrayList<BasketballPlayer> players = new ArrayList<BasketballPlayer>();
+	private Teams _team;
+	private long _t_id, _g_id;
+
 	
 	public BasketballTeam (String teamName, boolean homeTeam){
+		//databases
 		_homeTeam = homeTeam;
 		_teamName = teamName;
-		setTeamAbbr(teamName);
-		setTeamPlayers(teamName);	
+
 	}
 	
-	private void setTeamAbbr(String team){
-		if(team.equals("San Antonio Spurs")){
-			_teamAbbr = "SA";
-		}
-		else if(team.equals("Houston Rockets")){
-			_teamAbbr = "HOU";
-		}
-		else if(team.equals("Dallas Mavericks")){
-			_teamAbbr = "DAL";
-		}
-		else if(team.equals("Memphis Grizzlies")){
-			_teamAbbr = "MEM";
-		}
-		else if(team.equals("New Orleans Pelicans")){
-			_teamAbbr = "MEM";
+	public void setTeamAbbr(){
+		//if(_team.getabbv()!=null){
+			_teamAbbr = _team.getabbv();
+		/*
 		}
 		else {
 			if(_homeTeam){
@@ -38,81 +33,25 @@ public class BasketballTeam extends Team{
 				_teamAbbr = "Away";
 			}
 		}
+		*/
 	}
 	
-	private void setTeamPlayers(String team){
-		if(team.equals("San Antonio Spurs")){
-			players.add(new BasketballPlayer("Tony Parker"));
-			players.add(new BasketballPlayer("Manu Ginobili"));
-			players.add(new BasketballPlayer("Tiago Splitter"));
-			players.add(new BasketballPlayer("Tim Duncan"));
-			players.add(new BasketballPlayer("Kawhi Leonard"));
-			players.add(new BasketballPlayer("Patty Mills"));
-			players.add(new BasketballPlayer("Danny Green"));
-			players.add(new BasketballPlayer("Marco Belinelli"));
-			players.add(new BasketballPlayer("Boris Diaw"));
-			players.add(new BasketballPlayer("Matt Bonner"));
-		}
-		else if(team.equals("Houston Rockets")){
-			players.add(new BasketballPlayer("Jeremy Lin"));
-			players.add(new BasketballPlayer("James Harden"));
-			players.add(new BasketballPlayer("Omer Asik"));
-			players.add(new BasketballPlayer("Dwight Howard"));
-			players.add(new BasketballPlayer("Chandler Parson"));
-			players.add(new BasketballPlayer("Patrick Beverley"));
-			players.add(new BasketballPlayer("Aaron Brooks"));
-			players.add(new BasketballPlayer("Omri Casspi"));
-			players.add(new BasketballPlayer("Terrence Jones"));
-			players.add(new BasketballPlayer("Donatas Motijunas"));
-		}
-		else if(team.equals("Dallas Mavericks")){
-			players.add(new BasketballPlayer("Jose Calderon"));
-			players.add(new BasketballPlayer("Monta Ellis"));
-			players.add(new BasketballPlayer("Samuel Dalembert"));
-			players.add(new BasketballPlayer("Shawn Marion"));
-			players.add(new BasketballPlayer("Dirk Nowitzki"));
-			players.add(new BasketballPlayer("Devin Harris"));
-			players.add(new BasketballPlayer("Vince Carter"));
-			players.add(new BasketballPlayer("DeJuan Blair"));
-			players.add(new BasketballPlayer("Wayne Ellington"));
-			players.add(new BasketballPlayer("Brandon Wright"));
-		}
-		else if(team.equals("Memphis Grizzlies")){
-			players.add(new BasketballPlayer("Mike Conley"));
-			players.add(new BasketballPlayer("Tony Allen"));
-			players.add(new BasketballPlayer("Marc Gasol"));
-			players.add(new BasketballPlayer("Zach Randolph"));
-			players.add(new BasketballPlayer("Quincy Pondexter"));
-			players.add(new BasketballPlayer("Kosta Koufos"));
-			players.add(new BasketballPlayer("Mike Miller"));
-			players.add(new BasketballPlayer("Jerryd Bayless"));
-			players.add(new BasketballPlayer("Tayshaun Prince"));
-			players.add(new BasketballPlayer("Ed Davis"));
-			
-		}
-		else if(team.equals("New Orleans Hornets")){
-			players.add(new BasketballPlayer("Jrue Holliday"));
-			players.add(new BasketballPlayer("Eric Gordan"));
-			players.add(new BasketballPlayer("Jason Smith"));
-			players.add(new BasketballPlayer("Anthony Davis"));
-			players.add(new BasketballPlayer("Al-Farouq Aminu"));
-			players.add(new BasketballPlayer("Austin Rivers"));
-			players.add(new BasketballPlayer("Anthony Morrow"));
-			players.add(new BasketballPlayer("Tyreke Evans"));
-			players.add(new BasketballPlayer("Ryan Anderson"));
-			players.add(new BasketballPlayer("Jeff Withey"));
-		}
-		else {
-			players.add(new BasketballPlayer("Player 1"));
-			players.add(new BasketballPlayer("Player 2"));
-			players.add(new BasketballPlayer("Player 3"));
-			players.add(new BasketballPlayer("Player 4"));
-			players.add(new BasketballPlayer("Player 5"));
-			players.add(new BasketballPlayer("Player 6"));
-			players.add(new BasketballPlayer("Player 7"));
-			players.add(new BasketballPlayer("Player 8"));
-			players.add(new BasketballPlayer("Player 9"));
-			players.add(new BasketballPlayer("Player 10"));
+	public void setgid(long g_id){
+		_g_id = g_id;
+		setTeamPlayers(players);	
+	}
+	
+	public void setData(long g_id, Teams team, ArrayList<BasketballPlayer> players){
+		_g_id = g_id;
+		_team = team;
+		this.players = players;
+		setTeamPlayers(players);
+	}
+	
+	private void setTeamPlayers(ArrayList<BasketballPlayer> players){
+		//use string to get t_id, then get players on that team
+		for(BasketballPlayer p: players){
+			p.setgid(_g_id);
 		}
 	}
 	
@@ -122,7 +61,7 @@ public class BasketballTeam extends Team{
 	
 	public BasketballPlayer getPlayer(String player){
 		for(int i=0; i<players.size(); i++){
-			if(player.equals(players.get(i).getName())){
+			if(player.equals(players.get(i).getpname())){
 				return players.get(i);
 			}
 		}
@@ -131,7 +70,7 @@ public class BasketballTeam extends Team{
 	
 	public int getPlayerAsPositionInArray(String player){
 		for(int i=0; i<players.size(); i++){
-			if(player.equals(players.get(i).getName())){
+			if(player.equals(players.get(i).getpname())){
 				return i;
 			}
 		}
@@ -140,7 +79,7 @@ public class BasketballTeam extends Team{
 	
 	public BasketballPlayer getPlayerOnCourt(String player){
 		for(int i=0; i<5; i++){
-			if(player.equals(players.get(i).getName())){
+			if(player.equals(players.get(i).getpname())){
 				return players.get(i);
 			}
 		}
@@ -176,5 +115,21 @@ public class BasketballTeam extends Team{
 			players.set(i, players.get(j));
 			players.set(j, temp);
 		}
+	}
+	
+	public long gettid(){
+		return _t_id;
+	}
+	
+	public void setTeamOrder(ArrayList<Players> ps){
+		ArrayList<BasketballPlayer> temp = new ArrayList<BasketballPlayer>();
+		for(Players p: ps){
+			for(BasketballPlayer p2: players){
+				if(p.getpname().equals(p2.getpname())){
+					temp.add(p2);
+				}
+			}
+		}
+		players = temp;
 	}
 }

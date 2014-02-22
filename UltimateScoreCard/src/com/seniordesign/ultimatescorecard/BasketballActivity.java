@@ -1,8 +1,13 @@
 package com.seniordesign.ultimatescorecard;
 
+import java.util.ArrayList;
+
+import com.seniordesign.ultimatescorecard.data.BasketballGameInfo;
 import com.seniordesign.ultimatescorecard.data.DoubleParamOnClickListener;
 import com.seniordesign.ultimatescorecard.data.BasketballGameLog;
 import com.seniordesign.ultimatescorecard.data.BasketballGameTime;
+import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
+import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
 import com.seniordesign.ultimatescorecard.stats.StatsActivity;
 import com.seniordesign.ultimatescorecard.substitution.SubstitutionActivity;
 import com.seniordesign.ultimatescorecard.view.FlyOutContainer;
@@ -38,7 +43,7 @@ import android.widget.TextView;
 public class BasketballActivity extends Activity{
 	public static final int SUBSTITUTION_CODE = 1;
 	public static final int COLLEGE_TIME = 1200000;
-	public static final int PRO_TIME = 900000;
+	public static final int PRO_TIME = 720000;
 	
 	FlyOutContainer _root;
 	RelativeLayout _homeLayout, _awayLayout;
@@ -48,18 +53,35 @@ public class BasketballActivity extends Activity{
 	Bitmap _bitmap;
 	Button _p1Button, _p2Button, _p3Button, _p4Button, _p5Button, _otherButton, _otherButton2;
 	Button _option1Button, _option2Button, _option3Button, _option4Button, _option5Button;
+	
+	public BasketballDatabaseHelper _basketball_db;
 
 	private GameClock _gameClock;															//strings containing name of home and away team
 	private BasketballGameTime _gti;
 	private BasketballGameLog _gameLog = new BasketballGameLog();
+	private ArrayList<PlayByPlay> _playbyplay;
 	private ShotIconAdder _iconAdder;
+	private BasketballGameInfo _gameInfo;
+	private long g_id;
 	
 	//on creation of the page, trying to save all items that will appear on screen into a member variable
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		//databases
+		_basketball_db = new BasketballDatabaseHelper(getApplicationContext());
+		
 		_root = (FlyOutContainer)this.getLayoutInflater().inflate(R.layout.activity_basketball, null);	//root is modified view with fly-out container														
-		_gti = (BasketballGameTime) getIntent().getSerializableExtra(StaticFinalVars.GAME_INFO); 					//get our team informations class
+		_gti = (BasketballGameTime) getIntent().getSerializableExtra(StaticFinalVars.GAME_TIME); 					//get our team informations class
+		
+		_gti.setContext(this);
+		g_id = _gti.createTeams();
+		_gameLog.setdb(_basketball_db);
+		_gameLog.setgid(g_id);
+		_gameInfo = _gti.getGameInfo();
+		_playbyplay = new ArrayList<PlayByPlay>();
+		
 		setContentView(_root);
 		
 		_awayTextView = (TextView)findViewById(R.id.awayTextView);									//referencing the different views displayed via their id
@@ -151,11 +173,11 @@ public class BasketballActivity extends Activity{
 		else{
 			teamName = _gti.getAwayTeam();
 		}
-		_p1Button.setText(_gti.getPlayer(teamName, 0).getName());
-		_p2Button.setText(_gti.getPlayer(teamName, 1).getName());
-		_p3Button.setText(_gti.getPlayer(teamName, 2).getName());
-		_p4Button.setText(_gti.getPlayer(teamName, 3).getName());
-		_p5Button.setText(_gti.getPlayer(teamName, 4).getName());
+		_p1Button.setText(_gti.getPlayer(teamName, 0).getpname());
+		_p2Button.setText(_gti.getPlayer(teamName, 1).getpname());
+		_p3Button.setText(_gti.getPlayer(teamName, 2).getpname());
+		_p4Button.setText(_gti.getPlayer(teamName, 3).getpname());
+		_p5Button.setText(_gti.getPlayer(teamName, 4).getpname());
 	}
 	
 	//activates disable buttons on the slide out menu
@@ -442,9 +464,13 @@ public class BasketballActivity extends Activity{
 		@Override
 		public void onClick(View view) {	
 			_gameLog.rebounding(((TextView)view).getText().toString());
-			_gti.getPlayer(((TextView)view).getText().toString()).grabRebound();			//increase player rebound total				
 			if(_otherButton2.getText().equals("O-Rebound")){								//if O-Rebound is on screen, then the play must have been a D-Rebound
+				_gti.getPlayer(((TextView)view).getText().toString()).grabDRebound();		//increase player defensive rebound total				
 				changePossession();															//after D-Rebound, we change possession
+			}
+			else{
+				_gti.getPlayer(((TextView)view).getText().toString()).grabORebound();		//increase player Offensive rebound total				
+
 			}
 			recordActivity();																//record the activity
 			if(_gti.foulOccurred()){														//additional stuff to do if that rebound came after a foul
@@ -708,7 +734,7 @@ public class BasketballActivity extends Activity{
 		@Override
 		public void onClick(View view) {
 			setSlideOutButtonText(!_gti.getPossession());
-			toggleMenu(fouledByListener(0, "Technical Foul"), "Fouled By");
+			toggleMenu(fouledByListener(0, "Flagrant Foul"), "Fouled By");
 		}
 	};
 	
@@ -716,7 +742,7 @@ public class BasketballActivity extends Activity{
 		@Override
 		public void onClick(View view) {
 			setSlideOutButtonText(!_gti.getPossession());
-			toggleMenu(fouledByListener(0, "Technical Foul"), "Fouled By");
+			toggleMenu(fouledByListener(0, "Flagrant Foul"), "Fouled By");
 		}
 	};	
 	
@@ -1100,16 +1126,20 @@ public class BasketballActivity extends Activity{
 		
 		case R.id.boxscore:
 			intent = new Intent(getApplicationContext(), StatsActivity.class);			
-			intent.putExtra(StaticFinalVars.GAME_INFO, _gti);			
-			intent.putExtra(StaticFinalVars.GAME_LOG, _gameLog);
+			BasketballGameInfo gameinfo = _gti.getGameInfo();
+
+			intent.putExtra(StaticFinalVars.GAME_INFO, gameinfo);			
+			
+			intent.putExtra(StaticFinalVars.GAME_LOG, _playbyplay);
 			intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 0);
 			startActivity(intent);		
 			break;
 			
 		case R.id.gameLog:
 			intent = new Intent(getApplicationContext(), StatsActivity.class);	
-			intent.putExtra(StaticFinalVars.GAME_INFO, _gti);	
-			intent.putExtra(StaticFinalVars.GAME_LOG, _gameLog);
+			ArrayList<PlayByPlay> pbps = (ArrayList<PlayByPlay>) _basketball_db.getPlayByPlayGame(g_id);
+			intent.putExtra(StaticFinalVars.GAME_INFO, _gti.getGameInfo());	
+			intent.putExtra(StaticFinalVars.GAME_LOG, pbps);
 			intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 1);
 			startActivity(intent);
 			break;
@@ -1142,7 +1172,7 @@ public class BasketballActivity extends Activity{
 		
 		case R.id.substitution:
 			intent = new Intent(getApplicationContext(), SubstitutionActivity.class);			
-			intent.putExtra(StaticFinalVars.SUB_INFO, _gti);
+			intent.putExtra(StaticFinalVars.SUB_INFO, _gti.getGameInfo());
 			startActivityForResult(intent, SUBSTITUTION_CODE);	
 			break;
 		}
@@ -1154,7 +1184,8 @@ public class BasketballActivity extends Activity{
 		super.onActivityResult(requestCode, resultCode, data);
 		if(requestCode == SUBSTITUTION_CODE){
 			if(resultCode == Activity.RESULT_OK){
-				_gti = (BasketballGameTime)data.getSerializableExtra(StaticFinalVars.SUB_INFO);
+				_gameInfo = (BasketballGameInfo)data.getSerializableExtra(StaticFinalVars.SUB_INFO);
+				_gti.setGameInfo(_gameInfo);
 			}
 		}
 	}

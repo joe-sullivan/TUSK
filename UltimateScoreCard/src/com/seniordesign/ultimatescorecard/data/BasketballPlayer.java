@@ -2,9 +2,12 @@ package com.seniordesign.ultimatescorecard.data;
 
 import java.io.Serializable;
 
-public class BasketballPlayer implements Serializable{
+import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
+import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
+
+public class BasketballPlayer extends Players implements Serializable{
 	private static final long serialVersionUID = 8138078955965364135L;
-	private String _name;
+	private long g_id;
 	private int _threePtsMade = 0;
 	private int _threePtsMiss = 0;
 	private int _twoPtsMade = 0;
@@ -19,14 +22,25 @@ public class BasketballPlayer implements Serializable{
 	private int _fouls = 0;
 	private int _techFouls = 0;
 	private int _flagFouls = 0;
+	private BasketballDatabaseHelper db;
+	
+	public BasketballPlayer(){
+		super();
+	}
+	
+	public BasketballPlayer(long g_id, String p_name, int p_num){
+		super(g_id, p_name, p_num);
+	}
+	
+	public void setgid(long g_id){
+		this.g_id = g_id;
+	}
+	
+	public void setdb(BasketballDatabaseHelper db){
+		this.db = db;
+	}
 	
 	//getting values about a player
-	public BasketballPlayer (String name){
-		_name = name;
-	}
-	public String getName(){
-		return _name;
-	}
 	public int getRebounds(){
 		return _rebounds;
 	}
@@ -72,49 +86,72 @@ public class BasketballPlayer implements Serializable{
 	
 	//changing the values in a game
 	public void madeThree(){
-		_threePtsMade++;
+		((BasketballDatabaseHelper) db).addStats(g_id, p_id, "pts", 3);
+		((BasketballDatabaseHelper) db).addStats(g_id, p_id, "fgm3", 1);
+		((BasketballDatabaseHelper) db).addStats(g_id, p_id, "fga3", 1);
+		((BasketballDatabaseHelper) db).addStats(g_id, p_id, "fgm", 1);
+		((BasketballDatabaseHelper) db).addStats(g_id, p_id, "fga", 1);
 	}
 	public void madeTwo(){
-		_twoPtsMade++;
+		((BasketballDatabaseHelper) db).addStats(g_id, p_id, "pts", 2);
+		((BasketballDatabaseHelper) db).addStats(g_id, p_id, "fgm", 1);
+		((BasketballDatabaseHelper) db).addStats(g_id, p_id, "fga", 1);
 	}
 	public void madeFreeThrow(){
-		_freeThrowMade++;
+		((BasketballDatabaseHelper) db).addStats(g_id, p_id, "pts", 1);
+		((BasketballDatabaseHelper) db).addStats(g_id, p_id, "ftm", 1);
+		((BasketballDatabaseHelper) db).addStats(g_id, p_id, "fta", 1);
 	}	
 	public void missThree(){
-		_threePtsMiss++;
+		((BasketballDatabaseHelper) db).addStats(g_id, p_id, "fga3", 1);
+		((BasketballDatabaseHelper) db).addStats(g_id, p_id, "fga", 1);
 	}
 	public void missTwo(){
-		_twoPtsMiss++;
+		((BasketballDatabaseHelper) db).addStats(g_id, p_id, "fga", 1);
 	}	
 	public void missFreeThrow(){
-		_freeThrowMiss++;
+		((BasketballDatabaseHelper) db).addStats(g_id, p_id, "fta", 1);
 	}	
-	public void grabRebound(){
-		_rebounds++;
+	public void grabDRebound(){
+		((BasketballDatabaseHelper) db).addStats(g_id, p_id, "dreb", 1);
 	}
+	
+	public void grabORebound(){
+		((BasketballDatabaseHelper) db).addStats(g_id, p_id, "oreb", 1);
+	}
+	
 	public void dishAssist(){
-		_assists++;
+		((BasketballDatabaseHelper) db).addStats(g_id, p_id, "ast", 1);
 	}
 	public void stealsBall(){
-		_steals++;
+		((BasketballDatabaseHelper) db).addStats(g_id, p_id, "stl", 1);
 	}
 	public void blocksShot(){
-		_blocks++;
+		((BasketballDatabaseHelper) db).addStats(g_id, p_id, "blk", 1);
 	}
 	public void turnedOver(){
-		_turnovers++;
+		((BasketballDatabaseHelper) db).addStats(g_id, p_id, "turnover", 1);
 	}
 	public void commitFoul(){
-		_fouls++;
+		((BasketballDatabaseHelper) db).addStats(g_id, p_id, "pf", 1);
 	}
 	public void commitTechFoul(){
-		_techFouls++;
+		((BasketballDatabaseHelper) db).addStats(g_id, p_id, "tech", 1);
 	}
 	public void commitFlagFoul(){
-		_flagFouls++;
+		((BasketballDatabaseHelper) db).addStats(g_id, p_id, "flagrant", 1);
 	}
 	
 	//calculated stats
+	
+	public int pointScored(){
+		return 	((BasketballDatabaseHelper) db).getPlayerGameStat(g_id, p_id, "pts");
+	}
+	
+	
+	
+	
+/*
 	public int pointScored(){
 		return (_threePtsMade*3) + (_twoPtsMade*2) + _freeThrowMade;
 	}
@@ -130,7 +167,7 @@ public class BasketballPlayer implements Serializable{
 	public int freeThrowAttempted(){
 		return _freeThrowMade + _freeThrowMiss;
 	}
-	
+
 	public double freeThrowPCT(){
 		if(freeThrowAttempted() > 0){
 			return (double) _freeThrowMade / freeThrowAttempted();
@@ -148,4 +185,5 @@ public class BasketballPlayer implements Serializable{
 			return 0.0;
 		}
 	}
+	*/
 }

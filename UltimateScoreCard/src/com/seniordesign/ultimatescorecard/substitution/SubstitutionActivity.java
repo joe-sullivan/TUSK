@@ -1,6 +1,7 @@
 package com.seniordesign.ultimatescorecard.substitution;
 
 import com.seniordesign.ultimatescorecard.R;
+import com.seniordesign.ultimatescorecard.data.BasketballGameInfo;
 import com.seniordesign.ultimatescorecard.data.BasketballGameTime;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
 
@@ -15,7 +16,7 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 public class SubstitutionActivity extends FragmentActivity{
-	private BasketballGameTime _gti;
+	private BasketballGameInfo _gameInfo;
 	private Fragment _active = new ActivePageFragment();
 	private Fragment _bench = new BenchPageFragment();
 	private boolean _homeTeam = true;
@@ -26,7 +27,7 @@ public class SubstitutionActivity extends FragmentActivity{
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_substitution);
-		_gti = (BasketballGameTime) getIntent().getSerializableExtra(StaticFinalVars.SUB_INFO);
+		_gameInfo = (BasketballGameInfo) getIntent().getSerializableExtra(StaticFinalVars.SUB_INFO);
 		
 		TextView view = (TextView)findViewById(R.id.homeTeamSubText);
 		view.setOnClickListener(setHomeTeam);
@@ -99,8 +100,8 @@ public class SubstitutionActivity extends FragmentActivity{
 		transaction.commit();
 	}
 	
-	public BasketballGameTime getTeamInfo(){
-		return _gti;
+	public BasketballGameInfo getTeamInfo(){
+		return _gameInfo;
 	}
 	
 	public boolean getHomeTeam(){
@@ -118,17 +119,17 @@ public class SubstitutionActivity extends FragmentActivity{
 	
 	private void confirmSwitch(){
 		if(_homeTeam){
-			_gti.getTheHomeTeam().swapPlayer(_swapPlayer[0], _swapPlayer[1]);
+			_gameInfo.swapPlayer(_swapPlayer[0], _swapPlayer[1],_homeTeam);
 		}
 		else{
-			_gti.getTheAwayTeam().swapPlayer(_swapPlayer[0], _swapPlayer[1]);
+			_gameInfo.swapPlayer(_swapPlayer[0], _swapPlayer[1], _homeTeam);
 		}
 	}
 
 	@Override
 	public void onBackPressed() {
 		Intent intent = new Intent();
-		intent.putExtra(StaticFinalVars.SUB_INFO, _gti);
+		intent.putExtra(StaticFinalVars.SUB_INFO, _gameInfo);
 		setResult(Activity.RESULT_OK, intent);
 		finish();	
 	}

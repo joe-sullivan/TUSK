@@ -18,11 +18,6 @@
             android:text="@string/player_generic"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        <TextView
-            android:id="@+id/active1Stats"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/stat_generic" />
         
 	</LinearLayout>	
 	
@@ -41,12 +36,6 @@
             android:text="@string/player_generic"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        <TextView
-            android:id="@+id/active2Stat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/stat_generic" />
-        
 	</LinearLayout>	
 	
     <LinearLayout 
@@ -64,11 +53,6 @@
             android:text="@string/player_generic"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        <TextView
-            android:id="@+id/active3Stat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/stat_generic" />
         
 	</LinearLayout>	
 	
@@ -87,11 +71,6 @@
             android:text="@string/player_generic"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        <TextView
-            android:id="@+id/active4Stat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/stat_generic" />
         
 	</LinearLayout>	
 	
@@ -110,11 +89,6 @@
             android:text="@string/player_generic"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        <TextView
-            android:id="@+id/active5Stat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/stat_generic" />
         
 	</LinearLayout>	
 </RelativeLayout>
