@@ -31,35 +31,45 @@
 	            android:layout_width="match_parent"
 	            android:layout_height="match_parent"
 	            android:layout_weight="1"
-	            android:text="@string/player_1" />
+	            android:text="@string/player_1"
+	            android:textColor="@color/gray"
+	             />
 	
 	        <Button
 	            android:id="@+id/extendButton2"
 	            android:layout_width="match_parent"
 	            android:layout_height="match_parent"
 	            android:layout_weight="1"
-	            android:text="@string/player_2" />
+	            android:text="@string/player_2"
+	            android:textColor="@color/gray"
+	             />
 	
 	        <Button
 	            android:id="@+id/extendButton3"
 	            android:layout_width="match_parent"
 	            android:layout_height="match_parent"
 	            android:layout_weight="1"
-	            android:text="@string/player_3" />
+	            android:text="@string/player_3"
+	            android:textColor="@color/gray"
+	             />
 	        
 	        <Button
 	            android:id="@+id/extendButton4"
 	            android:layout_width="match_parent"
 	            android:layout_height="match_parent"
 	            android:layout_weight="1"
-	            android:text="@string/player_4" />
+	            android:text="@string/player_4"
+	            android:textColor="@color/gray"
+	             />
 	        
 	        <Button
 	            android:id="@+id/extendButton5"
 	            android:layout_width="match_parent"
 	            android:layout_height="match_parent"
 	            android:layout_weight="1"
-	            android:text="@string/player_5" />
+	            android:text="@string/player_5"
+	            android:textColor="@color/gray"
+	             />
         </LinearLayout>
     </RelativeLayout>
   

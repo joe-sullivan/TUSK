@@ -50,21 +50,14 @@ public class ChooseTeamActivity extends Activity{
 		
 		//databases
 		_basketball_db = new BasketballDatabaseHelper(getApplicationContext());
-		
-		//unnecessary?
-		_teamsEntered = getSharedPreferences( _sportType+"TeamList" , MODE_PRIVATE);					//get shared preference, codeword = basketballTeamList
-		_prefEditor = _teamsEntered.edit();																//preference editor allows us to edit specified shared preference
-		
+
 		_teamSelectTitle = (TextView) findViewById(R.id.team_selection_title);							//getting the view of some features implemented in xml
 		_listOfTeams = (LinearLayout) findViewById (R.id.teamListLayout);
 		_deleteButton = (Button) findViewById (R.id.deleteTeamButton);
 		
-		if(_teamsEntered.getString("basketballTeamList", null) != null){								//read from shared preference to get saved team names if any
-			loadTeams();
-		}
-		if(_teamsEntered.getString("footballTeamList", null) != null){								//read from shared preference to get saved team names if any
-			loadTeams();
-		}
+		//load teams from database (maybe put it catch for empty database?
+		loadTeams();
+
 	}	
 	
 	//when back button is hit to return to this page (restart it)

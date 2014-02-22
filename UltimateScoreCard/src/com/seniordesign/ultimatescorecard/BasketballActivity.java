@@ -21,6 +21,7 @@ import android.app.Activity;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -116,7 +117,10 @@ public class BasketballActivity extends Activity{
 		_p4Button = (Button)findViewById(R.id.extendButton4);
 		_p5Button = (Button)findViewById(R.id.extendButton5);
 		_otherButton = new Button(this);
+		_otherButton.setTextColor(Color.GRAY);
 		_otherButton2 = new Button(this);
+		_otherButton2.setTextColor(Color.GRAY);
+
 		
 		_option1Button = (Button)findViewById(R.id.optionButton1);								//more buttons and setting onClick listeners
 		_option2Button = (Button)findViewById(R.id.optionButton2);

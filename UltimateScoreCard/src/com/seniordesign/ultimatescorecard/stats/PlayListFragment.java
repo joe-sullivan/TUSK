@@ -34,7 +34,6 @@ public class PlayListFragment extends Fragment{
 		if(layout.getChildCount()==0){
 			for(PlayByPlay pbp: log){
 				layout.addView(newTextView(pbp.getaction()));	
-	
 			}
 		}
 	}

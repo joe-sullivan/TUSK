@@ -47,9 +47,10 @@ public class MainActivity extends Activity{
 	
 		//databases
 		_basketball_db = new BasketballDatabaseHelper(getApplicationContext());
+		//.onUpgrade will reset databases (i.e. erase all data stored in them)
 		_basketball_db.onUpgrade(_basketball_db.getWritableDatabase(), 0, 0);
 
-		
+		//Test Teams and players
 		Teams spurs = new Teams("San Antonio Spurs", "SAS", "Gregg Popovich", "Basketball");
 		Teams rockets = new Teams("Houston Rockets", "HOU", "Kevin McHale", "Basketball");
 		Teams huskies = new Teams("UConn Huskies", "UCONN", "Kevin Ollie", "Basketball");
@@ -121,6 +122,7 @@ public class MainActivity extends Activity{
 		long TW25_id = _basketball_db.createPlayers(TW25);
 		long AB35_id = _basketball_db.createPlayers(AB35);
 		
+		//close database helper
 		_basketball_db.close();
 	}
 		
