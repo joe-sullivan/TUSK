@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.seniordesign.ultimatescorecard"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="18" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/application_name"
+        android:theme="@style/AppTheme" >
+        
+        <activity
+            android:name="com.seniordesign.ultimatescorecard.MainActivity"
+            android:label="@string/application_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <activity
+            android:name="com.seniordesign.ultimatescorecard.data.basketball.BasketballActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/basketball_screen" 
+            android:screenOrientation="portrait">
+        </activity>
+        
+        <activity
+            android:name="com.seniordesign.ultimatescorecard.data.football.FootballActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/basketball_screen" 
+            android:screenOrientation="portrait">
+        </activity>
+        
+        <activity
+            android:name="com.seniordesign.ultimatescorecard.data.soccer.SoccerActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/basketball_screen" 
+            android:screenOrientation="portrait">
+        </activity>
+        
+        <activity
+            android:name="com.seniordesign.ultimatescorecard.data.hockey.HockeyActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/basketball_screen" 
+            android:screenOrientation="portrait">
+        </activity>
+        
+        <activity
+            android:name="com.seniordesign.ultimatescorecard.ChooseTeamActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/choose_team_screen" >
+        </activity>
+        
+         <activity
+            android:name="com.seniordesign.ultimatescorecard.CreateTeamActivity"
+             android:configChanges="orientation|keyboardHidden"
+             android:windowSoftInputMode="stateAlwaysHidden"
+            android:label="@string/choose_team_screen" >
+        </activity>
+        
+        <activity
+            android:name="com.seniordesign.ultimatescorecard.stats.basketball.BasketballStatsActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/boxscore_screen" >
+        </activity>
+               
+        <activity
+            android:name="com.seniordesign.ultimatescorecard.stats.football.FootballStatsActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/boxscore_screen" >
+        </activity>        
+         
+        <activity
+            android:name="com.seniordesign.ultimatescorecard.stats.hockey.HockeyStatsActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/boxscore_screen" >
+        </activity>
+        
+        <activity
+            android:name="com.seniordesign.ultimatescorecard.stats.soccer.SoccerStatsActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/boxscore_screen" >
+        </activity>
+                
+        <activity
+            android:name="com.seniordesign.ultimatescorecard.substitution.SubstitutionActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/boxscore_screen" >
+        </activity>
+        
+        <activity
+            android:name="com.seniordesign.ultimatescorecard.stats.basketball.BasketballIndividualStatActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/boxscore_screen" >
+        </activity>
+        
+        <activity
+            android:name="com.seniordesign.ultimatescorecard.stats.football.FootballIndividualStatActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/boxscore_screen" >
+        </activity>
+        
+        <activity
+            android:name="com.seniordesign.ultimatescorecard.stats.soccer.SoccerIndividualStatActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/boxscore_screen" >
+        </activity>
+        
+        <activity
+            android:name="com.seniordesign.ultimatescorecard.stats.hockey.HockeyIndividualStatActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/boxscore_screen" >
+        </activity>
+        
+    </application>
+</manifest>

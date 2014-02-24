@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background" >
+	
+    <ImageView
+        android:id="@+id/titleImageView"
+        android:contentDescription="@string/main_title_text"
+        android:padding="@dimen/padding"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:src="@drawable/title" />
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titleImageView"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:baselineAligned="true">
+	
+        <RelativeLayout
+	     	android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:layout_weight="3"
+	        android:orientation="horizontal">
+
+	       <Button
+	           android:id="@+id/basketballButton"
+	           android:layout_width="wrap_content"
+	           android:layout_height="wrap_content"
+	           android:layout_alignParentLeft="true"
+	           android:layout_alignParentRight="true"
+	           android:layout_alignParentTop="true"
+	           android:drawableTop="@drawable/basketball"
+	           android:padding="@dimen/padding"
+	           android:text="@string/basketball_button"
+	           android:textColor="@color/white"
+	           android:textStyle="bold" />
+
+	       <Button
+	           android:id="@+id/footballButton"
+	           android:layout_width="wrap_content"
+	           android:layout_height="wrap_content"
+	           android:layout_alignLeft="@+id/basketballButton"
+	           android:layout_alignParentBottom="true"
+	           android:layout_alignParentRight="true"
+	           android:layout_below="@+id/basketballButton"
+	           android:drawableTop="@drawable/football"
+	           android:padding="@dimen/padding"
+	           android:text="@string/football_button"
+	           android:textColor="@color/white"
+	           android:textStyle="bold" />
+
+    	</RelativeLayout>
+    
+        <RelativeLayout
+	     	android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:layout_weight="3"
+	        android:orientation="horizontal">
+
+	        <Button
+	            android:id="@+id/baseballButton"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_alignParentLeft="true"
+	            android:layout_alignParentRight="true"
+	            android:layout_alignParentTop="true"
+	            android:drawableTop="@drawable/hockey"
+	            android:padding="@dimen/padding"
+	            android:text="@string/hockey_button"
+	            android:textColor="@color/white"
+	            android:textStyle="bold" />
+
+	        <Button
+	            android:id="@+id/soccerButton"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_alignParentBottom="true"
+	            android:layout_alignParentLeft="true"
+	            android:layout_alignRight="@+id/baseballButton"
+	            android:layout_below="@+id/baseballButton"
+	            android:drawableTop="@drawable/soccerball"
+	            android:padding="@dimen/padding"
+	            android:text="@string/soccer_button"
+	            android:textColor="@color/white"
+	            android:textStyle="bold" />
+	        
+        </RelativeLayout>
+            
+        <RelativeLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:layout_weight="2"
+	        android:orientation="horizontal">
+            
+            <Button
+				android:id="@+id/viewStatisticButton"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:padding="@dimen/padding"
+			    android:text="@string/view_statistic_button" />
+				
+		    <Button
+			    android:id="@+id/optionButton"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@+id/viewStatisticButton"
+			    android:padding="@dimen/padding"
+			    android:text="@string/options_button" />
+		    
+		    <Button
+			    android:id="@+id/liveTrackerButton"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@+id/optionButton"
+			    android:padding="@dimen/padding"
+			    android:text="@string/live_tracker_button" />
+	
+    	</RelativeLayout>
+    
+    </LinearLayout>
+
+</RelativeLayout>

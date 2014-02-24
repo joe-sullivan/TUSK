@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/teamCreationTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="Creating a New Team" />
+
+    <EditText
+        android:id="@+id/teamNameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/teamCreationTitle"
+        android:hint="Enter Team Name" >
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/teamAbbrEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/teamNameEditText"
+        android:hint="Abbreviation" />
+
+    <EditText
+        android:id="@+id/coachNameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/teamAbbrEditText"
+		android:hint="Coach Name"/>
+
+    <ScrollView
+        android:id="@+id/playerScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/coachNameEditText" 
+        android:layout_above="@+id/playerCreation" >
+
+        <LinearLayout
+            android:id="@+id/playerList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+        </LinearLayout>
+    </ScrollView>
+	
+    <LinearLayout
+	        android:id="@+id/playerCreation"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentBottom="true"
+	    	android:layout_alignParentLeft="true"
+	        android:orientation="horizontal" >
+        
+	    <Button
+	        android:id="@+id/addPlayer"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:text="Add" />
+	    
+	    <Button
+	        android:id="@+id/editPlayer"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:text="Edit" />
+	    
+	    <Button
+	        android:id="@+id/deletePlayer"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:text="Delete" />
+	    
+	    <Button
+	        android:id="@+id/confirmTeam"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="3"
+	        android:text="Save Team" />
+    
+     </LinearLayout>
+
+</RelativeLayout>

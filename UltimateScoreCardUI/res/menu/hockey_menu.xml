@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    
+	<item android:id="@+id/substitution"
+	    android:title="Substitution"/>
+	
+	<item android:id="@+id/editGame"
+	    android:title="Edit Game"/>
+	
+	<item android:id="@+id/nextPeriod"
+	    android:title="Next Period"/>
+	
+	<item android:id="@+id/boxscore"
+	    android:title="Boxscore"/>
+	
+	<item android:id="@+id/gameLog"
+	    android:title="Play by Play"/>
+	
+	<item android:id="@+id/settings"
+	    android:title="Settings"/>
+</menu>
