@@ -22,6 +22,7 @@ public final class R {
         public static final int brown=0x7f050007;
         public static final int gray=0x7f050008;
         public static final int green=0x7f050003;
+        public static final int light_gray=0x7f05000b;
         public static final int orange=0x7f050001;
         public static final int purple=0x7f050005;
         /**  What other thing can be contained in a file named colors.xml
@@ -108,7 +109,7 @@ public final class R {
         public static final int awayTeamStatText=0x7f0a007d;
         public static final int awayTeamSubText=0x7f0a0056;
         public static final int awayTextView=0x7f0a0009;
-        public static final int baseballButton=0x7f0a004f;
+        public static final int baseballButton=0x7f0a004e;
         public static final int basketballButton=0x7f0a0048;
         public static final int basketballCourt=0x7f0a0016;
         public static final int basketballCourtMask=0x7f0a0017;
@@ -167,7 +168,7 @@ public final class R {
         public static final int icefloorBackground=0x7f0a0035;
         public static final int interactiveFrame=0x7f0a000f;
         public static final int listofPlays=0x7f0a0091;
-        public static final int liveTrackerButton=0x7f0a004e;
+        public static final int liveTrackerButton=0x7f0a004f;
         public static final int nextPeriod=0x7f0a0094;
         public static final int optionButton=0x7f0a004d;
         public static final int optionButton1=0x7f0a0018;

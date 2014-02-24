@@ -3,9 +3,9 @@ package com.seniordesign.ultimatescorecard.stats;
 import java.util.ArrayList;
 
 import com.seniordesign.ultimatescorecard.R;
-import com.seniordesign.ultimatescorecard.data.BasketballGameInfo;
-import com.seniordesign.ultimatescorecard.data.BasketballGameLog;
-import com.seniordesign.ultimatescorecard.data.BasketballGameTime;
+import com.seniordesign.ultimatescorecard.data.basketball.BasketballGameInfo;
+import com.seniordesign.ultimatescorecard.data.basketball.BasketballGameLog;
+import com.seniordesign.ultimatescorecard.data.basketball.BasketballGameTime;
 import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;

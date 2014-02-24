@@ -9,6 +9,11 @@ public class Team implements Serializable{
 	protected boolean _homeTeam;
 	protected int _score = 0; 
 	protected int _teamTurnovers = 0;
+	
+	public Team (String teamName, boolean homeTeam){
+		_homeTeam = homeTeam;
+		_teamName = teamName;
+	}
 			
 	public String getTeamAbbr(){
 		return _teamAbbr;

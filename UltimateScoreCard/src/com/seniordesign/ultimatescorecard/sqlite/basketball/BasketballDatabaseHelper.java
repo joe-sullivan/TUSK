@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.seniordesign.ultimatescorecard.data.BasketballPlayer;
+import com.seniordesign.ultimatescorecard.data.basketball.BasketballPlayer;
 import com.seniordesign.ultimatescorecard.sqlite.DatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
 import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
@@ -101,12 +101,12 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 
     //Table Create Statements
     //GAMES table create statement
-    private static final String CREATE_TABLE_GAMES = "CREATE TABLE " + TABLE_GAMES 
+    private static final String CREATE_TABLE_GAMES = "CREATE TABLE IF NOT EXISTS " + TABLE_GAMES 
     		+ "(" + KEY_G_ID + " INTEGER PRIMARY KEY," + KEY_HOME_ID + " INTEGER," 
     		+ KEY_AWAY_ID + " INTEGER," + KEY_DATE + " DATE" + ")"; 
 
     //BASKETBALL_GAME_STATS table create statement
-    private static final String CREATE_TABLE_BASKETBALL_GAME_STATS = "CREATE TABLE " + TABLE_BASKETBALL_GAME_STATS 
+    private static final String CREATE_TABLE_BASKETBALL_GAME_STATS = "CREATE TABLE IF NOT EXISTS " + TABLE_BASKETBALL_GAME_STATS 
     		+ "(" + KEY_G_ID + " INTEGER" +
     		//		"FOREIGN KEY REFERENCES" + TABLE_GAMES + "(" + KEY_G_ID + "),"
     		", "
@@ -122,25 +122,25 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
     		+ KEY_FLAGRANT + " INTEGER " + ")"; 
     
     //PLAYERS table create statement
-    private static final String CREATE_TABLE_PLAYERS = "CREATE TABLE " + TABLE_PLAYERS 
+    private static final String CREATE_TABLE_PLAYERS = "CREATE TABLE IF NOT EXISTS " + TABLE_PLAYERS 
     		+ "(" + KEY_P_ID + " INTEGER PRIMARY KEY," 
     		+ KEY_T_ID + " INTEGER, "
     		// + FOREIGN KEY REFERENCES " + TABLE_TEAMS + "(" + KEY_T_ID + ")," 
     		+ KEY_P_NAME + " VARCHAR(45)," + KEY_P_NUM + " INTEGER" + ")"; 
     
     //TEAMS table create statement
-    private static final String CREATE_TABLE_TEAMS = "CREATE TABLE " + TABLE_TEAMS 
+    private static final String CREATE_TABLE_TEAMS = "CREATE TABLE IF NOT EXISTS " + TABLE_TEAMS 
     		+ "(" + KEY_T_ID + " INTEGER PRIMARY KEY," + KEY_T_NAME + " VARCHAR(45)," 
     		+ KEY_ABBV + " VARCHAR(45),"+ KEY_C_NAME + " VARCHAR(45),"+ KEY_SPORT + " VARCHAR(45)" + ")"; 
     
     //PLAY_BY_PLAY table create statement
-    private static final String CREATE_TABLE_PLAY_BY_PLAY = "CREATE TABLE " + TABLE_PLAY_BY_PLAY 
+    private static final String CREATE_TABLE_PLAY_BY_PLAY = "CREATE TABLE IF NOT EXISTS " + TABLE_PLAY_BY_PLAY 
     		+ "(" + KEY_A_ID + " INTEGER PRIMARY KEY," + KEY_G_ID + " INTEGER," 
     		+ KEY_ACTION + " VARCHAR(45)," + KEY_TIME + " VARCHAR(45)," + KEY_PERIOD + " VARCHAR(10)," + KEY_HOME_SCORE + " INTEGER, " 
     		+ KEY_AWAY_SCORE + " INTEGER" + ")";
     
     //SHOT_CHART_COORDS table create statement
-    private static final String CREATE_TABLE_SHOT_CHART_COORDS = "CREATE TABLE " + TABLE_SHOT_CHART_COORDS 
+    private static final String CREATE_TABLE_SHOT_CHART_COORDS = "CREATE TABLE IF NOT EXISTS " + TABLE_SHOT_CHART_COORDS 
     		+ "(" + KEY_A_ID + " INTEGER PRIMARY KEY," + KEY_G_ID + " INTEGER," 
     		+ KEY_P_ID + " INTEGER," + KEY_X + " INTEGER," + KEY_Y + " INTEGER," 
     		+ KEY_MADE + " VARCHAR(4)" + ")";

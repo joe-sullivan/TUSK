@@ -1,8 +1,8 @@
 package com.seniordesign.ultimatescorecard.stats;
 
 import com.seniordesign.ultimatescorecard.R;
-import com.seniordesign.ultimatescorecard.data.BasketballGameInfo;
-import com.seniordesign.ultimatescorecard.data.BasketballTeam;
+import com.seniordesign.ultimatescorecard.data.basketball.BasketballGameInfo;
+import com.seniordesign.ultimatescorecard.data.basketball.BasketballTeam;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;

@@ -4,6 +4,9 @@
     <!-- Really High Level Text -->
     <string name="application_name">UltimateScoreCard</string>
     <string name="basketball_screen">Basketball</string>
+    <string name="football_screen">Football</string>
+    <string name="soccer_screen">Soccer</string>
+    <string name="hockey_screen">Hockey</string>       
     <string name="choose_team_screen">Choose Team</string>
     <string name="boxscore_screen">Boxscore</string>
     <string name="action_settings">Settings</string>
@@ -11,7 +14,7 @@
     <!-- Text Found on Main Title Page -->
     <string name="main_title_text">The Ultimate Score Card</string>
     <string name="basketball_button">Basketball</string>
-    <string name="baseball_button">Baseball</string>
+    <string name="hockey_button">Hockey</string>
     <string name="football_button">Football</string>
     <string name="soccer_button">Soccer</string>
 	<string name="view_statistic_button">View Statistics</string>
@@ -30,7 +33,7 @@
     <string name="away_name">Away</string>
     <string name="possession_marker">Possession Markers</string>
     <string name="start_game">Start Game</string>
-    <string name="quarter">1ST</string>
+    <string name="period">1ST</string>
 	
     <!-- Text used in basketball interface -->
     <string name="basketball_court">Visible image of Basketball Court</string>

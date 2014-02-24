@@ -2,7 +2,7 @@ package com.seniordesign.ultimatescorecard;
 
 import java.util.ArrayList;
 
-import com.seniordesign.ultimatescorecard.data.BasketballPlayer;
+import com.seniordesign.ultimatescorecard.data.basketball.BasketballPlayer;
 import com.seniordesign.ultimatescorecard.sqlite.DatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;

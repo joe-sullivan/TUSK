@@ -3,8 +3,10 @@ package com.seniordesign.ultimatescorecard;
 
 import java.util.ArrayList;
 
-import com.seniordesign.ultimatescorecard.data.BasketballGameTime;
-import com.seniordesign.ultimatescorecard.data.FootballGameTime;
+import com.seniordesign.ultimatescorecard.data.basketball.BasketballActivity;
+import com.seniordesign.ultimatescorecard.data.basketball.BasketballGameTime;
+import com.seniordesign.ultimatescorecard.data.football.FootballActivity;
+import com.seniordesign.ultimatescorecard.data.football.FootballGameTime;
 import com.seniordesign.ultimatescorecard.sqlite.DatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;

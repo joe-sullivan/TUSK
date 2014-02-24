@@ -1,8 +1,8 @@
 package com.seniordesign.ultimatescorecard.substitution;
 
 import com.seniordesign.ultimatescorecard.R;
-import com.seniordesign.ultimatescorecard.data.BasketballGameInfo;
-import com.seniordesign.ultimatescorecard.data.BasketballGameTime;
+import com.seniordesign.ultimatescorecard.data.basketball.BasketballGameInfo;
+import com.seniordesign.ultimatescorecard.data.basketball.BasketballGameTime;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
 
 import android.app.Activity;

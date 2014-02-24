@@ -63,15 +63,15 @@
 	        android:orientation="horizontal">
 
 	        <Button
-	            android:id="@+id/baseballButton"
+	            android:id="@+id/hockeyButton"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_alignParentLeft="true"
 	            android:layout_alignParentRight="true"
 	            android:layout_alignParentTop="true"
-	            android:drawableTop="@drawable/baseball"
+	            android:drawableTop="@drawable/hockey"
 	            android:padding="@dimen/padding"
-	            android:text="@string/baseball_button"
+	            android:text="@string/hockey_button"
 	            android:textColor="@color/white"
 	            android:textStyle="bold" />
 

@@ -1,7 +1,7 @@
 package com.seniordesign.ultimatescorecard;
 
 
-import com.seniordesign.ultimatescorecard.data.BasketballPlayer;
+import com.seniordesign.ultimatescorecard.data.basketball.BasketballPlayer;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.*;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
@@ -20,7 +20,7 @@ import android.widget.Button;
 
 //this class refers to the main (opening screen)
 public class MainActivity extends Activity{
-	public Button _basketballButton, _footballButton, _baseballButton, _soccerButton; 						//these are the sport selection buttons
+	public Button _basketballButton, _footballButton, _hockeyButton, _soccerButton; 						//these are the sport selection buttons
 	public Button _viewStatsButton, _optionsButton, _liveStatButtons; 										//these are set up for the other buttons
 	//databases
 	public BasketballDatabaseHelper _basketball_db;
@@ -39,8 +39,8 @@ public class MainActivity extends Activity{
 		_footballButton = (Button) findViewById(R.id.footballButton);										//referring to the football button
 		_footballButton.setOnClickListener(footballButtonListener);											//setting a click listener for the button
 	
-		_baseballButton = (Button) findViewById(R.id.baseballButton);										//referring to the baseball button
-		_baseballButton.setOnClickListener(baseballButtonListener);											//setting a click listener for the button
+		_hockeyButton = (Button) findViewById(R.id.hockeyButton);										//referring to the baseball button
+		_hockeyButton.setOnClickListener(hockeyButtonListener);												//setting a click listener for the button
 		
 		_soccerButton = (Button) findViewById(R.id.soccerButton);											//referring to the soccer button
 		_soccerButton.setOnClickListener(soccerButtonListener);												//setting a click listener for the button
@@ -48,7 +48,7 @@ public class MainActivity extends Activity{
 		//databases
 		_basketball_db = new BasketballDatabaseHelper(getApplicationContext());
 		//.onUpgrade will reset databases (i.e. erase all data stored in them)
-		//_basketball_db.onUpgrade(_basketball_db.getWritableDatabase(), 0, 0);
+		_basketball_db.onCreate(_basketball_db.getWritableDatabase());
 /*
 		//Test Teams and players
 		Teams spurs = new Teams("San Antonio Spurs", "SAS", "Gregg Popovich", "Basketball");
@@ -146,12 +146,12 @@ public class MainActivity extends Activity{
 		}
 	};
 	
-	//click listener for baseball button
-	public OnClickListener baseballButtonListener = new OnClickListener(){
+	//click listener for hockey button
+	public OnClickListener hockeyButtonListener = new OnClickListener(){
 		@Override
 		public void onClick(View view) {
 			Intent intent = new Intent(getApplicationContext(), ChooseTeamActivity.class);					//create new intent (you have intentions to do something)	
-			intent.putExtra(StaticFinalVars.SPORT_TYPE, "baseball");
+			intent.putExtra(StaticFinalVars.SPORT_TYPE, "hockey");
 			startActivity(intent);														
 		}
 	};

@@ -1,9 +1,9 @@
 package com.seniordesign.ultimatescorecard.substitution;
 
 import com.seniordesign.ultimatescorecard.R;
-import com.seniordesign.ultimatescorecard.data.BasketballGameInfo;
-import com.seniordesign.ultimatescorecard.data.BasketballGameTime;
-import com.seniordesign.ultimatescorecard.data.BasketballTeam;
+import com.seniordesign.ultimatescorecard.data.basketball.BasketballGameInfo;
+import com.seniordesign.ultimatescorecard.data.basketball.BasketballGameTime;
+import com.seniordesign.ultimatescorecard.data.basketball.BasketballTeam;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 
 import android.os.Bundle;
