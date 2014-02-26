@@ -190,6 +190,15 @@ public class BasketballGameStats implements Serializable {
 		}
 	}
 	
+	public double getfg3percent(){
+		if(fga3 > 0){
+			return (double) fgm3 / fga3;
+		}
+		else{
+			return 0.0;
+		}
+	}
+	
 	public double getftpercent(){
 		if(fta > 0){
 			return (double) ftm / fta;

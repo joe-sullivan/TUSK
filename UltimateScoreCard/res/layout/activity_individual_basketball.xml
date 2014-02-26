@@ -38,7 +38,14 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:padding="@dimen/padding"
-	        android:text="Field Goals Made / Field Goal Attempted" />
+	        android:text="Field Goals Made / Field Goals Attempted" />
+	    
+	    <TextView
+	        android:id="@+id/fieldGoal3Total"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:padding="@dimen/padding"
+	        android:text="3 Point Field Goals Made / 3 Point Field Goals Attempted" />
 	
 	    <TextView
 	        android:id="@+id/freeThrowTotal"

@@ -32,6 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable{
     private static final String KEY_T_ID = "t_id";
     private static final String KEY_A_ID = "a_id";
     private static final String KEY_PERIOD = "period";
+    
 
     //GAMES Table - column names
     private static final String KEY_HOME_ID = "home_id";
@@ -58,6 +59,8 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable{
     private static final String KEY_X = "x";
     private static final String KEY_Y = "y";
     private static final String KEY_MADE = "made";
+    protected static final String KEY_SHOT_ID = "shot_id";
+
 	
 
 	public DatabaseHelper(Context context, String name, CursorFactory factory,
@@ -140,7 +143,6 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable{
 		SQLiteDatabase db = this.getWritableDatabase();
 		 
         ContentValues values = new ContentValues();
-        values.put(KEY_A_ID, shot.getaid());
         values.put(KEY_G_ID, shot.getgid());
         values.put(KEY_P_ID, shot.getpid());
         values.put(KEY_X, shot.getx());
@@ -162,23 +164,22 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable{
         
         Cursor c = db.rawQuery(selectQuery, null);
         
-        if (c!=null)
-        	c.moveToFirst();
+	    if (c != null && c.moveToFirst()){
         
-        do {
-        	//create the instance of Players using cursor information
-		    ShotChartCoords shot = new ShotChartCoords();
-		    shot.setaid(c.getLong(c.getColumnIndex(KEY_A_ID)));
-		    shot.setgid((c.getLong(c.getColumnIndex(KEY_G_ID))));		    
-		    shot.setpid((c.getLong(c.getColumnIndex(KEY_P_ID))));
-		    shot.setx((c.getInt(c.getColumnIndex(KEY_X))));
-		    shot.sety((c.getInt(c.getColumnIndex(KEY_Y))));
-		    shot.setmade((c.getString(c.getColumnIndex(KEY_MADE))));
-
-            // adding to players list
-		    shots.add(shot);
-        } while(c.moveToNext());
-        
+	        do {
+	        	//create the instance of Players using cursor information
+			    ShotChartCoords shot = new ShotChartCoords();
+			    shot.setshotid(c.getLong(c.getColumnIndex(KEY_SHOT_ID)));
+			    shot.setgid((c.getLong(c.getColumnIndex(KEY_G_ID))));		    
+			    shot.setpid((c.getLong(c.getColumnIndex(KEY_P_ID))));
+			    shot.setx((c.getInt(c.getColumnIndex(KEY_X))));
+			    shot.sety((c.getInt(c.getColumnIndex(KEY_Y))));
+			    shot.setmade((c.getString(c.getColumnIndex(KEY_MADE))));
+	
+	            // adding to players list
+			    shots.add(shot);
+	        } while(c.moveToNext());
+	    }
         return shots;
 	}
 	
@@ -198,7 +199,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable{
         do {
         	//create the instance of Players using cursor information
 		    ShotChartCoords shot = new ShotChartCoords();
-		    shot.setaid(c.getLong(c.getColumnIndex(KEY_A_ID)));
+		    shot.setshotid(c.getLong(c.getColumnIndex(KEY_SHOT_ID)));
 		    shot.setgid((c.getLong(c.getColumnIndex(KEY_G_ID))));		    
 		    shot.setpid((c.getLong(c.getColumnIndex(KEY_P_ID))));
 		    shot.setx((c.getInt(c.getColumnIndex(KEY_X))));
@@ -227,7 +228,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable{
         do {
         	//create the instance of Players using cursor information
 		    ShotChartCoords shot = new ShotChartCoords();
-		    shot.setaid(c.getLong(c.getColumnIndex(KEY_A_ID)));
+		    shot.setshotid(c.getLong(c.getColumnIndex(KEY_SHOT_ID)));
 		    shot.setgid((c.getLong(c.getColumnIndex(KEY_G_ID))));		    
 		    shot.setpid((c.getLong(c.getColumnIndex(KEY_P_ID))));
 		    shot.setx((c.getInt(c.getColumnIndex(KEY_X))));
@@ -257,7 +258,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable{
         do {
         	//create the instance of Players using cursor information
 		    ShotChartCoords shot = new ShotChartCoords();
-		    shot.setaid(c.getLong(c.getColumnIndex(KEY_A_ID)));
+		    shot.setshotid(c.getLong(c.getColumnIndex(KEY_SHOT_ID)));
 		    shot.setgid((c.getLong(c.getColumnIndex(KEY_G_ID))));		    
 		    shot.setpid((c.getLong(c.getColumnIndex(KEY_P_ID))));
 		    shot.setx((c.getInt(c.getColumnIndex(KEY_X))));
@@ -287,7 +288,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable{
         do {
         	//create the instance of Players using cursor information
 		    ShotChartCoords shot = new ShotChartCoords();
-		    shot.setaid(c.getLong(c.getColumnIndex(KEY_A_ID)));
+		    shot.setshotid(c.getLong(c.getColumnIndex(KEY_SHOT_ID)));
 		    shot.setgid((c.getLong(c.getColumnIndex(KEY_G_ID))));		    
 		    shot.setpid((c.getLong(c.getColumnIndex(KEY_P_ID))));
 		    shot.setx((c.getInt(c.getColumnIndex(KEY_X))));
@@ -304,7 +305,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable{
 	// Delete a Shot
 	public void deleteShot(long a_id) {
 	    SQLiteDatabase db = this.getWritableDatabase();
-	    db.delete(TABLE_SHOT_CHART_COORDS, KEY_A_ID + " = " + a_id, null);
+	    db.delete(TABLE_SHOT_CHART_COORDS, KEY_SHOT_ID + " = " + a_id, null);
 	}
 	
 		

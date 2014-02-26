@@ -4,9 +4,11 @@ package com.seniordesign.ultimatescorecard.sqlite.hockey;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.seniordesign.ultimatescorecard.sqlite.DatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
 import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
+import com.seniordesign.ultimatescorecard.sqlite.helper.ShotChartCoords;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 
 import android.content.ContentValues;
@@ -17,7 +19,7 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class HockeyDatabaseHelper extends SQLiteOpenHelper{
+public class HockeyDatabaseHelper extends DatabaseHelper{
 
 	// Logcat tag
     private static final String LOG = "HockeyDatabaseHelper";
@@ -84,13 +86,13 @@ public class HockeyDatabaseHelper extends SQLiteOpenHelper{
 
     //Table Create Statements
     //GAMES table create statement
-    private static final String CREATE_TABLE_GAMES = "CREATE TABLE " + TABLE_GAMES 
+    private static final String CREATE_TABLE_GAMES = "CREATE TABLE IF NOT EXISTS " + TABLE_GAMES 
     		+ "(" + KEY_G_ID + " INTEGER PRIMARY KEY," + KEY_HOME_ID + " INTEGER," 
     		+ KEY_AWAY_ID + " INTEGER," + KEY_DATE + " DATE" + ")"; 
     //Doesn't include SPORT yet...
     
     //HOCKEY_GAME_STATS table create statement
-    private static final String CREATE_TABLE_HOCKEY_GAME_STATS = "CREATE TABLE " + TABLE_HOCKEY_GAME_STATS 
+    private static final String CREATE_TABLE_HOCKEY_GAME_STATS = "CREATE TABLE IF NOT EXISTS " + TABLE_HOCKEY_GAME_STATS 
     		+ "(" + KEY_G_ID + " INTEGER" + ", " + KEY_P_ID + " INTEGER" + ", "
     		+ KEY_SHOTS + " INTEGER, " + KEY_SOG + " INTEGER, " + KEY_GOALS + " INTEGER, "
     		+ KEY_AST + " INTEGER, " + KEY_PEN_MINOR + " INTEGER, " + KEY_PEN_MAJOR + " INTEGER, "
@@ -98,26 +100,26 @@ public class HockeyDatabaseHelper extends SQLiteOpenHelper{
     		+ ")"; 
     
     //PLAYERS table create statement
-    private static final String CREATE_TABLE = "CREATE TABLE " + TABLE 
+    private static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE 
     		+ "(" + KEY_P_ID + " INTEGER PRIMARY KEY," 
     		+ KEY_T_ID + " INTEGER, "
     		// + FOREIGN KEY REFERENCES " + TABLE_TEAMS + "(" + KEY_T_ID + ")," 
     		+ KEY_P_NAME + " VARCHAR(45)," + KEY_P_NUM + " INTEGER" + ")"; 
     
     //TEAMS table create statement
-    private static final String CREATE_TABLE_TEAMS = "CREATE TABLE " + TABLE_TEAMS 
+    private static final String CREATE_TABLE_TEAMS = "CREATE TABLE IF NOT EXISTS " + TABLE_TEAMS 
     		+ "(" + KEY_T_ID + " INTEGER PRIMARY KEY," + KEY_T_NAME + " VARCHAR(45)," 
     		+ KEY_C_NAME + " VARCHAR(45),"+ KEY_SPORT + " VARCHAR(45)" + ")"; 
     
     //PLAY_BY_PLAY table create statement
-    private static final String CREATE_TABLE_PLAY_BY_PLAY = "CREATE TABLE " + TABLE_PLAY_BY_PLAY 
+    private static final String CREATE_TABLE_PLAY_BY_PLAY = "CREATE TABLE IF NOT EXISTS " + TABLE_PLAY_BY_PLAY 
     		+ "(" + KEY_A_ID + " INTEGER PRIMARY KEY," + KEY_G_ID + " INTEGER," 
     		+ KEY_ACTION + " VARCHAR(45)," + KEY_TIME + " VARCHAR(45)," + KEY_HOME_SCORE + " INTEGER, " 
     		+ KEY_AWAY_SCORE + " INTEGER" + ")";
     
     //SHOT_CHART_COORDS table create statement
-    private static final String CREATE_TABLE_SHOT_CHART_COORDS = "CREATE TABLE " + TABLE_SHOT_CHART_COORDS 
-    		+ "(" + KEY_A_ID + " INTEGER PRIMARY KEY," + KEY_G_ID + " INTEGER," 
+    private static final String CREATE_TABLE_SHOT_CHART_COORDS = "CREATE TABLE IF NOT EXISTS " + TABLE_SHOT_CHART_COORDS 
+    		+ "(" + KEY_SHOT_ID + " INTEGER PRIMARY KEY," + KEY_G_ID + " INTEGER," 
     		+ KEY_P_ID + " INTEGER," + KEY_X + " INTEGER," + KEY_Y + " INTEGER," 
     		+ KEY_MADE + " VARCHAR(4)" + ")";
     
@@ -614,7 +616,7 @@ public class HockeyDatabaseHelper extends SQLiteOpenHelper{
 		SQLiteDatabase db = this.getWritableDatabase();
 		 
         ContentValues values = new ContentValues();
-        values.put(KEY_A_ID, shot.getaid());
+        values.put(KEY_SHOT_ID, shot.getshotid());
         values.put(KEY_G_ID, shot.getgid());
         values.put(KEY_P_ID, shot.getpid());
         values.put(KEY_X, shot.getx());
@@ -626,7 +628,7 @@ public class HockeyDatabaseHelper extends SQLiteOpenHelper{
  
         return row;
 	}
-	
+/*	
 	public List<ShotChartCoords> getAllShots(){
 	    SQLiteDatabase db = this.getReadableDatabase();
 		List<ShotChartCoords> shots = new ArrayList<ShotChartCoords>();
@@ -774,7 +776,7 @@ public class HockeyDatabaseHelper extends SQLiteOpenHelper{
         
         return shots;
 	}
-	
+*/	
 	// Delete a Shot
 	public void deleteShot(long a_id) {
 	    SQLiteDatabase db = this.getWritableDatabase();

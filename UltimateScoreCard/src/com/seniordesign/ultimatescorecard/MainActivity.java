@@ -1,8 +1,11 @@
 package com.seniordesign.ultimatescorecard;
 
 
+import java.util.List;
+
 import com.seniordesign.ultimatescorecard.data.basketball.BasketballPlayer;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.*;
+import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
@@ -13,6 +16,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -49,6 +53,8 @@ public class MainActivity extends Activity{
 		_basketball_db = new BasketballDatabaseHelper(getApplicationContext());
 		//.onUpgrade will reset databases (i.e. erase all data stored in them)
 		_basketball_db.onCreate(_basketball_db.getWritableDatabase());
+		//_basketball_db.onUpgrade(_basketball_db.getWritableDatabase(),0,0);
+
 /*
 		//Test Teams and players
 		Teams spurs = new Teams("San Antonio Spurs", "SAS", "Gregg Popovich", "Basketball");
@@ -122,6 +128,14 @@ public class MainActivity extends Activity{
 		long TW25_id = _basketball_db.createPlayers(TW25);
 		long AB35_id = _basketball_db.createPlayers(AB35);
 	*/	
+		
+
+		
+		Log.d("GameStats count", "GameStats Count: " + _basketball_db.getAllGameStats().size());
+
+		Log.d("Shot count", "Shot Count: " + _basketball_db.getAllShots().size());
+
+		
 		//close database helper
 		_basketball_db.close();
 	}

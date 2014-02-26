@@ -110,7 +110,7 @@ public class BasketballActivity extends Activity{
 		
 		_homeLayout = (RelativeLayout)findViewById(R.id.homeShotIcons);
 		_awayLayout = (RelativeLayout)findViewById(R.id.awayShotIcons);
-		_iconAdder = new ShotIconAdder(_homeLayout, _awayLayout, getApplicationContext());
+		_iconAdder = new ShotIconAdder(_homeLayout, _awayLayout, getApplicationContext(), "basketball");
 		
 		_p1Button = (Button)findViewById(R.id.extendButton1);										//our slide out buttons
 		_p2Button = (Button)findViewById(R.id.extendButton2);
@@ -418,6 +418,8 @@ public class BasketballActivity extends Activity{
 				_gameLog.shooting(this.getValue(), true, ((TextView)view).getText().toString());
 				_gti.scoreChange(_gti.getPossession(), this.getValue(), ((TextView)view).getText().toString());						//change the score and update player points
 				
+				_iconAdder.createShot(((TextView)view).getText().toString(), g_id, _gti.gethometid(), _gti.getawaytid());
+				
 				addView((View)view.getParent(), "No Assist", _otherButton);
 				_otherButton.setOnClickListener(noAssistListener(this.getValue(), ((TextView)view).getText().toString()));
 				
@@ -433,6 +435,8 @@ public class BasketballActivity extends Activity{
 		OnClickListener missPlayerSelectListener = new DoubleParamOnClickListener(value, null){
 			@Override
 			public void onClick(View view) {
+				_iconAdder.createShot(((TextView)view).getText().toString(), g_id, _gti.gethometid(), _gti.getawaytid());
+
 				if(_gti.foulOccurred()){
 					changeMenu(fouledByListener(this.getValue(), ((TextView)view).getText().toString()), "Fouled by:");	
 					setSlideOutButtonText(!_gti.getPossession());
@@ -509,6 +513,14 @@ public class BasketballActivity extends Activity{
 		public void onClick(View view) {
 			if(((Button)view).getText().equals(_gti.getTeamPossession(true)+" Rebound")){
 				changePossession();
+				if(_otherButton2.getText().equals("O-Rebound")){	
+					_gti.addTeamDRebound();
+				}
+			}
+			else{
+				if(_otherButton2.getText().equals("D-Rebound")){	
+					_gti.addTeamORebound();
+				}
 			}
 			resetFeatures();
 		}
@@ -873,9 +885,12 @@ public class BasketballActivity extends Activity{
 		OnClickListener FTMissListener = new DoubleParamOnClickListener(value, str){
 			@Override
 			public void onClick(View view) {				
-				_gameLog.freeThrow(false, this.getString());
+				if(this.getValue()!=1){
+					_gameLog.freeThrow(false, this.getString());
+					recordActivity();
+				}
 				_gti.getPlayer(this.getString()).missFreeThrow();
-				recordActivity();
+
 				view.setOnClickListener(FTMadeListener(this.getValue()-1, this.getString()));
 				if(this.getValue() == 1 || oneAndOne){
 					if(_gti.keepPossession()){
@@ -929,6 +944,7 @@ public class BasketballActivity extends Activity{
 		OnClickListener blockAgainstListener = new DoubleParamOnClickListener(0, name){
 			@Override
 			public void onClick(View v) {
+				_iconAdder.createShot(((TextView)v).getText().toString(), g_id, _gti.gethometid(), _gti.getawaytid());
 				if(points == 2){
 					_gti.getPlayer(((TextView)v).getText().toString()).missTwo();
 				}

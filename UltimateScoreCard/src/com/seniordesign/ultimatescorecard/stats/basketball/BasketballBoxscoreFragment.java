@@ -58,11 +58,13 @@ public class BasketballBoxscoreFragment extends Fragment{
 			for(Players p: _gameInfo.getHomePlayers()){
 				layout.addView(newTextView(p.getpname()));	
 			}
+			layout.addView(newTextView(_gameInfo.getHomeTeam().getabbv() +  " Stats"));
 		}
 		else{
 			for(Players p: _gameInfo.getAwayPlayers()){
 				layout.addView(newTextView(p.getpname()));	
 			}		
+			layout.addView(newTextView(_gameInfo.getAwayTeam().getabbv() +  " Stats"));
 		}
 	}
 	
@@ -115,12 +117,14 @@ public class BasketballBoxscoreFragment extends Fragment{
 				intent.putExtra(StaticFinalVars.TEAM_INFO, ((BasketballStatsActivity) getActivity()).getGameInfo().getHomeTeam());
 				intent.putExtra(StaticFinalVars.PLAYERS_INFO, ((BasketballStatsActivity) getActivity()).getGameInfo().getHomePlayers());
 				intent.putExtra(StaticFinalVars.GAME_ID, ((BasketballStatsActivity) getActivity()).getGameInfo().getgid());
+				intent.putExtra(StaticFinalVars.HOME_OR_AWAY, _lookingAtHome);
 
 			}
 			else{
 				intent.putExtra(StaticFinalVars.TEAM_INFO, ((BasketballStatsActivity) getActivity()).getGameInfo().getAwayTeam());
 				intent.putExtra(StaticFinalVars.PLAYERS_INFO, ((BasketballStatsActivity) getActivity()).getGameInfo().getAwayPlayers());
 				intent.putExtra(StaticFinalVars.GAME_ID, ((BasketballStatsActivity) getActivity()).getGameInfo().getgid());
+				intent.putExtra(StaticFinalVars.HOME_OR_AWAY, _lookingAtHome);
 			}
 			intent.putExtra(StaticFinalVars.PLAYER_NAME, ((TextView)v).getText().toString());
 			startActivity(intent);

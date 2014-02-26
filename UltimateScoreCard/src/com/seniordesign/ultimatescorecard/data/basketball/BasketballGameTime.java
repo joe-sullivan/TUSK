@@ -186,4 +186,32 @@ public class BasketballGameTime extends GameTime {
 	public long getgid(){
 		return g_id;
 	}
+	
+	public long gethometid(){
+		return _home_t_id;
+	}
+	
+	public long getawaytid(){
+		return _away_t_id;
+	}
+	
+	public void addTeamDRebound(){
+		if(_possession){
+			_basketball_db.addTeamStats(g_id, "home_dreb", 1);
+		}
+		else{
+			_basketball_db.addTeamStats(g_id, "away_dreb", 1);
+
+		}
+	}
+	
+	public void addTeamORebound(){
+		if(_possession){
+			_basketball_db.addTeamStats(g_id, "home_oreb", 1);
+		}
+		else{
+			_basketball_db.addTeamStats(g_id, "away_oreb", 1);
+
+		}
+	}
 }

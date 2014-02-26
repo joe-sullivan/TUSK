@@ -126,87 +126,87 @@ public class FootballDatabaseHelper extends SQLiteOpenHelper{
 
     //Table Create Statements
     //GAMES table create statement
-    private static final String CREATE_TABLE_GAMES = "CREATE TABLE " + TABLE_GAMES 
+    private static final String CREATE_TABLE_GAMES = "CREATE TABLE IF NOT EXISTS " + TABLE_GAMES 
     		+ "(" + KEY_G_ID + " INTEGER PRIMARY KEY," + KEY_HOME_ID + " INTEGER," 
     		+ KEY_AWAY_ID + " INTEGER," + KEY_DATE + " DATE" + ")"; 
     //Doesn't include SPORT yet...
 
     //FOOTBALL_GAME_STATS_PASSING table create statement
-    private static final String CREATE_TABLE_FOOTBALL_GAME_STATS_PASSING = "CREATE TABLE " + TABLE_FOOTBALL_GAME_STATS_PASSING 
+    private static final String CREATE_TABLE_FOOTBALL_GAME_STATS_PASSING = "CREATE TABLE IF NOT EXISTS " + TABLE_FOOTBALL_GAME_STATS_PASSING 
     		+ "(" + KEY_G_ID + " INTEGER" + ", " + KEY_P_ID + " INTEGER" + ", "
     		+ KEY_CMP + " INTEGER, " + KEY_ATT + " INTEGER, " + KEY_YDS + " INTEGER, "
     		+ KEY_TDS + " INTEGER, " + KEY_INTS + " INTEGER, " + KEY_TWOPC + " INTEGER"
     		+ ")"; 
     
     //FOOTBALL_GAME_STATS_RUSHING table create statement
-    private static final String CREATE_TABLE_FOOTBALL_GAME_STATS_RUSHING = "CREATE TABLE " + TABLE_FOOTBALL_GAME_STATS_RUSHING 
+    private static final String CREATE_TABLE_FOOTBALL_GAME_STATS_RUSHING = "CREATE TABLE IF NOT EXISTS " + TABLE_FOOTBALL_GAME_STATS_RUSHING 
     		+ "(" + KEY_G_ID + " INTEGER" + ", " + KEY_P_ID + " INTEGER" + ", "
     		+ KEY_ATT + " INTEGER, " + KEY_YDS + " INTEGER, "
     		+ KEY_TDS + " INTEGER, " + KEY_TWOPC + " INTEGER"
     		+ ")"; 
     
     //FOOTBALL_GAME_STATS_RECEIVING table create statement
-    private static final String CREATE_TABLE_FOOTBALL_GAME_STATS_RECEIVING = "CREATE TABLE " + TABLE_FOOTBALL_GAME_STATS_RECEIVING 
+    private static final String CREATE_TABLE_FOOTBALL_GAME_STATS_RECEIVING = "CREATE TABLE IF NOT EXISTS " + TABLE_FOOTBALL_GAME_STATS_RECEIVING 
     		+ "(" + KEY_G_ID + " INTEGER" + ", " + KEY_P_ID + " INTEGER" + ", "
     		+ KEY_TGT + " INTEGER, " + KEY_REC + " INTEGER, " + KEY_YDS + " INTEGER, "
     		+ KEY_TDS + " INTEGER, " + KEY_TWOPC + " INTEGER"
     		+ ")"; 
     
     //FOOTBALL_GAME_STATS_FUMBLES table create statement
-    private static final String CREATE_TABLE_FOOTBALL_GAME_STATS_FUMBLES = "CREATE TABLE " + TABLE_FOOTBALL_GAME_STATS_FUMBLES 
+    private static final String CREATE_TABLE_FOOTBALL_GAME_STATS_FUMBLES = "CREATE TABLE IF NOT EXISTS " + TABLE_FOOTBALL_GAME_STATS_FUMBLES 
     		+ "(" + KEY_G_ID + " INTEGER" + ", " + KEY_P_ID + " INTEGER" + ", "
     		+ KEY_FMB + " INTEGER, " + KEY_FMBLOST + " INTEGER, " + KEY_FF + " INTEGER, "
     		+ KEY_FR + " INTEGER"
     		+ ")"; 
     
     //FOOTBALL_GAME_STATS_DEFENSE table create statement
-    private static final String CREATE_TABLE_FOOTBALL_GAME_STATS_DEFENSE = "CREATE TABLE " + TABLE_FOOTBALL_GAME_STATS_DEFENSE 
+    private static final String CREATE_TABLE_FOOTBALL_GAME_STATS_DEFENSE = "CREATE TABLE IF NOT EXISTS " + TABLE_FOOTBALL_GAME_STATS_DEFENSE 
     		+ "(" + KEY_G_ID + " INTEGER" + ", " + KEY_P_ID + " INTEGER" + ", "
     		+ KEY_TACKLES + " INTEGER, " + KEY_TFL + " INTEGER, " + KEY_SACKS + " INTEGER, "
     		+ KEY_INTS + " INTEGER, " + KEY_TDS + " INTEGER"
     		+ ")"; 
     
     //FOOTBALL_GAME_STATS_KICKING table create statement
-    private static final String CREATE_TABLE_FOOTBALL_GAME_STATS_KICKING = "CREATE TABLE " + TABLE_FOOTBALL_GAME_STATS_KICKING 
+    private static final String CREATE_TABLE_FOOTBALL_GAME_STATS_KICKING = "CREATE TABLE IF NOT EXISTS " + TABLE_FOOTBALL_GAME_STATS_KICKING 
     		+ "(" + KEY_G_ID + " INTEGER" + ", " + KEY_P_ID + " INTEGER" + ", "
     		+ KEY_XPM + " INTEGER, " + KEY_XPA + " INTEGER, " + KEY_FGM + " INTEGER, "
     		+ KEY_FGA + " INTEGER"
     		+ ")"; 
     
     //FOOTBALL_GAME_STATS_PUNTING table create statement
-    private static final String CREATE_TABLE_FOOTBALL_GAME_STATS_PUNTING = "CREATE TABLE " + TABLE_FOOTBALL_GAME_STATS_PUNTING 
+    private static final String CREATE_TABLE_FOOTBALL_GAME_STATS_PUNTING = "CREATE TABLE IF NOT EXISTS " + TABLE_FOOTBALL_GAME_STATS_PUNTING 
     		+ "(" + KEY_G_ID + " INTEGER" + ", " + KEY_P_ID + " INTEGER" + ", "
     		+ KEY_PUNTS + " INTEGER, " + KEY_YDS + " INTEGER, " + KEY_IN20 + " INTEGER, "
     		+ KEY_TBS + " INTEGER"
     		+ ")"; 
     
     //FOOTBALL_GAME_STATS_RETURNS table create statement
-    private static final String CREATE_TABLE_FOOTBALL_GAME_STATS_RETURNS = "CREATE TABLE " + TABLE_FOOTBALL_GAME_STATS_RETURNS 
+    private static final String CREATE_TABLE_FOOTBALL_GAME_STATS_RETURNS = "CREATE TABLE IF NOT EXISTS " + TABLE_FOOTBALL_GAME_STATS_RETURNS 
     		+ "(" + KEY_G_ID + " INTEGER" + ", " + KEY_P_ID + " INTEGER" + ", "
     		+ KEY_KRT + " INTEGER, " + KEY_KYDS + " INTEGER, " + KEY_KTDS + " INTEGER, "
     		+ KEY_PRT + " INTEGER, " + KEY_PYDS + " INTEGER, " + KEY_PTDS + " INTEGER"
     		+ ")"; 
     
     //PLAYERS table create statement
-    private static final String CREATE_TABLE_PLAYERS = "CREATE TABLE " + TABLE_PLAYERS 
+    private static final String CREATE_TABLE_PLAYERS = "CREATE TABLE IF NOT EXISTS " + TABLE_PLAYERS 
     		+ "(" + KEY_P_ID + " INTEGER PRIMARY KEY," 
     		+ KEY_T_ID + " INTEGER, "
     		// + FOREIGN KEY REFERENCES " + TABLE_TEAMS + "(" + KEY_T_ID + ")," 
     		+ KEY_P_NAME + " VARCHAR(45)," + KEY_P_NUM + " INTEGER" + ")"; 
     
     //TEAMS table create statement
-    private static final String CREATE_TABLE_TEAMS = "CREATE TABLE " + TABLE_TEAMS 
+    private static final String CREATE_TABLE_TEAMS = "CREATE TABLE IF NOT EXISTS " + TABLE_TEAMS 
     		+ "(" + KEY_T_ID + " INTEGER PRIMARY KEY," + KEY_T_NAME + " VARCHAR(45)," 
     		+ KEY_C_NAME + " VARCHAR(45),"+ KEY_SPORT + " VARCHAR(45)" + ")"; 
     
     //PLAY_BY_PLAY table create statement
-    private static final String CREATE_TABLE_PLAY_BY_PLAY = "CREATE TABLE " + TABLE_PLAY_BY_PLAY 
+    private static final String CREATE_TABLE_PLAY_BY_PLAY = "CREATE TABLE IF NOT EXISTS " + TABLE_PLAY_BY_PLAY 
     		+ "(" + KEY_A_ID + " INTEGER PRIMARY KEY," + KEY_G_ID + " INTEGER," 
     		+ KEY_ACTION + " VARCHAR(45)," + KEY_TIME + " VARCHAR(45)," + KEY_PERIOD + " VARCHAR(10)," + KEY_HOME_SCORE + " INTEGER, " 
     		+ KEY_AWAY_SCORE + " INTEGER" + ")";
     
     //SHOT_CHART_COORDS table create statement
-    private static final String CREATE_TABLE_SHOT_CHART_COORDS = "CREATE TABLE " + TABLE_SHOT_CHART_COORDS 
+    private static final String CREATE_TABLE_SHOT_CHART_COORDS = "CREATE TABLE IF NOT EXISTS " + TABLE_SHOT_CHART_COORDS 
     		+ "(" + KEY_A_ID + " INTEGER PRIMARY KEY," + KEY_G_ID + " INTEGER," 
     		+ KEY_P_ID + " INTEGER," + KEY_X + " INTEGER," + KEY_Y + " INTEGER," 
     		+ KEY_MADE + " VARCHAR(4)" + ")";

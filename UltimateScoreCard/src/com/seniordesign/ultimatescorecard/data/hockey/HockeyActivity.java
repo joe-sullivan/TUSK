@@ -71,7 +71,7 @@ public class HockeyActivity extends Activity{
 		
 		_homeLayout = (RelativeLayout)findViewById(R.id.homeShotIcons);
 		_awayLayout = (RelativeLayout)findViewById(R.id.awayShotIcons);
-		_iconAdder = new ShotIconAdder(_homeLayout, _awayLayout, getApplicationContext());
+		_iconAdder = new ShotIconAdder(_homeLayout, _awayLayout, getApplicationContext(), "hockey");
 		
 		_option1Button = (Button)findViewById(R.id.optionButton1);								//more buttons and setting onClick listeners
 		_option2Button = (Button)findViewById(R.id.optionButton2);

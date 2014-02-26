@@ -57,6 +57,39 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
     private static final String KEY_HOME_ID = "home_id";
     private static final String KEY_AWAY_ID = "away_id";
     private static final String KEY_DATE = "date";
+    private static final String KEY_HOME_PTS = "home_pts";
+    private static final String KEY_HOME_FGM = "home_fgm";
+    private static final String KEY_HOME_FGA = "home_fga";
+    private static final String KEY_HOME_FGM3 = "home_fgm3";
+    private static final String KEY_HOME_FGA3 = "home_fga3";
+    private static final String KEY_HOME_FTM = "home_ftm";
+    private static final String KEY_HOME_FTA = "home_fta";
+    private static final String KEY_HOME_OREB = "home_oreb";
+    private static final String KEY_HOME_DREB = "home_dreb";
+    private static final String KEY_HOME_AST = "home_ast";
+    private static final String KEY_HOME_STL = "home_stl";
+    private static final String KEY_HOME_BLK = "home_blk";
+    private static final String KEY_HOME_TO = "home_turnover";
+    private static final String KEY_HOME_PF = "home_pf";
+    private static final String KEY_HOME_TECH = "home_tech";
+    private static final String KEY_HOME_FLAGRANT = "home_flagrant";
+    private static final String KEY_AWAY_PTS = "away_pts";
+    private static final String KEY_AWAY_FGM = "away_fgm";
+    private static final String KEY_AWAY_FGA = "away_fga";
+    private static final String KEY_AWAY_FGM3 = "away_fgm3";
+    private static final String KEY_AWAY_FGA3 = "away_fga3";
+    private static final String KEY_AWAY_FTM = "away_ftm";
+    private static final String KEY_AWAY_FTA = "away_fta";
+    private static final String KEY_AWAY_OREB = "away_oreb";
+    private static final String KEY_AWAY_DREB = "away_dreb";
+    private static final String KEY_AWAY_AST = "away_ast";
+    private static final String KEY_AWAY_STL = "away_stl";
+    private static final String KEY_AWAY_BLK = "away_blk";
+    private static final String KEY_AWAY_TO = "away_turnover";
+    private static final String KEY_AWAY_PF = "away_pf";
+    private static final String KEY_AWAY_TECH = "away_tech";
+    private static final String KEY_AWAY_FLAGRANT = "away_flagrant";
+    
     
     //BASKETBALLGAMESTATS Table - column names
     private static final String KEY_PTS = "pts";
@@ -103,7 +136,22 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
     //GAMES table create statement
     private static final String CREATE_TABLE_GAMES = "CREATE TABLE IF NOT EXISTS " + TABLE_GAMES 
     		+ "(" + KEY_G_ID + " INTEGER PRIMARY KEY," + KEY_HOME_ID + " INTEGER," 
-    		+ KEY_AWAY_ID + " INTEGER," + KEY_DATE + " DATE" + ")"; 
+    		+ KEY_AWAY_ID + " INTEGER," + KEY_DATE + " DATE, " 
+    		
+    		+ KEY_HOME_PTS + " INTEGER, " + KEY_HOME_FGM + " INTEGER, " + KEY_HOME_FGA + " INTEGER, "
+    		+ KEY_HOME_FGM3 + " INTEGER, " + KEY_HOME_FGA3 + " INTEGER, " + KEY_HOME_FTM + " INTEGER, "
+    		+ KEY_HOME_FTA + " INTEGER, " + KEY_HOME_OREB + " INTEGER, " + KEY_HOME_DREB + " INTEGER, "
+    		+ KEY_HOME_AST + " INTEGER, " + KEY_HOME_STL + " INTEGER, " + KEY_HOME_BLK + " INTEGER, "
+    		+ KEY_HOME_TO + " INTEGER, " + KEY_HOME_PF + " INTEGER, " + KEY_HOME_TECH + " INTEGER, "
+    		+ KEY_HOME_FLAGRANT + " INTEGER, "
+    		
+    		+ KEY_AWAY_PTS + " INTEGER, " + KEY_AWAY_FGM + " INTEGER, " + KEY_AWAY_FGA + " INTEGER, "
+    		+ KEY_AWAY_FGM3 + " INTEGER, " + KEY_AWAY_FGA3 + " INTEGER, " + KEY_AWAY_FTM + " INTEGER, "
+    		+ KEY_AWAY_FTA + " INTEGER, " + KEY_AWAY_OREB + " INTEGER, " + KEY_AWAY_DREB + " INTEGER, "
+    		+ KEY_AWAY_AST + " INTEGER, " + KEY_AWAY_STL + " INTEGER, " + KEY_AWAY_BLK + " INTEGER, "
+    		+ KEY_AWAY_TO + " INTEGER, " + KEY_AWAY_PF + " INTEGER, " + KEY_AWAY_TECH + " INTEGER, "
+    		+ KEY_AWAY_FLAGRANT + " INTEGER " +
+    		")"; 
 
     //BASKETBALL_GAME_STATS table create statement
     private static final String CREATE_TABLE_BASKETBALL_GAME_STATS = "CREATE TABLE IF NOT EXISTS " + TABLE_BASKETBALL_GAME_STATS 
@@ -114,7 +162,6 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
     		//" INTEGER FOREIGN KEY REFERENCES" + TABLE_PLAYERS + "(" + KEY_P_ID + ")," 
     		", "
     		+ KEY_PTS + " INTEGER, " + KEY_FGM + " INTEGER, " + KEY_FGA + " INTEGER, "
-    		//+ "," + "CONSTRAINT pk_player_game PRIMARY KEY (" + KEY_P_ID + "," + KEY_G_ID + ")" 
     		+ KEY_FGM3 + " INTEGER, " + KEY_FGA3 + " INTEGER, " + KEY_FTM + " INTEGER, "
     		+ KEY_FTA + " INTEGER, " + KEY_OREB + " INTEGER, " + KEY_DREB + " INTEGER, "
     		+ KEY_AST + " INTEGER, " + KEY_STL + " INTEGER, " + KEY_BLK + " INTEGER, "
@@ -141,8 +188,8 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
     
     //SHOT_CHART_COORDS table create statement
     private static final String CREATE_TABLE_SHOT_CHART_COORDS = "CREATE TABLE IF NOT EXISTS " + TABLE_SHOT_CHART_COORDS 
-    		+ "(" + KEY_A_ID + " INTEGER PRIMARY KEY," + KEY_G_ID + " INTEGER," 
-    		+ KEY_P_ID + " INTEGER," + KEY_X + " INTEGER," + KEY_Y + " INTEGER," 
+    		+ "(" + KEY_SHOT_ID + " INTEGER PRIMARY KEY," + KEY_G_ID + " INTEGER," 
+    		+ KEY_P_ID + " INTEGER," + KEY_T_ID + " INTEGER," + KEY_X + " INTEGER," + KEY_Y + " INTEGER," 
     		+ KEY_MADE + " VARCHAR(4)" + ")";
     
     public BasketballDatabaseHelper(Context context) {
@@ -171,8 +218,8 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 		// on upgrade drop older tables
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_GAMES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BASKETBALL_GAME_STATS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PLAYERS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TEAMS);
+        //db.execSQL("DROP TABLE IF EXISTS " + TABLE_PLAYERS);
+        //db.execSQL("DROP TABLE IF EXISTS " + TABLE_TEAMS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PLAY_BY_PLAY);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOT_CHART_COORDS);
 
@@ -189,6 +236,40 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
         values.put(KEY_HOME_ID, game.gethomeid());
         values.put(KEY_AWAY_ID, game.getawayid());
         values.put(KEY_DATE, game.getDate());
+        
+        values.put(KEY_HOME_PTS, 0);
+        values.put(KEY_HOME_FGM, 0);
+        values.put(KEY_HOME_FGA, 0);
+        values.put(KEY_HOME_FGM3, 0);
+        values.put(KEY_HOME_FGA3, 0);
+        values.put(KEY_HOME_FTM, 0);
+        values.put(KEY_HOME_FTA, 0);
+        values.put(KEY_HOME_OREB, 0);
+        values.put(KEY_HOME_DREB, 0);
+        values.put(KEY_HOME_AST, 0);
+        values.put(KEY_HOME_STL, 0);
+        values.put(KEY_HOME_BLK, 0);
+        values.put(KEY_HOME_TO, 0);
+        values.put(KEY_HOME_PF, 0);
+        values.put(KEY_HOME_TECH, 0);
+        values.put(KEY_HOME_FLAGRANT, 0);
+        
+        values.put(KEY_AWAY_PTS, 0);
+        values.put(KEY_AWAY_FGM, 0);
+        values.put(KEY_AWAY_FGA, 0);
+        values.put(KEY_AWAY_FGM3, 0);
+        values.put(KEY_AWAY_FGA3, 0);
+        values.put(KEY_AWAY_FTM, 0);
+        values.put(KEY_AWAY_FTA, 0);
+        values.put(KEY_AWAY_OREB, 0);
+        values.put(KEY_AWAY_DREB, 0);
+        values.put(KEY_AWAY_AST, 0);
+        values.put(KEY_AWAY_STL, 0);
+        values.put(KEY_AWAY_BLK, 0);
+        values.put(KEY_AWAY_TO, 0);
+        values.put(KEY_AWAY_PF, 0);
+        values.put(KEY_AWAY_TECH, 0);
+        values.put(KEY_AWAY_FLAGRANT, 0);
  
         // insert row
         long g_id = db.insert(TABLE_GAMES, null, values);
@@ -216,16 +297,50 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 	    Log.i(LOG, selectQuery);
 	    //perform the query and store data in cursor
 	    Cursor c = db.rawQuery(selectQuery, null);
+	   
+	    BasketballGames game = new BasketballGames();
 	    //set cursor to beginning
-	    if (c != null)
-	        c.moveToFirst();
+	    if (c != null && c.moveToFirst()){
 	    //create the instance of Games using cursor information
-	    Games game = new Games();
 	    game.setgid(c.getLong(c.getColumnIndex(KEY_G_ID)));
 	    game.sethomeid((c.getLong(c.getColumnIndex(KEY_HOME_ID))));
 	    game.setawayid((c.getLong(c.getColumnIndex(KEY_AWAY_ID))));
 	    game.setDate(c.getString(c.getColumnIndex(KEY_DATE)));
-	 
+	    
+	    game.sethomepts((c.getInt(c.getColumnIndex(KEY_HOME_PTS))));
+	    game.sethomefgm((c.getInt(c.getColumnIndex(KEY_HOME_FGM))));
+	    game.sethomefga(c.getInt(c.getColumnIndex(KEY_HOME_FGA)));
+	    game.sethomefgm3(c.getInt(c.getColumnIndex(KEY_HOME_FGM3)));
+	    game.sethomefga3(c.getInt(c.getColumnIndex(KEY_HOME_FGA3)));
+	    game.sethomeftm(c.getInt(c.getColumnIndex(KEY_HOME_FTM)));
+	    game.sethomefta(c.getInt(c.getColumnIndex(KEY_HOME_FTA)));
+	    game.sethomeoreb(c.getInt(c.getColumnIndex(KEY_HOME_OREB)));
+	    game.sethomedreb(c.getInt(c.getColumnIndex(KEY_HOME_DREB)));
+	    game.sethomeast(c.getInt(c.getColumnIndex(KEY_HOME_AST)));
+	    game.sethomestl(c.getInt(c.getColumnIndex(KEY_HOME_STL)));
+	    game.sethomeblk(c.getInt(c.getColumnIndex(KEY_HOME_BLK)));
+	    game.sethometo(c.getInt(c.getColumnIndex(KEY_HOME_TO)));
+	    game.sethomepf(c.getInt(c.getColumnIndex(KEY_HOME_PF)));
+	    game.sethometech(c.getInt(c.getColumnIndex(KEY_HOME_TECH)));
+	    game.sethomeflagrant(c.getInt(c.getColumnIndex(KEY_HOME_FLAGRANT)));
+
+	    game.setawaypts((c.getInt(c.getColumnIndex(KEY_AWAY_PTS))));
+	    game.setawayfgm((c.getInt(c.getColumnIndex(KEY_AWAY_FGM))));
+	    game.setawayfga(c.getInt(c.getColumnIndex(KEY_AWAY_FGA)));
+	    game.setawayfgm3(c.getInt(c.getColumnIndex(KEY_AWAY_FGM3)));
+	    game.setawayfga3(c.getInt(c.getColumnIndex(KEY_AWAY_FGA3)));
+	    game.setawayftm(c.getInt(c.getColumnIndex(KEY_AWAY_FTM)));
+	    game.setawayfta(c.getInt(c.getColumnIndex(KEY_AWAY_FTA)));
+	    game.setawayoreb(c.getInt(c.getColumnIndex(KEY_AWAY_OREB)));
+	    game.setawaydreb(c.getInt(c.getColumnIndex(KEY_AWAY_DREB)));
+	    game.setawayast(c.getInt(c.getColumnIndex(KEY_AWAY_AST)));
+	    game.setawaystl(c.getInt(c.getColumnIndex(KEY_AWAY_STL)));
+	    game.setawayblk(c.getInt(c.getColumnIndex(KEY_AWAY_BLK)));
+	    game.setawayto(c.getInt(c.getColumnIndex(KEY_AWAY_TO)));
+	    game.setawaypf(c.getInt(c.getColumnIndex(KEY_AWAY_PF)));
+	    game.setawaytech(c.getInt(c.getColumnIndex(KEY_AWAY_TECH)));
+	    game.setawayflagrant(c.getInt(c.getColumnIndex(KEY_AWAY_FLAGRANT)));
+	    }
 	    return game;
 	}
 	
@@ -242,17 +357,223 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 	    // looping through all rows and adding to list
 	    if (c.moveToFirst()) {
 	        do {
-	        	Games game = new Games();
+	        	BasketballGames game = new BasketballGames();
 	    	    game.setgid(c.getLong(c.getColumnIndex(KEY_G_ID)));
 	    	    game.sethomeid((c.getLong(c.getColumnIndex(KEY_HOME_ID))));
 	    	    game.setawayid((c.getLong(c.getColumnIndex(KEY_AWAY_ID))));
 	    	    game.setDate(c.getString(c.getColumnIndex(KEY_DATE)));
+	    	    
+	    	    game.sethomepts((c.getInt(c.getColumnIndex(KEY_HOME_PTS))));
+	    	    game.sethomefgm((c.getInt(c.getColumnIndex(KEY_HOME_FGM))));
+	    	    game.sethomefga(c.getInt(c.getColumnIndex(KEY_HOME_FGA)));
+	    	    game.sethomefgm3(c.getInt(c.getColumnIndex(KEY_HOME_FGM3)));
+	    	    game.sethomefga3(c.getInt(c.getColumnIndex(KEY_HOME_FGA3)));
+	    	    game.sethomeftm(c.getInt(c.getColumnIndex(KEY_HOME_FTM)));
+	    	    game.sethomefta(c.getInt(c.getColumnIndex(KEY_HOME_FTA)));
+	    	    game.sethomeoreb(c.getInt(c.getColumnIndex(KEY_HOME_OREB)));
+	    	    game.sethomedreb(c.getInt(c.getColumnIndex(KEY_HOME_DREB)));
+	    	    game.sethomeast(c.getInt(c.getColumnIndex(KEY_HOME_AST)));
+	    	    game.sethomestl(c.getInt(c.getColumnIndex(KEY_HOME_STL)));
+	    	    game.sethomeblk(c.getInt(c.getColumnIndex(KEY_HOME_BLK)));
+	    	    game.sethometo(c.getInt(c.getColumnIndex(KEY_HOME_TO)));
+	    	    game.sethomepf(c.getInt(c.getColumnIndex(KEY_HOME_PF)));
+	    	    game.sethometech(c.getInt(c.getColumnIndex(KEY_HOME_TECH)));
+	    	    game.sethomeflagrant(c.getInt(c.getColumnIndex(KEY_HOME_FLAGRANT)));
+
+	    	    game.setawaypts((c.getInt(c.getColumnIndex(KEY_AWAY_PTS))));
+	    	    game.setawayfgm((c.getInt(c.getColumnIndex(KEY_AWAY_FGM))));
+	    	    game.setawayfga(c.getInt(c.getColumnIndex(KEY_AWAY_FGA)));
+	    	    game.setawayfgm3(c.getInt(c.getColumnIndex(KEY_AWAY_FGM3)));
+	    	    game.setawayfga3(c.getInt(c.getColumnIndex(KEY_AWAY_FGA3)));
+	    	    game.setawayftm(c.getInt(c.getColumnIndex(KEY_AWAY_FTM)));
+	    	    game.setawayfta(c.getInt(c.getColumnIndex(KEY_AWAY_FTA)));
+	    	    game.setawayoreb(c.getInt(c.getColumnIndex(KEY_AWAY_OREB)));
+	    	    game.setawaydreb(c.getInt(c.getColumnIndex(KEY_AWAY_DREB)));
+	    	    game.setawayast(c.getInt(c.getColumnIndex(KEY_AWAY_AST)));
+	    	    game.setawaystl(c.getInt(c.getColumnIndex(KEY_AWAY_STL)));
+	    	    game.setawayblk(c.getInt(c.getColumnIndex(KEY_AWAY_BLK)));
+	    	    game.setawayto(c.getInt(c.getColumnIndex(KEY_AWAY_TO)));
+	    	    game.setawaypf(c.getInt(c.getColumnIndex(KEY_AWAY_PF)));
+	    	    game.setawaytech(c.getInt(c.getColumnIndex(KEY_AWAY_TECH)));
+	    	    game.setawayflagrant(c.getInt(c.getColumnIndex(KEY_AWAY_FLAGRANT)));
+	    	    
 	            // adding to games list
 	            games.add(game);
 	        } while (c.moveToNext());
 	    }
 	 
 	    return games;
+	}
+	
+	//get single game stat for team
+	public int getTeamGameStat(long g_id, String stat) {
+	    SQLiteDatabase db = this.getReadableDatabase();
+	    //create query to select game
+	    String selectQuery = "SELECT " + stat + " FROM " + TABLE_GAMES + 
+	    	" WHERE " + KEY_G_ID + " = " + g_id;
+	    
+	    //Log the query
+	    Log.i(LOG, selectQuery);
+	    //perform the query and store data in cursor
+	    Cursor c = db.rawQuery(selectQuery, null);
+	    //set cursor to beginning
+	    if (c != null)
+	        c.moveToFirst();
+	    //create the instance of Games using cursor information
+	    int stat_value = c.getInt(c.getColumnIndex(stat));
+
+	    return stat_value;
+	}
+	
+//CHANGE THIS!!!!!!	
+	//Adding value to points category of a player
+	public int addTeamStats(long g_id, String stat, int value){
+	    SQLiteDatabase db = this.getWritableDatabase();
+	    BasketballGames game = (BasketballGames) getGame(g_id);
+	    
+	    
+	    int old_value = getTeamGameStat(g_id,stat);
+	    int new_value = old_value + value;
+	    
+	    ContentValues values = new ContentValues();
+	    	
+        values.put(KEY_G_ID, g_id);
+        values.put(KEY_HOME_ID, game.gethomeid());
+        values.put(KEY_AWAY_ID, game.getawayid());
+        values.put(KEY_DATE, game.getDate());
+
+	    if(stat==KEY_HOME_PTS)
+	    	values.put(KEY_HOME_PTS, new_value);
+	    else
+	    	values.put(KEY_HOME_PTS, game.gethomepts());
+	    if(stat==KEY_HOME_FGM)
+	    	values.put(KEY_HOME_FGM, new_value);
+	    else
+	    	values.put(KEY_HOME_FGM, game.gethomefgm());
+	    if(stat==KEY_HOME_FGA)
+	    	values.put(KEY_HOME_FGA, new_value);
+	    else
+	    	values.put(KEY_HOME_FGA, game.gethomefga());
+	    if(stat==KEY_HOME_FGM3)
+	    	values.put(KEY_HOME_FGM3, new_value);
+	    else
+	    	values.put(KEY_HOME_FGM3, game.gethomefgm3());
+	    if(stat==KEY_HOME_FGA3)
+	    	values.put(KEY_HOME_FGA3, new_value);
+	    else
+	    	values.put(KEY_HOME_FGA3, game.gethomefga3());
+	    if(stat==KEY_HOME_FTM)
+	    	values.put(KEY_HOME_FTM, new_value);
+	    else
+	    	values.put(KEY_HOME_FTM, game.gethomeftm());
+	    if(stat==KEY_HOME_FTA)
+	    	values.put(KEY_HOME_FTA, new_value);
+	    else
+	    	values.put(KEY_HOME_FTA, game.gethomefta());
+	    if(stat==KEY_HOME_OREB)
+	    	values.put(KEY_HOME_OREB, new_value);
+	    else
+	    	values.put(KEY_HOME_OREB, game.gethomeoreb());
+	    if(stat==KEY_HOME_DREB)
+	    	values.put(KEY_HOME_DREB, new_value);
+	    else
+	    	values.put(KEY_HOME_DREB, game.gethomedreb());
+	    if(stat==KEY_HOME_AST)
+	    	values.put(KEY_HOME_AST, new_value);
+	    else
+	    	values.put(KEY_HOME_AST, game.gethomeast());
+	    if(stat==KEY_HOME_STL)
+	    	values.put(KEY_HOME_STL, new_value);
+	    else
+	    	values.put(KEY_HOME_STL, game.gethomestl());
+	    if(stat==KEY_HOME_BLK)
+	    	values.put(KEY_HOME_BLK, new_value);
+	    else
+	    	values.put(KEY_HOME_BLK, game.gethomeblk());
+	    if(stat==KEY_HOME_TO)
+	    	values.put(KEY_HOME_TO, new_value);
+	    else
+	    	values.put(KEY_HOME_TO, game.gethometo());
+	    if(stat==KEY_HOME_PF)
+	    	values.put(KEY_HOME_PF, new_value);
+	    else
+	    	values.put(KEY_HOME_PF, game.gethomepf());
+	    if(stat==KEY_HOME_TECH)
+	    	values.put(KEY_HOME_TECH, new_value);
+	    else
+	    	values.put(KEY_HOME_TECH, game.gethometech());
+	    if(stat==KEY_HOME_FLAGRANT)
+	    	values.put(KEY_HOME_FLAGRANT, new_value);
+	    else
+	    	values.put(KEY_HOME_FLAGRANT, game.gethomeflagrant());
+	    if(stat==KEY_AWAY_PTS)
+	    	values.put(KEY_AWAY_PTS, new_value);
+	    else
+	    	values.put(KEY_AWAY_PTS, game.getawaypts());
+	    if(stat==KEY_AWAY_FGM)
+	    	values.put(KEY_AWAY_FGM, new_value);
+	    else
+	    	values.put(KEY_AWAY_FGM, game.getawayfgm());
+	    if(stat==KEY_AWAY_FGA)
+	    	values.put(KEY_AWAY_FGA, new_value);
+	    else
+	    	values.put(KEY_AWAY_FGA, game.getawayfga());
+	    if(stat==KEY_AWAY_FGM3)
+	    	values.put(KEY_AWAY_FGM3, new_value);
+	    else
+	    	values.put(KEY_AWAY_FGM3, game.getawayfgm3());
+	    if(stat==KEY_AWAY_FGA3)
+	    	values.put(KEY_AWAY_FGA3, new_value);
+	    else
+	    	values.put(KEY_AWAY_FGA3, game.getawayfga3());
+	    if(stat==KEY_AWAY_FTM)
+	    	values.put(KEY_AWAY_FTM, new_value);
+	    else
+	    	values.put(KEY_AWAY_FTM, game.getawayftm());
+	    if(stat==KEY_AWAY_FTA)
+	    	values.put(KEY_AWAY_FTA, new_value);
+	    else
+	    	values.put(KEY_AWAY_FTA, game.getawayfta());
+	    if(stat==KEY_AWAY_OREB)
+	    	values.put(KEY_AWAY_OREB, new_value);
+	    else
+	    	values.put(KEY_AWAY_OREB, game.getawayoreb());
+	    if(stat==KEY_AWAY_DREB)
+	    	values.put(KEY_AWAY_DREB, new_value);
+	    else
+	    	values.put(KEY_AWAY_DREB, game.getawaydreb());
+	    if(stat==KEY_AWAY_AST)
+	    	values.put(KEY_AWAY_AST, new_value);
+	    else
+	    	values.put(KEY_AWAY_AST, game.getawayast());
+	    if(stat==KEY_AWAY_STL)
+	    	values.put(KEY_AWAY_STL, new_value);
+	    else
+	    	values.put(KEY_AWAY_STL, game.getawaystl());
+	    if(stat==KEY_AWAY_BLK)
+	    	values.put(KEY_AWAY_BLK, new_value);
+	    else
+	    	values.put(KEY_AWAY_BLK, game.getawayblk());
+	    if(stat==KEY_AWAY_TO)
+	    	values.put(KEY_AWAY_TO, new_value);
+	    else
+	    	values.put(KEY_AWAY_TO, game.getawayto());
+	    if(stat==KEY_AWAY_PF)
+	    	values.put(KEY_AWAY_PF, new_value);
+	    else
+	    	values.put(KEY_AWAY_PF, game.getawaypf());
+	    if(stat==KEY_AWAY_TECH)
+	    	values.put(KEY_AWAY_TECH, new_value);
+	    else
+	    	values.put(KEY_AWAY_TECH, game.getawaytech());
+	    if(stat==KEY_AWAY_FLAGRANT)
+	    	values.put(KEY_AWAY_FLAGRANT, new_value);
+	    else
+	    	values.put(KEY_AWAY_FLAGRANT, game.getawayflagrant());
+        
+        //insert more stats here
+        
+	    return db.update(TABLE_GAMES,  values, KEY_G_ID + " = " + g_id, null);
 	}
 	
 	// Delete a Game

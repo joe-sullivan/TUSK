@@ -7,7 +7,7 @@ public class ShotChartCoords implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = -4638578020745992118L;
-	long a_id;
+	long shot_id;
 	long g_id;
 	long p_id;
     int x;
@@ -26,8 +26,8 @@ public class ShotChartCoords implements Serializable{
         this.made = made;
     }
  
-    public ShotChartCoords(long a_id, long g_id, long p_id, int x, int y, String made) {
-        this.a_id = a_id;
+    public ShotChartCoords(long shot_id, long g_id, long p_id, int x, int y, String made) {
+        this.shot_id = shot_id;
     	this.g_id = g_id;
         this.p_id = p_id;
         this.x = x;
@@ -36,8 +36,8 @@ public class ShotChartCoords implements Serializable{
     }
  
     // setters
-    public void setaid(long a_id) {
-        this.a_id = a_id;
+    public void setshotid(long shot_id) {
+        this.shot_id = shot_id;
     }
     
     public void setgid(long g_id) {
@@ -61,8 +61,8 @@ public class ShotChartCoords implements Serializable{
     }
  
     // getters
-    public long getaid() {
-        return this.a_id;
+    public long getshotid() {
+        return this.shot_id;
     }
     
     public long getgid() {
