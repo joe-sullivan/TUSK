@@ -3,6 +3,8 @@ package com.seniordesign.ultimatescorecard.stats.hockey;
 import java.util.ArrayList;
 
 import com.seniordesign.ultimatescorecard.R;
+import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -27,9 +29,12 @@ public class HockeyPlayListFragment extends Fragment{
 	
 	private void addTextViews(){
 		LinearLayout layout = ((LinearLayout) getView().findViewById(R.id.listofPlays));
-		ArrayList<String> log = ((HockeyStatsActivity) getActivity()).getGameLog().getGameLog();
-		for(int i=0; i<log.size(); i++){
-			layout.addView(newTextView(log.get(i)));	
+		ArrayList<PlayByPlay> log = ((HockeyStatsActivity) getActivity()).getGameLog();
+		
+		if(layout.getChildCount()==0){
+			for(PlayByPlay pbp: log){
+				layout.addView(newTextView(pbp.getaction()));	
+			}
 		}
 	}
 	

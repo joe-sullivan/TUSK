@@ -1,6 +1,14 @@
 package com.seniordesign.ultimatescorecard.data.hockey;
 
+import java.util.ArrayList;
+
 import com.seniordesign.ultimatescorecard.R;
+import com.seniordesign.ultimatescorecard.data.basketball.BasketballGameInfo;
+import com.seniordesign.ultimatescorecard.data.basketball.BasketballGameLog;
+import com.seniordesign.ultimatescorecard.data.basketball.BasketballGameTime;
+import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
+import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
+import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyDatabaseHelper;
 import com.seniordesign.ultimatescorecard.stats.hockey.HockeyStatsActivity;
 import com.seniordesign.ultimatescorecard.substitution.SubstitutionActivity;
 import com.seniordesign.ultimatescorecard.view.GameClock;
@@ -38,15 +46,32 @@ public class HockeyActivity extends Activity{
 	Bitmap _bitmap;
 	Button _option1Button, _option2Button, _option3Button, _option4Button, _option5Button;
 
+	public HockeyDatabaseHelper _hockey_db;
+
+	private GameClock _gameClock;															//strings containing name of home and away team
 	private HockeyGameTime _gti;
-	private HockeyGameLog _gameLog = new HockeyGameLog();;
-	private GameClock _gameClock;
+	private HockeyGameLog _gameLog = new HockeyGameLog();
+	private ArrayList<PlayByPlay> _playbyplay;
 	private ShotIconAdder _iconAdder;
+	private HockeyGameInfo _gameInfo;
+	private long g_id;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		_gti = (HockeyGameTime) getIntent().getSerializableExtra(StaticFinalVars.GAME_INFO);
+		
+		//databases
+		_hockey_db = new HockeyDatabaseHelper(getApplicationContext());		
+		
+		_gti = (HockeyGameTime) getIntent().getSerializableExtra(StaticFinalVars.GAME_TIME);
 		setContentView(getLayoutInflater().inflate(R.layout.activity_hockey, null));
+		
+		//databases
+		_gti.setContext(this);
+		g_id = _gti.createTeams();
+		_gameLog.setdb(_hockey_db);
+		_gameLog.setgid(g_id);
+		_gameInfo = _gti.getGameInfo();
+		_playbyplay = new ArrayList<PlayByPlay>();
 		
 		_awayTextView = (TextView)findViewById(R.id.awayTextView);									//change text to denote home and away team
 		_awayTextView.setText(_gti.getAwayAbbr());	
@@ -161,12 +186,12 @@ public class HockeyActivity extends Activity{
 				
 				if(_gti.getPossession()){
 					for(HockeyPlayer hp : _gti.getTheHomeTeam().getRoster()){
-						arrayAdapter.add(hp.getName());
+						arrayAdapter.add(hp.getpname());
 					}
 				}
 				else{
 					for(HockeyPlayer hp : _gti.getTheAwayTeam().getRoster()){
-						arrayAdapter.add(hp.getName());
+						arrayAdapter.add(hp.getpname());
 					}
 				}			
 				builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -179,13 +204,14 @@ public class HockeyActivity extends Activity{
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						String player = arrayAdapter.getItem(which);
-						_gti.getTeam().getPlayer(player).shotMissed();
 						if(saved){
-							_gti.getTeam().getGoalie().saved();		
-							_gameLog.shootsAndMisses(player, _gti.getOppoTeam().getGoalie().getName());
+							_gti.getTeam().getPlayer(player).shotOnGoalMissed();
+							_gti.getOppoTeam().getGoalie().saved();		
+							_gameLog.shootsAndMisses(player, _gti.getOppoTeam().getGoalie().getpname(),_gameClockView.getText().toString());
 						}
 						else{
-							_gameLog.shootsAndMisses(player, "");
+							_gti.getTeam().getPlayer(player).shotMissed();
+							_gameLog.shootsAndMisses(player, "",_gameClockView.getText().toString());
 						}
 						_iceHockeyRink.setOnTouchListener(courtInteraction(false));
 						disableButtons();
@@ -237,12 +263,12 @@ public class HockeyActivity extends Activity{
 				
 				if(_gti.getPossession()){
 					for(HockeyPlayer hp : _gti.getTheHomeTeam().getRoster()){
-						arrayAdapter.add(hp.getName());
+						arrayAdapter.add(hp.getpname());
 					}
 				}
 				else{
 					for(HockeyPlayer hp : _gti.getTheAwayTeam().getRoster()){
-						arrayAdapter.add(hp.getName());
+						arrayAdapter.add(hp.getpname());
 					}
 				}			
 				builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -256,7 +282,7 @@ public class HockeyActivity extends Activity{
 					public void onClick(DialogInterface dialog, int which) {
 						String player = arrayAdapter.getItem(which);
 						_gti.getTeam().getPlayer(player).scoreGoal();
-						_gameLog.penaltyShot(goal, player, _gti.getOppoTeam().getGoalie().getName());						
+						_gameLog.penaltyShot(goal, player, _gti.getOppoTeam().getGoalie().getpname(),_gameClockView.getText().toString());						
 						_iceHockeyRink.setOnTouchListener(courtInteraction(true));
 						disableButtons();						
 					}
@@ -275,12 +301,12 @@ public class HockeyActivity extends Activity{
 		
 		if(_gti.getPossession()){
 			for(HockeyPlayer hp : _gti.getTheHomeTeam().getRoster()){
-				arrayAdapter.add(hp.getName());
+				arrayAdapter.add(hp.getpname());
 			}
 		}
 		else{
 			for(HockeyPlayer hp : _gti.getTheAwayTeam().getRoster()){
-				arrayAdapter.add(hp.getName());
+				arrayAdapter.add(hp.getpname());
 			}
 		}			
 		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -296,17 +322,17 @@ public class HockeyActivity extends Activity{
 				if(type.equals("Minor")){
 					_gti.getTeam().getPlayer(player).minorPenalty();
 					_gti.getTeam().getPlayer(player).addPenaltyMins(2);
-					_gameLog.penalty(player, type);
+					_gameLog.penalty(player, type,_gameClockView.getText().toString());
 				}
 				else if(type.equals("Major")){
 					_gti.getTeam().getPlayer(player).majorPenalty();
 					_gti.getTeam().getPlayer(player).addPenaltyMins(5);
-					_gameLog.penalty(player, type);
+					_gameLog.penalty(player, type,_gameClockView.getText().toString());
 				}
 				else if(type.equals("Misconduct")){
 					_gti.getTeam().getPlayer(player).misconductPenalty();
 					_gti.getTeam().getPlayer(player).addPenaltyMins(10);
-					_gameLog.penalty(player, type);
+					_gameLog.penalty(player, type,_gameClockView.getText().toString());
 				}
 				else if(type.equals("Penalty")){
 					_gti.getTeam().getPlayer(player).minorPenalty();
@@ -331,12 +357,12 @@ public class HockeyActivity extends Activity{
 			
 			if(_gti.getPossession()){
 				for(HockeyPlayer hp : _gti.getTheHomeTeam().getRoster()){
-					arrayAdapter.add(hp.getName());
+					arrayAdapter.add(hp.getpname());
 				}
 			}
 			else{
 				for(HockeyPlayer hp : _gti.getTheAwayTeam().getRoster()){
-					arrayAdapter.add(hp.getName());
+					arrayAdapter.add(hp.getpname());
 				}
 			}			
 			builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -361,7 +387,8 @@ public class HockeyActivity extends Activity{
 			@Override
 			public void onClick(View view) {
 				_gti.getTeam().getPlayer(goalScorer).scoreGoal();
-				_gameLog.shootsAndScores(goalScorer, "", "");
+				_gti.getOppoTeam().getGoalie().goalAllowed();
+				_gameLog.shootsAndScores(goalScorer, "", "", _gameClockView.getText().toString());
 				_iceHockeyRink.setOnTouchListener(courtInteraction(true));
 				disableButtons();
 			}
@@ -380,15 +407,15 @@ public class HockeyActivity extends Activity{
 				
 				if(_gti.getPossession()){
 					for(HockeyPlayer hp : _gti.getTheHomeTeam().getRoster()){
-						if(!hp.getName().equals(goalScorer)){
-							arrayAdapter.add(hp.getName());
+						if(!hp.getpname().equals(goalScorer)){
+							arrayAdapter.add(hp.getpname());
 						}
 					}
 				}
 				else{
 					for(HockeyPlayer hp : _gti.getTheAwayTeam().getRoster()){
-						if(!hp.getName().equals(goalScorer)){
-							arrayAdapter.add(hp.getName());
+						if(!hp.getpname().equals(goalScorer)){
+							arrayAdapter.add(hp.getpname());
 						}
 					}
 				}			
@@ -408,7 +435,8 @@ public class HockeyActivity extends Activity{
 						else {
 							_gti.getTeam().getPlayer(goalScorer).scoreGoal();
 							_gti.getTeam().getPlayer(player).assisted();
-							_gameLog.shootsAndScores(goalScorer, player, "");
+							_gti.getOppoTeam().getGoalie().goalAllowed();
+							_gameLog.shootsAndScores(goalScorer, player, "",_gameClockView.getText().toString());
 							_iceHockeyRink.setOnTouchListener(courtInteraction(true));
 							disableButtons();
 						}
@@ -428,15 +456,15 @@ public class HockeyActivity extends Activity{
 		
 		if(_gti.getPossession()){
 			for(HockeyPlayer hp : _gti.getTheHomeTeam().getRoster()){
-				if(!hp.getName().equals(goalScorer) && !hp.getName().equals(assist1)){
-					arrayAdapter.add(hp.getName());
+				if(!hp.getpname().equals(goalScorer) && !hp.getpname().equals(assist1)){
+					arrayAdapter.add(hp.getpname());
 				}
 			}
 		}
 		else{
 			for(HockeyPlayer hp : _gti.getTheAwayTeam().getRoster()){
-				if(!hp.getName().equals(goalScorer) && !hp.getName().equals(assist1)){
-					arrayAdapter.add(hp.getName());
+				if(!hp.getpname().equals(goalScorer) && !hp.getpname().equals(assist1)){
+					arrayAdapter.add(hp.getpname());
 				}
 			}
 		}			
@@ -453,7 +481,8 @@ public class HockeyActivity extends Activity{
 				_gti.getTeam().getPlayer(goalScorer).scoreGoal();
 				_gti.getTeam().getPlayer(assist1).assisted();
 				_gti.getTeam().getPlayer(player).assisted();
-				_gameLog.shootsAndScores(goalScorer, assist1, player);
+				_gti.getOppoTeam().getGoalie().goalAllowed();
+				_gameLog.shootsAndScores(goalScorer, assist1, player,_gameClockView.getText().toString());
 				_iceHockeyRink.setOnTouchListener(courtInteraction(true));
 				disableButtons();
 			}
@@ -602,16 +631,19 @@ public class HockeyActivity extends Activity{
 		
 		case R.id.boxscore:
 			intent = new Intent(getApplicationContext(), HockeyStatsActivity.class);			
-			intent.putExtra(StaticFinalVars.GAME_INFO, _gti);			
-			intent.putExtra(StaticFinalVars.GAME_LOG, _gameLog);
+			HockeyGameInfo gameinfo = _gti.getGameInfo();
+
+			intent.putExtra(StaticFinalVars.GAME_INFO, gameinfo);			
+			intent.putExtra(StaticFinalVars.GAME_LOG, _playbyplay);
 			intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 0);
 			startActivity(intent);		
 			break;
 			
 		case R.id.gameLog:
 			intent = new Intent(getApplicationContext(), HockeyStatsActivity.class);	
-			intent.putExtra(StaticFinalVars.GAME_INFO, _gti);	
-			intent.putExtra(StaticFinalVars.GAME_LOG, _gameLog);
+			ArrayList<PlayByPlay> pbps = (ArrayList<PlayByPlay>) _hockey_db.getPlayByPlayGame(g_id);
+			intent.putExtra(StaticFinalVars.GAME_INFO, _gameInfo);	
+			intent.putExtra(StaticFinalVars.GAME_LOG, pbps);
 			intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 1);
 			startActivity(intent);
 			break;
@@ -640,10 +672,41 @@ public class HockeyActivity extends Activity{
 			break;
 		
 		case R.id.substitution:
-			intent = new Intent(getApplicationContext(), SubstitutionActivity.class);			
-			intent.putExtra(StaticFinalVars.SUB_INFO, _gti);
-			startActivityForResult(intent, SUBSTITUTION_CODE);	
-			break;
+			Builder builder = new Builder(HockeyActivity.this);
+			builder.setTitle("Set Goalie:");
+			final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String> (HockeyActivity.this,
+					android.R.layout.select_dialog_singlechoice);
+			
+			if(_gti.getPossession()){
+				for(HockeyPlayer hp : _gti.getTheHomeTeam().getRoster()){
+					arrayAdapter.add(hp.getpname());		
+				}
+			}
+			else{
+				for(HockeyPlayer hp : _gti.getTheAwayTeam().getRoster()){
+					arrayAdapter.add(hp.getpname());
+					
+				}
+			}			
+			builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+			});			
+			builder.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					String player = arrayAdapter.getItem(which);
+					if(_gti.getPossession()){
+						_gti.getTeam().setGoalie(_gti.getTheHomeTeam().getPlayer(player));
+					}
+					else{
+						_gti.getTeam().setGoalie(_gti.getTheAwayTeam().getPlayer(player));
+					}
+				}
+			});
+			builder.show();
 		}
 		return true;
 	}

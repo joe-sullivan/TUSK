@@ -4,6 +4,7 @@ package com.seniordesign.ultimatescorecard.sqlite.hockey;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.seniordesign.ultimatescorecard.data.hockey.HockeyPlayer;
 import com.seniordesign.ultimatescorecard.sqlite.DatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
 import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
@@ -33,7 +34,7 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
     //Table Names
     private static final String TABLE_GAMES = "games";
     private static final String TABLE_HOCKEY_GAME_STATS = "hockey_game_stats";
-    private static final String TABLE = "players";
+    private static final String TABLE_PLAYERS = "players";
     private static final String TABLE_TEAMS = "teams";
     private static final String TABLE_PLAY_BY_PLAY = "play_by_play";
     private static final String TABLE_SHOT_CHART_COORDS = "shot_chart_coords";
@@ -44,34 +45,54 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
     private static final String KEY_P_ID = "p_id";
     private static final String KEY_T_ID = "t_id";
     private static final String KEY_A_ID = "a_id";
+    private static final String KEY_PERIOD = "period";
     
     //GAMES Table - column names
     private static final String KEY_HOME_ID = "home_id";
     private static final String KEY_AWAY_ID = "away_id";
     private static final String KEY_DATE = "date";
     
+    private static final String KEY_HOME_SOG = "home_sog";
+    private static final String KEY_HOME_GOALS = "home_goals";
+    private static final String KEY_HOME_SAVES = "home_saves";
+    private static final String KEY_HOME_GOALS_ALLOWED = "home_goals_allowed";
+    private static final String KEY_HOME_SHOTS = "home_shots";
+    private static final String KEY_HOME_AST = "home_ast";
+    private static final String KEY_HOME_PEN_MINOR = "home_pen_minor";
+    private static final String KEY_HOME_PEN_MAJOR = "home_pen_major";
+    private static final String KEY_HOME_PEN_MISCONDUCT = "home_pen_misconduct";
+    
+    private static final String KEY_AWAY_SOG = "away_sog";
+    private static final String KEY_AWAY_GOALS = "away_goals";
+    private static final String KEY_AWAY_SAVES = "away_saves";
+    private static final String KEY_AWAY_GOALS_ALLOWED = "away_goals_allowed";
+    private static final String KEY_AWAY_SHOTS = "away_shots";
+    private static final String KEY_AWAY_AST = "away_ast";
+    private static final String KEY_AWAY_PEN_MINOR = "away_pen_minor";
+    private static final String KEY_AWAY_PEN_MAJOR = "away_pen_major";
+    private static final String KEY_AWAY_PEN_MISCONDUCT = "away_pen_misconduct";
+    
     //HOCKEYGAMESTATS - common column names
     private static final String KEY_SOG = "sog";
     private static final String KEY_GOALS = "goals";
-    
-    //HOCKEYGAMESTATSGOALIE Table - column names
     private static final String KEY_SAVES = "saves";
     private static final String KEY_GOALS_ALLOWED = "goals_allowed";
-    
-    //HOCKEYGAMESTATSPLAYERS Table - column names
     private static final String KEY_SHOTS = "shots";
     private static final String KEY_AST = "ast";
     private static final String KEY_PEN_MINOR = "pen_minor";
     private static final String KEY_PEN_MAJOR = "pen_major";
-    
+    private static final String KEY_PEN_MISCONDUCT = "pen_misconduct";
+
     //PLAYERS Table - column names
     private static final String KEY_P_NAME = "p_name";
     private static final String KEY_P_NUM = "p_num";
 
     //TEAMS Table - column names
     private static final String KEY_T_NAME = "t_name";
+    private static final String KEY_ABBV = "abbv";
     private static final String KEY_C_NAME = "c_name";
     private static final String KEY_SPORT = "sport";
+    
     
     //PLAY_BY_PLAY Table - column names
     private static final String KEY_ACTION = "action";
@@ -88,7 +109,17 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
     //GAMES table create statement
     private static final String CREATE_TABLE_GAMES = "CREATE TABLE IF NOT EXISTS " + TABLE_GAMES 
     		+ "(" + KEY_G_ID + " INTEGER PRIMARY KEY," + KEY_HOME_ID + " INTEGER," 
-    		+ KEY_AWAY_ID + " INTEGER," + KEY_DATE + " DATE" + ")"; 
+    		+ KEY_AWAY_ID + " INTEGER," + KEY_DATE + " DATE, "
+    		
+    		+ KEY_HOME_SHOTS + " INTEGER, " + KEY_HOME_SOG + " INTEGER, " + KEY_HOME_GOALS + " INTEGER, "
+    		+ KEY_HOME_AST + " INTEGER, " + KEY_HOME_PEN_MINOR + " INTEGER, " + KEY_HOME_PEN_MAJOR + " INTEGER, "
+    		+ KEY_HOME_PEN_MISCONDUCT + " INTEGER, "+ KEY_HOME_SAVES + " INTEGER, " + KEY_HOME_GOALS_ALLOWED + " INTEGER, "
+    		
+    		+ KEY_AWAY_SHOTS + " INTEGER, " + KEY_AWAY_SOG + " INTEGER, " + KEY_AWAY_GOALS + " INTEGER, "
+    		+ KEY_AWAY_AST + " INTEGER, " + KEY_AWAY_PEN_MINOR + " INTEGER, " + KEY_AWAY_PEN_MAJOR + " INTEGER, "
+    		+ KEY_AWAY_PEN_MISCONDUCT + " INTEGER, "+ KEY_AWAY_SAVES + " INTEGER, " + KEY_AWAY_GOALS_ALLOWED + " INTEGER"
+    	
+    		+ ")"; 
     //Doesn't include SPORT yet...
     
     //HOCKEY_GAME_STATS table create statement
@@ -96,11 +127,11 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
     		+ "(" + KEY_G_ID + " INTEGER" + ", " + KEY_P_ID + " INTEGER" + ", "
     		+ KEY_SHOTS + " INTEGER, " + KEY_SOG + " INTEGER, " + KEY_GOALS + " INTEGER, "
     		+ KEY_AST + " INTEGER, " + KEY_PEN_MINOR + " INTEGER, " + KEY_PEN_MAJOR + " INTEGER, "
-    		+ KEY_SAVES + " INTEGER, " + KEY_GOALS_ALLOWED + " INTEGER"
+    		+ KEY_PEN_MISCONDUCT + " INTEGER, "+ KEY_SAVES + " INTEGER, " + KEY_GOALS_ALLOWED + " INTEGER"
     		+ ")"; 
     
     //PLAYERS table create statement
-    private static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE 
+    private static final String CREATE_TABLE_PLAYERS = "CREATE TABLE IF NOT EXISTS " + TABLE_PLAYERS 
     		+ "(" + KEY_P_ID + " INTEGER PRIMARY KEY," 
     		+ KEY_T_ID + " INTEGER, "
     		// + FOREIGN KEY REFERENCES " + TABLE_TEAMS + "(" + KEY_T_ID + ")," 
@@ -109,12 +140,12 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
     //TEAMS table create statement
     private static final String CREATE_TABLE_TEAMS = "CREATE TABLE IF NOT EXISTS " + TABLE_TEAMS 
     		+ "(" + KEY_T_ID + " INTEGER PRIMARY KEY," + KEY_T_NAME + " VARCHAR(45)," 
-    		+ KEY_C_NAME + " VARCHAR(45),"+ KEY_SPORT + " VARCHAR(45)" + ")"; 
+    		+ KEY_ABBV + " VARCHAR(45)," + KEY_C_NAME + " VARCHAR(45),"+ KEY_SPORT + " VARCHAR(45)" + ")"; 
     
     //PLAY_BY_PLAY table create statement
     private static final String CREATE_TABLE_PLAY_BY_PLAY = "CREATE TABLE IF NOT EXISTS " + TABLE_PLAY_BY_PLAY 
     		+ "(" + KEY_A_ID + " INTEGER PRIMARY KEY," + KEY_G_ID + " INTEGER," 
-    		+ KEY_ACTION + " VARCHAR(45)," + KEY_TIME + " VARCHAR(45)," + KEY_HOME_SCORE + " INTEGER, " 
+    		+ KEY_ACTION + " VARCHAR(45)," + KEY_TIME + " VARCHAR(45)," + KEY_PERIOD + " VARCHAR(10)," +  KEY_HOME_SCORE + " INTEGER, " 
     		+ KEY_AWAY_SCORE + " INTEGER" + ")";
     
     //SHOT_CHART_COORDS table create statement
@@ -137,7 +168,7 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
 		
         db.execSQL(CREATE_TABLE_GAMES);
         db.execSQL(CREATE_TABLE_HOCKEY_GAME_STATS);
-        db.execSQL(CREATE_TABLE);
+        db.execSQL(CREATE_TABLE_PLAYERS);
         db.execSQL(CREATE_TABLE_TEAMS);
         db.execSQL(CREATE_TABLE_PLAY_BY_PLAY);
         db.execSQL(CREATE_TABLE_SHOT_CHART_COORDS);
@@ -149,8 +180,8 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
 		// on upgrade drop older tables
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_GAMES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_HOCKEY_GAME_STATS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TEAMS);
+        //db.execSQL("DROP TABLE IF EXISTS " + TABLE_PLAYERS);
+        //db.execSQL("DROP TABLE IF EXISTS " + TABLE_TEAMS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PLAY_BY_PLAY);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOT_CHART_COORDS);
 
@@ -167,6 +198,26 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
         values.put(KEY_HOME_ID, game.gethomeid());
         values.put(KEY_AWAY_ID, game.getawayid());
         values.put(KEY_DATE, game.getDate());
+        
+        values.put(KEY_HOME_SHOTS, 0);
+        values.put(KEY_HOME_SOG, 0);
+        values.put(KEY_HOME_GOALS, 0);
+        values.put(KEY_HOME_AST, 0);
+        values.put(KEY_HOME_PEN_MINOR, 0);
+        values.put(KEY_HOME_PEN_MAJOR, 0);
+        values.put(KEY_HOME_PEN_MISCONDUCT, 0);
+        values.put(KEY_HOME_SAVES,0);
+        values.put(KEY_HOME_GOALS_ALLOWED, 0);
+        
+        values.put(KEY_AWAY_SHOTS, 0);
+        values.put(KEY_AWAY_SOG, 0);
+        values.put(KEY_AWAY_GOALS, 0);
+        values.put(KEY_AWAY_AST, 0);
+        values.put(KEY_AWAY_PEN_MINOR, 0);
+        values.put(KEY_AWAY_PEN_MAJOR, 0);
+        values.put(KEY_AWAY_PEN_MISCONDUCT, 0);
+        values.put(KEY_AWAY_SAVES,0);
+        values.put(KEY_AWAY_GOALS_ALLOWED, 0);
  
         // insert row
         long g_id = db.insert(TABLE_GAMES, null, values);
@@ -194,16 +245,36 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
 	    Log.i(LOG, selectQuery);
 	    //perform the query and store data in cursor
 	    Cursor c = db.rawQuery(selectQuery, null);
+	    HockeyGames game = new HockeyGames();
+
 	    //set cursor to beginning
-	    if (c != null)
-	        c.moveToFirst();
+	    if (c != null && c.moveToFirst()){
 	    //create the instance of Games using cursor information
-	    Games game = new Games();
-	    game.setgid(c.getLong(c.getColumnIndex(KEY_G_ID)));
-	    game.sethomeid((c.getLong(c.getColumnIndex(KEY_HOME_ID))));
-	    game.setawayid((c.getLong(c.getColumnIndex(KEY_AWAY_ID))));
-	    game.setDate(c.getString(c.getColumnIndex(KEY_DATE)));
-	 
+		    game.setgid(c.getLong(c.getColumnIndex(KEY_G_ID)));
+		    game.sethomeid((c.getLong(c.getColumnIndex(KEY_HOME_ID))));
+		    game.setawayid((c.getLong(c.getColumnIndex(KEY_AWAY_ID))));
+		    game.setDate(c.getString(c.getColumnIndex(KEY_DATE)));
+		 
+		    game.sethomeshots((c.getInt(c.getColumnIndex(KEY_HOME_SHOTS))));
+		    game.sethomesog((c.getInt(c.getColumnIndex(KEY_HOME_SOG))));
+		    game.sethomegoals(c.getInt(c.getColumnIndex(KEY_HOME_GOALS)));
+		    game.sethomeast((c.getInt(c.getColumnIndex(KEY_HOME_AST))));
+		    game.sethomepenminor((c.getInt(c.getColumnIndex(KEY_HOME_PEN_MINOR))));
+		    game.sethomepenmajor(c.getInt(c.getColumnIndex(KEY_HOME_PEN_MAJOR)));
+		    game.sethomepenmisconduct(c.getInt(c.getColumnIndex(KEY_HOME_PEN_MISCONDUCT)));
+		    game.sethomesaves((c.getInt(c.getColumnIndex(KEY_HOME_SAVES))));
+		    game.sethomegoalsallowed((c.getInt(c.getColumnIndex(KEY_HOME_GOALS_ALLOWED))));
+		    
+		    game.setawayshots((c.getInt(c.getColumnIndex(KEY_AWAY_SHOTS))));
+		    game.setawaysog((c.getInt(c.getColumnIndex(KEY_AWAY_SOG))));
+		    game.setawaygoals(c.getInt(c.getColumnIndex(KEY_AWAY_GOALS)));
+		    game.setawayast((c.getInt(c.getColumnIndex(KEY_AWAY_AST))));
+		    game.setawaypenminor((c.getInt(c.getColumnIndex(KEY_AWAY_PEN_MINOR))));
+		    game.setawaypenmajor(c.getInt(c.getColumnIndex(KEY_AWAY_PEN_MAJOR)));
+		    game.setawaypenmisconduct(c.getInt(c.getColumnIndex(KEY_AWAY_PEN_MISCONDUCT)));
+		    game.setawaysaves((c.getInt(c.getColumnIndex(KEY_AWAY_SAVES))));
+		    game.setawaygoalsallowed((c.getInt(c.getColumnIndex(KEY_AWAY_GOALS_ALLOWED))));
+	    }
 	    return game;
 	}
 	
@@ -220,17 +291,152 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
 	    // looping through all rows and adding to list
 	    if (c.moveToFirst()) {
 	        do {
-	        	Games game = new Games();
+	        	HockeyGames game = new HockeyGames();
 	    	    game.setgid(c.getLong(c.getColumnIndex(KEY_G_ID)));
 	    	    game.sethomeid((c.getLong(c.getColumnIndex(KEY_HOME_ID))));
 	    	    game.setawayid((c.getLong(c.getColumnIndex(KEY_AWAY_ID))));
 	    	    game.setDate(c.getString(c.getColumnIndex(KEY_DATE)));
-	            // adding to games list
+	    		 
+	    	    game.sethomeshots((c.getInt(c.getColumnIndex(KEY_HOME_SHOTS))));
+	    	    game.sethomesog((c.getInt(c.getColumnIndex(KEY_HOME_SOG))));
+	    	    game.sethomegoals(c.getInt(c.getColumnIndex(KEY_HOME_GOALS)));
+	    	    game.sethomeast((c.getInt(c.getColumnIndex(KEY_HOME_AST))));
+	    	    game.sethomepenminor((c.getInt(c.getColumnIndex(KEY_HOME_PEN_MINOR))));
+	    	    game.sethomepenmajor(c.getInt(c.getColumnIndex(KEY_HOME_PEN_MAJOR)));
+	    	    game.sethomepenmisconduct(c.getInt(c.getColumnIndex(KEY_HOME_PEN_MISCONDUCT)));
+	    	    game.sethomesaves((c.getInt(c.getColumnIndex(KEY_HOME_SAVES))));
+	    	    game.sethomegoalsallowed((c.getInt(c.getColumnIndex(KEY_HOME_GOALS_ALLOWED))));
+	    	    
+	    	    game.setawayshots((c.getInt(c.getColumnIndex(KEY_AWAY_SHOTS))));
+	    	    game.setawaysog((c.getInt(c.getColumnIndex(KEY_AWAY_SOG))));
+	    	    game.setawaygoals(c.getInt(c.getColumnIndex(KEY_AWAY_GOALS)));
+	    	    game.setawayast((c.getInt(c.getColumnIndex(KEY_AWAY_AST))));
+	    	    game.setawaypenminor((c.getInt(c.getColumnIndex(KEY_AWAY_PEN_MINOR))));
+	    	    game.setawaypenmajor(c.getInt(c.getColumnIndex(KEY_AWAY_PEN_MAJOR)));
+	    	    game.setawaypenmisconduct(c.getInt(c.getColumnIndex(KEY_AWAY_PEN_MISCONDUCT)));
+	    	    game.setawaysaves((c.getInt(c.getColumnIndex(KEY_AWAY_SAVES))));
+	    	    game.setawaygoalsallowed((c.getInt(c.getColumnIndex(KEY_AWAY_GOALS_ALLOWED))));
+	    	
+	    	    
+	    	    // adding to games list
 	            games.add(game);
 	        } while (c.moveToNext());
 	    }
 	 
 	    return games;
+	}
+	
+	//get single game stat for team
+	public int getTeamGameStat(long g_id, String stat) {
+	    SQLiteDatabase db = this.getReadableDatabase();
+	    //create query to select game
+	    String selectQuery = "SELECT " + stat + " FROM " + TABLE_GAMES + 
+	    	" WHERE " + KEY_G_ID + " = " + g_id;
+	    
+	    //Log the query
+	    Log.i(LOG, selectQuery);
+	    //perform the query and store data in cursor
+	    Cursor c = db.rawQuery(selectQuery, null);
+	    //set cursor to beginning
+	    if (c != null)
+	        c.moveToFirst();
+	    //create the instance of Games using cursor information
+	    int stat_value = c.getInt(c.getColumnIndex(stat));
+
+	    return stat_value;
+	}
+	
+	//Adding value to points category of a player
+	public int addTeamStats(long g_id, String stat, int value){
+	    SQLiteDatabase db = this.getWritableDatabase();
+	    HockeyGames game = (HockeyGames) getGame(g_id);
+	    
+	    int old_value = getTeamGameStat(g_id,stat);
+	    int new_value = old_value + value;
+	    
+	    ContentValues values = new ContentValues();
+	    	
+        values.put(KEY_G_ID, g_id);
+        values.put(KEY_HOME_ID, game.gethomeid());
+        values.put(KEY_AWAY_ID, game.getawayid());
+        values.put(KEY_DATE, game.getDate());
+
+	    if(stat==KEY_HOME_SHOTS)
+	    	values.put(KEY_HOME_SHOTS, new_value);
+	    else
+	    	values.put(KEY_HOME_SHOTS, game.gethomeshots());
+	    if(stat==KEY_HOME_SOG)
+	    	values.put(KEY_HOME_SOG, new_value);
+	    else
+	    	values.put(KEY_HOME_SOG, game.gethomesog());
+	    if(stat==KEY_HOME_GOALS)
+	    	values.put(KEY_HOME_GOALS, new_value);
+	    else
+	    	values.put(KEY_HOME_GOALS, game.gethomegoals());
+	    if(stat==KEY_HOME_AST)
+	    	values.put(KEY_HOME_AST, new_value);
+	    else
+	    	values.put(KEY_HOME_AST, game.gethomeast());
+	    if(stat==KEY_HOME_PEN_MINOR)
+	    	values.put(KEY_HOME_PEN_MINOR, new_value);
+	    else
+	    	values.put(KEY_HOME_PEN_MINOR, game.gethomepenminor());
+	    if(stat==KEY_HOME_PEN_MAJOR)
+	    	values.put(KEY_HOME_PEN_MAJOR, new_value);
+	    else
+	    	values.put(KEY_HOME_PEN_MAJOR, game.gethomepenminor());
+	    if(stat==KEY_HOME_PEN_MISCONDUCT)
+	    	values.put(KEY_HOME_PEN_MISCONDUCT, new_value);
+	    else
+	    	values.put(KEY_HOME_PEN_MISCONDUCT, game.gethomepenmisconduct());
+	    if(stat==KEY_HOME_SAVES)
+	    	values.put(KEY_HOME_SAVES, new_value);
+	    else
+	    	values.put(KEY_HOME_SAVES, game.gethomesaves());
+	    if(stat==KEY_HOME_GOALS_ALLOWED)
+	    	values.put(KEY_HOME_GOALS_ALLOWED, new_value);
+	    else
+	    	values.put(KEY_HOME_GOALS_ALLOWED, game.gethomegoalsallowed());
+        
+	    if(stat==KEY_AWAY_SHOTS)
+	    	values.put(KEY_AWAY_SHOTS, new_value);
+	    else
+	    	values.put(KEY_AWAY_SHOTS, game.getawayshots());
+	    if(stat==KEY_AWAY_SOG)
+	    	values.put(KEY_AWAY_SOG, new_value);
+	    else
+	    	values.put(KEY_AWAY_SOG, game.getawaysog());
+	    if(stat==KEY_AWAY_GOALS)
+	    	values.put(KEY_AWAY_GOALS, new_value);
+	    else
+	    	values.put(KEY_AWAY_GOALS, game.getawaygoals());
+	    if(stat==KEY_AWAY_AST)
+	    	values.put(KEY_AWAY_AST, new_value);
+	    else
+	    	values.put(KEY_AWAY_AST, game.getawayast());
+	    if(stat==KEY_AWAY_PEN_MINOR)
+	    	values.put(KEY_AWAY_PEN_MINOR, new_value);
+	    else
+	    	values.put(KEY_AWAY_PEN_MINOR, game.getawaypenminor());
+	    if(stat==KEY_AWAY_PEN_MAJOR)
+	    	values.put(KEY_AWAY_PEN_MAJOR, new_value);
+	    else
+	    	values.put(KEY_AWAY_PEN_MAJOR, game.getawaypenminor());
+	    if(stat==KEY_AWAY_PEN_MISCONDUCT)
+	    	values.put(KEY_AWAY_PEN_MISCONDUCT, new_value);
+	    else
+	    	values.put(KEY_AWAY_PEN_MISCONDUCT, game.getawaypenmisconduct());
+	    if(stat==KEY_AWAY_SAVES)
+	    	values.put(KEY_AWAY_SAVES, new_value);
+	    else
+	    	values.put(KEY_AWAY_SAVES, game.getawaysaves());
+	    if(stat==KEY_AWAY_GOALS_ALLOWED)
+	    	values.put(KEY_AWAY_GOALS_ALLOWED, new_value);
+	    else
+	    	values.put(KEY_AWAY_GOALS_ALLOWED, game.getawaygoalsallowed());
+	    //insert more stats here
+        
+	    return db.update(TABLE_GAMES,  values, KEY_G_ID + " = " + g_id, null);
 	}
 	
 	// Delete a Game
@@ -256,6 +462,7 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
         values.put(KEY_AST, 0);
         values.put(KEY_PEN_MINOR, 0);
         values.put(KEY_PEN_MAJOR, 0);
+        values.put(KEY_PEN_MISCONDUCT, 0);
         values.put(KEY_SAVES,0);
         values.put(KEY_GOALS_ALLOWED, 0);
         //insert more stats here
@@ -265,7 +472,7 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
 	}
 	
 	//get single game stats for single player
-	public HockeyGameStats getPlayerGameStatsPlayers(long g_id, long p_id) {
+	public HockeyGameStats getPlayerGameStats(long g_id, long p_id) {
 	    SQLiteDatabase db = this.getReadableDatabase();
 	    //create query to select game
 	    String selectQuery = "SELECT  * FROM " + TABLE_HOCKEY_GAME_STATS + 
@@ -289,6 +496,7 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
 	    stats.setast((c.getInt(c.getColumnIndex(KEY_AST))));
 	    stats.setpenminor((c.getInt(c.getColumnIndex(KEY_PEN_MINOR))));
 	    stats.setpenmajor(c.getInt(c.getColumnIndex(KEY_PEN_MAJOR)));
+	    stats.setpenmisconduct(c.getInt(c.getColumnIndex(KEY_PEN_MISCONDUCT)));
 	    stats.setsaves((c.getInt(c.getColumnIndex(KEY_SAVES))));
 	    stats.setgoalsallowed((c.getInt(c.getColumnIndex(KEY_GOALS_ALLOWED))));
 
@@ -298,7 +506,7 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
 	}
 	
 	//get single game stats for single player
-	public int getPlayerGameStatPlayers(long g_id, long p_id, String stat) {
+	public int getPlayerGameStat(long g_id, long p_id, String stat) {
 	    SQLiteDatabase db = this.getReadableDatabase();
 	    //create query to select game
 	    String selectQuery = "SELECT " + stat + " FROM " + TABLE_HOCKEY_GAME_STATS + 
@@ -319,7 +527,7 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
 	}
 	
 	//Get all GameStats for player
-	public List<HockeyGameStats> getPlayerAllGameStatsPlayers(long p_id) {
+	public List<HockeyGameStats> getPlayerAllGameStats(long p_id) {
 	    List<HockeyGameStats> gameStats = new ArrayList<HockeyGameStats>();
 	    SQLiteDatabase db = this.getReadableDatabase();
 	    String selectQuery = "SELECT  * FROM " + TABLE_HOCKEY_GAME_STATS
@@ -342,6 +550,7 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
 	    	    stats.setast((c.getInt(c.getColumnIndex(KEY_AST))));
 	    	    stats.setpenminor((c.getInt(c.getColumnIndex(KEY_PEN_MINOR))));
 	    	    stats.setpenmajor(c.getInt(c.getColumnIndex(KEY_PEN_MAJOR)));
+	    	    stats.setpenmisconduct(c.getInt(c.getColumnIndex(KEY_PEN_MISCONDUCT)));
 	    	    stats.setsaves((c.getInt(c.getColumnIndex(KEY_SAVES))));
 	    	    stats.setgoalsallowed((c.getInt(c.getColumnIndex(KEY_GOALS_ALLOWED))));
 			    //Insert more stats here
@@ -355,7 +564,7 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
 	}
 	
 	//Get all GameStats
-	public List<HockeyGameStats> getAllGameStatsPlayers() {
+	public List<HockeyGameStats> getAllGameStats() {
 	    List<HockeyGameStats> gameStats = new ArrayList<HockeyGameStats>();
 	    SQLiteDatabase db = this.getReadableDatabase();
 	    String selectQuery = "SELECT  * FROM " + TABLE_HOCKEY_GAME_STATS;
@@ -377,6 +586,7 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
 	    	    stats.setast((c.getInt(c.getColumnIndex(KEY_AST))));
 	    	    stats.setpenminor((c.getInt(c.getColumnIndex(KEY_PEN_MINOR))));
 	    	    stats.setpenmajor(c.getInt(c.getColumnIndex(KEY_PEN_MAJOR)));
+	    	    stats.setpenmisconduct(c.getInt(c.getColumnIndex(KEY_PEN_MISCONDUCT)));
 	    	    stats.setsaves((c.getInt(c.getColumnIndex(KEY_SAVES))));
 	    	    stats.setgoalsallowed((c.getInt(c.getColumnIndex(KEY_GOALS_ALLOWED))));
 			    //Insert more stats here
@@ -390,7 +600,7 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
 	}
 	
 	// Delete a GameStats
-	public void deleteGameStatsPlayers(long g_id) {
+	public void deleteGameStats(long g_id) {
 	    SQLiteDatabase db = this.getWritableDatabase();
 	    db.delete(TABLE_HOCKEY_GAME_STATS, KEY_G_ID + " = ?",
 	            new String[] { String.valueOf(g_id) });
@@ -399,11 +609,11 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
 	//ADDING STATS
 	
 	//Adding value to points category of a player
-	public int addStatsPlayers(long g_id, long p_id, String stat, int value){
+	public int addStats(long g_id, long p_id, String stat, int value){
 	    SQLiteDatabase db = this.getWritableDatabase();
-	    HockeyGameStats stats = getPlayerGameStatsPlayers(g_id, p_id);
+	    HockeyGameStats stats = getPlayerGameStats(g_id, p_id);
 	    
-	    int old_value = getPlayerGameStatPlayers(g_id,p_id,stat);
+	    int old_value = getPlayerGameStat(g_id,p_id,stat);
 	    int new_value = old_value + value;
 	    
 	    ContentValues values = new ContentValues();
@@ -434,6 +644,10 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
 	    	values.put(KEY_PEN_MAJOR, new_value);
 	    else
 	    	values.put(KEY_PEN_MAJOR, stats.getpenminor());
+	    if(stat==KEY_PEN_MISCONDUCT)
+	    	values.put(KEY_PEN_MISCONDUCT, new_value);
+	    else
+	    	values.put(KEY_PEN_MISCONDUCT, stats.getpenmisconduct());
 	    if(stat==KEY_SAVES)
 	    	values.put(KEY_SAVES, new_value);
 	    else
@@ -447,7 +661,7 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
 	    return db.update(TABLE_HOCKEY_GAME_STATS,  values, KEY_P_ID + " = " + p_id + " AND " + KEY_G_ID + " = " + g_id, null);
 	}
 	
-	
+/*	
 // ----------------------- PLAY_BY_PLAY table method --------------------- //
 	
 	public long createPlayByPlay(PlayByPlay pbp){
@@ -500,10 +714,10 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
 	    db.delete(TABLE_PLAY_BY_PLAY, KEY_G_ID + " = ?",
 	            new String[] { String.valueOf(g_id) });
 	}
-	
+*/
 	// ----------------------- PLAYERS table methods ------------------------- //
 
-	public long createPlayers(Players player){
+	public long createPlayers(HockeyPlayer player){
 		SQLiteDatabase db = this.getWritableDatabase();
 		 
         ContentValues values = new ContentValues();
@@ -512,16 +726,16 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
         values.put(KEY_P_NUM, player.getpnum());
 
         // insert row
-        long p_id = db.insert(TABLE, null, values);
+        long p_id = db.insert(TABLE_PLAYERS, null, values);
  
         return p_id;
 	}
 	
 	//get single player
-	public Players getPlayer(long p_id) {
+	public HockeyPlayer getPlayer(long p_id) {
 	    SQLiteDatabase db = this.getReadableDatabase();
 	    //create query to select game
-	    String selectQuery = "SELECT  * FROM " + TABLE + 
+	    String selectQuery = "SELECT  * FROM " + TABLE_PLAYERS + 
 	    	" WHERE " + KEY_P_ID + " = " + p_id;
 	    //Log the query
 	    Log.i(LOG, selectQuery);
@@ -531,19 +745,20 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
 	    if (c != null)
 	        c.moveToFirst();
 	    //create the instance of Teams using cursor information
-	    Players player = new Players();
+	    HockeyPlayer player = new HockeyPlayer();
 	    player.setpid(c.getLong(c.getColumnIndex(KEY_P_ID)));
 	    player.settid(c.getLong(c.getColumnIndex(KEY_T_ID)));
 	    player.setpname((c.getString(c.getColumnIndex(KEY_P_NAME))));
 	    player.setpnum((c.getInt(c.getColumnIndex(KEY_P_NUM))));
-	 
+	    player.setdb(this);
+	    
 	    return player;
 	}
-	
+/*	
 	public List<Players> getPlayersTeam(long t_id){
 	    SQLiteDatabase db = this.getReadableDatabase();
 		List<Players> players = new ArrayList<Players>();
-		String selectPlayerQuery = "SELECT * FROM " + TABLE + " WHERE " + KEY_T_ID + " = " + t_id;
+		String selectPlayerQuery = "SELECT * FROM " + TABLE_PLAYERS + " WHERE " + KEY_T_ID + " = " + t_id;
         
         Log.i(LOG, selectPlayerQuery);
         
@@ -570,7 +785,7 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
 	public List<Players> getAllPlayers(){
 	    SQLiteDatabase db = this.getReadableDatabase();
 		List<Players> players = new ArrayList<Players>();
-		String selectPlayerQuery = "SELECT * FROM " + TABLE;
+		String selectPlayerQuery = "SELECT * FROM " + TABLE_PLAYERS;
         
         Log.i(LOG, selectPlayerQuery);
         
@@ -598,16 +813,18 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
 	// Delete a Player
 	public void deletePlayer(long p_id) {
 	    SQLiteDatabase db = this.getWritableDatabase();
-	    db.delete(TABLE, KEY_P_ID + " = " + p_id, null);
+	    db.delete(TABLE_PLAYERS, KEY_P_ID + " = " + p_id, null);
 	}
 		
 	
 	// Delete  on a team
 	public void deletePlayers(long t_id) {
 	    SQLiteDatabase db = this.getWritableDatabase();
-	    db.delete(TABLE, KEY_T_ID + " = ?",
+	    db.delete(TABLE_PLAYERS, KEY_T_ID + " = ?",
 	            new String[] { String.valueOf(t_id) });
 	}
+	
+	*/
 	
 	// -------------------SHOT_CHART_COORDS table methods ------------------ //
 	
@@ -783,7 +1000,7 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
 	    db.delete(TABLE_SHOT_CHART_COORDS, KEY_A_ID + " = " + a_id, null);
 	}
 	
-		
+/*		
 	// ----------------------- TEAMS table methods ------------------------- //
 
 	public long createTeams(Teams team){
@@ -859,7 +1076,7 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
 	            new String[] { String.valueOf(t_id) });
 	}
 	
-	
+	*/
 	
 	public void deleteAll(){
 	    List<Games> games = getAllGames();

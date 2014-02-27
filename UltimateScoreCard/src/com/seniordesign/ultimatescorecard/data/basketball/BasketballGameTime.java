@@ -46,8 +46,31 @@ public class BasketballGameTime extends GameTime {
 		
 		g_id = _basketball_db.createGame(new Games(_home_t_id, _away_t_id, "INSERT DATE HERE"));
 
-		_homeTeamPlayers = (ArrayList<BasketballPlayer>) _basketball_db.getPlayersTeam(_home_t_id);
-		_awayTeamPlayers = (ArrayList<BasketballPlayer>) _basketball_db.getPlayersTeam(_away_t_id);
+		ArrayList<Players> _homeTeamPlayer = (ArrayList<Players>) _basketball_db.getPlayersTeam(_home_t_id);
+		ArrayList<Players> _awayTeamPlayer = (ArrayList<Players>) _basketball_db.getPlayersTeam(_away_t_id);
+		
+		ArrayList<BasketballPlayer> _homeTeamPlayers = new ArrayList<BasketballPlayer>();
+		for(Players p: _homeTeamPlayer){
+			BasketballPlayer player = new BasketballPlayer();
+			player.setpid(p.getpid());
+			player.settid(p.gettid());
+			player.setpname(p.getpname());
+			player.setpnum(p.getpnum());
+			player.setdb(_basketball_db);
+			_homeTeamPlayers.add(player);
+		}
+		ArrayList<BasketballPlayer> _awayTeamPlayers = new ArrayList<BasketballPlayer>();
+		for(Players p: _awayTeamPlayer){
+			BasketballPlayer player = new BasketballPlayer();
+			player.setpid(p.getpid());
+			player.settid(p.gettid());
+			player.setpname(p.getpname());
+			player.setpnum(p.getpnum());
+			player.setdb(_basketball_db);
+			_awayTeamPlayers.add(player);
+
+		}
+		
 		_homeTeam.setData(g_id, _home, _homeTeamPlayers);
 		_awayTeam.setData(g_id, _away, _awayTeamPlayers);
 		_homeTeam.setTeamAbbr();

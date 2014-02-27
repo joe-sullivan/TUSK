@@ -87,7 +87,6 @@ public class BasketballGameLog extends GameLog {;
 		}
 	}
 	
-	//UPDATE THIS WITH DATABASE
 	public void recordActivity(String time){
 		if(time.equals("Restart Clock")){
 			PlayByPlay pbp = new PlayByPlay(g_id, _thePlay + ".", time, null, 0, 0);

@@ -50,18 +50,18 @@ public class SoccerGameTime extends GameTime {
 	
 	public String getHomeScoreText(){
 		if(_homeTeam.getScore() < 10){
-			return " "+ _homeTeam.getScore();
+			return " 0"+ _homeTeam.getScore();
 		}
 		else {
-			return ""+ _homeTeam.getScore();
+			return " "+ _homeTeam.getScore();
 		}
 	}
 	public String getAwayScoreText(){
 		if(_awayTeam.getScore() < 10){
-			return " "+ _awayTeam.getScore();
+			return " 0"+ _awayTeam.getScore();
 		}
 		else {
-			return ""+ _awayTeam.getScore();
+			return " "+ _awayTeam.getScore();
 		}
 	}
 	
@@ -78,6 +78,15 @@ public class SoccerGameTime extends GameTime {
 		}
 		else{
 			return _awayTeam;
+		}
+	}
+	
+	public SoccerTeam getOppoTeam(){
+		if(_possession){
+			return _awayTeam;
+		}
+		else{
+			return _homeTeam;
 		}
 	}
 }

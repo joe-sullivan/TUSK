@@ -1,13 +1,19 @@
 package com.seniordesign.ultimatescorecard;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.seniordesign.ultimatescorecard.data.basketball.BasketballPlayer;
+import com.seniordesign.ultimatescorecard.data.hockey.HockeyPlayer;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.*;
+import com.seniordesign.ultimatescorecard.sqlite.football.FootballDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
+import com.seniordesign.ultimatescorecard.sqlite.helper.ShotChartCoords;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
+import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyDatabaseHelper;
+import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerDatabaseHelper;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
 
 import android.app.Activity;
@@ -28,6 +34,10 @@ public class MainActivity extends Activity{
 	public Button _viewStatsButton, _optionsButton, _liveStatButtons; 										//these are set up for the other buttons
 	//databases
 	public BasketballDatabaseHelper _basketball_db;
+	public FootballDatabaseHelper _football_db;
+	public SoccerDatabaseHelper _soccer_db;
+	public HockeyDatabaseHelper _hockey_db;
+
 	public Context context = this;
 	
 
@@ -51,9 +61,22 @@ public class MainActivity extends Activity{
 	
 		//databases
 		_basketball_db = new BasketballDatabaseHelper(getApplicationContext());
+		_football_db = new FootballDatabaseHelper(getApplicationContext());
+		_soccer_db = new SoccerDatabaseHelper(getApplicationContext());
+		_hockey_db = new HockeyDatabaseHelper(getApplicationContext());
+
 		//.onUpgrade will reset databases (i.e. erase all data stored in them)
 		_basketball_db.onCreate(_basketball_db.getWritableDatabase());
 		//_basketball_db.onUpgrade(_basketball_db.getWritableDatabase(),0,0);
+		
+		_football_db.onCreate(_football_db.getWritableDatabase());
+		//_football_db.onUpgrade(_football_db.getWritableDatabase(),0,0);
+		
+		_soccer_db.onCreate(_soccer_db.getWritableDatabase());
+		//_soccer_db.onUpgrade(_soccer_db.getWritableDatabase(),0,0);
+		
+		_hockey_db.onCreate(_hockey_db.getWritableDatabase());
+		//_hockey_db.onUpgrade(_hockey_db.getWritableDatabase(),0,0);
 
 /*
 		//Test Teams and players
@@ -128,16 +151,102 @@ public class MainActivity extends Activity{
 		long TW25_id = _basketball_db.createPlayers(TW25);
 		long AB35_id = _basketball_db.createPlayers(AB35);
 	*/	
-		
+/*		
+		//Test Hockey Teams and players
+		Teams spurs = new Teams("San Antonio Spurs", "SAS", "Gregg Popovich", "Hockey");
+		Teams rockets = new Teams("Houston Rockets", "HOU", "Kevin McHale", "Hockey");
+		Teams huskies = new Teams("UConn Huskies", "UCONN", "Kevin Ollie", "Hockey");
 
 		
+		long spurs_id = _hockey_db.createTeams(spurs);
+		long rockets_id = _hockey_db.createTeams(rockets);
+		long huskies_id = _hockey_db.createTeams(huskies);
+
+		
+		HockeyPlayer MG20 = new HockeyPlayer(spurs_id, "Manu Ginobili", 20);
+		HockeyPlayer TD21 = new HockeyPlayer(spurs_id, "Tim Duncan", 21);
+		HockeyPlayer KL2 = new HockeyPlayer(spurs_id, "Kawhi Leonard", 2);
+		HockeyPlayer TP9 = new HockeyPlayer(spurs_id, "Tony Parker", 9);
+		HockeyPlayer TS22 = new HockeyPlayer(spurs_id, "Tiago Splitter", 22);
+		HockeyPlayer MB7 = new HockeyPlayer(spurs_id, "Marco Belinelli", 7);
+		
+		HockeyPlayer JH13 = new HockeyPlayer(rockets_id, "James Harden", 13);
+		HockeyPlayer DH12 = new HockeyPlayer(rockets_id, "Dwight Howard", 12);
+		HockeyPlayer JL7 = new HockeyPlayer(rockets_id, "Jeremy Lin", 7);
+		HockeyPlayer CP25 = new HockeyPlayer(rockets_id, "Chandler Parsons", 25);
+		HockeyPlayer TJ6 = new HockeyPlayer(rockets_id, "Terrence Jones", 6);
+		HockeyPlayer AB0 = new HockeyPlayer(rockets_id, "Aaron Brooks", 0);
+		
+		HockeyPlayer PN0 = new HockeyPlayer(huskies_id, "Phillip Nolan", 0);
+		HockeyPlayer DD2 = new HockeyPlayer(huskies_id, "Deandre Daniels", 2);
+		HockeyPlayer TS3 = new HockeyPlayer(huskies_id, "Terrence Samuel", 3);
+		HockeyPlayer NG5 = new HockeyPlayer(huskies_id, "Niels Giffey", 5);
+		HockeyPlayer TO10 = new HockeyPlayer(huskies_id, "Tyler Olander", 10);
+		HockeyPlayer RB11 = new HockeyPlayer(huskies_id, "Ryan Boatright", 11);
+		HockeyPlayer KF12 = new HockeyPlayer(huskies_id, "Kentan Facey", 12);
+		HockeyPlayer SN13 = new HockeyPlayer(huskies_id, "Shabazz Napier", 13);
+		HockeyPlayer PL14 = new HockeyPlayer(huskies_id, "Pat Lenehan", 14);
+		HockeyPlayer LK20 = new HockeyPlayer(huskies_id, "Lasan Kromah", 20);
+		HockeyPlayer OC21 = new HockeyPlayer(huskies_id, "Omar Calhoun", 21);
+		HockeyPlayer LT22 = new HockeyPlayer(huskies_id, "Leon Tolksdorf", 22);
+		HockeyPlayer NA23 = new HockeyPlayer(huskies_id, "Nnamdi Amilo", 23);
+		HockeyPlayer TW25 = new HockeyPlayer(huskies_id, "Tor Watts", 25);
+		HockeyPlayer AB35 = new HockeyPlayer(huskies_id, "Amida Brimah", 35);
+
+		
+		long MG20_id = _hockey_db.createPlayers(MG20);
+		long TD21_id = _hockey_db.createPlayers(TD21);
+		long KL2_id = _hockey_db.createPlayers(KL2);
+		long TP9_id = _hockey_db.createPlayers(TP9);
+		long TS22_id = _hockey_db.createPlayers(TS22);
+		long MB7_id = _hockey_db.createPlayers(MB7);
+		
+		long JH13_id = _hockey_db.createPlayers(JH13);
+		long DH12_id = _hockey_db.createPlayers(DH12);
+		long JL7_id = _hockey_db.createPlayers(JL7);
+		long CP25_id = _hockey_db.createPlayers(CP25);
+		long TJ6_id = _hockey_db.createPlayers(TJ6);
+		long AB0_id = _hockey_db.createPlayers(AB0);
+		
+		long PN0_id = _hockey_db.createPlayers(PN0);
+		long DD2_id = _hockey_db.createPlayers(DD2);
+		long TS3_id = _hockey_db.createPlayers(TS3);
+		long NG5_id = _hockey_db.createPlayers(NG5);
+		long TO10_id = _hockey_db.createPlayers(TO10);
+		long RB11_id = _hockey_db.createPlayers(RB11);
+		long KF12_id = _hockey_db.createPlayers(KF12);
+		long SN13_id = _hockey_db.createPlayers(SN13);
+		long PL14_id = _hockey_db.createPlayers(PL14);
+		long LK20_id = _hockey_db.createPlayers(LK20);
+		long OC21_id = _hockey_db.createPlayers(OC21);
+		long LT22_id = _hockey_db.createPlayers(LT22);
+		long NA23_id = _hockey_db.createPlayers(NA23);
+		long TW25_id = _hockey_db.createPlayers(TW25);
+		long AB35_id = _hockey_db.createPlayers(AB35);
+
+
+	
 		Log.d("GameStats count", "GameStats Count: " + _basketball_db.getAllGameStats().size());
 
-		Log.d("Shot count", "Shot Count: " + _basketball_db.getAllShots().size());
+		ArrayList<ShotChartCoords> shots = (ArrayList<ShotChartCoords>) _basketball_db.getAllShots();
+		Log.d("Shot count", "Shot Count: " + shots.size());
 
+		for(ShotChartCoords shot: shots){
+			Log.d("Shot count", "Shot Count: " + shot.getshotid());
+			Log.d("Shot count", "Shot Count: " + shot.getpid());
+			Log.d("Shot count", "Shot Count: " + shot.getmade());
+			Log.d("Shot count", "Shot Count: " + shot.getx());
+			Log.d("Shot count", "Shot Count: " + shot.gety());
+
+		}
+*/
 		
 		//close database helper
 		_basketball_db.close();
+		_football_db.close();
+		_soccer_db.close();
+		_hockey_db.close();
+
 	}
 		
 	// click listener for basketball button

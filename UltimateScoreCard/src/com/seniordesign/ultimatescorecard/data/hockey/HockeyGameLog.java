@@ -3,45 +3,64 @@ package com.seniordesign.ultimatescorecard.data.hockey;
 import java.util.ArrayList;
 
 import com.seniordesign.ultimatescorecard.data.GameLog;
+import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
+import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyDatabaseHelper;
 
 public class HockeyGameLog extends GameLog{
 	private static final long serialVersionUID = -8980053401644889731L;
-
+	private String _thePlay;
+	
 	public HockeyGameLog(){
 		_gameLog = new ArrayList<String>();
 	}
 	
-	public void shootsAndScores(String scorer, String assist1, String assist2){
+	public void shootsAndScores(String scorer, String assist1, String assist2, String time){
 		if(assist1.equals("") && assist2.equals("")){
-			_gameLog.add("Goal by "+scorer+". (Unassisted)");
+			_thePlay = "Goal by "+scorer+". (Unassisted)";
 		}
 		else if(assist2.equals("")){
-			_gameLog.add("Goal by "+scorer+". (Assisted by: "+assist1+")");
+			_thePlay = "Goal by "+scorer+". (Assisted by: "+assist1+")";
 		}
 		else{
-			_gameLog.add("Goal by "+scorer+". (Assisted by: "+assist1+", "+assist2+")");
+			_thePlay = "Goal by "+scorer+". (Assisted by: "+assist1+", "+assist2+")";
 		}
+		recordActivity(time);
 	}
 	
-	public void shootsAndMisses(String shooter, String goalie){
+	public void shootsAndMisses(String shooter, String goalie, String time){
 		if(goalie.equals("")){
-			_gameLog.add("Shot missed by "+shooter+".");
+			_thePlay = "Shot missed by "+shooter+".";
 		}
 		else{
-			_gameLog.add("Shot by "+shooter+", saved by " +goalie+".");
+			_thePlay = "Shot by "+shooter+", saved by " +goalie+".";
 		}
+		recordActivity(time);
 	}
 	
-	public void penaltyShot(boolean goal, String shooter, String goalie){
+	public void penaltyShot(boolean goal, String shooter, String goalie, String time){
 		if(goalie.equals("")){
-			_gameLog.add("Penalty: "+shooter+" scores.");
+			_thePlay = "Penalty: "+shooter+" scores.";
 		}
 		else{
-			_gameLog.add("Penalty: "+goalie+" saves.");
+			_thePlay = "Penalty: "+goalie+" saves.";
 		}
+		recordActivity(time);
 	}
 	
-	public void penalty(String player, String penalty){
-		_gameLog.add("Penalty for "+player+". ("+penalty+")");
+	public void penalty(String player, String penalty, String time){
+		_thePlay = "Penalty for "+player+". ("+penalty+")";
+		recordActivity(time);
+	}
+	
+	public void recordActivity(String time){
+		if(time.equals("Restart Clock")){
+			PlayByPlay pbp = new PlayByPlay(g_id, _thePlay + ".", time, null, 0, 0);
+			((HockeyDatabaseHelper) _db).createPlayByPlay(pbp);
+		}
+		else{
+			_timeStamp = time;
+			PlayByPlay pbp = new PlayByPlay(g_id,"(" + _timeStamp + ")" + _thePlay + ".", time, null, 0, 0);
+			((HockeyDatabaseHelper) _db).createPlayByPlay(pbp);
+		}
 	}
 }

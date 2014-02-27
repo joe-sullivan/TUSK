@@ -7,11 +7,14 @@ import com.seniordesign.ultimatescorecard.data.Team;
 public class SoccerTeam extends Team{
 	private static final long serialVersionUID = -6026271836806435470L;
 	private ArrayList<SoccerPlayer> players = new ArrayList<SoccerPlayer>();
+	private SoccerPlayer _goalkeeper;
 	
 	public SoccerTeam (String teamName, boolean homeTeam){
 		super(teamName, homeTeam);
 		setTeamAbbr(teamName);
 		setTeamPlayers(teamName);
+		_goalkeeper = players.get(0);
+		
 	}
 	
 	private void setTeamAbbr(String team){
@@ -154,5 +157,9 @@ public class SoccerTeam extends Team{
 	}	
 	public ArrayList<SoccerPlayer> getRoster(){
 		return players;
+	}
+	
+	public SoccerPlayer getGoalie(){
+		return _goalkeeper;
 	}
 }

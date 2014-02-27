@@ -86,7 +86,7 @@ public class ShotIconAdder {
 		}
 
 		if(_hitMiss){
-			_db.createShot(new ShotChartCoords(g_id, p_id, _shotLocation[0], _shotLocation[1], "hit"));
+			_db.createShot(new ShotChartCoords(g_id, p_id, _shotLocation[0], _shotLocation[1], "make"));
 		}
 		else{
 			_db.createShot(new ShotChartCoords(g_id, p_id, _shotLocation[0], _shotLocation[1], "miss"));

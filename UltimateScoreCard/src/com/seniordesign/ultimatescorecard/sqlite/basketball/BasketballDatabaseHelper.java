@@ -425,7 +425,6 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 	    return stat_value;
 	}
 	
-//CHANGE THIS!!!!!!	
 	//Adding value to points category of a player
 	public int addTeamStats(long g_id, String stat, int value){
 	    SQLiteDatabase db = this.getWritableDatabase();
@@ -861,61 +860,6 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 		    return db.update(TABLE_BASKETBALL_GAME_STATS,  values, KEY_P_ID + " = " + p_id + " AND " + KEY_G_ID + " = " + g_id, null);
 		}
 		
-		
-	// ----------------------- PLAY_BY_PLAY table method --------------------- //
-		
-		public long createPlayByPlay(PlayByPlay pbp){
-			SQLiteDatabase db = this.getWritableDatabase();
-			 
-	        ContentValues values = new ContentValues();
-	        values.put(KEY_G_ID, pbp.getgid());
-	        values.put(KEY_ACTION, pbp.getaction());
-	        values.put(KEY_TIME, pbp.gettime());
-	        values.put(KEY_PERIOD, pbp.getperiod());
-	        values.put(KEY_HOME_SCORE, pbp.gethomescore());
-	        values.put(KEY_AWAY_SCORE, pbp.getawayscore());
-
-	        // insert row
-	        long a_id = db.insert(TABLE_PLAY_BY_PLAY, null, values);
-	 
-	        return a_id;
-		}
-		
-		public List<PlayByPlay> getPlayByPlayGame(long g_id){
-		    SQLiteDatabase db = this.getReadableDatabase();
-			List<PlayByPlay> pbps = new ArrayList<PlayByPlay>();
-			String selectPlayByPlayQuery = "SELECT * FROM " + TABLE_PLAY_BY_PLAY + " WHERE " + KEY_G_ID + " = " + g_id;
-	        
-	        Log.i(LOG, selectPlayByPlayQuery);
-	        
-	        Cursor c = db.rawQuery(selectPlayByPlayQuery, null);
-	        
-	        if (c!=null)
-	        	c.moveToFirst();
-	        
-	        do {
-	        	//create the instance of Players using cursor information
-			    PlayByPlay pbp = new PlayByPlay();
-			    pbp.setaid(c.getLong(c.getColumnIndex(KEY_A_ID)));
-			    pbp.setgid(c.getLong(c.getColumnIndex(KEY_G_ID)));
-			    pbp.setaction(c.getString(c.getColumnIndex(KEY_ACTION)));
-			    pbp.settime(c.getString(c.getColumnIndex(KEY_TIME)));
-			    pbp.setperiod(c.getString(c.getColumnIndex(KEY_PERIOD)));
-			    pbp.sethomescore(c.getInt(c.getColumnIndex(KEY_HOME_SCORE)));
-			    pbp.setawayscore(c.getInt(c.getColumnIndex(KEY_AWAY_SCORE)));
-	            // adding to playbyplay list
-	            pbps.add(pbp);
-	        } while(c.moveToNext());
-	        
-	        return pbps;
-		}
-		
-		// Delete PlayByPlay of a game
-		public void deletePlayByPlayGame(long g_id) {
-		    SQLiteDatabase db = this.getWritableDatabase();
-		    db.delete(TABLE_PLAY_BY_PLAY, KEY_G_ID + " = ?",
-		            new String[] { String.valueOf(g_id) });
-		}
 	
 	// ----------------------- PLAYERS table methods ------------------------- //
 
@@ -956,10 +900,11 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 	 
 	    return player;
 	}
-	
-	public List<BasketballPlayer> getPlayersTeam(long t_id){
+//NOT NECESSARY BECAUSE OF SUPERCLASS
+	/*		
+	public List<Players> getPlayersTeam(long t_id){
 	    SQLiteDatabase db = this.getReadableDatabase();
-		List<BasketballPlayer> players = new ArrayList<BasketballPlayer>();
+		List<Players> players = new ArrayList<Players>();
 		String selectPlayerQuery = "SELECT * FROM " + TABLE_PLAYERS + " WHERE " + KEY_T_ID + " = " + t_id;
         
         Log.i(LOG, selectPlayerQuery);
@@ -971,12 +916,11 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
         
         do {
         	//create the instance of Players using cursor information
-		    BasketballPlayer player = new BasketballPlayer();
+		    Players player = new Players();
 		    player.setpid(c.getLong(c.getColumnIndex(KEY_P_ID)));
 		    player.settid(c.getLong(c.getColumnIndex(KEY_T_ID)));
 		    player.setpname((c.getString(c.getColumnIndex(KEY_P_NAME))));
 		    player.setpnum((c.getInt(c.getColumnIndex(KEY_P_NUM))));
-		    player.setdb(this);
 
 		    
             // adding to players list
@@ -986,8 +930,7 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
         return players;
 	}
 	
-//NOT NECESSARY BECAUSE OF SUPERCLASS
-	/*	
+
 	public List<Players> getPlayersTeam2(long t_id){
 	    SQLiteDatabase db = this.getReadableDatabase();
 		List<Players> players = new ArrayList<Players>();
@@ -1014,10 +957,10 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
         
         return players;
 	}
-*/	
-	public List<BasketballPlayer> getAllPlayers(){
+
+	public List<Players> getAllPlayers(){
 	    SQLiteDatabase db = this.getReadableDatabase();
-		List<BasketballPlayer> players = new ArrayList<BasketballPlayer>();
+		List<Players> players = new ArrayList<Players>();
 		String selectPlayerQuery = "SELECT * FROM " + TABLE_PLAYERS;
         
         Log.i(LOG, selectPlayerQuery);
@@ -1029,13 +972,11 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
         
         do {
         	//create the instance of Players using cursor information
-        	BasketballPlayer player = new BasketballPlayer();
+        	Players player = new Players();
 		    player.setpid(c.getLong(c.getColumnIndex(KEY_P_ID)));
 		    player.settid(c.getLong(c.getColumnIndex(KEY_T_ID)));
 		    player.setpname((c.getString(c.getColumnIndex(KEY_P_NAME))));
 		    player.setpnum((c.getInt(c.getColumnIndex(KEY_P_NUM))));
-		    player.setdb(this);
-
 		   
             // adding to players list
             players.add(player);
@@ -1043,7 +984,7 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 
         return players;
 	}
-
+*/
 	
 	
 	

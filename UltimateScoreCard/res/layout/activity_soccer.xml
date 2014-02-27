@@ -56,7 +56,7 @@
             android:background="@color/black"
           	android:textColor="@color/red"
           	android:textSize="@dimen/score_text"
-            android:text="@string/away_points" />
+            android:text="@string/away_points_2" />
     </FrameLayout>
 
     <!-- setting up a frame for the home team and then adding a textview to display score-->
@@ -76,7 +76,7 @@
             android:background="@color/black"
             android:textColor="@color/red"
             android:textSize="@dimen/score_text"
-            android:text="@string/home_points" />
+            android:text="@string/home_points_2" />
                 
    </FrameLayout>
     
@@ -99,7 +99,7 @@
             android:maxHeight="20dp"
             android:maxWidth="20dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/basketball"
+            android:src="@drawable/soccerball"
             android:visibility="gone" />
 
         <ImageView
@@ -113,7 +113,7 @@
             android:maxHeight="20dp"
             android:maxWidth="20dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/basketball"
+            android:src="@drawable/soccerball"
             android:visibility="gone"/>
 
         <TextView

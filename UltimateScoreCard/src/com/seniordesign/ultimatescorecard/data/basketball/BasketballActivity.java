@@ -77,6 +77,7 @@ public class BasketballActivity extends Activity{
 		_root = (FlyOutContainer)this.getLayoutInflater().inflate(R.layout.activity_basketball, null);	//root is modified view with fly-out container														
 		_gti = (BasketballGameTime) getIntent().getSerializableExtra(StaticFinalVars.GAME_TIME); 					//get our team informations class
 		
+		//databases
 		_gti.setContext(this);
 		g_id = _gti.createTeams();
 		_gameLog.setdb(_basketball_db);
@@ -220,7 +221,10 @@ public class BasketballActivity extends Activity{
 				int redValue = Color.red(pixel);												//get the color of that location and divide it into RGB values
 				int blueValue = Color.blue(pixel);
 				int greenValue = Color.green(pixel);
+				
+				//databases
 				_iconAdder.setShotLocation((int)event.getX(), (int)event.getY());
+				
 				if(redValue > blueValue && redValue > greenValue){								//red is the three point range
 					//Log.e("COLOR", "RED");
 					setMadeMissListeners(3);														//we call our button swap method
@@ -376,6 +380,7 @@ public class BasketballActivity extends Activity{
 		OnClickListener madeListener = new DoubleParamOnClickListener(value, null){
 			@Override
 			public void onClick(View v) {
+				//databases
 				_iconAdder.setShotHitMiss(_gti.getPossession(), true);
 				toggleMenu(madeFGPlayerSelectListener(this.getValue()), "Scored by:");
 			}
@@ -397,6 +402,7 @@ public class BasketballActivity extends Activity{
 		OnClickListener missListener = new DoubleParamOnClickListener(value, null){
 			@Override
 			public void onClick(View v) {
+				//databases
 				_iconAdder.setShotHitMiss(_gti.getPossession(), false);
 				setBlockMissListeners(this.getValue());
 			}
@@ -418,6 +424,7 @@ public class BasketballActivity extends Activity{
 				_gameLog.shooting(this.getValue(), true, ((TextView)view).getText().toString());
 				_gti.scoreChange(_gti.getPossession(), this.getValue(), ((TextView)view).getText().toString());						//change the score and update player points
 				
+				//databases
 				_iconAdder.createShot(((TextView)view).getText().toString(), g_id, _gti.gethometid(), _gti.getawaytid());
 				
 				addView((View)view.getParent(), "No Assist", _otherButton);
@@ -435,7 +442,10 @@ public class BasketballActivity extends Activity{
 		OnClickListener missPlayerSelectListener = new DoubleParamOnClickListener(value, null){
 			@Override
 			public void onClick(View view) {
-				_iconAdder.createShot(((TextView)view).getText().toString(), g_id, _gti.gethometid(), _gti.getawaytid());
+				//databases
+				if(!_gti.foulOccurred()){
+					_iconAdder.createShot(((TextView)view).getText().toString(), g_id, _gti.gethometid(), _gti.getawaytid());
+				}
 
 				if(_gti.foulOccurred()){
 					changeMenu(fouledByListener(this.getValue(), ((TextView)view).getText().toString()), "Fouled by:");	
@@ -1151,7 +1161,6 @@ public class BasketballActivity extends Activity{
 			BasketballGameInfo gameinfo = _gti.getGameInfo();
 
 			intent.putExtra(StaticFinalVars.GAME_INFO, gameinfo);			
-			
 			intent.putExtra(StaticFinalVars.GAME_LOG, _playbyplay);
 			intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 0);
 			startActivity(intent);		

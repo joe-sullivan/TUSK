@@ -81,8 +81,89 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable{
 		
 	}
 	
+	// ----------------------- PLAY_BY_PLAY table method --------------------- //
+	
+	public long createPlayByPlay(PlayByPlay pbp){
+		SQLiteDatabase db = this.getWritableDatabase();
+		 
+        ContentValues values = new ContentValues();
+        values.put(KEY_G_ID, pbp.getgid());
+        values.put(KEY_ACTION, pbp.getaction());
+        values.put(KEY_TIME, pbp.gettime());
+        values.put(KEY_PERIOD, pbp.getperiod());
+        values.put(KEY_HOME_SCORE, pbp.gethomescore());
+        values.put(KEY_AWAY_SCORE, pbp.getawayscore());
+
+        // insert row
+        long a_id = db.insert(TABLE_PLAY_BY_PLAY, null, values);
+ 
+        return a_id;
+	}
+	
+	public List<PlayByPlay> getPlayByPlayGame(long g_id){
+	    SQLiteDatabase db = this.getReadableDatabase();
+		List<PlayByPlay> pbps = new ArrayList<PlayByPlay>();
+		String selectPlayByPlayQuery = "SELECT * FROM " + TABLE_PLAY_BY_PLAY + " WHERE " + KEY_G_ID + " = " + g_id;
+        
+        Log.i(LOG, selectPlayByPlayQuery);
+        
+        Cursor c = db.rawQuery(selectPlayByPlayQuery, null);
+        
+        if (c!=null && c.moveToFirst()){        
+	        do {
+	        	//create the instance of Players using cursor information
+			    PlayByPlay pbp = new PlayByPlay();
+			    pbp.setaid(c.getLong(c.getColumnIndex(KEY_A_ID)));
+			    pbp.setgid(c.getLong(c.getColumnIndex(KEY_G_ID)));
+			    pbp.setaction(c.getString(c.getColumnIndex(KEY_ACTION)));
+			    pbp.settime(c.getString(c.getColumnIndex(KEY_TIME)));
+			    pbp.setperiod(c.getString(c.getColumnIndex(KEY_PERIOD)));
+			    pbp.sethomescore(c.getInt(c.getColumnIndex(KEY_HOME_SCORE)));
+			    pbp.setawayscore(c.getInt(c.getColumnIndex(KEY_AWAY_SCORE)));
+	            // adding to playbyplay list
+	            pbps.add(pbp);
+	        } while(c.moveToNext());
+        }
+        return pbps;
+	}
+	
+	// Delete PlayByPlay of a game
+	public void deletePlayByPlayGame(long g_id) {
+	    SQLiteDatabase db = this.getWritableDatabase();
+	    db.delete(TABLE_PLAY_BY_PLAY, KEY_G_ID + " = ?",
+	            new String[] { String.valueOf(g_id) });
+	}
+	
 	// -------------------PLAYERS table methods----------------------------- //
 	
+	public List<Players> getPlayersTeam(long t_id){
+	    SQLiteDatabase db = this.getReadableDatabase();
+		List<Players> players = new ArrayList<Players>();
+		String selectPlayerQuery = "SELECT * FROM " + TABLE_PLAYERS + " WHERE " + KEY_T_ID + " = " + t_id;
+        
+        Log.i(LOG, selectPlayerQuery);
+        
+        Cursor c = db.rawQuery(selectPlayerQuery, null);
+        
+        if (c!=null)
+        	c.moveToFirst();
+        
+        do {
+        	//create the instance of Players using cursor information
+		    Players player = new Players();
+		    player.setpid(c.getLong(c.getColumnIndex(KEY_P_ID)));
+		    player.settid(c.getLong(c.getColumnIndex(KEY_T_ID)));
+		    player.setpname((c.getString(c.getColumnIndex(KEY_P_NAME))));
+		    player.setpnum((c.getInt(c.getColumnIndex(KEY_P_NUM))));
+
+		    
+            // adding to players list
+            players.add(player);
+        } while(c.moveToNext());
+        
+        return players;
+	}
+
 	public List<Players> getPlayersTeam2(long t_id){
 	    SQLiteDatabase db = this.getReadableDatabase();
 		List<Players> players = new ArrayList<Players>();
@@ -121,12 +202,39 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable{
         return db.update(TABLE_PLAYERS, values, KEY_P_ID + " = ?", new String[] {String.valueOf(player.getpid())});
 	}
 	
+	public List<Players> getAllPlayers(){
+	    SQLiteDatabase db = this.getReadableDatabase();
+		List<Players> players = new ArrayList<Players>();
+		String selectPlayerQuery = "SELECT * FROM " + TABLE_PLAYERS;
+        
+        Log.i(LOG, selectPlayerQuery);
+        
+        Cursor c = db.rawQuery(selectPlayerQuery, null);
+        
+        if (c!=null)
+        	c.moveToFirst();
+        
+        do {
+        	//create the instance of Players using cursor information
+        	Players player = new Players();
+		    player.setpid(c.getLong(c.getColumnIndex(KEY_P_ID)));
+		    player.settid(c.getLong(c.getColumnIndex(KEY_T_ID)));
+		    player.setpname((c.getString(c.getColumnIndex(KEY_P_NAME))));
+		    player.setpnum((c.getInt(c.getColumnIndex(KEY_P_NUM))));
+		   
+            // adding to players list
+            players.add(player);
+        } while(c.moveToNext());
+
+        return players;
+	}
 	
 	// Delete a Player
 	public void deletePlayer(long p_id) {
 	    SQLiteDatabase db = this.getWritableDatabase();
 	    db.delete(TABLE_PLAYERS, KEY_P_ID + " = " + p_id, null);
 	}
+	
 	
 	// Delete Players on a team
 	public void deletePlayers(long t_id) {

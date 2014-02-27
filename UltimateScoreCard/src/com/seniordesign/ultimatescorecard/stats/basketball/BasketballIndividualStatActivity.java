@@ -127,7 +127,7 @@ public class BasketballIndividualStatActivity extends FragmentActivity{
 		
 			((TextView)findViewById(R.id.reboundTotal)).setText("Rebounds: "+(stats.getdreb()+stats.getoreb()));
 			((TextView)findViewById(R.id.dReboundTotal)).setText("Defensive Rebounds: "+stats.getdreb());
-			((TextView)findViewById(R.id.oReboundTotal)).setText("Offensive Rebounds: "+stats.getoreb());
+		((TextView)findViewById(R.id.oReboundTotal)).setText("Offensive Rebounds: "+stats.getoreb());
 			((TextView)findViewById(R.id.assistTotal)).setText("Assists: "+stats.getast());
 			((TextView)findViewById(R.id.stealTotal)).setText("Steals: "+stats.getstl());
 			((TextView)findViewById(R.id.blocksTotal)).setText("Blocks: "+stats.getblk());

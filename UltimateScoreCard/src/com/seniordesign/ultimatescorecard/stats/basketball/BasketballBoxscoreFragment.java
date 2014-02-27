@@ -30,9 +30,8 @@ public class BasketballBoxscoreFragment extends Fragment{
 	public void onResume() {
 		super.onResume();
 		BasketballGameInfo info = ((BasketballStatsActivity) getActivity()).getGameInfo();
-		Teams team = info.getHomeTeam();
-		String name = team.gettname();
-		((TextView)getView().findViewById(R.id.homeTeamStatText)).setText(name);
+		
+		((TextView)getView().findViewById(R.id.homeTeamStatText)).setText(((BasketballStatsActivity) getActivity()).getGameInfo().getHomeTeam().gettname());
 		((TextView)getView().findViewById(R.id.awayTeamStatText)).setText(((BasketballStatsActivity) getActivity()).getGameInfo().getAwayTeam().gettname());
 		
 		if(_lookingAtHome){

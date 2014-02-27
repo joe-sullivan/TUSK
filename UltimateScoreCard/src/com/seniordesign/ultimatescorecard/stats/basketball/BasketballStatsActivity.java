@@ -25,9 +25,7 @@ public class BasketballStatsActivity extends FragmentActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stats);
-        /*
-        long _gameTest = (Long) getIntent().getExtra(StaticFinalVars.GAME_TEST);
-*/
+
         _gameInfo = (BasketballGameInfo) getIntent().getSerializableExtra(StaticFinalVars.GAME_INFO);
         _gameLog = (ArrayList<PlayByPlay>) getIntent().getSerializableExtra(StaticFinalVars.GAME_LOG);
        

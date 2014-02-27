@@ -33,8 +33,6 @@ public class BasketballPlayer extends Players implements Serializable{
 	
 	public BasketballPlayer(long g_id, String p_name, int p_num){
 		super(g_id, p_name, p_num);
-		Log.d("hi", db.getGame(g_id).gethomeid() + " == " +t_id);
-
 	}
 	
 	public void setgid(long g_id){

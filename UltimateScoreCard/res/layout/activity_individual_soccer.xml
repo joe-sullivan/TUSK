@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <TextView
+  	<TextView
         android:id="@+id/playerName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,34 +20,13 @@
         android:text="Team Name" />
 
     <TextView
-        android:id="@+id/pointTotal"
+        android:id="@+id/goalTotal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/padding"
         android:text="Points" 
         android:textSize="@dimen/large_text"/>
     
-    <TextView
-        android:id="@+id/fieldGoalTotal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/padding"
-        android:text="Field Goals Made / Field Goal Attempted" />
-
-    <TextView
-        android:id="@+id/freeThrowTotal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/padding"
-        android:text="Free Throw Made / Free Throw Attempted" />
-
-    <TextView
-        android:id="@+id/reboundTotal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/padding"
-        android:text="Rebounds" 
-        android:textSize="@dimen/large_text"/>
     
     <TextView
         android:id="@+id/assistTotal"
@@ -58,28 +37,19 @@
         android:textSize="@dimen/large_text"/>
     
     <TextView
-        android:id="@+id/stealTotal"
+        android:id="@+id/penaltyTotal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/padding"
-        android:text="Steals" 
+        android:text="Penalty Cards:" 
         android:textSize="@dimen/large_text"/>
     
     <TextView
-        android:id="@+id/blocksTotal"
+        android:id="@+id/penaltyTypeTotal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/padding"
-        android:text="Blocks" 
-        android:textSize="@dimen/large_text"/>
-    
-    <TextView
-        android:id="@+id/foulTotal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/padding"
-        android:text="Fouls" 
-        android:textSize="@dimen/large_text"/>
+        android:text="Yellow/Red" />
     
 
 </LinearLayout>

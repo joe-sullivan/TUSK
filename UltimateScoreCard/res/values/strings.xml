@@ -58,6 +58,9 @@
     <string name="away_points">000</string>
     <string name="home_points">000</string>
     
+    <string name="away_points_2">000</string>
+    <string name="home_points_2">000</string>
+    
     <!-- Statistic showing screen -->
     <string name="statistic_title">Boxscore</string>
     <string name="stats_home_team_name">Home Team</string>

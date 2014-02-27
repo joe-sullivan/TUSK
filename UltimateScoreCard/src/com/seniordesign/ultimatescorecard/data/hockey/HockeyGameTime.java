@@ -1,14 +1,95 @@
 package com.seniordesign.ultimatescorecard.data.hockey;
 
+import java.util.ArrayList;
+
+import android.content.Context;
+
 import com.seniordesign.ultimatescorecard.data.GameTime;
+import com.seniordesign.ultimatescorecard.data.basketball.BasketballPlayer;
+import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
+import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
+import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
+import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyDatabaseHelper;
 
 public class HockeyGameTime extends GameTime{
 	private static final long serialVersionUID = -7763761249318969512L;
 	private HockeyTeam _homeTeam, _awayTeam;
 	
-	public HockeyGameTime (String home, String away){
-		_homeTeam = new HockeyTeam(home, true);
-		_awayTeam = new HockeyTeam(away, false);
+	//databases
+	public HockeyDatabaseHelper _hockey_db;
+	private long g_id;
+	private Context _context;
+	private Teams _home, _away;
+	private ArrayList<HockeyPlayer> _homeTeamPlayers, _awayTeamPlayers;
+	private long _home_t_id, _away_t_id;
+	public HockeyGameInfo _gameInfo;
+	private ArrayList<Players> _homeTeamPlayersPull, _awayTeamPlayersPull;
+	
+	public HockeyGameTime (Teams home, Teams away){
+		_home = home;
+		_away = away;
+	}
+	
+	public void setContext(Context context){
+		_context = context;
+	}
+	
+	public long createTeams(){
+		_hockey_db = new HockeyDatabaseHelper(_context);
+		_homeTeam = new HockeyTeam(_home.gettname(), true);
+		_awayTeam = new HockeyTeam(_away.gettname(), false);
+
+		_home_t_id = _home.gettid();
+		_away_t_id = _away.gettid();
+		
+		g_id = _hockey_db.createGame(new Games(_home_t_id, _away_t_id, "INSERT DATE HERE"));
+
+		ArrayList<Players> _homeTeamPlayer = (ArrayList<Players>) _hockey_db.getPlayersTeam(_home_t_id);
+		ArrayList<Players> _awayTeamPlayer = (ArrayList<Players>) _hockey_db.getPlayersTeam(_away_t_id);
+		
+		ArrayList<HockeyPlayer> _homeTeamPlayers = new ArrayList<HockeyPlayer>();
+		for(Players p: _homeTeamPlayer){
+			HockeyPlayer player = new HockeyPlayer();
+			player.setpid(p.getpid());
+			player.settid(p.gettid());
+			player.setpname(p.getpname());
+			player.setpnum(p.getpnum());
+			player.setdb(_hockey_db);
+			_homeTeamPlayers.add(player);
+
+		}
+		ArrayList<HockeyPlayer> _awayTeamPlayers = new ArrayList<HockeyPlayer>();
+		for(Players p: _awayTeamPlayer){
+			HockeyPlayer player = new HockeyPlayer();
+			player.setpid(p.getpid());
+			player.settid(p.gettid());
+			player.setpname(p.getpname());
+			player.setpnum(p.getpnum());
+			player.setdb(_hockey_db);
+			_awayTeamPlayers.add(player);
+
+		}
+		
+		_homeTeam.setData(g_id, _home, _homeTeamPlayers);
+		_awayTeam.setData(g_id, _away, _awayTeamPlayers);
+		_homeTeam.setTeamAbbr();
+		_awayTeam.setTeamAbbr();
+		_homeTeamPlayersPull = (ArrayList<Players>) _hockey_db.getPlayersTeam2(_home_t_id);
+		_awayTeamPlayersPull = (ArrayList<Players>) _hockey_db.getPlayersTeam2(_away_t_id);
+		_gameInfo = new HockeyGameInfo(_home, _away, _homeTeamPlayersPull, _awayTeamPlayersPull, g_id);
+
+		return g_id;
+	}
+	
+	public HockeyGameInfo getGameInfo(){
+		return _gameInfo;
+	}
+	
+	public void setGameInfo(HockeyGameInfo gameInfo){
+		_gameInfo = gameInfo;
+		//_homeTeam.setTeamOrder(_gameInfo.getHomePlayers());
+		//_awayTeam.setTeamOrder(_gameInfo.getAwayPlayers());
+
 	}
 	
 	public HockeyPlayer getPlayer(String whichTeam, int player){
@@ -22,12 +103,12 @@ public class HockeyGameTime extends GameTime{
 	
 	public HockeyPlayer getPlayer(String player){
 		for(int i=0; i<_homeTeam.numberPlayers(); i++){
-			if(player.equals(_homeTeam.getPlayer(i).getName())){
+			if(player.equals(_homeTeam.getPlayer(i).getpname())){
 				return _homeTeam.getPlayer(i);
 			}
 		}
 		for(int i=0; i<_awayTeam.numberPlayers(); i++){
-			if(player.equals(_awayTeam.getPlayer(i).getName())){
+			if(player.equals(_awayTeam.getPlayer(i).getpname())){
 				return _awayTeam.getPlayer(i);
 			}
 		}

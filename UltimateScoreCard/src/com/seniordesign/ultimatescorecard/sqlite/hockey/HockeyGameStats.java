@@ -9,6 +9,7 @@ public class HockeyGameStats {
 	int ast;
 	int pen_minor;
 	int pen_major;
+	int pen_misconduct;
 	int saves;
 	int goals_allowed;
 	
@@ -54,6 +55,10 @@ public class HockeyGameStats {
         this.pen_major = pen_major;
     }
     
+    public void setpenmisconduct(int pen_misconduct) {
+        this.pen_misconduct = pen_misconduct;
+    }
+    
     public void setsaves(int saves) {
         this.saves = saves;
     }
@@ -71,35 +76,53 @@ public class HockeyGameStats {
         return this.g_id;
     }
     
-    public long getshots() {
+    public int getshots() {
         return this.shots;
     }
     
-    public long getsog() {
+    public int getsog() {
         return this.sog;
     }
     
-    public long getgoals() {
+    public int getgoals() {
         return this.goals;
     }
     
-    public long getast() {
+    public int getast() {
         return this.ast;
     }
     
-    public long getpenminor() {
+    public int getpenminor() {
         return this.pen_minor;
     }
     
-    public long getpenmajor() {
+    public int getpenmajor() {
         return this.pen_major;
     }
     
-    public long getsaves() {
+    public int getpenmisconduct() {
+        return this.pen_misconduct;
+    }
+    
+    public int getsaves() {
         return this.saves;
     }
     
-    public long getgoalsallowed() {
+    public int getgoalsallowed() {
         return this.goals_allowed;
+    }
+    
+    public int getpenminutes(){
+    	return 2*pen_minor + 5*pen_major + 10*pen_misconduct;
+    }
+    
+    
+    public double getsavepercent(){
+    	if((saves+goals_allowed)>0){
+    		return saves/(saves+goals_allowed);
+    	}
+    	else{
+    		return 0.0;
+    	}
     }
 }
