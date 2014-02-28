@@ -119,6 +119,7 @@ public class SoccerActivity extends Activity{
 	
 	private void mainButtonSet(){
 		buttonSwap(false);
+		allowMenuAndChangingPossession();
 		setTextAndListener(_option4Button, shotTakenListener, "Shot");
 		setTextAndListener(_option5Button, penaltyListener, "Penalty");
 	}
@@ -189,7 +190,7 @@ public class SoccerActivity extends Activity{
 		@Override
 		public void onClick(View view) {
 			disallowMenuAndChangingPossession();
-			stopClock();
+			stopClockNotButtons();
 			penaltyCardsButtonSet();
 		}
 	};
@@ -254,6 +255,7 @@ public class SoccerActivity extends Activity{
 		@Override
 		public void onClick(View view) {
 			Builder builder = new Builder(SoccerActivity.this);
+			stopClockNotButtons();
 			builder.setTitle("Goal Scored by:");
 			final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String> (SoccerActivity.this,
 					android.R.layout.select_dialog_singlechoice);
@@ -305,7 +307,6 @@ public class SoccerActivity extends Activity{
 				_gti.getTeam().increaseScore(1);
 				updateScore();
 				_gameLog.shootsAndScores(goalScorer, "", _gameClockView.getText().toString());
-				stopClock();
 				_soccerField.setOnTouchListener(courtInteraction(true));
 				disableButtons();
 			}
@@ -362,7 +363,6 @@ public class SoccerActivity extends Activity{
 						_gti.getTeam().increaseScore(1);
 						updateScore();
 						_gameLog.shootsAndScores(goalScorer, player, _gameClockView.getText().toString());
-						stopClock();
 						_soccerField.setOnTouchListener(courtInteraction(true));
 						disableButtons();
 					}
@@ -427,6 +427,8 @@ public class SoccerActivity extends Activity{
 						mainButtonSet();
 					}
 				});
+				allowMenuAndChangingPossession();
+				disableButtons();
 				builder.show();						
 			}
 		};
@@ -482,7 +484,9 @@ public class SoccerActivity extends Activity{
 					_iconAdder.setShotLocation((int)event.getX(), (int)event.getY());
 					_iconAdder.setShotHitMiss(_gti.getPossession(), goal);
 					mainButtonSet();
-					enableButtons();
+					if(!goal){
+						enableButtons();
+					}
 					_soccerField.setOnTouchListener(null);
 				}
 				return false;
@@ -509,7 +513,7 @@ public class SoccerActivity extends Activity{
 				startClock();
 			}
 			else{
-				stopClock();
+				stopClockAllowShotChartChange();
 			}
 		}
 	};
@@ -527,6 +531,17 @@ public class SoccerActivity extends Activity{
 		_homeScoreTextView.setOnClickListener(null);
 	}
 	
+	private void stopClockNotButtons(){
+		_gameClock.stop();
+		_awayScoreTextView.setOnClickListener(null);
+		_homeScoreTextView.setOnClickListener(null);
+	}
+	
+	private void stopClockAllowShotChartChange(){
+		_gameClock.stop();
+		disableButtons();
+	}
+	
 	private boolean zeroTime(){
 		if(_gameClockView.getText().toString().equals("00:00"))
 			return true;
@@ -542,7 +557,7 @@ public class SoccerActivity extends Activity{
 	private void tipOff(){
 		Builder tipOffAlert = new Builder(this);
 		tipOffAlert.setTitle("Game Time");
-		tipOffAlert.setMessage("Which team won face-off?");
+		tipOffAlert.setMessage("Which team starts with possession?");
 		tipOffAlert.setPositiveButton(_gti.getAwayAbbr(), new DialogInterface.OnClickListener(){
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
@@ -580,7 +595,7 @@ public class SoccerActivity extends Activity{
 	public boolean onMenuOpened(int featureId, Menu menu) {
 		if(_allowMenu){
 			if(_gameClock != null){	
-				stopClock();
+				stopClockAllowShotChartChange();
 			}
 			return super.onMenuOpened(featureId, menu);
 		}
@@ -600,7 +615,7 @@ public class SoccerActivity extends Activity{
 		case R.id.boxscore:
 			intent = new Intent(getApplicationContext(), SoccerStatsActivity.class);			
 			_gameInfo = _gti.getGameInfo();
-
+			_playbyplay = (ArrayList<PlayByPlay>) _soccer_db.getPlayByPlayGame(g_id);
 			intent.putExtra(StaticFinalVars.GAME_INFO, _gameInfo);			
 			intent.putExtra(StaticFinalVars.GAME_LOG, _playbyplay);
 			intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 0);
@@ -609,10 +624,10 @@ public class SoccerActivity extends Activity{
 			
 		case R.id.gameLog:
 			intent = new Intent(getApplicationContext(), SoccerStatsActivity.class);	
-			ArrayList<PlayByPlay> pbps = (ArrayList<PlayByPlay>) _soccer_db.getPlayByPlayGame(g_id);
-			
+			_gameInfo = _gti.getGameInfo();
+			_playbyplay = (ArrayList<PlayByPlay>) _soccer_db.getPlayByPlayGame(g_id);			
 			intent.putExtra(StaticFinalVars.GAME_INFO, _gameInfo);	
-			intent.putExtra(StaticFinalVars.GAME_LOG, pbps);
+			intent.putExtra(StaticFinalVars.GAME_LOG, _playbyplay);
 			intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 1);
 			startActivity(intent);
 			break;

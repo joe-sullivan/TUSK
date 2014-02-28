@@ -1027,14 +1027,14 @@ public class BasketballActivity extends Activity{
 		Builder tipOffAlert = new Builder(this);
 		tipOffAlert.setTitle("Game Time");
 		tipOffAlert.setMessage("Which team won tip-off?");
-		tipOffAlert.setPositiveButton("Away", new DialogInterface.OnClickListener(){
+		tipOffAlert.setPositiveButton(_gti.getAwayAbbr(), new DialogInterface.OnClickListener(){
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				_gti.setPossession(false);
 				startClock();
 			}
 		});
-		tipOffAlert.setNegativeButton("Home", new DialogInterface.OnClickListener(){
+		tipOffAlert.setNegativeButton(_gti.getHomeAbbr(), new DialogInterface.OnClickListener(){
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				_gti.setPossession(true);
@@ -1159,9 +1159,9 @@ public class BasketballActivity extends Activity{
 		
 		case R.id.boxscore:
 			intent = new Intent(getApplicationContext(), BasketballStatsActivity.class);			
-			GameInfo gameinfo = _gti.getGameInfo();
-
-			intent.putExtra(StaticFinalVars.GAME_INFO, gameinfo);			
+			_gameInfo = _gti.getGameInfo();
+			_playbyplay = (ArrayList<PlayByPlay>) _basketball_db.getPlayByPlayGame(g_id);
+			intent.putExtra(StaticFinalVars.GAME_INFO, _gameInfo);			
 			intent.putExtra(StaticFinalVars.GAME_LOG, _playbyplay);
 			intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 0);
 			startActivity(intent);		
@@ -1169,9 +1169,10 @@ public class BasketballActivity extends Activity{
 			
 		case R.id.gameLog:
 			intent = new Intent(getApplicationContext(), BasketballStatsActivity.class);	
-			ArrayList<PlayByPlay> pbps = (ArrayList<PlayByPlay>) _basketball_db.getPlayByPlayGame(g_id);
-			intent.putExtra(StaticFinalVars.GAME_INFO, _gti.getGameInfo());	
-			intent.putExtra(StaticFinalVars.GAME_LOG, pbps);
+			_gameInfo = _gti.getGameInfo();
+			_playbyplay = (ArrayList<PlayByPlay>) _basketball_db.getPlayByPlayGame(g_id);
+			intent.putExtra(StaticFinalVars.GAME_INFO, _gameInfo);	
+			intent.putExtra(StaticFinalVars.GAME_LOG, _playbyplay);
 			intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 1);
 			startActivity(intent);
 			break;

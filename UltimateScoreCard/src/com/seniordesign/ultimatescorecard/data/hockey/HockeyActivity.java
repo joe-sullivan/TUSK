@@ -664,7 +664,7 @@ public class HockeyActivity extends Activity{
 	public boolean onMenuOpened(int featureId, Menu menu) {
 		if(_allowMenu){
 			if(_gameClock != null){	
-				stopClock();
+				stopClockAllowShotChartChange();
 			}
 			return super.onMenuOpened(featureId, menu);
 		}
@@ -682,19 +682,20 @@ public class HockeyActivity extends Activity{
 		
 		case R.id.boxscore:
 			intent = new Intent(getApplicationContext(), HockeyStatsActivity.class);			
-			GameInfo gameinfo = _gti.getGameInfo();
-
-			intent.putExtra(StaticFinalVars.GAME_INFO, gameinfo);			
+			_gameInfo = _gti.getGameInfo();
+			_playbyplay = (ArrayList<PlayByPlay>) _hockey_db.getPlayByPlayGame(g_id);
+			intent.putExtra(StaticFinalVars.GAME_INFO, _gameInfo);			
 			intent.putExtra(StaticFinalVars.GAME_LOG, _playbyplay);
 			intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 0);
 			startActivity(intent);		
 			break;
 			
 		case R.id.gameLog:
-			intent = new Intent(getApplicationContext(), HockeyStatsActivity.class);	
-			ArrayList<PlayByPlay> pbps = (ArrayList<PlayByPlay>) _hockey_db.getPlayByPlayGame(g_id);
+			intent = new Intent(getApplicationContext(), HockeyStatsActivity.class);
+			_gameInfo = _gti.getGameInfo();
+			_playbyplay = (ArrayList<PlayByPlay>) _hockey_db.getPlayByPlayGame(g_id);
 			intent.putExtra(StaticFinalVars.GAME_INFO, _gameInfo);	
-			intent.putExtra(StaticFinalVars.GAME_LOG, pbps);
+			intent.putExtra(StaticFinalVars.GAME_LOG, _playbyplay);
 			intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 1);
 			startActivity(intent);
 			break;
