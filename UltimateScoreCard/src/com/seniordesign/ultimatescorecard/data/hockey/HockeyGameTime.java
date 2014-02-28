@@ -132,18 +132,18 @@ public class HockeyGameTime extends GameTime{
 	
 	public String getHomeScoreText(){
 		if(_homeTeam.getScore() < 10){
-			return "0"+ _homeTeam.getScore();
+			return "00"+ _homeTeam.getScore();
 		}
 		else {
-			return ""+ _homeTeam.getScore();
+			return "0"+ _homeTeam.getScore();
 		}
 	}
 	public String getAwayScoreText(){
 		if(_awayTeam.getScore() < 10){
-			return "0"+ _awayTeam.getScore();
+			return "00"+ _awayTeam.getScore();
 		}
 		else {
-			return ""+ _awayTeam.getScore();
+			return "0"+ _awayTeam.getScore();
 		}
 	}
 	

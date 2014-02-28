@@ -349,6 +349,7 @@ public class HockeyActivity extends Activity{
 				else{
 					//ejections?
 				}
+				allowMenuAndChangingPossession();
 
 				dialog.dismiss();
 			}
@@ -360,6 +361,7 @@ public class HockeyActivity extends Activity{
 		@Override
 		public void onClick(View view) {
 			Builder builder = new Builder(HockeyActivity.this);
+			stopClockNotButtons();
 			builder.setTitle("Goal Scored by:");
 			final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String> (HockeyActivity.this,
 					android.R.layout.select_dialog_singlechoice);
@@ -400,7 +402,6 @@ public class HockeyActivity extends Activity{
 				_gti.getTeam().increaseScore(1);		
 				updateScore();
 				_gameLog.shootsAndScores(goalScorer, "", "", _gameClockView.getText().toString());
-				stopClock();
 				_iceHockeyRink.setOnTouchListener(courtInteraction(true));
 				disableButtons();
 			}
@@ -451,7 +452,6 @@ public class HockeyActivity extends Activity{
 							_gti.getTeam().increaseScore(1);		
 							updateScore();
 							_gameLog.shootsAndScores(goalScorer, player, "",_gameClockView.getText().toString());
-							stopClock();
 							_iceHockeyRink.setOnTouchListener(courtInteraction(true));
 							disableButtons();
 						}
@@ -500,7 +500,6 @@ public class HockeyActivity extends Activity{
 				updateScore();
 				_gti.getOppoTeam().getGoalie().goalAllowed();
 				_gameLog.shootsAndScores(goalScorer, assist1, player,_gameClockView.getText().toString());
-				stopClock();
 				_iceHockeyRink.setOnTouchListener(courtInteraction(true));
 				disableButtons();
 			}
@@ -587,7 +586,7 @@ public class HockeyActivity extends Activity{
 				startClock();
 			}
 			else{
-				stopClock();
+				stopClockAllowShotChartChange();
 			}
 		}
 	};
@@ -604,6 +603,17 @@ public class HockeyActivity extends Activity{
 		disableButtons();
 		_awayScoreTextView.setOnClickListener(null);
 		_homeScoreTextView.setOnClickListener(null);
+	}
+	
+	private void stopClockNotButtons(){
+		_gameClock.stop();
+		_awayScoreTextView.setOnClickListener(null);
+		_homeScoreTextView.setOnClickListener(null);
+	}
+	
+	private void stopClockAllowShotChartChange(){
+		_gameClock.stop();
+		disableButtons();
 	}
 	
 	private boolean zeroTime(){
