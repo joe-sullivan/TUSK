@@ -13,8 +13,10 @@ import com.seniordesign.ultimatescorecard.data.soccer.SoccerActivity;
 import com.seniordesign.ultimatescorecard.data.soccer.SoccerGameTime;
 import com.seniordesign.ultimatescorecard.sqlite.DatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
+import com.seniordesign.ultimatescorecard.sqlite.football.FootballDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyDatabaseHelper;
+import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerDatabaseHelper;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
 
 import android.annotation.SuppressLint;
@@ -62,6 +64,12 @@ public class ChooseTeamActivity extends Activity{
 		}
 		else if(_sportType.equals("hockey")){
 			_db = new HockeyDatabaseHelper(getApplicationContext());
+		}
+		else if(_sportType.equals("soccer")){
+			_db = new SoccerDatabaseHelper(getApplicationContext());
+		}
+		else if(_sportType.equals("football")){
+			_db = new FootballDatabaseHelper(getApplicationContext());
 		}
 		_teamSelectTitle = (TextView) findViewById(R.id.team_selection_title);							//getting the view of some features implemented in xml
 		_listOfTeams = (LinearLayout) findViewById (R.id.teamListLayout);
@@ -204,7 +212,7 @@ public class ChooseTeamActivity extends Activity{
 				Intent intent;
 				if(_sportType.equals("soccer")){
 					intent = new Intent(getApplicationContext(), SoccerActivity.class);						//create new intent (basketball activity)
-					//intent.putExtra(StaticFinalVars.GAME_TIME, new SoccerGameTime(_teams[0], _teams[1]));
+					intent.putExtra(StaticFinalVars.GAME_TIME, new SoccerGameTime(_teams[0], _teams[1]));
 				}
 				else if (_sportType.equals("football")){
 					intent = new Intent(getApplicationContext(), FootballActivity.class);

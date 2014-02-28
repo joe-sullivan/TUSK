@@ -90,7 +90,13 @@
         </activity>
                 
         <activity
-            android:name="com.seniordesign.ultimatescorecard.substitution.SubstitutionActivity"
+            android:name="com.seniordesign.ultimatescorecard.substitution.BasketballSubstitutionActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/boxscore_screen" >
+        </activity>
+        
+        <activity
+            android:name="com.seniordesign.ultimatescorecard.substitution.SoccerSubstitutionActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/boxscore_screen" >
         </activity>

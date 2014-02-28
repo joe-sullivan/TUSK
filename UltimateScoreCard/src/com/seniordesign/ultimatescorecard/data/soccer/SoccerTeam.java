@@ -3,21 +3,26 @@ package com.seniordesign.ultimatescorecard.data.soccer;
 import java.util.ArrayList;
 
 import com.seniordesign.ultimatescorecard.data.Team;
+import com.seniordesign.ultimatescorecard.data.hockey.HockeyPlayer;
+import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 
 public class SoccerTeam extends Team{
 	private static final long serialVersionUID = -6026271836806435470L;
 	private ArrayList<SoccerPlayer> players = new ArrayList<SoccerPlayer>();
 	private SoccerPlayer _goalkeeper;
+	private Teams _team;
+	private long _t_id, _g_id;
 	
 	public SoccerTeam (String teamName, boolean homeTeam){
 		super(teamName, homeTeam);
-		setTeamAbbr(teamName);
-		setTeamPlayers(teamName);
-		_goalkeeper = players.get(0);
-		
+		_homeTeam = homeTeam;
+		_teamName = teamName;		
 	}
 	
-	private void setTeamAbbr(String team){
+	public void setTeamAbbr(){
+		_teamAbbr = _team.getabbv();
+
+		/*
 		if(team.equals("United States")){
 			_teamAbbr = "USA";
 		}
@@ -44,9 +49,27 @@ public class SoccerTeam extends Team{
 				_teamAbbr = "Away";
 			}
 		}
+		*/
 	}
 	
+	public void setData(long g_id, Teams team, ArrayList<SoccerPlayer> players){
+		_g_id = g_id;
+		_team = team;
+		this.players = players;
+		setTeamPlayers(players);
+		_goalkeeper = players.get(0);
+
+	}
+	
+	private void setTeamPlayers(ArrayList<SoccerPlayer> players){
+		//use string to get t_id, then get players on that team
+		for(SoccerPlayer p: players){
+			p.setgid(_g_id);
+		}
+	}
+/*	
 	private void setTeamPlayers(String team){
+	
 		if(team.equals("United States")){
 			players.add(new SoccerPlayer("Tim Howard"));
 			players.add(new SoccerPlayer("DaMarcus Beasley"));
@@ -138,7 +161,9 @@ public class SoccerTeam extends Team{
 			players.add(new SoccerPlayer("Forward 1"));
 			players.add(new SoccerPlayer("Forward 2"));
 		}
+		
 	}
+	*/
 	
 	public SoccerPlayer getPlayer(int player){
 		return players.get(player);
@@ -146,7 +171,7 @@ public class SoccerTeam extends Team{
 	
 	public SoccerPlayer getPlayer(String player){
 		for(int i=0; i<players.size(); i++){
-			if(player.equals(players.get(i).getName())){
+			if(player.equals(players.get(i).getpname())){
 				return players.get(i);
 			}
 		}
@@ -161,5 +186,9 @@ public class SoccerTeam extends Team{
 	
 	public SoccerPlayer getGoalie(){
 		return _goalkeeper;
+	}
+	
+	public void setGoalie(SoccerPlayer player){
+		_goalkeeper = player;
 	}
 }

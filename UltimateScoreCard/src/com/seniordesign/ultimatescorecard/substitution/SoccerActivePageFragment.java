@@ -1,10 +1,7 @@
 package com.seniordesign.ultimatescorecard.substitution;
 
 import com.seniordesign.ultimatescorecard.R;
-import com.seniordesign.ultimatescorecard.data.basketball.BasketballGameInfo;
-import com.seniordesign.ultimatescorecard.data.basketball.BasketballGameTime;
-import com.seniordesign.ultimatescorecard.data.basketball.BasketballTeam;
-import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
+import com.seniordesign.ultimatescorecard.data.GameInfo;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,11 +11,11 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
-public class ActivePageFragment extends Fragment{
+public class SoccerActivePageFragment extends Fragment{
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = (View) inflater.inflate(R.layout.fragment_active, container, false);
+		View view = (View) inflater.inflate(R.layout.fragment_active_soccer, container, false);
         return view;
 	}	
 	
@@ -28,7 +25,7 @@ public class ActivePageFragment extends Fragment{
 		refresh();
 	}
 
-	private void setPlayer(BasketballGameInfo gameInfo, boolean status){
+	private void setPlayer(GameInfo gameInfo, boolean status){
 		TextView view1 = ((TextView) getView().findViewById(R.id.active1Name));
 		view1.setText(gameInfo.getPlayer(0,status).getpname());
 		view1.setOnClickListener(swapPageListener);
@@ -48,18 +45,42 @@ public class ActivePageFragment extends Fragment{
 		TextView view5 = ((TextView) getView().findViewById(R.id.active5Name));
 		view5.setText(gameInfo.getPlayer(4,status).getpname());
 		view5.setOnClickListener(swapPageListener);
+	
+		TextView view6 = ((TextView) getView().findViewById(R.id.active6Name));
+		view6.setText(gameInfo.getPlayer(5,status).getpname());
+		view6.setOnClickListener(swapPageListener);
+		
+		TextView view7 = ((TextView) getView().findViewById(R.id.active7Name));
+		view7.setText(gameInfo.getPlayer(6,status).getpname());
+		view7.setOnClickListener(swapPageListener);
+		
+		TextView view8 = ((TextView) getView().findViewById(R.id.active8Name));
+		view8.setText(gameInfo.getPlayer(7,status).getpname());
+		view8.setOnClickListener(swapPageListener);
+		
+		TextView view9 = ((TextView) getView().findViewById(R.id.active9Name));
+		view9.setText(gameInfo.getPlayer(8,status).getpname());
+		view9.setOnClickListener(swapPageListener);
+		
+		TextView view10 = ((TextView) getView().findViewById(R.id.active10Name));
+		view10.setText(gameInfo.getPlayer(9,status).getpname());
+		view10.setOnClickListener(swapPageListener);
+		
+		TextView view11 = ((TextView) getView().findViewById(R.id.active11Name));
+		view11.setText(gameInfo.getPlayer(10,status).getpname());
+		view11.setOnClickListener(swapPageListener);
 	}
 	
 	public void refresh(){
-		setPlayer(((SubstitutionActivity)getActivity()).getTeamInfo(), ((SubstitutionActivity)getActivity()).getHomeTeam());
+		setPlayer(((SoccerSubstitutionActivity)getActivity()).getTeamInfo(), ((SoccerSubstitutionActivity)getActivity()).getHomeTeam());
 	}
 	
 	private OnClickListener swapPageListener = new OnClickListener(){
 		@Override
 		public void onClick(View v) {
 			((View)v.getParent()).setBackgroundColor(getResources().getColor(R.color.gray));
-			((SubstitutionActivity)getActivity()).switchPages();
-			((SubstitutionActivity)getActivity()).setPlayerOut(((TextView)v).getText().toString());
+			((SoccerSubstitutionActivity)getActivity()).switchPages();
+			((SoccerSubstitutionActivity)getActivity()).setPlayerOut(((TextView)v).getText().toString());
 		}
 	};
 	

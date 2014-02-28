@@ -4,12 +4,14 @@ package com.seniordesign.ultimatescorecard.sqlite.soccer;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.seniordesign.ultimatescorecard.data.soccer.SoccerPlayer;
 import com.seniordesign.ultimatescorecard.sqlite.DatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
 import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
 import com.seniordesign.ultimatescorecard.sqlite.helper.ShotChartCoords;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
+import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyGames;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -20,6 +22,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 public class SoccerDatabaseHelper extends DatabaseHelper{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5605038759727033603L;
 
 	// Logcat tag
     private static final String LOG = "SoccerDatabaseHelper";
@@ -33,7 +40,7 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
     //Table Names
     private static final String TABLE_GAMES = "games";
     private static final String TABLE_SOCCER_GAME_STATS = "soccer_game_stats";
-    private static final String TABLE = "players";
+    private static final String TABLE_PLAYERS = "players";
     private static final String TABLE_TEAMS = "teams";
     private static final String TABLE_PLAY_BY_PLAY = "play_by_play";
     private static final String TABLE_SHOT_CHART_COORDS = "shot_chart_coords";
@@ -50,19 +57,36 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
     private static final String KEY_AWAY_ID = "away_id";
     private static final String KEY_DATE = "date";
     
+    private static final String KEY_HOME_SHOTS = "home_shots";
+    private static final String KEY_HOME_SOG = "home_sog";
+    private static final String KEY_HOME_GOALS = "home_goals";
+    private static final String KEY_HOME_SAVES = "home_saves";
+    private static final String KEY_HOME_GOALS_ALLOWED = "home_goals_allowed";
+    private static final String KEY_HOME_AST = "home_ast";
+    private static final String KEY_HOME_FOULS = "home_fouls";
+    private static final String KEY_HOME_PKA = "home_pka";
+    private static final String KEY_HOME_PKG = "home_pkg";
+    private static final String KEY_HOME_YCARD = "home_ycard";
+    private static final String KEY_HOME_RCARD = "home_rcard";
+    
+    private static final String KEY_AWAY_SHOTS = "away_shots";
+    private static final String KEY_AWAY_SOG = "away_sog";
+    private static final String KEY_AWAY_GOALS = "away_goals";
+    private static final String KEY_AWAY_SAVES = "away_saves";
+    private static final String KEY_AWAY_GOALS_ALLOWED = "away_goals_allowed";
+    private static final String KEY_AWAY_AST = "away_ast";
+    private static final String KEY_AWAY_FOULS = "away_fouls";
+    private static final String KEY_AWAY_PKA = "away_pka";
+    private static final String KEY_AWAY_PKG = "away_pkg";
+    private static final String KEY_AWAY_YCARD = "away_ycard";
+    private static final String KEY_AWAY_RCARD = "away_rcard";
+    
     //SOCCERGAMESTATS - common column names
+    private static final String KEY_SHOTS = "shots";
     private static final String KEY_SOG = "sog";
     private static final String KEY_GOALS = "goals";
-    
-    //SOCCERGAMESTATSGOALIE Table - column names
     private static final String KEY_SAVES = "saves";
-    private static final String KEY_SAVE_OPPS = "save_opps";
     private static final String KEY_GOALS_ALLOWED = "goals_allowed";
-
-
-    
-    //SOCCERGAMESTATSPLAYERS Table - column names
-    private static final String KEY_SHOTS = "shots";
     private static final String KEY_AST = "ast";
     private static final String KEY_FOULS = "fouls";
     private static final String KEY_PKA = "pka";
@@ -94,7 +118,18 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
     //GAMES table create statement
     private static final String CREATE_TABLE_GAMES = "CREATE TABLE IF NOT EXISTS " + TABLE_GAMES 
     		+ "(" + KEY_G_ID + " INTEGER PRIMARY KEY," + KEY_HOME_ID + " INTEGER," 
-    		+ KEY_AWAY_ID + " INTEGER," + KEY_DATE + " DATE" + ")"; 
+    		+ KEY_AWAY_ID + " INTEGER," + KEY_DATE + " DATE, "  
+			
+    		+ KEY_HOME_SHOTS + " INTEGER, " + KEY_HOME_SOG + " INTEGER, " + KEY_HOME_GOALS + " INTEGER, "
+			+ KEY_HOME_AST + " INTEGER, " + KEY_HOME_FOULS + " INTEGER, " + KEY_HOME_PKA + " INTEGER, "
+			+ KEY_HOME_PKG + " INTEGER, " + KEY_HOME_YCARD + " INTEGER, " + KEY_HOME_RCARD + " INTEGER, "
+			+ KEY_HOME_SAVES + " INTEGER, " + KEY_HOME_GOALS_ALLOWED + " INTEGER, "
+    
+			+ KEY_AWAY_SHOTS + " INTEGER, " + KEY_AWAY_SOG + " INTEGER, " + KEY_AWAY_GOALS + " INTEGER, "
+			+ KEY_AWAY_AST + " INTEGER, " + KEY_AWAY_FOULS + " INTEGER, " + KEY_AWAY_PKA + " INTEGER, "
+			+ KEY_AWAY_PKG + " INTEGER, " + KEY_AWAY_YCARD + " INTEGER, " + KEY_AWAY_RCARD + " INTEGER, "
+			+ KEY_AWAY_SAVES + " INTEGER, " + KEY_AWAY_GOALS_ALLOWED + " INTEGER"
+			+ ")";
     //Doesn't include SPORT yet...
     
     //SOCCER_GAME_STATS table create statement
@@ -102,12 +137,12 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
     		+ "(" + KEY_G_ID + " INTEGER" + ", " + KEY_P_ID + " INTEGER" + ", "
     		+ KEY_SHOTS + " INTEGER, " + KEY_SOG + " INTEGER, " + KEY_GOALS + " INTEGER, "
     		+ KEY_AST + " INTEGER, " + KEY_FOULS + " INTEGER, " + KEY_PKA + " INTEGER, "
-    		+ KEY_PKG + " INTEGER, " + KEY_YCARD + " INTEGER, " + KEY_RCARD + " INTEGER"
-    		+ KEY_SAVE_OPPS + " INTEGER, " + KEY_SAVES + " INTEGER, " + KEY_GOALS_ALLOWED + " INTEGER"
+    		+ KEY_PKG + " INTEGER, " + KEY_YCARD + " INTEGER, " + KEY_RCARD + " INTEGER, "
+    		+ KEY_SAVES + " INTEGER, " + KEY_GOALS_ALLOWED + " INTEGER"
     		+ ")"; 
     
     //PLAYERS table create statement
-    private static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE 
+    private static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_PLAYERS 
     		+ "(" + KEY_P_ID + " INTEGER PRIMARY KEY," 
     		+ KEY_T_ID + " INTEGER, "
     		// + FOREIGN KEY REFERENCES " + TABLE_TEAMS + "(" + KEY_T_ID + ")," 
@@ -116,12 +151,12 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
     //TEAMS table create statement
     private static final String CREATE_TABLE_TEAMS = "CREATE TABLE IF NOT EXISTS " + TABLE_TEAMS 
     		+ "(" + KEY_T_ID + " INTEGER PRIMARY KEY," + KEY_T_NAME + " VARCHAR(45)," 
-    		+ KEY_C_NAME + " VARCHAR(45),"+ KEY_SPORT + " VARCHAR(45)" + ")"; 
+    		+ KEY_ABBV + " VARCHAR(45)," + KEY_C_NAME + " VARCHAR(45),"+ KEY_SPORT + " VARCHAR(45)" + ")"; 
     
     //PLAY_BY_PLAY table create statement
     private static final String CREATE_TABLE_PLAY_BY_PLAY = "CREATE TABLE IF NOT EXISTS " + TABLE_PLAY_BY_PLAY 
     		+ "(" + KEY_A_ID + " INTEGER PRIMARY KEY," + KEY_G_ID + " INTEGER," 
-    		+ KEY_ACTION + " VARCHAR(45)," + KEY_TIME + " VARCHAR(45)," + KEY_HOME_SCORE + " INTEGER, " 
+    		+ KEY_ACTION + " VARCHAR(45)," + KEY_TIME + " VARCHAR(45)," + KEY_PERIOD + " VARCHAR(10)," +  KEY_HOME_SCORE + " INTEGER, " 
     		+ KEY_AWAY_SCORE + " INTEGER" + ")";
     
     //SHOT_CHART_COORDS table create statement
@@ -156,7 +191,7 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 		// on upgrade drop older tables
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_GAMES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SOCCER_GAME_STATS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PLAYERS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TEAMS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PLAY_BY_PLAY);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOT_CHART_COORDS);
@@ -174,6 +209,31 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
         values.put(KEY_HOME_ID, game.gethomeid());
         values.put(KEY_AWAY_ID, game.getawayid());
         values.put(KEY_DATE, game.getDate());
+        
+        values.put(KEY_HOME_SHOTS, 0);
+        values.put(KEY_HOME_SOG, 0);
+        values.put(KEY_HOME_GOALS, 0);
+        values.put(KEY_HOME_AST, 0);
+        values.put(KEY_HOME_FOULS, 0);
+        values.put(KEY_HOME_PKA, 0);
+        values.put(KEY_HOME_PKG, 0);
+        values.put(KEY_HOME_YCARD, 0);
+        values.put(KEY_HOME_RCARD, 0);
+        values.put(KEY_HOME_SAVES,0);
+        values.put(KEY_HOME_GOALS_ALLOWED, 0);
+        
+        
+        values.put(KEY_AWAY_SHOTS, 0);
+        values.put(KEY_AWAY_SOG, 0);
+        values.put(KEY_AWAY_GOALS, 0);
+        values.put(KEY_AWAY_AST, 0);
+        values.put(KEY_AWAY_FOULS, 0);
+        values.put(KEY_AWAY_PKA, 0);
+        values.put(KEY_AWAY_PKG, 0);
+        values.put(KEY_AWAY_YCARD, 0);
+        values.put(KEY_AWAY_RCARD, 0);
+        values.put(KEY_AWAY_SAVES,0);
+        values.put(KEY_AWAY_GOALS_ALLOWED, 0);
  
         // insert row
         long g_id = db.insert(TABLE_GAMES, null, values);
@@ -201,16 +261,40 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 	    Log.i(LOG, selectQuery);
 	    //perform the query and store data in cursor
 	    Cursor c = db.rawQuery(selectQuery, null);
+	    SoccerGames game = new SoccerGames();
 	    //set cursor to beginning
-	    if (c != null)
-	        c.moveToFirst();
-	    //create the instance of Games using cursor information
-	    Games game = new Games();
-	    game.setgid(c.getLong(c.getColumnIndex(KEY_G_ID)));
-	    game.sethomeid((c.getLong(c.getColumnIndex(KEY_HOME_ID))));
-	    game.setawayid((c.getLong(c.getColumnIndex(KEY_AWAY_ID))));
-	    game.setDate(c.getString(c.getColumnIndex(KEY_DATE)));
-	 
+	    if (c != null && c.moveToFirst()){
+	        
+		    //create the instance of Games using cursor information
+		    game.setgid(c.getLong(c.getColumnIndex(KEY_G_ID)));
+		    game.sethomeid((c.getLong(c.getColumnIndex(KEY_HOME_ID))));
+		    game.setawayid((c.getLong(c.getColumnIndex(KEY_AWAY_ID))));
+		    game.setDate(c.getString(c.getColumnIndex(KEY_DATE)));
+		 
+		    game.sethomeshots((c.getInt(c.getColumnIndex(KEY_HOME_SHOTS))));
+		    game.sethomesog((c.getInt(c.getColumnIndex(KEY_HOME_SOG))));
+		    game.sethomegoals(c.getInt(c.getColumnIndex(KEY_HOME_GOALS)));
+		    game.sethomeast((c.getInt(c.getColumnIndex(KEY_HOME_AST))));
+		    game.sethomefouls((c.getInt(c.getColumnIndex(KEY_HOME_FOULS))));
+		    game.sethomepka(c.getInt(c.getColumnIndex(KEY_HOME_PKA)));
+		    game.sethomepkg((c.getInt(c.getColumnIndex(KEY_HOME_PKG))));
+		    game.sethomeycard(c.getInt(c.getColumnIndex(KEY_HOME_YCARD)));
+		    game.sethomercard((c.getInt(c.getColumnIndex(KEY_HOME_RCARD))));
+		    game.sethomesaves((c.getInt(c.getColumnIndex(KEY_HOME_SAVES))));
+		    game.sethomegoalsallowed((c.getInt(c.getColumnIndex(KEY_HOME_GOALS_ALLOWED))));
+	
+		    game.setawayshots((c.getInt(c.getColumnIndex(KEY_AWAY_SHOTS))));
+		    game.setawaysog((c.getInt(c.getColumnIndex(KEY_AWAY_SOG))));
+		    game.setawaygoals(c.getInt(c.getColumnIndex(KEY_AWAY_GOALS)));
+		    game.setawayast((c.getInt(c.getColumnIndex(KEY_AWAY_AST))));
+		    game.setawayfouls((c.getInt(c.getColumnIndex(KEY_AWAY_FOULS))));
+		    game.setawaypka(c.getInt(c.getColumnIndex(KEY_AWAY_PKA)));
+		    game.setawaypkg((c.getInt(c.getColumnIndex(KEY_AWAY_PKG))));
+		    game.setawayycard(c.getInt(c.getColumnIndex(KEY_AWAY_YCARD)));
+		    game.setawayrcard((c.getInt(c.getColumnIndex(KEY_AWAY_RCARD))));
+		    game.setawaysaves((c.getInt(c.getColumnIndex(KEY_AWAY_SAVES))));
+		    game.setawaygoalsallowed((c.getInt(c.getColumnIndex(KEY_AWAY_GOALS_ALLOWED))));
+	    }
 	    return game;
 	}
 	
@@ -227,18 +311,172 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 	    // looping through all rows and adding to list
 	    if (c.moveToFirst()) {
 	        do {
-	        	Games game = new Games();
+	        	SoccerGames game = new SoccerGames();
 	    	    game.setgid(c.getLong(c.getColumnIndex(KEY_G_ID)));
 	    	    game.sethomeid((c.getLong(c.getColumnIndex(KEY_HOME_ID))));
 	    	    game.setawayid((c.getLong(c.getColumnIndex(KEY_AWAY_ID))));
 	    	    game.setDate(c.getString(c.getColumnIndex(KEY_DATE)));
-	            // adding to games list
+	            
+	    	    game.sethomeshots((c.getInt(c.getColumnIndex(KEY_HOME_SHOTS))));
+	    	    game.sethomesog((c.getInt(c.getColumnIndex(KEY_HOME_SOG))));
+	    	    game.sethomegoals(c.getInt(c.getColumnIndex(KEY_HOME_GOALS)));
+	    	    game.sethomeast((c.getInt(c.getColumnIndex(KEY_HOME_AST))));
+	    	    game.sethomefouls((c.getInt(c.getColumnIndex(KEY_HOME_FOULS))));
+	    	    game.sethomepka(c.getInt(c.getColumnIndex(KEY_HOME_PKA)));
+	    	    game.sethomepkg((c.getInt(c.getColumnIndex(KEY_HOME_PKG))));
+	    	    game.sethomeycard(c.getInt(c.getColumnIndex(KEY_HOME_YCARD)));
+	    	    game.sethomercard((c.getInt(c.getColumnIndex(KEY_HOME_RCARD))));
+	    	    game.sethomesaves((c.getInt(c.getColumnIndex(KEY_HOME_SAVES))));
+	    	    game.sethomegoalsallowed((c.getInt(c.getColumnIndex(KEY_HOME_GOALS_ALLOWED))));
+
+	    	    game.setawayshots((c.getInt(c.getColumnIndex(KEY_AWAY_SHOTS))));
+	    	    game.setawaysog((c.getInt(c.getColumnIndex(KEY_AWAY_SOG))));
+	    	    game.setawaygoals(c.getInt(c.getColumnIndex(KEY_AWAY_GOALS)));
+	    	    game.setawayast((c.getInt(c.getColumnIndex(KEY_AWAY_AST))));
+	    	    game.setawayfouls((c.getInt(c.getColumnIndex(KEY_AWAY_FOULS))));
+	    	    game.setawaypka(c.getInt(c.getColumnIndex(KEY_AWAY_PKA)));
+	    	    game.setawaypkg((c.getInt(c.getColumnIndex(KEY_AWAY_PKG))));
+	    	    game.setawayycard(c.getInt(c.getColumnIndex(KEY_AWAY_YCARD)));
+	    	    game.setawayrcard((c.getInt(c.getColumnIndex(KEY_AWAY_RCARD))));
+	    	    game.setawaysaves((c.getInt(c.getColumnIndex(KEY_AWAY_SAVES))));
+	    	    game.setawaygoalsallowed((c.getInt(c.getColumnIndex(KEY_AWAY_GOALS_ALLOWED))));
+	    	    
+	    	    // adding to games list
 	            games.add(game);
 	        } while (c.moveToNext());
 	    }
 	 
 	    return games;
 	}
+	
+	//get single game stat for team
+		public int getTeamGameStat(long g_id, String stat) {
+		    SQLiteDatabase db = this.getReadableDatabase();
+		    //create query to select game
+		    String selectQuery = "SELECT " + stat + " FROM " + TABLE_GAMES + 
+		    	" WHERE " + KEY_G_ID + " = " + g_id;
+		    
+		    //Log the query
+		    Log.i(LOG, selectQuery);
+		    //perform the query and store data in cursor
+		    Cursor c = db.rawQuery(selectQuery, null);
+		    //set cursor to beginning
+		    if (c != null)
+		        c.moveToFirst();
+		    //create the instance of Games using cursor information
+		    int stat_value = c.getInt(c.getColumnIndex(stat));
+
+		    return stat_value;
+		}
+		
+		//Adding value to points category of a player
+		public int addTeamStats(long g_id, String stat, int value){
+		    SQLiteDatabase db = this.getWritableDatabase();
+		    SoccerGames game = (SoccerGames) getGame(g_id);
+		    
+		    int old_value = getTeamGameStat(g_id,stat);
+		    int new_value = old_value + value;
+		    
+		    ContentValues values = new ContentValues();
+		    	
+	        values.put(KEY_G_ID, g_id);
+	        values.put(KEY_HOME_ID, game.gethomeid());
+	        values.put(KEY_AWAY_ID, game.getawayid());
+	        values.put(KEY_DATE, game.getDate());
+
+	        if(stat==KEY_HOME_SHOTS)
+		    	values.put(KEY_HOME_SHOTS, new_value);
+		    else
+		    	values.put(KEY_HOME_SHOTS, game.gethomeshots());
+		    if(stat==KEY_HOME_SOG)
+		    	values.put(KEY_HOME_SOG, new_value);
+		    else
+		    	values.put(KEY_HOME_SOG, game.gethomesog());
+		    if(stat==KEY_HOME_GOALS)
+		    	values.put(KEY_HOME_GOALS, new_value);
+		    else
+		    	values.put(KEY_HOME_GOALS, game.gethomegoals());
+		    if(stat==KEY_HOME_AST)
+		    	values.put(KEY_HOME_AST, new_value);
+		    else
+		    	values.put(KEY_HOME_AST, game.gethomeast());
+		    if(stat==KEY_HOME_FOULS)
+		    	values.put(KEY_HOME_FOULS, new_value);
+		    else
+		    	values.put(KEY_HOME_FOULS, game.gethomefouls());
+		    if(stat==KEY_HOME_PKA)
+		    	values.put(KEY_HOME_PKA, new_value);
+		    else
+		    	values.put(KEY_HOME_PKA, game.gethomepka());
+		    if(stat==KEY_HOME_PKG)
+		    	values.put(KEY_HOME_PKG, new_value);
+		    else
+		    	values.put(KEY_HOME_PKG, game.gethomepkg());
+		    if(stat==KEY_HOME_YCARD)
+		    	values.put(KEY_HOME_YCARD, new_value);
+		    else
+		    	values.put(KEY_HOME_YCARD, game.gethomeycard());
+		    if(stat==KEY_HOME_RCARD)
+		    	values.put(KEY_HOME_RCARD, new_value);
+		    else
+		    	values.put(KEY_HOME_RCARD, game.gethomercard());
+		    if(stat==KEY_HOME_SAVES)
+		    	values.put(KEY_HOME_SAVES, new_value);
+		    else
+		    	values.put(KEY_HOME_SAVES, game.gethomesaves());
+		    if(stat==KEY_HOME_GOALS_ALLOWED)
+		    	values.put(KEY_HOME_GOALS_ALLOWED, new_value);
+		    else
+		    	values.put(KEY_HOME_GOALS_ALLOWED, game.gethomegoalsallowed());
+		    
+	        if(stat==KEY_AWAY_SHOTS)
+		    	values.put(KEY_AWAY_SHOTS, new_value);
+		    else
+		    	values.put(KEY_AWAY_SHOTS, game.getawayshots());
+		    if(stat==KEY_AWAY_SOG)
+		    	values.put(KEY_AWAY_SOG, new_value);
+		    else
+		    	values.put(KEY_AWAY_SOG, game.getawaysog());
+		    if(stat==KEY_AWAY_GOALS)
+		    	values.put(KEY_AWAY_GOALS, new_value);
+		    else
+		    	values.put(KEY_AWAY_GOALS, game.getawaygoals());
+		    if(stat==KEY_AWAY_AST)
+		    	values.put(KEY_AWAY_AST, new_value);
+		    else
+		    	values.put(KEY_AWAY_AST, game.getawayast());
+		    if(stat==KEY_AWAY_FOULS)
+		    	values.put(KEY_AWAY_FOULS, new_value);
+		    else
+		    	values.put(KEY_AWAY_FOULS, game.getawayfouls());
+		    if(stat==KEY_AWAY_PKA)
+		    	values.put(KEY_AWAY_PKA, new_value);
+		    else
+		    	values.put(KEY_AWAY_PKA, game.getawaypka());
+		    if(stat==KEY_AWAY_PKG)
+		    	values.put(KEY_AWAY_PKG, new_value);
+		    else
+		    	values.put(KEY_AWAY_PKG, game.getawaypkg());
+		    if(stat==KEY_AWAY_YCARD)
+		    	values.put(KEY_AWAY_YCARD, new_value);
+		    else
+		    	values.put(KEY_AWAY_YCARD, game.getawayycard());
+		    if(stat==KEY_AWAY_RCARD)
+		    	values.put(KEY_AWAY_RCARD, new_value);
+		    else
+		    	values.put(KEY_AWAY_RCARD, game.getawayrcard());
+		    if(stat==KEY_AWAY_SAVES)
+		    	values.put(KEY_AWAY_SAVES, new_value);
+		    else
+		    	values.put(KEY_AWAY_SAVES, game.getawaysaves());
+		    if(stat==KEY_AWAY_GOALS_ALLOWED)
+		    	values.put(KEY_AWAY_GOALS_ALLOWED, new_value);
+		    else
+		    	values.put(KEY_AWAY_GOALS_ALLOWED, game.getawaygoalsallowed());
+		    //insert more stats here
+	        
+		    return db.update(TABLE_GAMES,  values, KEY_G_ID + " = " + g_id, null);
+		}
 	
 	// Delete a Game
 	public void deleteGame(long g_id) {
@@ -266,7 +504,6 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
         values.put(KEY_PKG, 0);
         values.put(KEY_YCARD, 0);
         values.put(KEY_RCARD, 0);
-        values.put(KEY_SAVE_OPPS, 0);
         values.put(KEY_SAVES,0);
         values.put(KEY_GOALS_ALLOWED, 0);
         //insert more stats here
@@ -303,7 +540,6 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 	    stats.setpkg((c.getInt(c.getColumnIndex(KEY_PKG))));
 	    stats.setycard(c.getInt(c.getColumnIndex(KEY_YCARD)));
 	    stats.setrcard((c.getInt(c.getColumnIndex(KEY_RCARD))));
-	    stats.setsave_opps((c.getInt(c.getColumnIndex(KEY_SAVE_OPPS))));
 	    stats.setsaves((c.getInt(c.getColumnIndex(KEY_SAVES))));
 	    stats.setgoalsallowed((c.getInt(c.getColumnIndex(KEY_GOALS_ALLOWED))));
 
@@ -360,7 +596,6 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 	    	    stats.setpkg((c.getInt(c.getColumnIndex(KEY_PKG))));
 	    	    stats.setycard(c.getInt(c.getColumnIndex(KEY_YCARD)));
 	    	    stats.setrcard((c.getInt(c.getColumnIndex(KEY_RCARD))));
-	    	    stats.setsave_opps((c.getInt(c.getColumnIndex(KEY_SAVE_OPPS))));
 	    	    stats.setsaves((c.getInt(c.getColumnIndex(KEY_SAVES))));
 	    	    stats.setgoalsallowed((c.getInt(c.getColumnIndex(KEY_GOALS_ALLOWED))));
 			    //Insert more stats here
@@ -399,7 +634,6 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 	    	    stats.setpkg((c.getInt(c.getColumnIndex(KEY_PKG))));
 	    	    stats.setycard(c.getInt(c.getColumnIndex(KEY_YCARD)));
 	    	    stats.setrcard((c.getInt(c.getColumnIndex(KEY_RCARD))));
-	    	    stats.setsave_opps((c.getInt(c.getColumnIndex(KEY_SAVE_OPPS))));
 	    	    stats.setsaves((c.getInt(c.getColumnIndex(KEY_SAVES))));
 	    	    stats.setgoalsallowed((c.getInt(c.getColumnIndex(KEY_GOALS_ALLOWED))));
 			    //Insert more stats here
@@ -469,10 +703,6 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 	    	values.put(KEY_RCARD, new_value);
 	    else
 	    	values.put(KEY_RCARD, stats.getrcard());
-	    if(stat==KEY_SAVE_OPPS)
-	    	values.put(KEY_SAVE_OPPS, new_value);
-	    else
-	    	values.put(KEY_SAVE_OPPS, stats.getsaveopps());
 	    if(stat==KEY_SAVES)
 	    	values.put(KEY_SAVES, new_value);
 	    else
@@ -488,7 +718,7 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 	
 	
 // ----------------------- PLAY_BY_PLAY table method --------------------- //
-	
+/*	
 	public long createPlayByPlay(PlayByPlay pbp){
 		SQLiteDatabase db = this.getWritableDatabase();
 		 
@@ -539,10 +769,10 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 	    db.delete(TABLE_PLAY_BY_PLAY, KEY_G_ID + " = ?",
 	            new String[] { String.valueOf(g_id) });
 	}
-	
+	*/
 	// ----------------------- PLAYERS table methods ------------------------- //
 
-	public long createPlayers(Players player){
+	public long createPlayers(SoccerPlayer player){
 		SQLiteDatabase db = this.getWritableDatabase();
 		 
         ContentValues values = new ContentValues();
@@ -551,16 +781,16 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
         values.put(KEY_P_NUM, player.getpnum());
 
         // insert row
-        long p_id = db.insert(TABLE, null, values);
+        long p_id = db.insert(TABLE_PLAYERS, null, values);
  
         return p_id;
 	}
 	
 	//get single player
-	public Players getPlayer(long p_id) {
+	public SoccerPlayer getPlayer(long p_id) {
 	    SQLiteDatabase db = this.getReadableDatabase();
 	    //create query to select game
-	    String selectQuery = "SELECT  * FROM " + TABLE + 
+	    String selectQuery = "SELECT  * FROM " + TABLE_PLAYERS + 
 	    	" WHERE " + KEY_P_ID + " = " + p_id;
 	    //Log the query
 	    Log.i(LOG, selectQuery);
@@ -570,7 +800,7 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 	    if (c != null)
 	        c.moveToFirst();
 	    //create the instance of Teams using cursor information
-	    Players player = new Players();
+	    SoccerPlayer player = new SoccerPlayer();
 	    player.setpid(c.getLong(c.getColumnIndex(KEY_P_ID)));
 	    player.settid(c.getLong(c.getColumnIndex(KEY_T_ID)));
 	    player.setpname((c.getString(c.getColumnIndex(KEY_P_NAME))));
@@ -578,11 +808,11 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 	 
 	    return player;
 	}
-	
+/*	
 	public List<Players> getPlayersTeam(long t_id){
 	    SQLiteDatabase db = this.getReadableDatabase();
 		List<Players> players = new ArrayList<Players>();
-		String selectPlayerQuery = "SELECT * FROM " + TABLE + " WHERE " + KEY_T_ID + " = " + t_id;
+		String selectPlayerQuery = "SELECT * FROM " + TABLE_PLAYERS + " WHERE " + KEY_T_ID + " = " + t_id;
         
         Log.i(LOG, selectPlayerQuery);
         
@@ -609,7 +839,7 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 	public List<Players> getAllPlayers(){
 	    SQLiteDatabase db = this.getReadableDatabase();
 		List<Players> players = new ArrayList<Players>();
-		String selectPlayerQuery = "SELECT * FROM " + TABLE;
+		String selectPlayerQuery = "SELECT * FROM " + TABLE_PLAYERS;
         
         Log.i(LOG, selectPlayerQuery);
         
@@ -637,19 +867,19 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 	// Delete a Player
 	public void deletePlayer(long p_id) {
 	    SQLiteDatabase db = this.getWritableDatabase();
-	    db.delete(TABLE, KEY_P_ID + " = " + p_id, null);
+	    db.delete(TABLE_PLAYERS, KEY_P_ID + " = " + p_id, null);
 	}
 		
 	
 	// Delete  on a team
 	public void deletePlayers(long t_id) {
 	    SQLiteDatabase db = this.getWritableDatabase();
-	    db.delete(TABLE, KEY_T_ID + " = ?",
+	    db.delete(TABLE_PLAYERS, KEY_T_ID + " = ?",
 	            new String[] { String.valueOf(t_id) });
 	}
-	
+	*/
 	// -------------------SHOT_CHART_COORDS table methods ------------------ //
-	
+/*	
 	//create a row of shot chart coordinates
 	public long createShot(ShotChartCoords shot){
 		SQLiteDatabase db = this.getWritableDatabase();
@@ -667,7 +897,7 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
  
         return row;
 	}
-/*	
+	
 	public List<ShotChartCoords> getAllShots(){
 	    SQLiteDatabase db = this.getReadableDatabase();
 		List<ShotChartCoords> shots = new ArrayList<ShotChartCoords>();
@@ -815,14 +1045,14 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
         
         return shots;
 	}
-*/	
+	
 	// Delete a Shot
 	public void deleteShot(long a_id) {
 	    SQLiteDatabase db = this.getWritableDatabase();
 	    db.delete(TABLE_SHOT_CHART_COORDS, KEY_A_ID + " = " + a_id, null);
 	}
-	
-		
+*/	
+/*		
 	// ----------------------- TEAMS table methods ------------------------- //
 
 	public long createTeams(Teams team){
@@ -898,7 +1128,7 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 	            new String[] { String.valueOf(t_id) });
 	}
 	
-	
+*/	
 	
 	public void deleteAll(){
 	    List<Games> games = getAllGames();

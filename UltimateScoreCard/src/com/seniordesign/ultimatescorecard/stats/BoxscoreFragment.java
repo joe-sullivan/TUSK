@@ -1,7 +1,7 @@
 package com.seniordesign.ultimatescorecard.stats;
 
 import com.seniordesign.ultimatescorecard.R;
-import com.seniordesign.ultimatescorecard.data.basketball.BasketballGameInfo;
+import com.seniordesign.ultimatescorecard.data.GameInfo;
 import com.seniordesign.ultimatescorecard.data.basketball.BasketballTeam;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
@@ -29,7 +29,7 @@ public class BoxscoreFragment extends Fragment{
 	@Override
 	public void onResume() {
 		super.onResume();
-		BasketballGameInfo info = ((StatsActivity) getActivity()).getGameInfo();
+		GameInfo info = ((StatsActivity) getActivity()).getGameInfo();
 		Teams team = info.getHomeTeam();
 		String name = team.gettname();
 		((TextView)getView().findViewById(R.id.homeTeamStatText)).setText(name);
@@ -53,7 +53,7 @@ public class BoxscoreFragment extends Fragment{
 	
 	private void addTextViews(){
 		LinearLayout layout = ((LinearLayout) getView().findViewById(R.id.playerListLayout));
-		BasketballGameInfo _gameInfo = ((StatsActivity) getActivity()).getGameInfo();
+		GameInfo _gameInfo = ((StatsActivity) getActivity()).getGameInfo();
 		if(_lookingAtHome){
 			for(Players p: _gameInfo.getHomePlayers()){
 				layout.addView(newTextView(p.getpname()));	

@@ -4,6 +4,8 @@ package com.seniordesign.ultimatescorecard.sqlite.football;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.seniordesign.ultimatescorecard.data.football.FootballPlayer;
+import com.seniordesign.ultimatescorecard.sqlite.DatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballGameStats;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
 import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
@@ -19,7 +21,7 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class FootballDatabaseHelper extends SQLiteOpenHelper{
+public class FootballDatabaseHelper extends DatabaseHelper{
 
 	// Logcat tag
     private static final String LOG = "FootballDatabaseHelper";
@@ -1827,13 +1829,13 @@ public class FootballDatabaseHelper extends SQLiteOpenHelper{
 	
 	// ----------------------- PLAYERS table methods ------------------------- //
 
-	public long createPlayers(Players player){
+	public long createPlayers(FootballPlayer footballPlayer){
 		SQLiteDatabase db = this.getWritableDatabase();
 		 
         ContentValues values = new ContentValues();
-        values.put(KEY_T_ID, player.gettid());
-        values.put(KEY_P_NAME, player.getpname());
-        values.put(KEY_P_NUM, player.getpnum());
+        values.put(KEY_T_ID, footballPlayer.gettid());
+        values.put(KEY_P_NAME, footballPlayer.getpname());
+        values.put(KEY_P_NUM, footballPlayer.getpnum());
 
         // insert row
         long p_id = db.insert(TABLE_PLAYERS, null, values);

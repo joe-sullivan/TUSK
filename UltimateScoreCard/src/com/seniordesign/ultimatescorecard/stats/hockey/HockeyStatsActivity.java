@@ -3,7 +3,7 @@ package com.seniordesign.ultimatescorecard.stats.hockey;
 import java.util.ArrayList;
 
 import com.seniordesign.ultimatescorecard.R;
-import com.seniordesign.ultimatescorecard.data.hockey.HockeyGameInfo;
+import com.seniordesign.ultimatescorecard.data.GameInfo;
 import com.seniordesign.ultimatescorecard.data.hockey.HockeyGameLog;
 import com.seniordesign.ultimatescorecard.data.hockey.HockeyGameTime;
 import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
@@ -17,7 +17,7 @@ import android.support.v4.view.ViewPager;
 public class HockeyStatsActivity extends FragmentActivity{
 	private ViewPager _pager;
 	private PagerAdapter _pagerAdapter;
-	private HockeyGameInfo _gameInfo;
+	private GameInfo _gameInfo;
 	private ArrayList<PlayByPlay> _gameLog;
 
 	@Override
@@ -25,7 +25,7 @@ public class HockeyStatsActivity extends FragmentActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stats);
 
-        _gameInfo = (HockeyGameInfo) getIntent().getSerializableExtra(StaticFinalVars.GAME_INFO);
+        _gameInfo = (GameInfo) getIntent().getSerializableExtra(StaticFinalVars.GAME_INFO);
         _gameLog = (ArrayList<PlayByPlay>) getIntent().getSerializableExtra(StaticFinalVars.GAME_LOG);
         int value = getIntent().getIntExtra(StaticFinalVars.DISPLAY_TYPE, 0);
         
@@ -35,7 +35,7 @@ public class HockeyStatsActivity extends FragmentActivity{
         _pager.setCurrentItem(value);
     }
 
-	public HockeyGameInfo getGameInfo(){
+	public GameInfo getGameInfo(){
     	return _gameInfo;
     }
     

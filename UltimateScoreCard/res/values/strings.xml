@@ -76,5 +76,8 @@
     <string name="away_sub_text">Away Team</string>
     <string name="player_generic">Player</string>
     <string name="stat_generic">Stats</string>
+    <string name="goalie_text">Goalie:</string>
+    <string name="field_player_text">Field Players:</string>
+    
     
 </resources>

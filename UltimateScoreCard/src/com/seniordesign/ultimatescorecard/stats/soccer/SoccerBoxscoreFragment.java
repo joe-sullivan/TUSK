@@ -1,7 +1,9 @@
 package com.seniordesign.ultimatescorecard.stats.soccer;
 
 import com.seniordesign.ultimatescorecard.R;
+import com.seniordesign.ultimatescorecard.data.GameInfo;
 import com.seniordesign.ultimatescorecard.data.soccer.SoccerTeam;
+import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
 import com.seniordesign.ultimatescorecard.stats.soccer.SoccerIndividualStatActivity;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
 
@@ -27,8 +29,11 @@ public class SoccerBoxscoreFragment extends Fragment{
 	@Override
 	public void onResume() {
 		super.onResume();
-		((TextView)getView().findViewById(R.id.homeTeamStatText)).setText(((SoccerStatsActivity) getActivity()).getGameInfo().getTheHomeTeam().getTeamName());
-		((TextView)getView().findViewById(R.id.awayTeamStatText)).setText(((SoccerStatsActivity) getActivity()).getGameInfo().getTheAwayTeam().getTeamName());
+		
+		GameInfo info = ((SoccerStatsActivity) getActivity()).getGameInfo();
+		
+		((TextView)getView().findViewById(R.id.homeTeamStatText)).setText(((SoccerStatsActivity) getActivity()).getGameInfo().getHomeTeam().gettname());
+		((TextView)getView().findViewById(R.id.awayTeamStatText)).setText(((SoccerStatsActivity) getActivity()).getGameInfo().getAwayTeam().gettname());
 		
 		if(_lookingAtHome){
 			getView().findViewById(R.id.homeTeamStatText).setBackgroundColor(getResources().getColor(R.color.robin_egg_blue));
@@ -48,16 +53,21 @@ public class SoccerBoxscoreFragment extends Fragment{
 	
 	private void addTextViews(){
 		LinearLayout layout = ((LinearLayout) getView().findViewById(R.id.playerListLayout));
+		GameInfo _gameInfo = ((SoccerStatsActivity) getActivity()).getGameInfo();
 		SoccerTeam team = null;
 		if(_lookingAtHome){
-			team = ((SoccerStatsActivity) getActivity()).getGameInfo().getTheHomeTeam();
+			for(Players p: _gameInfo.getHomePlayers()){
+				layout.addView(newTextView(p.getpname()));	
+			}
+			layout.addView(newTextView(_gameInfo.getHomeTeam().getabbv() +  " Stats"));		
 		}
 		else{
-			team = ((SoccerStatsActivity) getActivity()).getGameInfo().getTheAwayTeam();
+			for(Players p: _gameInfo.getAwayPlayers()){
+				layout.addView(newTextView(p.getpname()));	
+			}		
+			layout.addView(newTextView(_gameInfo.getAwayTeam().getabbv() +  " Stats"));
 		}
-		for(int i=0; i<team.numberPlayers(); i++){
-			layout.addView(newTextView(team.getPlayer(i).getName()));	
-		}
+
 	}
 	
 	private void removeAllViews(){
@@ -106,11 +116,17 @@ public class SoccerBoxscoreFragment extends Fragment{
 		public void onClick(View v) {
 			Intent intent = new Intent(getActivity().getApplicationContext(), SoccerIndividualStatActivity.class);
 			if(_lookingAtHome){
-				intent.putExtra(StaticFinalVars.TEAM_INFO, ((SoccerStatsActivity) getActivity()).getGameInfo().getTheHomeTeam());
+				intent.putExtra(StaticFinalVars.TEAM_INFO, ((SoccerStatsActivity) getActivity()).getGameInfo().getHomeTeam());
+				intent.putExtra(StaticFinalVars.PLAYERS_INFO, ((SoccerStatsActivity) getActivity()).getGameInfo().getHomePlayers());
+				intent.putExtra(StaticFinalVars.GAME_ID, ((SoccerStatsActivity) getActivity()).getGameInfo().getgid());
+				intent.putExtra(StaticFinalVars.HOME_OR_AWAY, _lookingAtHome);
 			}
 			else{
-				intent.putExtra(StaticFinalVars.TEAM_INFO, ((SoccerStatsActivity) getActivity()).getGameInfo().getTheAwayTeam());
-			}
+				intent.putExtra(StaticFinalVars.TEAM_INFO, ((SoccerStatsActivity) getActivity()).getGameInfo().getAwayTeam());
+				intent.putExtra(StaticFinalVars.PLAYERS_INFO, ((SoccerStatsActivity) getActivity()).getGameInfo().getAwayPlayers());
+				intent.putExtra(StaticFinalVars.GAME_ID, ((SoccerStatsActivity) getActivity()).getGameInfo().getgid());
+				intent.putExtra(StaticFinalVars.HOME_OR_AWAY, _lookingAtHome);
+						}
 			intent.putExtra(StaticFinalVars.PLAYER_NAME, ((TextView)v).getText().toString());
 			startActivity(intent);
 		}

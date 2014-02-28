@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.seniordesign.ultimatescorecard.data.basketball.BasketballPlayer;
 import com.seniordesign.ultimatescorecard.data.hockey.HockeyPlayer;
+import com.seniordesign.ultimatescorecard.data.soccer.SoccerPlayer;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.*;
 import com.seniordesign.ultimatescorecard.sqlite.football.FootballDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
@@ -72,8 +73,8 @@ public class MainActivity extends Activity{
 		_football_db.onCreate(_football_db.getWritableDatabase());
 		//_football_db.onUpgrade(_football_db.getWritableDatabase(),0,0);
 		
-		_soccer_db.onCreate(_soccer_db.getWritableDatabase());
-		//_soccer_db.onUpgrade(_soccer_db.getWritableDatabase(),0,0);
+		//_soccer_db.onCreate(_soccer_db.getWritableDatabase());
+		_soccer_db.onUpgrade(_soccer_db.getWritableDatabase(),0,0);
 		
 		_hockey_db.onCreate(_hockey_db.getWritableDatabase());
 		//_hockey_db.onUpgrade(_hockey_db.getWritableDatabase(),0,0);
@@ -223,9 +224,95 @@ public class MainActivity extends Activity{
 		long NA23_id = _hockey_db.createPlayers(NA23);
 		long TW25_id = _hockey_db.createPlayers(TW25);
 		long AB35_id = _hockey_db.createPlayers(AB35);
+*/
+		//Test Teams and players
+		Teams spurs = new Teams("San Antonio Spurs", "SAS", "Gregg Popovich", "Soccer");
+		Teams rockets = new Teams("Houston Rockets", "HOU", "Kevin McHale", "Soccer");
+		Teams huskies = new Teams("UConn Huskies", "UCONN", "Kevin Ollie", "Soccer");
 
+		
+		long spurs_id = _soccer_db.createTeams(spurs);
+		long rockets_id = _soccer_db.createTeams(rockets);
+		long huskies_id = _soccer_db.createTeams(huskies);
 
+		
+		SoccerPlayer MG20 = new SoccerPlayer(spurs_id, "Manu Ginobili", 20);
+		SoccerPlayer TD21 = new SoccerPlayer(spurs_id, "Tim Duncan", 21);
+		SoccerPlayer KL2 = new SoccerPlayer(spurs_id, "Kawhi Leonard", 2);
+		SoccerPlayer TP9 = new SoccerPlayer(spurs_id, "Tony Parker", 9);
+		SoccerPlayer TS22 = new SoccerPlayer(spurs_id, "Tiago Splitter", 22);
+		SoccerPlayer MB7 = new SoccerPlayer(spurs_id, "Marco Belinelli", 7);
+		SoccerPlayer MG202 = new SoccerPlayer(spurs_id, "Manu Ginobili2", 20);
+		SoccerPlayer TD212 = new SoccerPlayer(spurs_id, "Tim Duncan2", 21);
+		SoccerPlayer KL22 = new SoccerPlayer(spurs_id, "Kawhi Leonard2", 2);
+		SoccerPlayer TP92 = new SoccerPlayer(spurs_id, "Tony Parker2", 9);
+		SoccerPlayer TS222 = new SoccerPlayer(spurs_id, "Tiago Splitter2", 22);
+		SoccerPlayer MB72 = new SoccerPlayer(spurs_id, "Marco Belinelli2", 7);
+		
+		SoccerPlayer JH13 = new SoccerPlayer(rockets_id, "James Harden", 13);
+		SoccerPlayer DH12 = new SoccerPlayer(rockets_id, "Dwight Howard", 12);
+		SoccerPlayer JL7 = new SoccerPlayer(rockets_id, "Jeremy Lin", 7);
+		SoccerPlayer CP25 = new SoccerPlayer(rockets_id, "Chandler Parsons", 25);
+		SoccerPlayer TJ6 = new SoccerPlayer(rockets_id, "Terrence Jones", 6);
+		SoccerPlayer AB0 = new SoccerPlayer(rockets_id, "Aaron Brooks", 0);
+		
+		SoccerPlayer PN0 = new SoccerPlayer(huskies_id, "Phillip Nolan", 0);
+		SoccerPlayer DD2 = new SoccerPlayer(huskies_id, "Deandre Daniels", 2);
+		SoccerPlayer TS3 = new SoccerPlayer(huskies_id, "Terrence Samuel", 3);
+		SoccerPlayer NG5 = new SoccerPlayer(huskies_id, "Niels Giffey", 5);
+		SoccerPlayer TO10 = new SoccerPlayer(huskies_id, "Tyler Olander", 10);
+		SoccerPlayer RB11 = new SoccerPlayer(huskies_id, "Ryan Boatright", 11);
+		SoccerPlayer KF12 = new SoccerPlayer(huskies_id, "Kentan Facey", 12);
+		SoccerPlayer SN13 = new SoccerPlayer(huskies_id, "Shabazz Napier", 13);
+		SoccerPlayer PL14 = new SoccerPlayer(huskies_id, "Pat Lenehan", 14);
+		SoccerPlayer LK20 = new SoccerPlayer(huskies_id, "Lasan Kromah", 20);
+		SoccerPlayer OC21 = new SoccerPlayer(huskies_id, "Omar Calhoun", 21);
+		SoccerPlayer LT22 = new SoccerPlayer(huskies_id, "Leon Tolksdorf", 22);
+		SoccerPlayer NA23 = new SoccerPlayer(huskies_id, "Nnamdi Amilo", 23);
+		SoccerPlayer TW25 = new SoccerPlayer(huskies_id, "Tor Watts", 25);
+		SoccerPlayer AB35 = new SoccerPlayer(huskies_id, "Amida Brimah", 35);
+
+		
+		long MG20_id = _soccer_db.createPlayers(MG20);
+		long TD21_id = _soccer_db.createPlayers(TD21);
+		long KL2_id = _soccer_db.createPlayers(KL2);
+		long TP9_id = _soccer_db.createPlayers(TP9);
+		long TS22_id = _soccer_db.createPlayers(TS22);
+		long MB7_id = _soccer_db.createPlayers(MB7);
+		
+		long MG20_id2 = _soccer_db.createPlayers(MG202);
+		long TD21_id2 = _soccer_db.createPlayers(TD212);
+		long KL2_id2= _soccer_db.createPlayers(KL22);
+		long TP9_id2 = _soccer_db.createPlayers(TP92);
+		long TS22_id2 = _soccer_db.createPlayers(TS222);
+		long MB7_id2 = _soccer_db.createPlayers(MB72);
+		
+		long JH13_id = _soccer_db.createPlayers(JH13);
+		long DH12_id = _soccer_db.createPlayers(DH12);
+		long JL7_id = _soccer_db.createPlayers(JL7);
+		long CP25_id = _soccer_db.createPlayers(CP25);
+		long TJ6_id = _soccer_db.createPlayers(TJ6);
+		long AB0_id = _soccer_db.createPlayers(AB0);
+		
+		long PN0_id = _soccer_db.createPlayers(PN0);
+		long DD2_id = _soccer_db.createPlayers(DD2);
+		long TS3_id = _soccer_db.createPlayers(TS3);
+		long NG5_id = _soccer_db.createPlayers(NG5);
+		long TO10_id = _soccer_db.createPlayers(TO10);
+		long RB11_id = _soccer_db.createPlayers(RB11);
+		long KF12_id = _soccer_db.createPlayers(KF12);
+		long SN13_id = _soccer_db.createPlayers(SN13);
+		long PL14_id = _soccer_db.createPlayers(PL14);
+		long LK20_id = _soccer_db.createPlayers(LK20);
+		long OC21_id = _soccer_db.createPlayers(OC21);
+		long LT22_id = _soccer_db.createPlayers(LT22);
+		long NA23_id = _soccer_db.createPlayers(NA23);
+		long TW25_id = _soccer_db.createPlayers(TW25);
+		long AB35_id = _soccer_db.createPlayers(AB35);
 	
+
+
+/*	
 		Log.d("GameStats count", "GameStats Count: " + _basketball_db.getAllGameStats().size());
 
 		ArrayList<ShotChartCoords> shots = (ArrayList<ShotChartCoords>) _basketball_db.getAllShots();
@@ -240,6 +327,8 @@ public class MainActivity extends Activity{
 
 		}
 */
+		
+		
 		
 		//close database helper
 		_basketball_db.close();

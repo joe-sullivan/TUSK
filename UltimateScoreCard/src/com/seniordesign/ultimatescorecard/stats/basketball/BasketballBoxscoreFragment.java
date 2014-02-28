@@ -1,7 +1,7 @@
 package com.seniordesign.ultimatescorecard.stats.basketball;
 
 import com.seniordesign.ultimatescorecard.R;
-import com.seniordesign.ultimatescorecard.data.basketball.BasketballGameInfo;
+import com.seniordesign.ultimatescorecard.data.GameInfo;
 import com.seniordesign.ultimatescorecard.data.basketball.BasketballTeam;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
@@ -29,7 +29,7 @@ public class BasketballBoxscoreFragment extends Fragment{
 	@Override
 	public void onResume() {
 		super.onResume();
-		BasketballGameInfo info = ((BasketballStatsActivity) getActivity()).getGameInfo();
+		GameInfo info = ((BasketballStatsActivity) getActivity()).getGameInfo();
 		
 		((TextView)getView().findViewById(R.id.homeTeamStatText)).setText(((BasketballStatsActivity) getActivity()).getGameInfo().getHomeTeam().gettname());
 		((TextView)getView().findViewById(R.id.awayTeamStatText)).setText(((BasketballStatsActivity) getActivity()).getGameInfo().getAwayTeam().gettname());
@@ -52,7 +52,7 @@ public class BasketballBoxscoreFragment extends Fragment{
 	
 	private void addTextViews(){
 		LinearLayout layout = ((LinearLayout) getView().findViewById(R.id.playerListLayout));
-		BasketballGameInfo _gameInfo = ((BasketballStatsActivity) getActivity()).getGameInfo();
+		GameInfo _gameInfo = ((BasketballStatsActivity) getActivity()).getGameInfo();
 		if(_lookingAtHome){
 			for(Players p: _gameInfo.getHomePlayers()){
 				layout.addView(newTextView(p.getpname()));	

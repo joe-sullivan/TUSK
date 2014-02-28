@@ -31,7 +31,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable{
     private static final String KEY_P_ID = "p_id";
     private static final String KEY_T_ID = "t_id";
     private static final String KEY_A_ID = "a_id";
-    private static final String KEY_PERIOD = "period";
+    protected static final String KEY_PERIOD = "period";
     
 
     //GAMES Table - column names
@@ -47,7 +47,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable{
     private static final String KEY_T_NAME = "t_name";
     private static final String KEY_C_NAME = "c_name";
     private static final String KEY_SPORT = "sport";
-    private static final String KEY_ABBV = "abbv";
+    protected static final String KEY_ABBV = "abbv";
     
     //PLAY_BY_PLAY Table - column names
     private static final String KEY_ACTION = "action";

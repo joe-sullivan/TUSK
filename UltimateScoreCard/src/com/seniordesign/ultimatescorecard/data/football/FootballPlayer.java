@@ -2,7 +2,9 @@ package com.seniordesign.ultimatescorecard.data.football;
 
 import java.io.Serializable;
 
-public class FootballPlayer implements Serializable{
+import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
+
+public class FootballPlayer extends Players implements Serializable{
 	private static final long serialVersionUID = 8138078955965364135L;
 	private String _name;
 	private int _completion = 0;

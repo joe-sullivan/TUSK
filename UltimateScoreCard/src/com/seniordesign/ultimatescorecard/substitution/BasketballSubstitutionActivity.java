@@ -1,8 +1,7 @@
 package com.seniordesign.ultimatescorecard.substitution;
 
 import com.seniordesign.ultimatescorecard.R;
-import com.seniordesign.ultimatescorecard.data.basketball.BasketballGameInfo;
-import com.seniordesign.ultimatescorecard.data.basketball.BasketballGameTime;
+import com.seniordesign.ultimatescorecard.data.GameInfo;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
 
 import android.app.Activity;
@@ -15,10 +14,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
-public class SubstitutionActivity extends FragmentActivity{
-	private BasketballGameInfo _gameInfo;
-	private Fragment _active = new ActivePageFragment();
-	private Fragment _bench = new BenchPageFragment();
+public class BasketballSubstitutionActivity extends FragmentActivity{
+	private GameInfo _gameInfo;
+	private Fragment _active = new BasketballActivePageFragment();
+	private Fragment _bench = new BasketballBenchPageFragment();
 	private boolean _homeTeam = true;
 	private boolean _activePage = true;
 	private String[] _swapPlayer = new String[2];
@@ -27,7 +26,7 @@ public class SubstitutionActivity extends FragmentActivity{
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_substitution);
-		_gameInfo = (BasketballGameInfo) getIntent().getSerializableExtra(StaticFinalVars.SUB_INFO);
+		_gameInfo = (GameInfo) getIntent().getSerializableExtra(StaticFinalVars.SUB_INFO);
 		
 		TextView view = (TextView)findViewById(R.id.homeTeamSubText);
 		view.setOnClickListener(setHomeTeam);
@@ -46,11 +45,11 @@ public class SubstitutionActivity extends FragmentActivity{
 			findViewById(R.id.homeTeamSubText).setBackgroundColor(getResources().getColor(R.color.robin_egg_blue));
 			findViewById(R.id.awayTeamSubText).setBackgroundColor(getResources().getColor(R.color.white));
 			if(_activePage){
-				((ActivePageFragment) _active).refresh();
+				((BasketballActivePageFragment) _active).refresh();
 			}
 			else{
 				switchPages();
-				((BenchPageFragment) _bench).refresh();
+				((BasketballBenchPageFragment) _bench).refresh();
 			}
 		}
 	};
@@ -62,11 +61,11 @@ public class SubstitutionActivity extends FragmentActivity{
 			findViewById(R.id.homeTeamSubText).setBackgroundColor(getResources().getColor(R.color.white));
 			findViewById(R.id.awayTeamSubText).setBackgroundColor(getResources().getColor(R.color.robin_egg_blue));
 			if(_activePage){
-				((ActivePageFragment) _active).refresh();
+				((BasketballActivePageFragment) _active).refresh();
 			}
 			else{
 				switchPages();
-				((BenchPageFragment) _bench).refresh();
+				((BasketballBenchPageFragment) _bench).refresh();
 			}
 		}
 	};
@@ -100,7 +99,7 @@ public class SubstitutionActivity extends FragmentActivity{
 		transaction.commit();
 	}
 	
-	public BasketballGameInfo getTeamInfo(){
+	public GameInfo getTeamInfo(){
 		return _gameInfo;
 	}
 	
@@ -118,12 +117,7 @@ public class SubstitutionActivity extends FragmentActivity{
 	}
 	
 	private void confirmSwitch(){
-		if(_homeTeam){
-			_gameInfo.swapPlayer(_swapPlayer[0], _swapPlayer[1],_homeTeam);
-		}
-		else{
-			_gameInfo.swapPlayer(_swapPlayer[0], _swapPlayer[1], _homeTeam);
-		}
+		_gameInfo.swapPlayer(_swapPlayer[0], _swapPlayer[1],_homeTeam);
 	}
 
 	@Override

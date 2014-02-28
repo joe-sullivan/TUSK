@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.content.Context;
 
+import com.seniordesign.ultimatescorecard.data.GameInfo;
 import com.seniordesign.ultimatescorecard.data.GameTime;
 import com.seniordesign.ultimatescorecard.data.basketball.BasketballPlayer;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
@@ -22,7 +23,7 @@ public class HockeyGameTime extends GameTime{
 	private Teams _home, _away;
 	private ArrayList<HockeyPlayer> _homeTeamPlayers, _awayTeamPlayers;
 	private long _home_t_id, _away_t_id;
-	public HockeyGameInfo _gameInfo;
+	public GameInfo _gameInfo;
 	private ArrayList<Players> _homeTeamPlayersPull, _awayTeamPlayersPull;
 	
 	public HockeyGameTime (Teams home, Teams away){
@@ -76,16 +77,16 @@ public class HockeyGameTime extends GameTime{
 		_awayTeam.setTeamAbbr();
 		_homeTeamPlayersPull = (ArrayList<Players>) _hockey_db.getPlayersTeam2(_home_t_id);
 		_awayTeamPlayersPull = (ArrayList<Players>) _hockey_db.getPlayersTeam2(_away_t_id);
-		_gameInfo = new HockeyGameInfo(_home, _away, _homeTeamPlayersPull, _awayTeamPlayersPull, g_id);
+		_gameInfo = new GameInfo(_home, _away, _homeTeamPlayersPull, _awayTeamPlayersPull, g_id);
 
 		return g_id;
 	}
 	
-	public HockeyGameInfo getGameInfo(){
+	public GameInfo getGameInfo(){
 		return _gameInfo;
 	}
 	
-	public void setGameInfo(HockeyGameInfo gameInfo){
+	public void setGameInfo(GameInfo gameInfo){
 		_gameInfo = gameInfo;
 		//_homeTeam.setTeamOrder(_gameInfo.getHomePlayers());
 		//_awayTeam.setTeamOrder(_gameInfo.getAwayPlayers());

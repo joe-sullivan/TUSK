@@ -1,7 +1,7 @@
 package com.seniordesign.ultimatescorecard.stats.hockey;
 
 import com.seniordesign.ultimatescorecard.R;
-import com.seniordesign.ultimatescorecard.data.hockey.HockeyGameInfo;
+import com.seniordesign.ultimatescorecard.data.GameInfo;
 import com.seniordesign.ultimatescorecard.data.hockey.HockeyTeam;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
@@ -29,7 +29,7 @@ public class HockeyBoxscoreFragment extends Fragment{
 	@Override
 	public void onResume() {
 		super.onResume();
-		HockeyGameInfo info = ((HockeyStatsActivity) getActivity()).getGameInfo();
+		GameInfo info = ((HockeyStatsActivity) getActivity()).getGameInfo();
 		
 		((TextView)getView().findViewById(R.id.homeTeamStatText)).setText(((HockeyStatsActivity) getActivity()).getGameInfo().getHomeTeam().gettname());
 		((TextView)getView().findViewById(R.id.awayTeamStatText)).setText(((HockeyStatsActivity) getActivity()).getGameInfo().getAwayTeam().gettname());
@@ -52,7 +52,7 @@ public class HockeyBoxscoreFragment extends Fragment{
 	
 	private void addTextViews(){
 		LinearLayout layout = ((LinearLayout) getView().findViewById(R.id.playerListLayout));
-		HockeyGameInfo _gameInfo = ((HockeyStatsActivity) getActivity()).getGameInfo();
+		GameInfo _gameInfo = ((HockeyStatsActivity) getActivity()).getGameInfo();
 		HockeyTeam team = null;
 		if(_lookingAtHome){
 			for(Players p: _gameInfo.getHomePlayers()){

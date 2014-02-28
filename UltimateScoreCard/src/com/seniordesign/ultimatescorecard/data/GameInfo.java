@@ -1,4 +1,4 @@
-package com.seniordesign.ultimatescorecard.data.soccer;
+package com.seniordesign.ultimatescorecard.data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 
-public class SoccerGameInfo implements Serializable{
+public class GameInfo implements Serializable{
 	
 	/**
 	 * 
@@ -16,7 +16,7 @@ public class SoccerGameInfo implements Serializable{
 	public ArrayList<Players> _homeTeamPlayers, _awayTeamPlayers;
 	public long g_id;
 	
-	public SoccerGameInfo(Teams _homeTeamPull, Teams _awayTeamPull,
+	public GameInfo(Teams _homeTeamPull, Teams _awayTeamPull,
 			ArrayList<Players> _homeTeamPlayersPull,
 			ArrayList<Players> _awayTeamPlayersPull, long g_id) {
 		_homeTeam = _homeTeamPull;

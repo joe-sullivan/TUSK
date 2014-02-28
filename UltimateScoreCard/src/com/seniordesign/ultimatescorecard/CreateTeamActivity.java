@@ -3,10 +3,16 @@ package com.seniordesign.ultimatescorecard;
 import java.util.ArrayList;
 
 import com.seniordesign.ultimatescorecard.data.basketball.BasketballPlayer;
+import com.seniordesign.ultimatescorecard.data.football.FootballPlayer;
+import com.seniordesign.ultimatescorecard.data.hockey.HockeyPlayer;
+import com.seniordesign.ultimatescorecard.data.soccer.SoccerPlayer;
 import com.seniordesign.ultimatescorecard.sqlite.DatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
+import com.seniordesign.ultimatescorecard.sqlite.football.FootballDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
+import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyDatabaseHelper;
+import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerDatabaseHelper;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
 
 import android.app.Activity;
@@ -49,6 +55,15 @@ public class CreateTeamActivity extends Activity{
 		//databases
 		if(_sportType.equals("basketball")){
 			_db = new BasketballDatabaseHelper(this);
+		}
+		else if(_sportType.equals("soccer")){
+			_db = new SoccerDatabaseHelper(this);
+		}
+		else if(_sportType.equals("hockey")){
+			_db = new HockeyDatabaseHelper(this);
+		}
+		else if(_sportType.equals("football")){
+			_db = new FootballDatabaseHelper(this);
 		}
 		/*
 		 * elseif( other database yada yada yada)
@@ -143,6 +158,15 @@ public class CreateTeamActivity extends Activity{
 				if(!editing){
 					if(_sportType.equals("basketball")){
 						((BasketballDatabaseHelper) _db).createPlayers(new BasketballPlayer(t_id, playerName, playerNumber));
+					}
+					else if(_sportType.equals("soccer")){
+						((SoccerDatabaseHelper) _db).createPlayers(new SoccerPlayer(t_id, playerName, playerNumber));
+					}
+					else if(_sportType.equals("hockey")){
+						((HockeyDatabaseHelper) _db).createPlayers(new HockeyPlayer(t_id, playerName, playerNumber));
+					}
+					else if(_sportType.equals("football")){
+						//((FootballDatabaseHelper) _db).createPlayers(new FootballPlayer(t_id, playerName, playerNumber));
 					}
 					//else if(other sports)... databases
 				}

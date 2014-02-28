@@ -827,7 +827,7 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
 	*/
 	
 	// -------------------SHOT_CHART_COORDS table methods ------------------ //
-	
+/*	
 	//create a row of shot chart coordinates
 	public long createShot(ShotChartCoords shot){
 		SQLiteDatabase db = this.getWritableDatabase();
@@ -845,7 +845,7 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
  
         return row;
 	}
-/*	
+
 	public List<ShotChartCoords> getAllShots(){
 	    SQLiteDatabase db = this.getReadableDatabase();
 		List<ShotChartCoords> shots = new ArrayList<ShotChartCoords>();
@@ -993,13 +993,13 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
         
         return shots;
 	}
-*/	
+
 	// Delete a Shot
 	public void deleteShot(long a_id) {
 	    SQLiteDatabase db = this.getWritableDatabase();
 	    db.delete(TABLE_SHOT_CHART_COORDS, KEY_A_ID + " = " + a_id, null);
 	}
-	
+*/	
 /*		
 	// ----------------------- TEAMS table methods ------------------------- //
 

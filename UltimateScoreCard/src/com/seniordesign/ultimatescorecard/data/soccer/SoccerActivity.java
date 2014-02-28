@@ -1,8 +1,13 @@
 package com.seniordesign.ultimatescorecard.data.soccer;
 
+import java.util.ArrayList;
+
 import com.seniordesign.ultimatescorecard.R;
+import com.seniordesign.ultimatescorecard.data.GameInfo;
+import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
+import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerDatabaseHelper;
 import com.seniordesign.ultimatescorecard.stats.soccer.SoccerStatsActivity;
-import com.seniordesign.ultimatescorecard.substitution.SubstitutionActivity;
+import com.seniordesign.ultimatescorecard.substitution.SoccerSubstitutionActivity;
 import com.seniordesign.ultimatescorecard.view.GameClock;
 import com.seniordesign.ultimatescorecard.view.ShotIconAdder;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
@@ -31,6 +36,7 @@ import android.widget.TextView;
 
 public class SoccerActivity extends Activity{
 	public static final int SUBSTITUTION_CODE = 1;
+	private boolean _allowMenu = true;
 	
 	RelativeLayout _homeLayout, _awayLayout;
 	TextView _homeTextView, _awayTextView, _gameClockView, _quarterNumberView;											//all the different items on the screen
@@ -40,15 +46,33 @@ public class SoccerActivity extends Activity{
 	Button _p1Button, _p2Button, _p3Button, _p4Button, _p5Button, _otherButton, _otherButton2;
 	Button _option1Button, _option2Button, _option3Button, _option4Button, _option5Button;
 
+	public SoccerDatabaseHelper _soccer_db;
+	
+	private GameClock _gameClock;															//strings containing name of home and away team
 	private SoccerGameTime _gti;
 	private SoccerGameLog _gameLog = new SoccerGameLog();
-	private GameClock _gameClock;
+	private ArrayList<PlayByPlay> _playbyplay;
 	private ShotIconAdder _iconAdder;
+	private GameInfo _gameInfo;
+	private long g_id;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		_gti = (SoccerGameTime) getIntent().getSerializableExtra(StaticFinalVars.GAME_INFO);
+		
+		//databases
+		_soccer_db = new SoccerDatabaseHelper(getApplicationContext());		
+				
+		_gti = (SoccerGameTime) getIntent().getSerializableExtra(StaticFinalVars.GAME_TIME);
 		setContentView(getLayoutInflater().inflate(R.layout.activity_soccer, null));
+		
+		//databases
+		_gti.setContext(this);
+		g_id = _gti.createTeams();
+		_gameLog.setdb(_soccer_db);
+		_gameLog.setgid(g_id);
+		_gameInfo = _gti.getGameInfo();
+		_playbyplay = new ArrayList<PlayByPlay>();
+				
 		
 		_awayTextView = (TextView)findViewById(R.id.awayTextView);									//change text to denote home and away team
 		_awayTextView.setText(_gti.getAwayAbbr());
@@ -73,7 +97,8 @@ public class SoccerActivity extends Activity{
 		
 		_homeLayout = (RelativeLayout)findViewById(R.id.homeShotIcons);
 		_awayLayout = (RelativeLayout)findViewById(R.id.awayShotIcons);
-		
+		_iconAdder = new ShotIconAdder(_homeLayout, _awayLayout, getApplicationContext(), "hockey");
+
 		_p1Button = (Button)findViewById(R.id.extendButton1);										//our slide out buttons
 		_p2Button = (Button)findViewById(R.id.extendButton2);
 		_p3Button = (Button)findViewById(R.id.extendButton3);
@@ -106,7 +131,7 @@ public class SoccerActivity extends Activity{
 	}
 	
 	private void assistButtonSet(String player){
-		buttonSwap(false);
+		buttonSwap(true);
 		setTextAndListener(_option1Button, null, "Assist?");
 		setTextAndListener(_option2Button, assistListener(player), "Yes");
 		setTextAndListener(_option3Button, noAssistListener(player), "No");
@@ -155,6 +180,7 @@ public class SoccerActivity extends Activity{
 	private OnClickListener shotTakenListener = new OnClickListener(){
 		@Override
 		public void onClick(View view) {
+			disallowMenuAndChangingPossession();
 			shotButtonSet();
 		}
 	};
@@ -162,6 +188,8 @@ public class SoccerActivity extends Activity{
 	private OnClickListener penaltyListener = new OnClickListener(){
 		@Override
 		public void onClick(View view) {
+			disallowMenuAndChangingPossession();
+			stopClock();
 			penaltyCardsButtonSet();
 		}
 	};
@@ -176,7 +204,7 @@ public class SoccerActivity extends Activity{
 				if(_gti.getPossession()){
 					if(_gti.getTheHomeTeam().getRoster().size() >= 11){
 						for(int i=0; i<11; i++){
-							arrayAdapter.add(_gti.getTheHomeTeam().getRoster().get(i).getName());
+							arrayAdapter.add(_gti.getTheHomeTeam().getRoster().get(i).getpname());
 						}
 					}
 					else{
@@ -186,7 +214,7 @@ public class SoccerActivity extends Activity{
 				else{
 					if(_gti.getTheAwayTeam().getRoster().size() >= 11){
 						for(int i=0; i<11; i++){
-							arrayAdapter.add(_gti.getTheAwayTeam().getRoster().get(i).getName());
+							arrayAdapter.add(_gti.getTheAwayTeam().getRoster().get(i).getpname());
 						}
 					}
 					else{
@@ -203,13 +231,14 @@ public class SoccerActivity extends Activity{
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						String player = arrayAdapter.getItem(which);
-						_gti.getTeam().getPlayer(player).shotMissed();
 						if(saved){
-							_gti.getTeam().getGoalie().saved();		
-							_gameLog.shootsAndMisses(player, _gti.getOppoTeam().getGoalie().getName());
+							_gti.getOppoTeam().getGoalie().saved();	
+							_gti.getTeam().getPlayer(player).shotOnGoalMissed();
+							_gameLog.shootsAndMisses(player, _gti.getOppoTeam().getGoalie().getpname(), _gameClockView.getText().toString());
 						}
 						else{
-							_gameLog.shootsAndMisses(player, "");
+							_gti.getTeam().getPlayer(player).shotMissed();
+							_gameLog.shootsAndMisses(player, "", _gameClockView.getText().toString());
 						}
 						_soccerField.setOnTouchListener(courtInteraction(false));
 						disableButtons();
@@ -232,7 +261,7 @@ public class SoccerActivity extends Activity{
 			if(_gti.getPossession()){
 				if(_gti.getTheHomeTeam().getRoster().size() >= 11){
 					for(int i=0; i<11; i++){
-						arrayAdapter.add(_gti.getTheHomeTeam().getRoster().get(i).getName());
+						arrayAdapter.add(_gti.getTheHomeTeam().getRoster().get(i).getpname());
 					}
 				}
 				else{
@@ -242,7 +271,7 @@ public class SoccerActivity extends Activity{
 			else{
 				if(_gti.getTheAwayTeam().getRoster().size() >= 11){
 					for(int i=0; i<11; i++){
-						arrayAdapter.add(_gti.getTheAwayTeam().getRoster().get(i).getName());
+						arrayAdapter.add(_gti.getTheAwayTeam().getRoster().get(i).getpname());
 					}
 				}
 				else{
@@ -272,7 +301,11 @@ public class SoccerActivity extends Activity{
 			@Override
 			public void onClick(View view) {
 				_gti.getTeam().getPlayer(goalScorer).scoreGoal();
-				_gameLog.shootsAndScores(goalScorer, "");
+				_gti.getOppoTeam().getGoalie().goalAllowed();
+				_gti.getTeam().increaseScore(1);
+				updateScore();
+				_gameLog.shootsAndScores(goalScorer, "", _gameClockView.getText().toString());
+				stopClock();
 				_soccerField.setOnTouchListener(courtInteraction(true));
 				disableButtons();
 			}
@@ -292,8 +325,8 @@ public class SoccerActivity extends Activity{
 				if(_gti.getPossession()){
 					if(_gti.getTheHomeTeam().getRoster().size() >= 11){
 						for(int i=0; i<11; i++){
-							if(!_gti.getTheHomeTeam().getRoster().get(i).getName().equals(goalScorer)){
-								arrayAdapter.add(_gti.getTheHomeTeam().getRoster().get(i).getName());
+							if(!_gti.getTheHomeTeam().getRoster().get(i).getpname().equals(goalScorer)){
+								arrayAdapter.add(_gti.getTheHomeTeam().getRoster().get(i).getpname());
 							}
 						}
 					}
@@ -304,8 +337,8 @@ public class SoccerActivity extends Activity{
 				else{
 					if(_gti.getTheAwayTeam().getRoster().size() >= 11){
 						for(int i=0; i<11; i++){
-							if(!_gti.getTheAwayTeam().getRoster().get(i).getName().equals(goalScorer)){
-								arrayAdapter.add(_gti.getTheAwayTeam().getRoster().get(i).getName());
+							if(!_gti.getTheAwayTeam().getRoster().get(i).getpname().equals(goalScorer)){
+								arrayAdapter.add(_gti.getTheAwayTeam().getRoster().get(i).getpname());
 							}
 						}
 					}
@@ -324,8 +357,12 @@ public class SoccerActivity extends Activity{
 					public void onClick(DialogInterface dialog, int which) {
 						String player = arrayAdapter.getItem(which);
 						_gti.getTeam().getPlayer(goalScorer).scoreGoal();
+						_gti.getOppoTeam().getGoalie().goalAllowed();
 						_gti.getTeam().getPlayer(player).assisted();
-						_gameLog.shootsAndScores(goalScorer, player);
+						_gti.getTeam().increaseScore(1);
+						updateScore();
+						_gameLog.shootsAndScores(goalScorer, player, _gameClockView.getText().toString());
+						stopClock();
 						_soccerField.setOnTouchListener(courtInteraction(true));
 						disableButtons();
 					}
@@ -341,14 +378,19 @@ public class SoccerActivity extends Activity{
 			@Override
 			public void onClick(View view) {
 				Builder builder = new Builder(SoccerActivity.this);
-				builder.setTitle("Assist by:");
+				if(red){
+					builder.setTitle("Red Card Earned By:");
+				}
+				else{
+					builder.setTitle("Yellow Card Earned By:");
+				}
 				final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String> (SoccerActivity.this,
 						android.R.layout.select_dialog_singlechoice);
 				
 				if(_gti.getPossession()){
 					if(_gti.getTheHomeTeam().getRoster().size() >= 11){
 						for(int i=0; i<11; i++){
-							arrayAdapter.add(_gti.getTheHomeTeam().getRoster().get(i).getName());
+							arrayAdapter.add(_gti.getTheHomeTeam().getRoster().get(i).getpname());
 						}
 					}
 					else{
@@ -358,7 +400,7 @@ public class SoccerActivity extends Activity{
 				else{
 					if(_gti.getTheAwayTeam().getRoster().size() >= 11){
 						for(int i=0; i<11; i++){
-							arrayAdapter.add(_gti.getTheAwayTeam().getRoster().get(i).getName());
+							arrayAdapter.add(_gti.getTheAwayTeam().getRoster().get(i).getpname());
 						}
 					}
 					else{
@@ -375,12 +417,14 @@ public class SoccerActivity extends Activity{
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						String player = arrayAdapter.getItem(which);
+						_gameLog.penaltyCard(player, red, _gameClockView.getText().toString());
 						if(red){
 							_gti.getTeam().getPlayer(player).penaltyRed();
 						}
 						else{
 							_gti.getTeam().getPlayer(player).penaltyYellow();
 						}
+						mainButtonSet();
 					}
 				});
 				builder.show();						
@@ -390,6 +434,18 @@ public class SoccerActivity extends Activity{
 	}
 
 //---------------------------------------------------------------------------------------------------------------------------
+	
+	private void allowMenuAndChangingPossession(){
+		_awayScoreTextView.setOnClickListener(changePossessionListener(false));
+		_homeScoreTextView.setOnClickListener(changePossessionListener(true));
+		_allowMenu = true;
+	}
+	
+	private void disallowMenuAndChangingPossession(){
+		_awayScoreTextView.setOnClickListener(null);
+		_homeScoreTextView.setOnClickListener(null);
+		_allowMenu = false;
+	}
 	
 	private OnClickListener changePossessionListener(final boolean home){
 		OnClickListener changePossessionListener = new OnClickListener(){
@@ -461,8 +517,7 @@ public class SoccerActivity extends Activity{
 	private void startClock(){
 		_gameClock.start();
 		enableButtons();
-		_awayScoreTextView.setOnClickListener(changePossessionListener(false));
-		_homeScoreTextView.setOnClickListener(changePossessionListener(true));
+		mainButtonSet();
 	}
 	
 	private void stopClock(){
@@ -488,7 +543,7 @@ public class SoccerActivity extends Activity{
 		Builder tipOffAlert = new Builder(this);
 		tipOffAlert.setTitle("Game Time");
 		tipOffAlert.setMessage("Which team won face-off?");
-		tipOffAlert.setPositiveButton("Away", new DialogInterface.OnClickListener(){
+		tipOffAlert.setPositiveButton(_gti.getAwayAbbr(), new DialogInterface.OnClickListener(){
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				_gti.setPossession(false);
@@ -496,7 +551,7 @@ public class SoccerActivity extends Activity{
 				startClock();
 			}
 		});
-		tipOffAlert.setNegativeButton("Home", new DialogInterface.OnClickListener(){
+		tipOffAlert.setNegativeButton(_gti.getHomeAbbr(), new DialogInterface.OnClickListener(){
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				_gti.setPossession(true);
@@ -506,6 +561,12 @@ public class SoccerActivity extends Activity{
 		});
 		tipOffAlert.show();	
 	}
+	
+	private void updateScore(){
+		_homeScoreTextView.setText(_gti.getHomeScoreText());
+		_awayScoreTextView.setText(_gti.getAwayScoreText());
+	}
+	
 	
 //------------------------------------------------------------------------------------------------------
 
@@ -517,10 +578,15 @@ public class SoccerActivity extends Activity{
 	
 	@Override
 	public boolean onMenuOpened(int featureId, Menu menu) {
-		if(_gameClock != null){	
-			stopClock();
+		if(_allowMenu){
+			if(_gameClock != null){	
+				stopClock();
+			}
+			return super.onMenuOpened(featureId, menu);
 		}
-		return super.onMenuOpened(featureId, menu);
+		else{
+			return false;
+		}
 	}
 
 	@Override
@@ -533,16 +599,20 @@ public class SoccerActivity extends Activity{
 		
 		case R.id.boxscore:
 			intent = new Intent(getApplicationContext(), SoccerStatsActivity.class);			
-			intent.putExtra(StaticFinalVars.GAME_INFO, _gti);			
-			intent.putExtra(StaticFinalVars.GAME_LOG, _gameLog);
+			_gameInfo = _gti.getGameInfo();
+
+			intent.putExtra(StaticFinalVars.GAME_INFO, _gameInfo);			
+			intent.putExtra(StaticFinalVars.GAME_LOG, _playbyplay);
 			intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 0);
 			startActivity(intent);		
 			break;
 			
 		case R.id.gameLog:
 			intent = new Intent(getApplicationContext(), SoccerStatsActivity.class);	
-			intent.putExtra(StaticFinalVars.GAME_INFO, _gti);	
-			intent.putExtra(StaticFinalVars.GAME_LOG, _gameLog);
+			ArrayList<PlayByPlay> pbps = (ArrayList<PlayByPlay>) _soccer_db.getPlayByPlayGame(g_id);
+			
+			intent.putExtra(StaticFinalVars.GAME_INFO, _gameInfo);	
+			intent.putExtra(StaticFinalVars.GAME_LOG, pbps);
 			intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 1);
 			startActivity(intent);
 			break;
@@ -568,11 +638,22 @@ public class SoccerActivity extends Activity{
 			break;
 		
 		case R.id.substitution:
-			intent = new Intent(getApplicationContext(), SubstitutionActivity.class);			
-			intent.putExtra(StaticFinalVars.SUB_INFO, _gti);
+			intent = new Intent(getApplicationContext(), SoccerSubstitutionActivity.class);			
+			intent.putExtra(StaticFinalVars.SUB_INFO, _gti.getGameInfo());
 			startActivityForResult(intent, SUBSTITUTION_CODE);	
 			break;
 		}
 		return true;
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if(requestCode == SUBSTITUTION_CODE){
+			if(resultCode == Activity.RESULT_OK){
+				_gameInfo = (GameInfo)data.getSerializableExtra(StaticFinalVars.SUB_INFO);
+				_gti.setGameInfo(_gameInfo);
+			}
+		}
 	}
 }

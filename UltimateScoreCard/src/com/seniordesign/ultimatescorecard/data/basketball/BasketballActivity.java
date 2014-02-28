@@ -6,7 +6,7 @@ import com.seniordesign.ultimatescorecard.R;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
 import com.seniordesign.ultimatescorecard.stats.basketball.BasketballStatsActivity;
-import com.seniordesign.ultimatescorecard.substitution.SubstitutionActivity;
+import com.seniordesign.ultimatescorecard.substitution.BasketballSubstitutionActivity;
 import com.seniordesign.ultimatescorecard.view.DoubleParamOnClickListener;
 import com.seniordesign.ultimatescorecard.view.FlyOutContainer;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
@@ -14,6 +14,7 @@ import com.seniordesign.ultimatescorecard.R.id;
 import com.seniordesign.ultimatescorecard.R.layout;
 import com.seniordesign.ultimatescorecard.R.menu;
 import com.seniordesign.ultimatescorecard.clock.GameClock;
+import com.seniordesign.ultimatescorecard.data.GameInfo;
 import com.seniordesign.ultimatescorecard.view.ShotIconAdder;
 
 import android.os.Bundle;
@@ -63,7 +64,7 @@ public class BasketballActivity extends Activity{
 	private BasketballGameLog _gameLog = new BasketballGameLog();
 	private ArrayList<PlayByPlay> _playbyplay;
 	private ShotIconAdder _iconAdder;
-	private BasketballGameInfo _gameInfo;
+	private GameInfo _gameInfo;
 	private long g_id;
 	
 	//on creation of the page, trying to save all items that will appear on screen into a member variable
@@ -1158,7 +1159,7 @@ public class BasketballActivity extends Activity{
 		
 		case R.id.boxscore:
 			intent = new Intent(getApplicationContext(), BasketballStatsActivity.class);			
-			BasketballGameInfo gameinfo = _gti.getGameInfo();
+			GameInfo gameinfo = _gti.getGameInfo();
 
 			intent.putExtra(StaticFinalVars.GAME_INFO, gameinfo);			
 			intent.putExtra(StaticFinalVars.GAME_LOG, _playbyplay);
@@ -1202,7 +1203,7 @@ public class BasketballActivity extends Activity{
 			break;
 		
 		case R.id.substitution:
-			intent = new Intent(getApplicationContext(), SubstitutionActivity.class);			
+			intent = new Intent(getApplicationContext(), BasketballSubstitutionActivity.class);			
 			intent.putExtra(StaticFinalVars.SUB_INFO, _gti.getGameInfo());
 			startActivityForResult(intent, SUBSTITUTION_CODE);	
 			break;
@@ -1215,7 +1216,7 @@ public class BasketballActivity extends Activity{
 		super.onActivityResult(requestCode, resultCode, data);
 		if(requestCode == SUBSTITUTION_CODE){
 			if(resultCode == Activity.RESULT_OK){
-				_gameInfo = (BasketballGameInfo)data.getSerializableExtra(StaticFinalVars.SUB_INFO);
+				_gameInfo = (GameInfo)data.getSerializableExtra(StaticFinalVars.SUB_INFO);
 				_gti.setGameInfo(_gameInfo);
 			}
 		}

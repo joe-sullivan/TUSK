@@ -147,4 +147,13 @@ public class SoccerGameStats {
     public long getgoalsallowed() {
         return this.goals_allowed;
     }
+    
+    public double getsavepercent(){
+    	if((saves+goals_allowed)>0){
+    		return saves/(saves+goals_allowed);
+    	}
+    	else{
+    		return 0.0;
+    	}
+    }
 }

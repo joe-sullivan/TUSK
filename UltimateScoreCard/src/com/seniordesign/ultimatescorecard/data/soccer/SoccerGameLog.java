@@ -2,38 +2,57 @@ package com.seniordesign.ultimatescorecard.data.soccer;
 
 import java.util.ArrayList;
 import com.seniordesign.ultimatescorecard.data.GameLog;
+import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
+import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerDatabaseHelper;
 
 public class SoccerGameLog extends GameLog{
 	private static final long serialVersionUID = 5936447302962843647L;
-
+	private String _thePlay;
+	
 	public SoccerGameLog(){
 		_gameLog = new ArrayList<String>();
 	}
 	
-	public void shootsAndScores(String scorer, String assist){
+	public void shootsAndScores(String scorer, String assist, String time){
 		if(assist.equals("")){
-			_gameLog.add("Goal by "+scorer+". (Unassisted)");
+			_thePlay = "Goal by "+scorer+". (Unassisted)";
 		}
 		else{
-			_gameLog.add("Goal by "+scorer+". (Assisted by: "+assist+")");
+			_thePlay = "Goal by "+scorer+". (Assisted by: "+assist+")";
 		}
+		recordActivity(time);
 	}
 	
-	public void shootsAndMisses(String shooter, String goalie){
+	public void shootsAndMisses(String shooter, String goalie, String time){
 		if(goalie.equals("")){
-			_gameLog.add("Shot missed by "+shooter+".");
+			_thePlay = "Shot missed by "+shooter+".";
 		}
 		else{
-			_gameLog.add("Shot by "+shooter+", saved by " +goalie+".");
+			_thePlay = "Shot on goal by "+shooter+", saved by " +goalie+".";
 		}
+		recordActivity(time);
 	}
 	
-	public void penaltyCard(String player, boolean red){
+	public void penaltyCard(String player, boolean red, String time){
 		if(red){
-			_gameLog.add("Red Card: "+player);
+			_thePlay = "Red Card: "+player;
 		}
 		else{
-			_gameLog.add("Yellow Card: "+player);
+			_thePlay = "Yellow Card: "+player;
+		}
+		recordActivity(time);
+
+	}
+	
+	public void recordActivity(String time){
+		if(time.equals("Restart Clock")){
+			PlayByPlay pbp = new PlayByPlay(g_id, _thePlay + ".", time, null, 0, 0);
+			((SoccerDatabaseHelper) _db).createPlayByPlay(pbp);
+		}
+		else{
+			_timeStamp = time;
+			PlayByPlay pbp = new PlayByPlay(g_id,"(" + _timeStamp + ")" + _thePlay + ".", time, null, 0, 0);
+			((SoccerDatabaseHelper) _db).createPlayByPlay(pbp);
 		}
 	}
 }

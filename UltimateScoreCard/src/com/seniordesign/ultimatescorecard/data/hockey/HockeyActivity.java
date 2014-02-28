@@ -3,14 +3,14 @@ package com.seniordesign.ultimatescorecard.data.hockey;
 import java.util.ArrayList;
 
 import com.seniordesign.ultimatescorecard.R;
-import com.seniordesign.ultimatescorecard.data.basketball.BasketballGameInfo;
+import com.seniordesign.ultimatescorecard.data.GameInfo;
 import com.seniordesign.ultimatescorecard.data.basketball.BasketballGameLog;
 import com.seniordesign.ultimatescorecard.data.basketball.BasketballGameTime;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
 import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyDatabaseHelper;
 import com.seniordesign.ultimatescorecard.stats.hockey.HockeyStatsActivity;
-import com.seniordesign.ultimatescorecard.substitution.SubstitutionActivity;
+import com.seniordesign.ultimatescorecard.substitution.BasketballSubstitutionActivity;
 import com.seniordesign.ultimatescorecard.view.GameClock;
 import com.seniordesign.ultimatescorecard.view.ShotIconAdder;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
@@ -38,7 +38,7 @@ import android.widget.TextView;
 
 public class HockeyActivity extends Activity{
 	public static final int SUBSTITUTION_CODE = 1;
-	
+	private boolean _allowMenu = true;
 	RelativeLayout _homeLayout, _awayLayout;
 	TextView _homeTextView, _awayTextView, _gameClockView, _quarterNumberView;											//all the different items on the screen
 	TextView _homeScoreTextView, _awayScoreTextView;
@@ -53,7 +53,7 @@ public class HockeyActivity extends Activity{
 	private HockeyGameLog _gameLog = new HockeyGameLog();
 	private ArrayList<PlayByPlay> _playbyplay;
 	private ShotIconAdder _iconAdder;
-	private HockeyGameInfo _gameInfo;
+	private GameInfo _gameInfo;
 	private long g_id;
 	
 	protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +110,7 @@ public class HockeyActivity extends Activity{
 	
 	private void mainButtonSet(){
 		buttonSwap(false);
+		allowMenuAndChangingPossession();
 		setTextAndListener(_option4Button, shotTakenListener, "Shot");
 		setTextAndListener(_option5Button, penaltyListener, "Penalty");
 	}
@@ -153,6 +154,7 @@ public class HockeyActivity extends Activity{
 	private OnClickListener shotTakenListener = new OnClickListener(){
 		@Override
 		public void onClick(View view) {
+			disallowMenuAndChangingPossession();
 			shotButtonSet();
 		}
 	};
@@ -174,6 +176,7 @@ public class HockeyActivity extends Activity{
 	}
 	
 //----------------------------------------------------------------------------------------------------------------------
+	
 	
 	private OnClickListener noGoalListener(final boolean saved){
 		OnClickListener noGoalListener = new OnClickListener(){
@@ -226,6 +229,9 @@ public class HockeyActivity extends Activity{
 	private OnClickListener penaltyListener = new OnClickListener(){
 		@Override
 		public void onClick(View view) {
+			disallowMenuAndChangingPossession();
+			stopClock();
+			
 			Builder builder = new Builder(HockeyActivity.this);
 			builder.setTitle("Penalty Type:");
 			final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String> (HockeyActivity.this, android.R.layout.select_dialog_singlechoice);
@@ -282,6 +288,8 @@ public class HockeyActivity extends Activity{
 					public void onClick(DialogInterface dialog, int which) {
 						String player = arrayAdapter.getItem(which);
 						_gti.getTeam().getPlayer(player).scoreGoal();
+						_gti.getTeam().increaseScore(1);    //add these 2 lines, CTRL-F the word scoreGoal and add these methods (for Soccer too)
+						updateScore();	
 						_gameLog.penaltyShot(goal, player, _gti.getOppoTeam().getGoalie().getpname(),_gameClockView.getText().toString());						
 						_iceHockeyRink.setOnTouchListener(courtInteraction(true));
 						disableButtons();						
@@ -295,7 +303,7 @@ public class HockeyActivity extends Activity{
 	
 	private void awardingPenalty(final String type){
 		Builder builder = new Builder(HockeyActivity.this);
-		builder.setTitle("Goal Scored by:");
+		builder.setTitle("Penalty Committed By:");
 		final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String> (HockeyActivity.this,
 				android.R.layout.select_dialog_singlechoice);
 		
@@ -341,6 +349,7 @@ public class HockeyActivity extends Activity{
 				else{
 					//ejections?
 				}
+
 				dialog.dismiss();
 			}
 		});
@@ -388,7 +397,10 @@ public class HockeyActivity extends Activity{
 			public void onClick(View view) {
 				_gti.getTeam().getPlayer(goalScorer).scoreGoal();
 				_gti.getOppoTeam().getGoalie().goalAllowed();
+				_gti.getTeam().increaseScore(1);		
+				updateScore();
 				_gameLog.shootsAndScores(goalScorer, "", "", _gameClockView.getText().toString());
+				stopClock();
 				_iceHockeyRink.setOnTouchListener(courtInteraction(true));
 				disableButtons();
 			}
@@ -436,7 +448,10 @@ public class HockeyActivity extends Activity{
 							_gti.getTeam().getPlayer(goalScorer).scoreGoal();
 							_gti.getTeam().getPlayer(player).assisted();
 							_gti.getOppoTeam().getGoalie().goalAllowed();
+							_gti.getTeam().increaseScore(1);		
+							updateScore();
 							_gameLog.shootsAndScores(goalScorer, player, "",_gameClockView.getText().toString());
+							stopClock();
 							_iceHockeyRink.setOnTouchListener(courtInteraction(true));
 							disableButtons();
 						}
@@ -481,8 +496,11 @@ public class HockeyActivity extends Activity{
 				_gti.getTeam().getPlayer(goalScorer).scoreGoal();
 				_gti.getTeam().getPlayer(assist1).assisted();
 				_gti.getTeam().getPlayer(player).assisted();
+				_gti.getTeam().increaseScore(1);		
+				updateScore();
 				_gti.getOppoTeam().getGoalie().goalAllowed();
 				_gameLog.shootsAndScores(goalScorer, assist1, player,_gameClockView.getText().toString());
+				stopClock();
 				_iceHockeyRink.setOnTouchListener(courtInteraction(true));
 				disableButtons();
 			}
@@ -491,6 +509,18 @@ public class HockeyActivity extends Activity{
 	}
 	
 //----------------------------------------------------------------------------------------------------
+	
+	private void allowMenuAndChangingPossession(){
+		_awayScoreTextView.setOnClickListener(changePossessionListener(false));
+		_homeScoreTextView.setOnClickListener(changePossessionListener(true));
+		_allowMenu = true;
+	}
+	
+	private void disallowMenuAndChangingPossession(){
+		_awayScoreTextView.setOnClickListener(null);
+		_homeScoreTextView.setOnClickListener(null);
+		_allowMenu = false;
+	}
 	
 	private OnClickListener changePossessionListener(final boolean home){
 		OnClickListener changePossessionListener = new OnClickListener(){
@@ -527,7 +557,9 @@ public class HockeyActivity extends Activity{
 					_iconAdder.setShotLocation((int)event.getX(), (int)event.getY());
 					_iconAdder.setShotHitMiss(_gti.getPossession(), goal);
 					mainButtonSet();
-					enableButtons();
+					if(!goal){
+						enableButtons();
+					}
 					_iceHockeyRink.setOnTouchListener(null);
 				}
 				return false;
@@ -586,7 +618,7 @@ public class HockeyActivity extends Activity{
 		Builder tipOffAlert = new Builder(this);
 		tipOffAlert.setTitle("Game Time");
 		tipOffAlert.setMessage("Which team won face-off?");
-		tipOffAlert.setPositiveButton("Away", new DialogInterface.OnClickListener(){
+		tipOffAlert.setPositiveButton(_gti.getAwayAbbr(), new DialogInterface.OnClickListener(){
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				_gti.setPossession(false);
@@ -594,7 +626,7 @@ public class HockeyActivity extends Activity{
 				startClock();
 			}
 		});
-		tipOffAlert.setNegativeButton("Home", new DialogInterface.OnClickListener(){
+		tipOffAlert.setNegativeButton(_gti.getHomeAbbr(), new DialogInterface.OnClickListener(){
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				_gti.setPossession(true);
@@ -603,6 +635,11 @@ public class HockeyActivity extends Activity{
 			}
 		});
 		tipOffAlert.show();	
+	}
+	
+	private void updateScore(){
+		_homeScoreTextView.setText(_gti.getHomeScoreText());
+		_awayScoreTextView.setText(_gti.getAwayScoreText());
 	}
 	
 //------------------------------------------------------------------------------------------------------
@@ -615,11 +652,15 @@ public class HockeyActivity extends Activity{
 	
 	@Override
 	public boolean onMenuOpened(int featureId, Menu menu) {
-		if(_gameClock != null){	
-			stopClock();
+		if(_allowMenu){
+			if(_gameClock != null){	
+				stopClock();
+			}
+			return super.onMenuOpened(featureId, menu);
 		}
-		return super.onMenuOpened(featureId, menu);
-	}
+		else{
+			return false;
+		}	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -631,7 +672,7 @@ public class HockeyActivity extends Activity{
 		
 		case R.id.boxscore:
 			intent = new Intent(getApplicationContext(), HockeyStatsActivity.class);			
-			HockeyGameInfo gameinfo = _gti.getGameInfo();
+			GameInfo gameinfo = _gti.getGameInfo();
 
 			intent.putExtra(StaticFinalVars.GAME_INFO, gameinfo);			
 			intent.putExtra(StaticFinalVars.GAME_LOG, _playbyplay);
