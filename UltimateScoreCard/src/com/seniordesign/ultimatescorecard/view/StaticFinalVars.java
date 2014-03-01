@@ -25,6 +25,8 @@ public class StaticFinalVars {
 	public static final String GAME_ID = "game_id";
 	public static final String GAME_LOG = "gameLog";
 	public static final String DISPLAY_TYPE = "display";
+	public static final String SHOT_CHART_HOME = "shotChartHome";
+	public static final String SHOT_CHART_AWAY = "shotChartAway";
 	
 	//score keeping interface to substitutions page
 	public static final String SUB_INFO = "subInfo";

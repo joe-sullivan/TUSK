@@ -171,4 +171,12 @@ public class SoccerGameTime extends GameTime {
 			return _homeTeam;
 		}
 	}
+	
+	public long gethometid(){
+		return _home_t_id;
+	}
+	
+	public long getawaytid(){
+		return _away_t_id;
+	}
 }

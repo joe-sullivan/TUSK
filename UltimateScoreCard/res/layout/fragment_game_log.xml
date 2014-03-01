@@ -10,7 +10,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:padding="@dimen/padding"
-        android:text="@string/statistic_title2"
+        android:text="@string/play_by_play_title"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <ScrollView

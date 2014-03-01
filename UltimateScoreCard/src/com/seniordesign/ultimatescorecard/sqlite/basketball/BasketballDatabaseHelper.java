@@ -189,7 +189,8 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
     //SHOT_CHART_COORDS table create statement
     private static final String CREATE_TABLE_SHOT_CHART_COORDS = "CREATE TABLE IF NOT EXISTS " + TABLE_SHOT_CHART_COORDS 
     		+ "(" + KEY_SHOT_ID + " INTEGER PRIMARY KEY," + KEY_G_ID + " INTEGER," 
-    		+ KEY_P_ID + " INTEGER," + KEY_T_ID + " INTEGER," + KEY_X + " INTEGER," + KEY_Y + " INTEGER," 
+    		+ KEY_P_ID + " INTEGER," + KEY_T_ID + " INTEGER,"
+    		+ KEY_X + " INTEGER," + KEY_Y + " INTEGER," 
     		+ KEY_MADE + " VARCHAR(4)" + ")";
     
     public BasketballDatabaseHelper(Context context) {
@@ -349,6 +350,69 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 	    List<Games> games = new ArrayList<Games>();
 	    SQLiteDatabase db = this.getReadableDatabase();
 	    String selectQuery = "SELECT  * FROM " + TABLE_GAMES;
+	 
+	    Log.i(LOG, selectQuery);
+	 
+	    Cursor c = db.rawQuery(selectQuery, null);
+	 
+	    // looping through all rows and adding to list
+	    if (c.moveToFirst()) {
+	        do {
+	        	BasketballGames game = new BasketballGames();
+	    	    game.setgid(c.getLong(c.getColumnIndex(KEY_G_ID)));
+	    	    game.sethomeid((c.getLong(c.getColumnIndex(KEY_HOME_ID))));
+	    	    game.setawayid((c.getLong(c.getColumnIndex(KEY_AWAY_ID))));
+	    	    game.setDate(c.getString(c.getColumnIndex(KEY_DATE)));
+	    	    
+	    	    game.sethomepts((c.getInt(c.getColumnIndex(KEY_HOME_PTS))));
+	    	    game.sethomefgm((c.getInt(c.getColumnIndex(KEY_HOME_FGM))));
+	    	    game.sethomefga(c.getInt(c.getColumnIndex(KEY_HOME_FGA)));
+	    	    game.sethomefgm3(c.getInt(c.getColumnIndex(KEY_HOME_FGM3)));
+	    	    game.sethomefga3(c.getInt(c.getColumnIndex(KEY_HOME_FGA3)));
+	    	    game.sethomeftm(c.getInt(c.getColumnIndex(KEY_HOME_FTM)));
+	    	    game.sethomefta(c.getInt(c.getColumnIndex(KEY_HOME_FTA)));
+	    	    game.sethomeoreb(c.getInt(c.getColumnIndex(KEY_HOME_OREB)));
+	    	    game.sethomedreb(c.getInt(c.getColumnIndex(KEY_HOME_DREB)));
+	    	    game.sethomeast(c.getInt(c.getColumnIndex(KEY_HOME_AST)));
+	    	    game.sethomestl(c.getInt(c.getColumnIndex(KEY_HOME_STL)));
+	    	    game.sethomeblk(c.getInt(c.getColumnIndex(KEY_HOME_BLK)));
+	    	    game.sethometo(c.getInt(c.getColumnIndex(KEY_HOME_TO)));
+	    	    game.sethomepf(c.getInt(c.getColumnIndex(KEY_HOME_PF)));
+	    	    game.sethometech(c.getInt(c.getColumnIndex(KEY_HOME_TECH)));
+	    	    game.sethomeflagrant(c.getInt(c.getColumnIndex(KEY_HOME_FLAGRANT)));
+
+	    	    game.setawaypts((c.getInt(c.getColumnIndex(KEY_AWAY_PTS))));
+	    	    game.setawayfgm((c.getInt(c.getColumnIndex(KEY_AWAY_FGM))));
+	    	    game.setawayfga(c.getInt(c.getColumnIndex(KEY_AWAY_FGA)));
+	    	    game.setawayfgm3(c.getInt(c.getColumnIndex(KEY_AWAY_FGM3)));
+	    	    game.setawayfga3(c.getInt(c.getColumnIndex(KEY_AWAY_FGA3)));
+	    	    game.setawayftm(c.getInt(c.getColumnIndex(KEY_AWAY_FTM)));
+	    	    game.setawayfta(c.getInt(c.getColumnIndex(KEY_AWAY_FTA)));
+	    	    game.setawayoreb(c.getInt(c.getColumnIndex(KEY_AWAY_OREB)));
+	    	    game.setawaydreb(c.getInt(c.getColumnIndex(KEY_AWAY_DREB)));
+	    	    game.setawayast(c.getInt(c.getColumnIndex(KEY_AWAY_AST)));
+	    	    game.setawaystl(c.getInt(c.getColumnIndex(KEY_AWAY_STL)));
+	    	    game.setawayblk(c.getInt(c.getColumnIndex(KEY_AWAY_BLK)));
+	    	    game.setawayto(c.getInt(c.getColumnIndex(KEY_AWAY_TO)));
+	    	    game.setawaypf(c.getInt(c.getColumnIndex(KEY_AWAY_PF)));
+	    	    game.setawaytech(c.getInt(c.getColumnIndex(KEY_AWAY_TECH)));
+	    	    game.setawayflagrant(c.getInt(c.getColumnIndex(KEY_AWAY_FLAGRANT)));
+	    	    
+	            // adding to games list
+	            games.add(game);
+	        } while (c.moveToNext());
+	    }
+	 
+	    return games;
+	}
+	
+	//Get all Games played by a team
+	public List<Games> getAllGamesTeam(long t_id) {
+	    List<Games> games = new ArrayList<Games>();
+	    SQLiteDatabase db = this.getReadableDatabase();
+	    String selectQuery = "SELECT  * FROM " + TABLE_GAMES 
+	    		+ " WHERE " + KEY_HOME_ID + " = " + t_id 
+	    		+ " OR " + KEY_AWAY_ID + " = " + t_id;
 	 
 	    Log.i(LOG, selectQuery);
 	 

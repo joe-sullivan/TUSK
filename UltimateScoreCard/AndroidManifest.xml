@@ -125,5 +125,11 @@
             android:label="@string/boxscore_screen" >
         </activity>
         
+        <activity
+            android:name="com.seniordesign.ultimatescorecard.stats.ViewStatsActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/view_statistics_screen" >
+        </activity>
+        
     </application>
 </manifest>

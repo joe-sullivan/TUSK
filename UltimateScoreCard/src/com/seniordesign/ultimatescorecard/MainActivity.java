@@ -15,6 +15,7 @@ import com.seniordesign.ultimatescorecard.sqlite.helper.ShotChartCoords;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerDatabaseHelper;
+import com.seniordesign.ultimatescorecard.stats.ViewStatsActivity;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
 
 import android.app.Activity;
@@ -41,6 +42,7 @@ public class MainActivity extends Activity{
 
 	public Context context = this;
 	
+	
 
 	//what the program should do when screen is created
 	@Override
@@ -60,6 +62,9 @@ public class MainActivity extends Activity{
 		_soccerButton = (Button) findViewById(R.id.soccerButton);											//referring to the soccer button
 		_soccerButton.setOnClickListener(soccerButtonListener);												//setting a click listener for the button
 	
+		_viewStatsButton = (Button) findViewById(R.id.viewStatisticButton);
+		_viewStatsButton.setOnClickListener(viewStatsListener);
+		
 		//databases
 		_basketball_db = new BasketballDatabaseHelper(getApplicationContext());
 		_football_db = new FootballDatabaseHelper(getApplicationContext());
@@ -67,17 +72,17 @@ public class MainActivity extends Activity{
 		_hockey_db = new HockeyDatabaseHelper(getApplicationContext());
 
 		//.onUpgrade will reset databases (i.e. erase all data stored in them)
-		_basketball_db.onCreate(_basketball_db.getWritableDatabase());
-		//_basketball_db.onUpgrade(_basketball_db.getWritableDatabase(),0,0);
+		//_basketball_db.onCreate(_basketball_db.getWritableDatabase());
+		_basketball_db.onUpgrade(_basketball_db.getWritableDatabase(),0,0);
 		
-		_football_db.onCreate(_football_db.getWritableDatabase());
-		//_football_db.onUpgrade(_football_db.getWritableDatabase(),0,0);
+		//_football_db.onCreate(_football_db.getWritableDatabase());
+		_football_db.onUpgrade(_football_db.getWritableDatabase(),0,0);
 		
 		//_soccer_db.onCreate(_soccer_db.getWritableDatabase());
 		_soccer_db.onUpgrade(_soccer_db.getWritableDatabase(),0,0);
 		
-		_hockey_db.onCreate(_hockey_db.getWritableDatabase());
-		//_hockey_db.onUpgrade(_hockey_db.getWritableDatabase(),0,0);
+		//_hockey_db.onCreate(_hockey_db.getWritableDatabase());
+		_hockey_db.onUpgrade(_hockey_db.getWritableDatabase(),0,0);
 
 /*
 		//Test Teams and players
@@ -406,6 +411,14 @@ public class MainActivity extends Activity{
 			return super.onKeyDown(keyCode, event);
 		}
 	}
+	
+	public OnClickListener viewStatsListener = new OnClickListener(){
+			@Override
+			public void onClick(View view) {
+				Intent intent = new Intent(getApplicationContext(), ViewStatsActivity.class);
+				startActivity(intent);																
+			}
+		};
 	
 	@Override
 	public void onBackPressed() {

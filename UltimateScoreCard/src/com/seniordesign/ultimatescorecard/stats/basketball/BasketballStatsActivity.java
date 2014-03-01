@@ -7,6 +7,7 @@ import com.seniordesign.ultimatescorecard.data.GameInfo;
 import com.seniordesign.ultimatescorecard.data.basketball.BasketballGameLog;
 import com.seniordesign.ultimatescorecard.data.basketball.BasketballGameTime;
 import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
+import com.seniordesign.ultimatescorecard.sqlite.helper.ShotChartCoords;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
 
@@ -20,6 +21,7 @@ public class BasketballStatsActivity extends FragmentActivity{
 	private PagerAdapter _pagerAdapter;
 	private GameInfo _gameInfo;
 	private ArrayList<PlayByPlay> _gameLog;
+	private ArrayList<ShotChartCoords> _homeShots, _awayShots;
 
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +30,9 @@ public class BasketballStatsActivity extends FragmentActivity{
 
         _gameInfo = (GameInfo) getIntent().getSerializableExtra(StaticFinalVars.GAME_INFO);
         _gameLog = (ArrayList<PlayByPlay>) getIntent().getSerializableExtra(StaticFinalVars.GAME_LOG);
-       
+        _homeShots = (ArrayList<ShotChartCoords>) getIntent().getSerializableExtra(StaticFinalVars.SHOT_CHART_HOME);       
+        _awayShots = (ArrayList<ShotChartCoords>) getIntent().getSerializableExtra(StaticFinalVars.SHOT_CHART_AWAY);       
+
         int value = getIntent().getIntExtra(StaticFinalVars.DISPLAY_TYPE, 0);
         
         _pager = (ViewPager) findViewById(R.id.statsPager);
@@ -43,6 +47,18 @@ public class BasketballStatsActivity extends FragmentActivity{
     
     public ArrayList<PlayByPlay> getGameLog(){
     	return _gameLog;
+    }
+    
+    public ArrayList<ShotChartCoords> getHomeShotChart(){
+    	return _homeShots;
+    }
+    
+    public ArrayList<ShotChartCoords> getAwayShotChart(){
+    	return _awayShots;
+    }
+    
+    public ViewPager getPager(){
+    	return _pager;
     }
 }
 

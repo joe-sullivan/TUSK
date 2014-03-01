@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.seniordesign.ultimatescorecard.R;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
+import com.seniordesign.ultimatescorecard.sqlite.helper.ShotChartCoords;
 import com.seniordesign.ultimatescorecard.stats.basketball.BasketballStatsActivity;
 import com.seniordesign.ultimatescorecard.substitution.BasketballSubstitutionActivity;
 import com.seniordesign.ultimatescorecard.view.DoubleParamOnClickListener;
@@ -66,6 +67,7 @@ public class BasketballActivity extends Activity{
 	private ShotIconAdder _iconAdder;
 	private GameInfo _gameInfo;
 	private long g_id;
+	private ArrayList<ShotChartCoords> _homeShots, _awayShots;
 	
 	//on creation of the page, trying to save all items that will appear on screen into a member variable
 	@Override
@@ -1161,9 +1163,14 @@ public class BasketballActivity extends Activity{
 			intent = new Intent(getApplicationContext(), BasketballStatsActivity.class);			
 			_gameInfo = _gti.getGameInfo();
 			_playbyplay = (ArrayList<PlayByPlay>) _basketball_db.getPlayByPlayGame(g_id);
-			intent.putExtra(StaticFinalVars.GAME_INFO, _gameInfo);			
+			_homeShots = (ArrayList<ShotChartCoords>) _basketball_db.getAllTeamShotsGame(_gti.gethometid(), g_id);
+			_awayShots = (ArrayList<ShotChartCoords>) _basketball_db.getAllTeamShotsGame(_gti.getawaytid(), g_id);
+			
+			intent.putExtra(StaticFinalVars.GAME_INFO, _gameInfo);	
 			intent.putExtra(StaticFinalVars.GAME_LOG, _playbyplay);
-			intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 0);
+			intent.putExtra(StaticFinalVars.SHOT_CHART_HOME, _homeShots);
+			intent.putExtra(StaticFinalVars.SHOT_CHART_AWAY, _awayShots);
+			intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 1);
 			startActivity(intent);		
 			break;
 			
@@ -1171,8 +1178,12 @@ public class BasketballActivity extends Activity{
 			intent = new Intent(getApplicationContext(), BasketballStatsActivity.class);	
 			_gameInfo = _gti.getGameInfo();
 			_playbyplay = (ArrayList<PlayByPlay>) _basketball_db.getPlayByPlayGame(g_id);
+			_homeShots = (ArrayList<ShotChartCoords>) _basketball_db.getAllTeamShotsGame(_gti.gethometid(), g_id);
+			_awayShots = (ArrayList<ShotChartCoords>) _basketball_db.getAllTeamShotsGame(_gti.getawaytid(), g_id);
 			intent.putExtra(StaticFinalVars.GAME_INFO, _gameInfo);	
 			intent.putExtra(StaticFinalVars.GAME_LOG, _playbyplay);
+			intent.putExtra(StaticFinalVars.SHOT_CHART_HOME, _homeShots);
+			intent.putExtra(StaticFinalVars.SHOT_CHART_AWAY, _awayShots);
 			intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 1);
 			startActivity(intent);
 			break;

@@ -310,6 +310,33 @@ public class FootballDatabaseHelper extends DatabaseHelper{
 	 
 	    return game;
 	}
+	// Get all games played by a team
+	public List<Games> getAllGamesTeam(long t_id) {
+	    List<Games> games = new ArrayList<Games>();
+	    SQLiteDatabase db = this.getReadableDatabase();
+	    String selectQuery = "SELECT  * FROM " + TABLE_GAMES 
+	    		+ " WHERE " + KEY_HOME_ID + " = " + t_id 
+	    		+ " OR " + KEY_AWAY_ID + " = " + t_id;
+	    Log.i(LOG, selectQuery);
+		 
+	    Cursor c = db.rawQuery(selectQuery, null);
+	 
+	    // looping through all rows and adding to list
+	    if (c.moveToFirst()) {
+	        do {
+	        	Games game = new Games();
+	    	    game.setgid(c.getLong(c.getColumnIndex(KEY_G_ID)));
+	    	    game.sethomeid((c.getLong(c.getColumnIndex(KEY_HOME_ID))));
+	    	    game.setawayid((c.getLong(c.getColumnIndex(KEY_AWAY_ID))));
+	    	    game.setDate(c.getString(c.getColumnIndex(KEY_DATE)));
+	            // adding to games list
+	            games.add(game);
+	        } while (c.moveToNext());
+	    }
+	 
+	    return games;
+	}
+	
 	
 	//Get all Games
 	public List<Games> getAllGames() {

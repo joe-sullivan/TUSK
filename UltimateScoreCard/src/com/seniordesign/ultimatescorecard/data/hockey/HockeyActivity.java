@@ -8,6 +8,7 @@ import com.seniordesign.ultimatescorecard.data.basketball.BasketballGameLog;
 import com.seniordesign.ultimatescorecard.data.basketball.BasketballGameTime;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
+import com.seniordesign.ultimatescorecard.sqlite.helper.ShotChartCoords;
 import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyDatabaseHelper;
 import com.seniordesign.ultimatescorecard.stats.hockey.HockeyStatsActivity;
 import com.seniordesign.ultimatescorecard.substitution.BasketballSubstitutionActivity;
@@ -55,7 +56,8 @@ public class HockeyActivity extends Activity{
 	private ShotIconAdder _iconAdder;
 	private GameInfo _gameInfo;
 	private long g_id;
-	
+	private ArrayList<ShotChartCoords> _homeShots, _awayShots;
+
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
@@ -196,7 +198,7 @@ public class HockeyActivity extends Activity{
 					for(HockeyPlayer hp : _gti.getTheAwayTeam().getRoster()){
 						arrayAdapter.add(hp.getpname());
 					}
-				}			
+				}		
 				builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
@@ -216,6 +218,7 @@ public class HockeyActivity extends Activity{
 							_gti.getTeam().getPlayer(player).shotMissed();
 							_gameLog.shootsAndMisses(player, "",_gameClockView.getText().toString());
 						}
+						_iconAdder.setPlayer(player);
 						_iceHockeyRink.setOnTouchListener(courtInteraction(false));
 						disableButtons();
 					}
@@ -402,6 +405,7 @@ public class HockeyActivity extends Activity{
 				_gti.getTeam().increaseScore(1);		
 				updateScore();
 				_gameLog.shootsAndScores(goalScorer, "", "", _gameClockView.getText().toString());
+				_iconAdder.setPlayer(goalScorer);
 				_iceHockeyRink.setOnTouchListener(courtInteraction(true));
 				disableButtons();
 			}
@@ -452,6 +456,7 @@ public class HockeyActivity extends Activity{
 							_gti.getTeam().increaseScore(1);		
 							updateScore();
 							_gameLog.shootsAndScores(goalScorer, player, "",_gameClockView.getText().toString());
+							_iconAdder.setPlayer(goalScorer);
 							_iceHockeyRink.setOnTouchListener(courtInteraction(true));
 							disableButtons();
 						}
@@ -500,6 +505,7 @@ public class HockeyActivity extends Activity{
 				updateScore();
 				_gti.getOppoTeam().getGoalie().goalAllowed();
 				_gameLog.shootsAndScores(goalScorer, assist1, player,_gameClockView.getText().toString());
+				_iconAdder.setPlayer(goalScorer);
 				_iceHockeyRink.setOnTouchListener(courtInteraction(true));
 				disableButtons();
 			}
@@ -554,7 +560,8 @@ public class HockeyActivity extends Activity{
 			public boolean onTouch(View v, MotionEvent event) {
 				if(event.getAction() == MotionEvent.ACTION_DOWN){
 					_iconAdder.setShotLocation((int)event.getX(), (int)event.getY());
-					_iconAdder.setShotHitMiss(_gti.getPossession(), goal);
+					_iconAdder.setShotHitMiss(_gti.getPossession(),goal);
+					_iconAdder.createShot(null, g_id, _gti.gethometid(), _gti.getawaytid());
 					mainButtonSet();
 					if(!goal){
 						enableButtons();
@@ -684,9 +691,12 @@ public class HockeyActivity extends Activity{
 			intent = new Intent(getApplicationContext(), HockeyStatsActivity.class);			
 			_gameInfo = _gti.getGameInfo();
 			_playbyplay = (ArrayList<PlayByPlay>) _hockey_db.getPlayByPlayGame(g_id);
-			intent.putExtra(StaticFinalVars.GAME_INFO, _gameInfo);			
+			_homeShots = (ArrayList<ShotChartCoords>) _hockey_db.getAllTeamShotsGame(_gti.gethometid(), g_id);
+			_awayShots = (ArrayList<ShotChartCoords>) _hockey_db.getAllTeamShotsGame(_gti.getawaytid(), g_id);
+			intent.putExtra(StaticFinalVars.GAME_INFO, _gameInfo);	
 			intent.putExtra(StaticFinalVars.GAME_LOG, _playbyplay);
-			intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 0);
+			intent.putExtra(StaticFinalVars.SHOT_CHART_HOME, _homeShots);
+			intent.putExtra(StaticFinalVars.SHOT_CHART_AWAY, _awayShots);
 			startActivity(intent);		
 			break;
 			
@@ -694,9 +704,12 @@ public class HockeyActivity extends Activity{
 			intent = new Intent(getApplicationContext(), HockeyStatsActivity.class);
 			_gameInfo = _gti.getGameInfo();
 			_playbyplay = (ArrayList<PlayByPlay>) _hockey_db.getPlayByPlayGame(g_id);
+			_homeShots = (ArrayList<ShotChartCoords>) _hockey_db.getAllTeamShotsGame(_gti.gethometid(), g_id);
+			_awayShots = (ArrayList<ShotChartCoords>) _hockey_db.getAllTeamShotsGame(_gti.getawaytid(), g_id);
 			intent.putExtra(StaticFinalVars.GAME_INFO, _gameInfo);	
 			intent.putExtra(StaticFinalVars.GAME_LOG, _playbyplay);
-			intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 1);
+			intent.putExtra(StaticFinalVars.SHOT_CHART_HOME, _homeShots);
+			intent.putExtra(StaticFinalVars.SHOT_CHART_AWAY, _awayShots);
 			startActivity(intent);
 			break;
 		

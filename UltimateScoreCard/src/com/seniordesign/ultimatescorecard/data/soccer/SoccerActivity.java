@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 import com.seniordesign.ultimatescorecard.R;
 import com.seniordesign.ultimatescorecard.data.GameInfo;
+import com.seniordesign.ultimatescorecard.data.hockey.HockeyPlayer;
 import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
+import com.seniordesign.ultimatescorecard.sqlite.helper.ShotChartCoords;
 import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerDatabaseHelper;
 import com.seniordesign.ultimatescorecard.stats.soccer.SoccerStatsActivity;
 import com.seniordesign.ultimatescorecard.substitution.SoccerSubstitutionActivity;
@@ -55,7 +57,8 @@ public class SoccerActivity extends Activity{
 	private ShotIconAdder _iconAdder;
 	private GameInfo _gameInfo;
 	private long g_id;
-	
+	private ArrayList<ShotChartCoords> _homeShots, _awayShots;
+
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
@@ -97,7 +100,7 @@ public class SoccerActivity extends Activity{
 		
 		_homeLayout = (RelativeLayout)findViewById(R.id.homeShotIcons);
 		_awayLayout = (RelativeLayout)findViewById(R.id.awayShotIcons);
-		_iconAdder = new ShotIconAdder(_homeLayout, _awayLayout, getApplicationContext(), "hockey");
+		_iconAdder = new ShotIconAdder(_homeLayout, _awayLayout, getApplicationContext(), "soccer");
 
 		_p1Button = (Button)findViewById(R.id.extendButton1);										//our slide out buttons
 		_p2Button = (Button)findViewById(R.id.extendButton2);
@@ -241,6 +244,7 @@ public class SoccerActivity extends Activity{
 							_gti.getTeam().getPlayer(player).shotMissed();
 							_gameLog.shootsAndMisses(player, "", _gameClockView.getText().toString());
 						}
+						_iconAdder.setPlayer(player);
 						_soccerField.setOnTouchListener(courtInteraction(false));
 						disableButtons();
 					}
@@ -262,8 +266,8 @@ public class SoccerActivity extends Activity{
 			
 			if(_gti.getPossession()){
 				if(_gti.getTheHomeTeam().getRoster().size() >= 11){
-					for(int i=0; i<11; i++){
-						arrayAdapter.add(_gti.getTheHomeTeam().getRoster().get(i).getpname());
+					for(SoccerPlayer hp : _gti.getTheHomeTeam().getRoster()){
+						arrayAdapter.add(hp.getpname());
 					}
 				}
 				else{
@@ -272,8 +276,8 @@ public class SoccerActivity extends Activity{
 			}
 			else{
 				if(_gti.getTheAwayTeam().getRoster().size() >= 11){
-					for(int i=0; i<11; i++){
-						arrayAdapter.add(_gti.getTheAwayTeam().getRoster().get(i).getpname());
+					for(SoccerPlayer hp : _gti.getTheAwayTeam().getRoster()){
+						arrayAdapter.add(hp.getpname());
 					}
 				}
 				else{
@@ -307,6 +311,7 @@ public class SoccerActivity extends Activity{
 				_gti.getTeam().increaseScore(1);
 				updateScore();
 				_gameLog.shootsAndScores(goalScorer, "", _gameClockView.getText().toString());
+				_iconAdder.setPlayer(goalScorer);
 				_soccerField.setOnTouchListener(courtInteraction(true));
 				disableButtons();
 			}
@@ -363,6 +368,7 @@ public class SoccerActivity extends Activity{
 						_gti.getTeam().increaseScore(1);
 						updateScore();
 						_gameLog.shootsAndScores(goalScorer, player, _gameClockView.getText().toString());
+						_iconAdder.setPlayer(goalScorer);
 						_soccerField.setOnTouchListener(courtInteraction(true));
 						disableButtons();
 					}
@@ -483,6 +489,7 @@ public class SoccerActivity extends Activity{
 				if(event.getAction() == MotionEvent.ACTION_DOWN){
 					_iconAdder.setShotLocation((int)event.getX(), (int)event.getY());
 					_iconAdder.setShotHitMiss(_gti.getPossession(), goal);
+					_iconAdder.createShot(null, g_id, _gti.gethometid(), _gti.getawaytid());
 					mainButtonSet();
 					if(!goal){
 						enableButtons();
@@ -616,19 +623,25 @@ public class SoccerActivity extends Activity{
 			intent = new Intent(getApplicationContext(), SoccerStatsActivity.class);			
 			_gameInfo = _gti.getGameInfo();
 			_playbyplay = (ArrayList<PlayByPlay>) _soccer_db.getPlayByPlayGame(g_id);
-			intent.putExtra(StaticFinalVars.GAME_INFO, _gameInfo);			
+			_homeShots = (ArrayList<ShotChartCoords>) _soccer_db.getAllTeamShotsGame(_gti.gethometid(), g_id);
+			_awayShots = (ArrayList<ShotChartCoords>) _soccer_db.getAllTeamShotsGame(_gti.getawaytid(), g_id);
+			intent.putExtra(StaticFinalVars.GAME_INFO, _gameInfo);	
 			intent.putExtra(StaticFinalVars.GAME_LOG, _playbyplay);
-			intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 0);
+			intent.putExtra(StaticFinalVars.SHOT_CHART_HOME, _homeShots);
+			intent.putExtra(StaticFinalVars.SHOT_CHART_AWAY, _awayShots);
 			startActivity(intent);		
 			break;
 			
 		case R.id.gameLog:
 			intent = new Intent(getApplicationContext(), SoccerStatsActivity.class);	
 			_gameInfo = _gti.getGameInfo();
-			_playbyplay = (ArrayList<PlayByPlay>) _soccer_db.getPlayByPlayGame(g_id);			
+			_playbyplay = (ArrayList<PlayByPlay>) _soccer_db.getPlayByPlayGame(g_id);
+			_homeShots = (ArrayList<ShotChartCoords>) _soccer_db.getAllTeamShotsGame(_gti.gethometid(), g_id);
+			_awayShots = (ArrayList<ShotChartCoords>) _soccer_db.getAllTeamShotsGame(_gti.getawaytid(), g_id);
 			intent.putExtra(StaticFinalVars.GAME_INFO, _gameInfo);	
 			intent.putExtra(StaticFinalVars.GAME_LOG, _playbyplay);
-			intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 1);
+			intent.putExtra(StaticFinalVars.SHOT_CHART_HOME, _homeShots);
+			intent.putExtra(StaticFinalVars.SHOT_CHART_AWAY, _awayShots);
 			startActivity(intent);
 			break;
 		

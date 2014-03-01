@@ -11,6 +11,7 @@ import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerDatabaseHelper;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
@@ -67,30 +68,47 @@ public class ShotIconAdder {
 		}
 	}
 	
-	public void createShot(String pname, long g_id, long home_id, long away_id){
+	public void setPlayer(String pname){
 		_pname = pname;
-		long p_id = -1;
+	}
+	
+	public void createShot(String pname, long g_id, long home_id, long away_id){
+		if(pname!=null){
+			_pname = pname;
+		}
+		Players player = null;
 		ArrayList<Players> players = (ArrayList<Players>) _db.getPlayersTeam2(home_id);
 		for(Players p: players){
 			if(_pname.equals(p.getpname())){
-				p_id = p.getpid();
+				player = p;
+				Log.i("Player", "Player team: " + player.gettid());
+				break;
 			}
 		}
-		if(p_id==-1){
+		if(player == null){
 			players = (ArrayList<Players>) _db.getPlayersTeam2(away_id);
 			for(Players p: players){
 				if(_pname.equals(p.getpname())){
-					p_id = p.getpid();
+					player = p;
+					Log.i("Player", "Player team: " + player.gettid());
+
+					break;
 				}
 			}
 		}
 
 		if(_hitMiss){
-			_db.createShot(new ShotChartCoords(g_id, p_id, _shotLocation[0], _shotLocation[1], "make"));
+			_db.createShot(new ShotChartCoords(g_id, player.getpid(), player.gettid(), _shotLocation[0], _shotLocation[1], "make"));
+
 		}
 		else{
-			_db.createShot(new ShotChartCoords(g_id, p_id, _shotLocation[0], _shotLocation[1], "miss"));
+			_db.createShot(new ShotChartCoords(g_id, player.getpid(), player.gettid(), _shotLocation[0], _shotLocation[1], "miss"));
 
+		}
+		ArrayList<ShotChartCoords> shots = (ArrayList<ShotChartCoords>) _db.getAllShots();
+
+		for(ShotChartCoords shot: shots){
+			Log.i("shot", "Shot team: " + shot.gettid());
 		}
 	}
 }

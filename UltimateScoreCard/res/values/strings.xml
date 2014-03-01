@@ -67,8 +67,14 @@
     <string name="stats_away_team_name">Away Team</string>
     <string name="stats_player_name">Player Name: 0 pts, 0 reb, 0 ast</string>
     <string name="play_by_play_view">See Play-by-Play</string>
-    
-    <string name="statistic_title2">Play-By-Play</string>
+    <string name="play_by_play_title">Play-By-Play</string>
+    <string name="shot_chart_title">Shot Chart</string>
+    <string name="choose_sport">Choose Sport</string>      
+    <string name="choose_team">Choose Team</string>
+    <string name="choose_game">Choose Game</string>
+    <string name="search_button">Search</string>
+    <string name="space">" "</string>
+    <string name="view_statistics_screen">View Statistics</string>
     
     <!-- Substituion screen texts -->
     <string name="substitution_title">Substitution</string>

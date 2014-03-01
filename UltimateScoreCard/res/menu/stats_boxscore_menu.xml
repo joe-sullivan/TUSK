@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    	
+	<item android:id="@+id/play_by_play"
+	    android:title="@string/play_by_play_title"/>
+	
+	<item android:id="@+id/shot_chart"
+	    android:title="@string/shot_chart_title"/>
+</menu>

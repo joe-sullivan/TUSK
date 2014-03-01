@@ -4,7 +4,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 public class HockeyStatsPageAdapter extends FragmentStatePagerAdapter {
-	private int _numberPages = 2;
+	private int _numberPages = 3;
 	
 	public HockeyStatsPageAdapter(FragmentManager fm) {
 		super(fm);
@@ -15,8 +15,11 @@ public class HockeyStatsPageAdapter extends FragmentStatePagerAdapter {
     	if(position == 0){
     		return new HockeyBoxscoreFragment();
     	}
-    	else{
+    	else if(position ==1){
     		return new HockeyPlayListFragment();
+    	}
+    	else{
+    		return new HockeyShotChartFragment();
     	}
     }
 

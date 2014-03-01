@@ -162,7 +162,8 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
     //SHOT_CHART_COORDS table create statement
     private static final String CREATE_TABLE_SHOT_CHART_COORDS = "CREATE TABLE IF NOT EXISTS " + TABLE_SHOT_CHART_COORDS 
     		+ "(" + KEY_SHOT_ID + " INTEGER PRIMARY KEY," + KEY_G_ID + " INTEGER," 
-    		+ KEY_P_ID + " INTEGER," + KEY_X + " INTEGER," + KEY_Y + " INTEGER," 
+    		+ KEY_P_ID + " INTEGER," + KEY_T_ID + " INTEGER,"
+    		+ KEY_X + " INTEGER," + KEY_Y + " INTEGER," 
     		+ KEY_MADE + " VARCHAR(4)" + ")";
     
     public SoccerDatabaseHelper(Context context) {
@@ -298,6 +299,58 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 	    return game;
 	}
 	
+	// Get all games played by a team
+			public List<Games> getAllGamesTeam(long t_id) {
+			    List<Games> games = new ArrayList<Games>();
+			    SQLiteDatabase db = this.getReadableDatabase();
+			    String selectQuery = "SELECT  * FROM " + TABLE_GAMES 
+			    		+ " WHERE " + KEY_HOME_ID + " = " + t_id 
+			    		+ " OR " + KEY_AWAY_ID + " = " + t_id;
+			    Log.i(LOG, selectQuery);
+				 
+			    Cursor c = db.rawQuery(selectQuery, null);
+			 
+			    // looping through all rows and adding to list
+			    if (c.moveToFirst()) {
+			        do {
+			        	SoccerGames game = new SoccerGames();
+			    	    game.setgid(c.getLong(c.getColumnIndex(KEY_G_ID)));
+			    	    game.sethomeid((c.getLong(c.getColumnIndex(KEY_HOME_ID))));
+			    	    game.setawayid((c.getLong(c.getColumnIndex(KEY_AWAY_ID))));
+			    	    game.setDate(c.getString(c.getColumnIndex(KEY_DATE)));
+			            
+			    	    game.sethomeshots((c.getInt(c.getColumnIndex(KEY_HOME_SHOTS))));
+			    	    game.sethomesog((c.getInt(c.getColumnIndex(KEY_HOME_SOG))));
+			    	    game.sethomegoals(c.getInt(c.getColumnIndex(KEY_HOME_GOALS)));
+			    	    game.sethomeast((c.getInt(c.getColumnIndex(KEY_HOME_AST))));
+			    	    game.sethomefouls((c.getInt(c.getColumnIndex(KEY_HOME_FOULS))));
+			    	    game.sethomepka(c.getInt(c.getColumnIndex(KEY_HOME_PKA)));
+			    	    game.sethomepkg((c.getInt(c.getColumnIndex(KEY_HOME_PKG))));
+			    	    game.sethomeycard(c.getInt(c.getColumnIndex(KEY_HOME_YCARD)));
+			    	    game.sethomercard((c.getInt(c.getColumnIndex(KEY_HOME_RCARD))));
+			    	    game.sethomesaves((c.getInt(c.getColumnIndex(KEY_HOME_SAVES))));
+			    	    game.sethomegoalsallowed((c.getInt(c.getColumnIndex(KEY_HOME_GOALS_ALLOWED))));
+
+			    	    game.setawayshots((c.getInt(c.getColumnIndex(KEY_AWAY_SHOTS))));
+			    	    game.setawaysog((c.getInt(c.getColumnIndex(KEY_AWAY_SOG))));
+			    	    game.setawaygoals(c.getInt(c.getColumnIndex(KEY_AWAY_GOALS)));
+			    	    game.setawayast((c.getInt(c.getColumnIndex(KEY_AWAY_AST))));
+			    	    game.setawayfouls((c.getInt(c.getColumnIndex(KEY_AWAY_FOULS))));
+			    	    game.setawaypka(c.getInt(c.getColumnIndex(KEY_AWAY_PKA)));
+			    	    game.setawaypkg((c.getInt(c.getColumnIndex(KEY_AWAY_PKG))));
+			    	    game.setawayycard(c.getInt(c.getColumnIndex(KEY_AWAY_YCARD)));
+			    	    game.setawayrcard((c.getInt(c.getColumnIndex(KEY_AWAY_RCARD))));
+			    	    game.setawaysaves((c.getInt(c.getColumnIndex(KEY_AWAY_SAVES))));
+			    	    game.setawaygoalsallowed((c.getInt(c.getColumnIndex(KEY_AWAY_GOALS_ALLOWED))));
+			    	    
+			    	    // adding to games list
+			            games.add(game);
+			        } while (c.moveToNext());
+			    }
+			 
+			    return games;
+			}
+			    
 	//Get all Games
 	public List<Games> getAllGames() {
 	    List<Games> games = new ArrayList<Games>();
