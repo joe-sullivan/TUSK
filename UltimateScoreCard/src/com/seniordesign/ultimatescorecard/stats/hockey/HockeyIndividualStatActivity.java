@@ -3,6 +3,7 @@ package com.seniordesign.ultimatescorecard.stats.hockey;
 import java.util.ArrayList;
 
 import com.seniordesign.ultimatescorecard.R;
+import com.seniordesign.ultimatescorecard.data.GameInfo;
 import com.seniordesign.ultimatescorecard.data.hockey.HockeyPlayer;
 import com.seniordesign.ultimatescorecard.data.hockey.HockeyTeam;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
@@ -31,6 +32,7 @@ public class HockeyIndividualStatActivity extends FragmentActivity{
 	protected boolean _home;
 	protected HockeyGames _game;
 	protected ArrayList<ShotChartCoords> _shots;
+	protected GameInfo _gameInfo;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +45,8 @@ public class HockeyIndividualStatActivity extends FragmentActivity{
 		_name = getIntent().getStringExtra(StaticFinalVars.PLAYER_NAME);
 		_home = getIntent().getBooleanExtra(StaticFinalVars.HOME_OR_AWAY, true);
 		_shots = (ArrayList<ShotChartCoords>) getIntent().getSerializableExtra(StaticFinalVars.SHOT_CHART);
-        int value = getIntent().getIntExtra(StaticFinalVars.DISPLAY_TYPE, 0);
+		_gameInfo = (GameInfo) getIntent().getSerializableExtra(StaticFinalVars.GAME_INFO);
+		int value = getIntent().getIntExtra(StaticFinalVars.DISPLAY_TYPE, 0);
 
 		_hockey_db = new HockeyDatabaseHelper(getApplicationContext());
 		_game = (HockeyGames) _hockey_db.getGame(g_id);

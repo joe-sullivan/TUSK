@@ -279,8 +279,8 @@ public class BasketballActivity extends Activity{
 	private void setMadeMissListeners(int points){
 		buttonSwap(true);
 		_basketballCourt.setOnTouchListener(cancelListener);
-		setTextAndListener(_option1Button, madeListener(points), "Shot Made");
-		setTextAndListener(_option2Button, blockmissListener(points), "Shot Missed");
+		setTextAndListener(_option1Button, madeListener(points), "Made");
+		setTextAndListener(_option2Button, blockmissListener(points), "Missed");
 		setTextAndListener(_option3Button, shootingFoulListener(points), "Fouled");
 		zeroTimeDisabler();																								
 	} 

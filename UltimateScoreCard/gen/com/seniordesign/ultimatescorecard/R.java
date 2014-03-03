@@ -143,7 +143,7 @@ public final class R {
         public static final int benchPlayerFrag=0x7f0a0082;
         public static final int blocksTotal=0x7f0a0041;
         public static final int bottomButtonsRow=0x7f0a004f;
-        public static final int boxscore=0x7f0a00b3;
+        public static final int boxscore=0x7f0a00b2;
         public static final int buttonRow=0x7f0a0024;
         public static final int choose_game_button=0x7f0a0063;
         public static final int choose_sport_button=0x7f0a0061;
@@ -154,7 +154,7 @@ public final class R {
         public static final int dReboundTotal=0x7f0a003d;
         public static final int deletePlayer=0x7f0a0030;
         public static final int deleteTeamButton=0x7f0a0026;
-        public static final int editGame=0x7f0a00b1;
+        public static final int editGame=0x7f0a00b0;
         public static final int editPlayer=0x7f0a002f;
         public static final int extendButton1=0x7f0a0002;
         public static final int extendButton2=0x7f0a0003;
@@ -172,7 +172,7 @@ public final class R {
         public static final int fragmentLayout=0x7f0a005f;
         public static final int freeThrowTotal=0x7f0a003b;
         public static final int gameClock=0x7f0a0012;
-        public static final int gameLog=0x7f0a00b4;
+        public static final int gameLog=0x7f0a00b3;
         public static final int goalTotal=0x7f0a0046;
         public static final int goalieStats=0x7f0a004c;
         public static final int goalieTitle=0x7f0a004b;
@@ -191,8 +191,8 @@ public final class R {
         public static final int interactiveFrame=0x7f0a000f;
         public static final int listofPlays=0x7f0a00ad;
         public static final int liveTrackerButton=0x7f0a0057;
-        public static final int nextPeriod=0x7f0a00b6;
-        public static final int nextQuarter=0x7f0a00b2;
+        public static final int nextPeriod=0x7f0a00b5;
+        public static final int nextQuarter=0x7f0a00b1;
         public static final int oReboundTotal=0x7f0a003e;
         public static final int optionButton=0x7f0a0055;
         public static final int optionButton1=0x7f0a0018;
@@ -205,7 +205,7 @@ public final class R {
         public static final int penaltyTypeTotal=0x7f0a0049;
         public static final int periodNumber=0x7f0a0034;
         public static final int playByPlaytitle=0x7f0a00ab;
-        public static final int play_by_play=0x7f0a00b7;
+        public static final int play_by_play=0x7f0a00b6;
         public static final int player10Name=0x7f0a00a7;
         public static final int player1Name=0x7f0a00a0;
         public static final int player2Name=0x7f0a009f;
@@ -235,11 +235,10 @@ public final class R {
         public static final int scrollView=0x7f0a00ac;
         public static final int scrollViewForSoccerSubstitution=0x7f0a0073;
         public static final int search_button=0x7f0a0064;
-        public static final int settings=0x7f0a00b5;
-        public static final int shotChartFrame=0x7f0a00af;
+        public static final int settings=0x7f0a00b4;
+        public static final int shotChart=0x7f0a00ae;
         public static final int shotOnGoalTotal=0x7f0a0047;
-        public static final int shot_chart=0x7f0a00b8;
-        public static final int shot_chart_title=0x7f0a00ae;
+        public static final int shot_chart=0x7f0a00b7;
         public static final int slideoutButtons=0x7f0a0001;
         public static final int slideoutTitle=0x7f0a0000;
         public static final int soccerButton=0x7f0a0053;
@@ -248,7 +247,7 @@ public final class R {
         public static final int statsPager=0x7f0a005a;
         public static final int statsTitle=0x7f0a0097;
         public static final int stealTotal=0x7f0a0040;
-        public static final int substitution=0x7f0a00b0;
+        public static final int substitution=0x7f0a00af;
         public static final int tabText=0x7f0a005c;
         public static final int team1Players=0x7f0a009d;
         public static final int team2Players=0x7f0a00aa;
@@ -296,7 +295,9 @@ public final class R {
         public static final int fragment_individual_basketball=0x7f030016;
         public static final int fragment_individual_hockey=0x7f030017;
         public static final int fragment_individual_soccer=0x7f030018;
-        public static final int fragment_shot_chart=0x7f030019;
+        public static final int fragment_shot_chart_basketball=0x7f030019;
+        public static final int fragment_shot_chart_hockey=0x7f03001a;
+        public static final int fragment_shot_chart_soccer=0x7f03001b;
     }
     public static final class menu {
         public static final int basketball_menu=0x7f090000;

@@ -3,6 +3,7 @@ package com.seniordesign.ultimatescorecard.stats.soccer;
 import java.util.ArrayList;
 
 import com.seniordesign.ultimatescorecard.R;
+import com.seniordesign.ultimatescorecard.data.GameInfo;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
 import com.seniordesign.ultimatescorecard.sqlite.helper.ShotChartCoords;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
@@ -14,14 +15,16 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.RelativeLayout.LayoutParams;
 
 public class SoccerIndividualShotChartFragment extends Fragment{
 	private RelativeLayout _shotIcons;
+	private GameInfo _gameInfo;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = (View) inflater.inflate(R.layout.fragment_shot_chart, container, false);
+		View view = (View) inflater.inflate(R.layout.fragment_shot_chart_soccer, container, false);
 		setHasOptionsMenu(true);
 		return view;
 	}
@@ -35,7 +38,8 @@ public class SoccerIndividualShotChartFragment extends Fragment{
 		String name = ((SoccerIndividualStatActivity) getActivity())._name;
 		ArrayList<Players> players = ((SoccerIndividualStatActivity) getActivity())._players;
 		Teams team = ((SoccerIndividualStatActivity) getActivity())._team;
-
+		_gameInfo = ((SoccerIndividualStatActivity) getActivity())._gameInfo;
+		
 		if(name.equals(team.getabbv() + " Stats")){
 			for(ShotChartCoords shot: shots){
 				int[] location = new int[2];
@@ -76,25 +80,28 @@ public class SoccerIndividualShotChartFragment extends Fragment{
 	}
 	
 	private void addCourtImage(){
+		/*
 		ImageView grassField = new ImageView(getActivity());
 		grassField.setImageDrawable(getResources().getDrawable(R.drawable.grassfield));
 		ImageView pitchLines = new ImageView(getActivity());
 		pitchLines.setImageDrawable(getResources().getDrawable(R.drawable.soccerfield));
-		
+		*/
 		_shotIcons = new RelativeLayout(getActivity());
 		RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams
 				(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.MATCH_PARENT);
 		_shotIcons.setLayoutParams(rp);
 		
-		((FrameLayout)getView().findViewById(R.id.shotChartFrame)).addView(grassField);
-		((FrameLayout)getView().findViewById(R.id.shotChartFrame)).addView(pitchLines);
-		((FrameLayout)getView().findViewById(R.id.shotChartFrame)).addView(_shotIcons);
+		//((FrameLayout)getView().findViewById(R.id.shotChartFrame)).addView(grassField);
+		//((FrameLayout)getView().findViewById(R.id.shotChartFrame)).addView(pitchLines);
+		((RelativeLayout)getView().findViewById(R.id.interactiveFrame)).addView(_shotIcons);
+		//((RelativeLayout)getView().findViewById(R.id.shotChart)).setBackgroundColor(0xFF007A10);
+	
 	}
 	
 	private void displayShots(boolean hitMiss, int[] shotLocation){
 		LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		lp.leftMargin = shotLocation[0];
-		lp.topMargin = shotLocation[1];
+		lp.leftMargin = shotLocation[0]-25;
+		lp.topMargin = shotLocation[1]+60;
 		ImageView iv = new ImageView(getActivity());
 		if(hitMiss){
 			iv.setBackgroundResource(R.drawable.made_shot);

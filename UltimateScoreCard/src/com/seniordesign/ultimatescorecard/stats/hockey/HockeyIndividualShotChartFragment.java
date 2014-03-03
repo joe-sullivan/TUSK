@@ -3,9 +3,11 @@ package com.seniordesign.ultimatescorecard.stats.hockey;
 import java.util.ArrayList;
 
 import com.seniordesign.ultimatescorecard.R;
+import com.seniordesign.ultimatescorecard.data.GameInfo;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
 import com.seniordesign.ultimatescorecard.sqlite.helper.ShotChartCoords;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
+import com.seniordesign.ultimatescorecard.stats.soccer.SoccerIndividualStatActivity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,14 +17,16 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.RelativeLayout.LayoutParams;
 
 public class HockeyIndividualShotChartFragment extends Fragment {
 	private RelativeLayout _shotIcons;
+	protected GameInfo _gameInfo;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = (View) inflater.inflate(R.layout.fragment_shot_chart, container, false);
+		View view = (View) inflater.inflate(R.layout.fragment_shot_chart_hockey, container, false);
         setHasOptionsMenu(true);
 		return view;
 	}
@@ -36,6 +40,7 @@ public class HockeyIndividualShotChartFragment extends Fragment {
 		String name = ((HockeyIndividualStatActivity) getActivity())._name;
 		ArrayList<Players> players = ((HockeyIndividualStatActivity) getActivity())._players;
 		Teams team = ((HockeyIndividualStatActivity) getActivity())._team;
+		_gameInfo = ((HockeyIndividualStatActivity) getActivity())._gameInfo;
 
 		if(name.equals(team.getabbv() + " Stats")){
 			for(ShotChartCoords shot: shots){
@@ -77,19 +82,22 @@ public class HockeyIndividualShotChartFragment extends Fragment {
 	}
 	
 	private void addCourtImage(){
+		/*
 		ImageView icefloor = new ImageView(getActivity());
 		icefloor.setImageDrawable(getResources().getDrawable(R.drawable.icefloor));
 		ImageView rinkLines = new ImageView(getActivity());
 		rinkLines.setImageDrawable(getResources().getDrawable(R.drawable.hockeyice));
-		
+		*/
 		_shotIcons= new RelativeLayout(getActivity());
 		RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams
 				(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.MATCH_PARENT);
 		_shotIcons.setLayoutParams(rp);
 		
-		((FrameLayout)getView().findViewById(R.id.shotChartFrame)).addView(icefloor);
-		((FrameLayout)getView().findViewById(R.id.shotChartFrame)).addView(rinkLines);
-		((FrameLayout)getView().findViewById(R.id.shotChartFrame)).addView(_shotIcons);
+		//((FrameLayout)getView().findViewById(R.id.shotChartFrame)).addView(icefloor);
+		//((FrameLayout)getView().findViewById(R.id.shotChartFrame)).addView(rinkLines);
+		((RelativeLayout)getView().findViewById(R.id.interactiveFrame)).addView(_shotIcons);
+		//((RelativeLayout)getView().findViewById(R.id.shotChart)).setBackgroundColor(0xFFFFFFFF);
+
 	}
 	
 	private void displayShots(boolean hitMiss, int[] shotLocation){

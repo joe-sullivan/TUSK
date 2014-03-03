@@ -130,6 +130,7 @@ public class SoccerBoxscoreFragment extends Fragment{
 				intent.putExtra(StaticFinalVars.SHOT_CHART, ((SoccerStatsActivity) getActivity()).getAwayShotChart());
 						}
 			intent.putExtra(StaticFinalVars.PLAYER_NAME, ((TextView)v).getText().toString());
+			intent.putExtra(StaticFinalVars.GAME_INFO, ((SoccerStatsActivity) getActivity()).getGameInfo());
 			intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 0);
 			startActivity(intent);
 		}

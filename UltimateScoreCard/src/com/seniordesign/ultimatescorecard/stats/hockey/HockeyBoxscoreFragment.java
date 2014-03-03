@@ -5,6 +5,7 @@ import com.seniordesign.ultimatescorecard.data.GameInfo;
 import com.seniordesign.ultimatescorecard.data.hockey.HockeyTeam;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
+import com.seniordesign.ultimatescorecard.stats.soccer.SoccerStatsActivity;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
 
 import android.content.Intent;
@@ -127,6 +128,7 @@ public class HockeyBoxscoreFragment extends Fragment{
 				intent.putExtra(StaticFinalVars.SHOT_CHART, ((HockeyStatsActivity) getActivity()).getAwayShotChart());
 			}
 			intent.putExtra(StaticFinalVars.PLAYER_NAME, ((TextView)v).getText().toString());
+			intent.putExtra(StaticFinalVars.GAME_INFO, ((HockeyStatsActivity) getActivity()).getGameInfo());
 			intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 0);
 			startActivity(intent);
 		}

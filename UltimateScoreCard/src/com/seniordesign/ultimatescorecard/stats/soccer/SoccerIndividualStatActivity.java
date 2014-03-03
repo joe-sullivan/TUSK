@@ -3,6 +3,7 @@ package com.seniordesign.ultimatescorecard.stats.soccer;
 import java.util.ArrayList;
 
 import com.seniordesign.ultimatescorecard.R;
+import com.seniordesign.ultimatescorecard.data.GameInfo;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
 import com.seniordesign.ultimatescorecard.sqlite.helper.ShotChartCoords;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
@@ -27,6 +28,7 @@ public class SoccerIndividualStatActivity extends FragmentActivity{
 	protected boolean _home;
 	protected SoccerGames _game;
 	protected ArrayList<ShotChartCoords> _shots;
+	protected GameInfo _gameInfo;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +41,8 @@ public class SoccerIndividualStatActivity extends FragmentActivity{
 		_name = getIntent().getStringExtra(StaticFinalVars.PLAYER_NAME);
 		_home = getIntent().getBooleanExtra(StaticFinalVars.HOME_OR_AWAY, true);
 		_shots = (ArrayList<ShotChartCoords>) getIntent().getSerializableExtra(StaticFinalVars.SHOT_CHART);
-        int value = getIntent().getIntExtra(StaticFinalVars.DISPLAY_TYPE, 0);
+		_gameInfo = (GameInfo) getIntent().getSerializableExtra(StaticFinalVars.GAME_INFO);
+		int value = getIntent().getIntExtra(StaticFinalVars.DISPLAY_TYPE, 0);
 
 		_soccer_db = new SoccerDatabaseHelper(getApplicationContext());
 		_game = (SoccerGames) _soccer_db.getGame(g_id);

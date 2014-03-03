@@ -3,10 +3,12 @@ package com.seniordesign.ultimatescorecard.stats.basketball;
 import java.util.ArrayList;
 
 import com.seniordesign.ultimatescorecard.R;
+import com.seniordesign.ultimatescorecard.data.GameInfo;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
 import com.seniordesign.ultimatescorecard.sqlite.helper.ShotChartCoords;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 import com.seniordesign.ultimatescorecard.stats.basketball.BasketballIndividualStatActivity;
+import com.seniordesign.ultimatescorecard.stats.soccer.SoccerIndividualStatActivity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,10 +27,11 @@ import android.widget.TextView;
 
 public class BasketballIndividualShotChartFragment extends Fragment{
 	private RelativeLayout _shotIcons;
+	protected GameInfo _gameInfo;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = (View) inflater.inflate(R.layout.fragment_shot_chart, container, false);
+		View view = (View) inflater.inflate(R.layout.fragment_shot_chart_basketball, container, false);
 		setHasOptionsMenu(true);
 		return view;
 	}
@@ -41,7 +44,7 @@ public class BasketballIndividualShotChartFragment extends Fragment{
 		String name = ((BasketballIndividualStatActivity) getActivity())._name;
 		ArrayList<Players> players = ((BasketballIndividualStatActivity) getActivity())._players;
 		Teams team = ((BasketballIndividualStatActivity) getActivity())._team;
-
+		_gameInfo = ((BasketballIndividualStatActivity) getActivity())._gameInfo;
 		
 		if(name.equals(team.getabbv() + " Stats")){
 			for(ShotChartCoords shot: shots){
@@ -83,25 +86,30 @@ public class BasketballIndividualShotChartFragment extends Fragment{
 	}
 	
 	private void addCourtImage(){
+		/*
 		ImageView hardwood = new ImageView(getActivity());
+		hardwood.setLayoutParams(rp);
 		hardwood.setImageDrawable(getResources().getDrawable(R.drawable.hardwood));
 		ImageView courtLines = new ImageView(getActivity());
+		courtLines.setLayoutParams(rp);
 		courtLines.setImageDrawable(getResources().getDrawable(R.drawable.basketballcourt));
+		*/
+		RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams
+				(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
 		
 		_shotIcons= new RelativeLayout(getActivity());
-		RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams
-				(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.MATCH_PARENT);
 		_shotIcons.setLayoutParams(rp);
 		
-		((FrameLayout)getView().findViewById(R.id.shotChartFrame)).addView(hardwood);
-		((FrameLayout)getView().findViewById(R.id.shotChartFrame)).addView(courtLines);
-		((FrameLayout)getView().findViewById(R.id.shotChartFrame)).addView(_shotIcons);
+		//((FrameLayout)getView().findViewById(R.id.shotChartFrame)).addView(hardwood);
+		//((FrameLayout)getView().findViewById(R.id.shotChartFrame)).addView(courtLines);
+		((RelativeLayout)getView().findViewById(R.id.interactiveFrame)).addView(_shotIcons);
+		//((RelativeLayout)getView().findViewById(R.id.shotChart)).setBackgroundColor(0xFFED5B1C);
 	}
 	
 	private void displayShots(boolean hitMiss, int[] shotLocation){
 		LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		lp.leftMargin = shotLocation[0];
-		lp.topMargin = shotLocation[1];
+		lp.leftMargin = shotLocation[0]+25;
+		lp.topMargin = shotLocation[1]-60;
 		ImageView iv = new ImageView(getActivity());
 		if(hitMiss){
 			iv.setBackgroundResource(R.drawable.made_shot);

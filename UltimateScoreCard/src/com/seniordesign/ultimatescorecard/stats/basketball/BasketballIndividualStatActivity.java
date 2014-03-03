@@ -3,6 +3,7 @@ package com.seniordesign.ultimatescorecard.stats.basketball;
 import java.util.ArrayList;
 
 import com.seniordesign.ultimatescorecard.R;
+import com.seniordesign.ultimatescorecard.data.GameInfo;
 import com.seniordesign.ultimatescorecard.data.basketball.BasketballPlayer;
 import com.seniordesign.ultimatescorecard.data.basketball.BasketballTeam;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
@@ -28,6 +29,7 @@ public class BasketballIndividualStatActivity extends FragmentActivity{
 	protected boolean _home;
 	protected BasketballGames _game;
 	protected ArrayList<ShotChartCoords> _shots;
+	protected GameInfo _gameInfo;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,8 @@ public class BasketballIndividualStatActivity extends FragmentActivity{
 		_name = getIntent().getStringExtra(StaticFinalVars.PLAYER_NAME);
 		_home = getIntent().getBooleanExtra(StaticFinalVars.HOME_OR_AWAY, true);
 		_shots = (ArrayList<ShotChartCoords>) getIntent().getSerializableExtra(StaticFinalVars.SHOT_CHART);
-        int value = getIntent().getIntExtra(StaticFinalVars.DISPLAY_TYPE, 0);
+		_gameInfo = (GameInfo) getIntent().getSerializableExtra(StaticFinalVars.GAME_INFO);
+		int value = getIntent().getIntExtra(StaticFinalVars.DISPLAY_TYPE, 0);
 
 		_basketball_db = new BasketballDatabaseHelper(getApplicationContext());
 		_game = (BasketballGames) _basketball_db.getGame(g_id);
