@@ -72,8 +72,8 @@ public class MainActivity extends Activity{
 		_hockey_db = new HockeyDatabaseHelper(getApplicationContext());
 
 		//.onUpgrade will reset databases (i.e. erase all data stored in them)
-		//_basketball_db.onCreate(_basketball_db.getWritableDatabase());
-		_basketball_db.onUpgrade(_basketball_db.getWritableDatabase(),0,0);
+		_basketball_db.onCreate(_basketball_db.getWritableDatabase());
+		//_basketball_db.onUpgrade(_basketball_db.getWritableDatabase(),0,0);
 		
 		//_football_db.onCreate(_football_db.getWritableDatabase());
 		_football_db.onUpgrade(_football_db.getWritableDatabase(),0,0);

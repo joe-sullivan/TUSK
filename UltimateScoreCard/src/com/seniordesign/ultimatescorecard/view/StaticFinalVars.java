@@ -27,6 +27,8 @@ public class StaticFinalVars {
 	public static final String DISPLAY_TYPE = "display";
 	public static final String SHOT_CHART_HOME = "shotChartHome";
 	public static final String SHOT_CHART_AWAY = "shotChartAway";
+	public static final String SHOT_CHART = "shotChart";
+
 	
 	//score keeping interface to substitutions page
 	public static final String SUB_INFO = "subInfo";
@@ -36,5 +38,7 @@ public class StaticFinalVars {
 	public static final String PLAYERS_INFO = "playersInfo";
 	public static final String PLAYER_NAME = "playerName";
 	public static final String HOME_OR_AWAY = "homeOrAway";
+
+
 	
 }

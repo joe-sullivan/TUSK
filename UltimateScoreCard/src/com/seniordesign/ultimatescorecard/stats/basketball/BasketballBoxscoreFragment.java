@@ -117,15 +117,17 @@ public class BasketballBoxscoreFragment extends Fragment{
 				intent.putExtra(StaticFinalVars.PLAYERS_INFO, ((BasketballStatsActivity) getActivity()).getGameInfo().getHomePlayers());
 				intent.putExtra(StaticFinalVars.GAME_ID, ((BasketballStatsActivity) getActivity()).getGameInfo().getgid());
 				intent.putExtra(StaticFinalVars.HOME_OR_AWAY, _lookingAtHome);
-
+				intent.putExtra(StaticFinalVars.SHOT_CHART, ((BasketballStatsActivity) getActivity()).getHomeShotChart());
 			}
 			else{
 				intent.putExtra(StaticFinalVars.TEAM_INFO, ((BasketballStatsActivity) getActivity()).getGameInfo().getAwayTeam());
 				intent.putExtra(StaticFinalVars.PLAYERS_INFO, ((BasketballStatsActivity) getActivity()).getGameInfo().getAwayPlayers());
 				intent.putExtra(StaticFinalVars.GAME_ID, ((BasketballStatsActivity) getActivity()).getGameInfo().getgid());
 				intent.putExtra(StaticFinalVars.HOME_OR_AWAY, _lookingAtHome);
+				intent.putExtra(StaticFinalVars.SHOT_CHART, ((BasketballStatsActivity) getActivity()).getAwayShotChart());
 			}
 			intent.putExtra(StaticFinalVars.PLAYER_NAME, ((TextView)v).getText().toString());
+			intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 0);
 			startActivity(intent);
 		}
 	};
