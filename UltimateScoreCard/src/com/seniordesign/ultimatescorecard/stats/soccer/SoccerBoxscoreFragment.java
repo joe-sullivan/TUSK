@@ -120,14 +120,17 @@ public class SoccerBoxscoreFragment extends Fragment{
 				intent.putExtra(StaticFinalVars.PLAYERS_INFO, ((SoccerStatsActivity) getActivity()).getGameInfo().getHomePlayers());
 				intent.putExtra(StaticFinalVars.GAME_ID, ((SoccerStatsActivity) getActivity()).getGameInfo().getgid());
 				intent.putExtra(StaticFinalVars.HOME_OR_AWAY, _lookingAtHome);
+				intent.putExtra(StaticFinalVars.SHOT_CHART, ((SoccerStatsActivity) getActivity()).getHomeShotChart());
 			}
 			else{
 				intent.putExtra(StaticFinalVars.TEAM_INFO, ((SoccerStatsActivity) getActivity()).getGameInfo().getAwayTeam());
 				intent.putExtra(StaticFinalVars.PLAYERS_INFO, ((SoccerStatsActivity) getActivity()).getGameInfo().getAwayPlayers());
 				intent.putExtra(StaticFinalVars.GAME_ID, ((SoccerStatsActivity) getActivity()).getGameInfo().getgid());
 				intent.putExtra(StaticFinalVars.HOME_OR_AWAY, _lookingAtHome);
+				intent.putExtra(StaticFinalVars.SHOT_CHART, ((SoccerStatsActivity) getActivity()).getAwayShotChart());
 						}
 			intent.putExtra(StaticFinalVars.PLAYER_NAME, ((TextView)v).getText().toString());
+			intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 0);
 			startActivity(intent);
 		}
 	};

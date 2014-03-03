@@ -1,22 +1,22 @@
-package com.seniordesign.ultimatescorecard.stats.hockey;
+package com.seniordesign.ultimatescorecard.stats.soccer;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-public class HockeyStatsPageAdapter extends FragmentStatePagerAdapter {
+public class SoccerIndividualStatPageAdapter extends FragmentStatePagerAdapter {
 	private int _numberPages = 2;
 	
-	public HockeyStatsPageAdapter(FragmentManager fm) {
+	public SoccerIndividualStatPageAdapter(FragmentManager fm) {
 		super(fm);
 	}
 
     @Override
     public Fragment getItem(int position) {
     	if(position == 0){
-    		return new HockeyBoxscoreFragment();
+    		return new SoccerIndividualStatFragment();
     	}
     	else {
-    		return new HockeyPlayListFragment();
+    		return new SoccerIndividualShotChartFragment();
     	}
     }
 

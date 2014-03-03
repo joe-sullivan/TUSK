@@ -294,7 +294,9 @@ public final class R {
         public static final int fragment_boxscore=0x7f030014;
         public static final int fragment_game_log=0x7f030015;
         public static final int fragment_individual_basketball=0x7f030016;
-        public static final int fragment_shot_chart=0x7f030017;
+        public static final int fragment_individual_hockey=0x7f030017;
+        public static final int fragment_individual_soccer=0x7f030018;
+        public static final int fragment_shot_chart=0x7f030019;
     }
     public static final class menu {
         public static final int basketball_menu=0x7f090000;

@@ -3,20 +3,20 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-public class HockeyStatsPageAdapter extends FragmentStatePagerAdapter {
+public class HockeyIndividualStatPageAdapter extends FragmentStatePagerAdapter {
 	private int _numberPages = 2;
 	
-	public HockeyStatsPageAdapter(FragmentManager fm) {
+	public HockeyIndividualStatPageAdapter(FragmentManager fm) {
 		super(fm);
 	}
 
     @Override
     public Fragment getItem(int position) {
     	if(position == 0){
-    		return new HockeyBoxscoreFragment();
+    		return new HockeyIndividualStatFragment();
     	}
     	else {
-    		return new HockeyPlayListFragment();
+    		return new HockeyIndividualShotChartFragment();
     	}
     }
 
