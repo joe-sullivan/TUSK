@@ -22,7 +22,7 @@ public class SoccerIndividualStatFragment extends Fragment{
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = (View) inflater.inflate(R.layout.fragment_individual_hockey, container, false);
+		View view = (View) inflater.inflate(R.layout.fragment_individual_soccer, container, false);
 		return view;
 	}
 	
