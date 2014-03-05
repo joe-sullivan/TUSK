@@ -172,17 +172,18 @@ public class CreateTeamActivity extends Activity{
 				}
 			}
 			
-			ArrayList<Teams> teams = (ArrayList<Teams>) _db.getAllTeams();
-			Teams cur = null;
-			for(Teams team: teams){
-				if(team.gettname().equals(_oldTeamName)){
-					cur = team;
-					break;
-				}
-			}
-			
-			t_id = cur.gettid();
+
 			if(editing){
+				ArrayList<Teams> teams = (ArrayList<Teams>) _db.getAllTeams();
+				Teams cur = null;
+				for(Teams team: teams){
+					if(team.gettname().equals(_oldTeamName)){
+						cur = team;
+						break;
+					}
+				}
+				
+				t_id = cur.gettid();
 				_db.updateTeam(new Teams(t_id, teamName,teamAbbr,coachName,_sportType));
 			}
 			editing = false;
