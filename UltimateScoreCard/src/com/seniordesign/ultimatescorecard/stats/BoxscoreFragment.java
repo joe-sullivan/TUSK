@@ -1,7 +1,10 @@
 package com.seniordesign.ultimatescorecard.stats;
 
 import com.seniordesign.ultimatescorecard.R;
-import com.seniordesign.ultimatescorecard.data.Team;
+import com.seniordesign.ultimatescorecard.data.GameInfo;
+import com.seniordesign.ultimatescorecard.data.basketball.BasketballTeam;
+import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
+import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
 
 import android.content.Intent;
@@ -26,8 +29,11 @@ public class BoxscoreFragment extends Fragment{
 	@Override
 	public void onResume() {
 		super.onResume();
-		((TextView)getView().findViewById(R.id.homeTeamStatText)).setText(((StatsActivity) getActivity()).getGameInfo().getTheHomeTeam().getTeamName());
-		((TextView)getView().findViewById(R.id.awayTeamStatText)).setText(((StatsActivity) getActivity()).getGameInfo().getTheAwayTeam().getTeamName());
+		GameInfo info = ((StatsActivity) getActivity()).getGameInfo();
+		Teams team = info.getHomeTeam();
+		String name = team.gettname();
+		((TextView)getView().findViewById(R.id.homeTeamStatText)).setText(name);
+		((TextView)getView().findViewById(R.id.awayTeamStatText)).setText(((StatsActivity) getActivity()).getGameInfo().getAwayTeam().gettname());
 		
 		if(_lookingAtHome){
 			getView().findViewById(R.id.homeTeamStatText).setBackgroundColor(getResources().getColor(R.color.robin_egg_blue));
@@ -47,15 +53,16 @@ public class BoxscoreFragment extends Fragment{
 	
 	private void addTextViews(){
 		LinearLayout layout = ((LinearLayout) getView().findViewById(R.id.playerListLayout));
-		Team team = null;
+		GameInfo _gameInfo = ((StatsActivity) getActivity()).getGameInfo();
 		if(_lookingAtHome){
-			team = ((StatsActivity) getActivity()).getGameInfo().getTheHomeTeam();
+			for(Players p: _gameInfo.getHomePlayers()){
+				layout.addView(newTextView(p.getpname()));	
+			}
 		}
 		else{
-			team = ((StatsActivity) getActivity()).getGameInfo().getTheAwayTeam();
-		}
-		for(int i=0; i<team.numberPlayers(); i++){
-			layout.addView(newTextView(team.getPlayer(i).getName()));	
+			for(Players p: _gameInfo.getAwayPlayers()){
+				layout.addView(newTextView(p.getpname()));	
+			}		
 		}
 	}
 	
@@ -105,10 +112,15 @@ public class BoxscoreFragment extends Fragment{
 		public void onClick(View v) {
 			Intent intent = new Intent(getActivity().getApplicationContext(), IndividualStatActivity.class);
 			if(_lookingAtHome){
-				intent.putExtra(StaticFinalVars.TEAM_INFO, ((StatsActivity) getActivity()).getGameInfo().getTheHomeTeam());
+				intent.putExtra(StaticFinalVars.TEAM_INFO, ((StatsActivity) getActivity()).getGameInfo().getHomeTeam());
+				intent.putExtra(StaticFinalVars.PLAYERS_INFO, ((StatsActivity) getActivity()).getGameInfo().getHomePlayers());
+				intent.putExtra(StaticFinalVars.GAME_ID, ((StatsActivity) getActivity()).getGameInfo().getgid());
+
 			}
 			else{
-				intent.putExtra(StaticFinalVars.TEAM_INFO, ((StatsActivity) getActivity()).getGameInfo().getTheAwayTeam());
+				intent.putExtra(StaticFinalVars.TEAM_INFO, ((StatsActivity) getActivity()).getGameInfo().getAwayTeam());
+				intent.putExtra(StaticFinalVars.PLAYERS_INFO, ((StatsActivity) getActivity()).getGameInfo().getAwayPlayers());
+				intent.putExtra(StaticFinalVars.GAME_ID, ((StatsActivity) getActivity()).getGameInfo().getgid());
 			}
 			intent.putExtra(StaticFinalVars.PLAYER_NAME, ((TextView)v).getText().toString());
 			startActivity(intent);

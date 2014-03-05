@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Score Card</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_soccer">SoccerActivity</string>
+    <string name="title_activity_baseball">BaseballActivity</string>
+    <string name="title_activity_basket_ball">BasketBallActivity</string>
+    <string name="title_activity_football">FootballActivity</string>
+    <string name="title_activity_soccer_game">SoccerGameActivity</string>
+    <string name="title_activity_add_team">AddTeamActivity</string>
+    <string name="title_activity_team_list">TeamList</string>
+    <string name="title_activity_send_mail">SendMail</string>
+
+</resources>

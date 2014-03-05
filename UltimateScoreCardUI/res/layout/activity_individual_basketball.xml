@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/playerName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding"
+        android:text="Player Name" 
+        android:textSize="@dimen/large_text"/>
+    
+    <TextView
+        android:id="@+id/teamName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding"
+        android:text="Team Name" />
+
+    <TextView
+        android:id="@+id/pointTotal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding"
+        android:text="Points" 
+        android:textSize="@dimen/large_text"/>
+    
+    <TextView
+        android:id="@+id/fieldGoalTotal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding"
+        android:text="Field Goals Made / Field Goal Attempted" />
+
+    <TextView
+        android:id="@+id/freeThrowTotal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding"
+        android:text="Free Throw Made / Free Throw Attempted" />
+
+    <TextView
+        android:id="@+id/reboundTotal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding"
+        android:text="Rebounds" 
+        android:textSize="@dimen/large_text"/>
+    
+    <TextView
+        android:id="@+id/assistTotal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding"
+        android:text="Assists" 
+        android:textSize="@dimen/large_text"/>
+    
+    <TextView
+        android:id="@+id/stealTotal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding"
+        android:text="Steals" 
+        android:textSize="@dimen/large_text"/>
+    
+    <TextView
+        android:id="@+id/blocksTotal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding"
+        android:text="Blocks" 
+        android:textSize="@dimen/large_text"/>
+    
+    <TextView
+        android:id="@+id/foulTotal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding"
+        android:text="Fouls" 
+        android:textSize="@dimen/large_text"/>
+    
+
+</LinearLayout>

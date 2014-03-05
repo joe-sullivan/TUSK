@@ -1,0 +1,83 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.scorecard.LoginActivity">
+
+
+    <!-- Login progress -->
+    <LinearLayout android:id="@+id/login_status"
+        android:visibility="gone"
+        android:background="@drawable/background"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+        <ProgressBar style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="200dp" />
+        <TextView
+            android:id="@+id/login_status_message"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:fontFamily="sans-serif-light"
+            android:layout_width="fill_parent"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:gravity="center|center_horizontal"
+            android:textColor="#ffffff"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Login form -->
+    <ScrollView
+        android:id="@+id/login_form"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background">
+
+        <LinearLayout style="@style/LoginFormContainer"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/email"
+                android:singleLine="true"
+                android:maxLines="1"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:inputType="textEmailAddress"
+                android:hint="E-mail"
+                android:layout_marginTop="200dp"
+                android:background="#ccff26" />
+
+            <EditText
+                android:id="@+id/password"
+                android:singleLine="true"
+                android:maxLines="1"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:imeActionLabel="@string/action_sign_in_short"
+                android:imeActionId="@+id/login"
+                android:imeOptions="actionUnspecified"
+                android:background="#ccff26"
+                android:layout_marginTop="5dp" />
+
+            <Button android:id="@+id/sign_in_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="@string/action_sign_in_register"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"
+                android:layout_gravity="right"
+                android:background="#ffff0f"
+                android:textSize="20dp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+</merge>

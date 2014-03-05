@@ -28,21 +28,23 @@
 	        android:layout_width="fill_parent"
 	        android:layout_height="match_parent"
 	        android:layout_weight="1"
+	        android:background="@color/light_gray" 
 	        android:padding="@dimen/padding"
 	        android:drawableTop="@drawable/basketball"
 	        android:text="@string/basketball_button" 
-	        android:textColor="@color/white"
+	        android:textColor="@color/black"
 	        android:textStyle="bold"/>
     
    		<Button
-	        android:id="@+id/baseballButton"
+	        android:id="@+id/hockeyButton"
 	        android:layout_width="fill_parent"
 	        android:layout_height="match_parent"
 	        android:layout_weight="1"
+	        android:background="@color/light_gray" 
 	        android:padding="@dimen/padding"
-	        android:drawableTop="@drawable/baseball"
-	        android:text="@string/baseball_button" 
-	        android:textColor="@color/white"
+	        android:drawableTop="@drawable/hockey"
+	        android:text="@string/hockey_button" 
+	        android:textColor="@color/black"
 	        android:textStyle="bold"/>
     </TableRow>
     
@@ -56,10 +58,11 @@
 	        android:layout_width="fill_parent"
 	        android:layout_height="match_parent"
 	        android:layout_weight="1"
+	        android:background="@color/light_gray" 	        
 	        android:padding="@dimen/padding"
 	        android:drawableTop="@drawable/football"
 	        android:text="@string/football_button" 
-	        android:textColor="@color/white"
+	        android:textColor="@color/black"
 	        android:textStyle="bold"/>
 	    
 	    <Button
@@ -67,18 +70,25 @@
 	        android:layout_width="fill_parent"
 	        android:layout_height="match_parent"
 	        android:layout_weight="1"
+	        android:background="@color/light_gray" 	        
 	        android:padding="@dimen/padding"
 	        android:drawableTop="@drawable/soccerball"
 	        android:text="@string/soccer_button" 
-	        android:textColor="@color/white"
+	        android:textColor="@color/black"
 	        android:textStyle="bold"/>
     </TableRow>
-     
+    
 	<Button
 	        android:id="@+id/viewStatisticButton"
 	        android:layout_width="fill_parent"
+<<<<<<< HEAD
 	        android:layout_height="wrap_content"
+	        android:background="@color/light_gray" 	        
 	        android:padding="@dimen/padding"
+=======
+	        android:layout_height="wrap_content"     
+	        android:padding="@dimen/large_padding"
+>>>>>>> FETCH_HEAD
 	       	android:text="@string/view_statistic_button" 
 	       	android:gravity="center"
 	       	android:layout_above="@+id/optionButton"/>
@@ -86,12 +96,22 @@
     <Button
 	        android:id="@+id/optionButton"
 	        android:layout_width="fill_parent"
+<<<<<<< HEAD
 	        android:layout_height="wrap_content"
+	        android:background="@color/light_gray" 	        
+=======
+	        android:layout_height="wrap_content"	        
+>>>>>>> FETCH_HEAD
 	        android:padding="@dimen/padding"
 	       	android:text="@string/options_button" 	       	
 	       	android:gravity="center"
+	       	android:layout_alignParentBottom="true"
+	       	/>
+	 <!-- If Live tracker is ever implemented       	
 	       	android:layout_above="@+id/liveTrackerButton"/>
+   
     
+ 
     <Button
 	        android:id="@+id/liveTrackerButton"
 	        android:layout_width="fill_parent"
@@ -100,4 +120,6 @@
 	       	android:text="@string/live_tracker_button" 
 	       	android:gravity="center"
 	       	android:layout_alignParentBottom="true"/>
+	       	
+	 -->	
 </RelativeLayout>
