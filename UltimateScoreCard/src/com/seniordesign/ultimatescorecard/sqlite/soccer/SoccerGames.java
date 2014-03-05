@@ -258,4 +258,28 @@ public class SoccerGames extends Games{
     		return 0.0;
     	}
     }
+    
+	public String getHomeScoreText(){
+		if(home_goals < 10){
+			return "00"+ home_goals;
+		}
+		else if (home_goals < 100){
+			return "0"+ home_goals;
+		}
+		else {
+			return ""+ home_goals;
+		}
+	}
+	
+	public String getAwayScoreText(){
+		if(away_goals < 10){
+			return "00"+ away_goals;
+		}
+		else if (away_goals < 100){
+			return "0"+ away_goals;
+		}
+		else {
+			return ""+ away_goals;
+		}
+	}
 }

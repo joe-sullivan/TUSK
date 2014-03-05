@@ -172,21 +172,21 @@ public class CreateTeamActivity extends Activity{
 				}
 			}
 			
-			if(editing){
-				_db.updateTeam(new Teams(teamName,teamAbbr,coachName,_sportType));
-			}
-			editing = false;
-			
 			ArrayList<Teams> teams = (ArrayList<Teams>) _db.getAllTeams();
 			Teams cur = null;
 			for(Teams team: teams){
-				if(team.gettname().equals(teamName)){
+				if(team.gettname().equals(_oldTeamName)){
 					cur = team;
 					break;
 				}
 			}
 			
 			t_id = cur.gettid();
+			if(editing){
+				_db.updateTeam(new Teams(t_id, teamName,teamAbbr,coachName,_sportType));
+			}
+			editing = false;
+
 			int num = _playerList.getChildCount();
 			if(_sportType.equals("basketball")&&num<5){
 				for(int i=num+1;i<=5;i++){

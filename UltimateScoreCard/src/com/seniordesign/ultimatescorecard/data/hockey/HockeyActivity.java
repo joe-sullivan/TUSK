@@ -690,6 +690,8 @@ public class HockeyActivity extends Activity{
 		case R.id.boxscore:
 			intent = new Intent(getApplicationContext(), HockeyStatsActivity.class);			
 			_gameInfo = _gti.getGameInfo();
+			_gameInfo.setAwayScore(_gti.getAwayScoreText());
+			_gameInfo.setHomeScore(_gti.getHomeScoreText());
 			_playbyplay = (ArrayList<PlayByPlay>) _hockey_db.getPlayByPlayGame(g_id);
 			_homeShots = (ArrayList<ShotChartCoords>) _hockey_db.getAllTeamShotsGame(_gti.gethometid(), g_id);
 			_awayShots = (ArrayList<ShotChartCoords>) _hockey_db.getAllTeamShotsGame(_gti.getawaytid(), g_id);
@@ -703,6 +705,8 @@ public class HockeyActivity extends Activity{
 		case R.id.gameLog:
 			intent = new Intent(getApplicationContext(), HockeyStatsActivity.class);
 			_gameInfo = _gti.getGameInfo();
+			_gameInfo.setAwayScore(_gti.getAwayScoreText());
+			_gameInfo.setHomeScore(_gti.getHomeScoreText());
 			_playbyplay = (ArrayList<PlayByPlay>) _hockey_db.getPlayByPlayGame(g_id);
 			_homeShots = (ArrayList<ShotChartCoords>) _hockey_db.getAllTeamShotsGame(_gti.gethometid(), g_id);
 			_awayShots = (ArrayList<ShotChartCoords>) _hockey_db.getAllTeamShotsGame(_gti.getawaytid(), g_id);

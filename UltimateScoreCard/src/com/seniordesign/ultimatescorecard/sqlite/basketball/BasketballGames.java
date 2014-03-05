@@ -348,4 +348,28 @@ public class BasketballGames extends Games{
 			return 0.0;
 		}
 	}
+	
+	public String getHomeScoreText(){
+		if(home_pts < 10){
+			return "00"+ home_pts;
+		}
+		else if (home_pts < 100){
+			return "0"+ home_pts;
+		}
+		else {
+			return ""+ home_pts;
+		}
+	}
+	
+	public String getAwayScoreText(){
+		if(away_pts < 10){
+			return "00"+ away_pts;
+		}
+		else if (away_pts < 100){
+			return "0"+ away_pts;
+		}
+		else {
+			return ""+ away_pts;
+		}
+	}
 }

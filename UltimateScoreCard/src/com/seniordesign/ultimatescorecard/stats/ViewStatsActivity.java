@@ -14,6 +14,7 @@ import com.seniordesign.ultimatescorecard.data.soccer.SoccerGameLog;
 import com.seniordesign.ultimatescorecard.data.soccer.SoccerGameTime;
 import com.seniordesign.ultimatescorecard.sqlite.DatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
+import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballGames;
 import com.seniordesign.ultimatescorecard.sqlite.football.FootballDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
 import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
@@ -21,7 +22,9 @@ import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
 import com.seniordesign.ultimatescorecard.sqlite.helper.ShotChartCoords;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyDatabaseHelper;
+import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyGames;
 import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerDatabaseHelper;
+import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerGames;
 import com.seniordesign.ultimatescorecard.stats.basketball.BasketballStatsActivity;
 import com.seniordesign.ultimatescorecard.stats.football.FootballStatsActivity;
 import com.seniordesign.ultimatescorecard.stats.hockey.HockeyStatsActivity;
@@ -215,6 +218,8 @@ public class ViewStatsActivity extends Activity{
 			ArrayList<ShotChartCoords> _awayShots = (ArrayList<ShotChartCoords>) _db.getAllTeamShotsGame(_game.getawayid(), g_id);
 			
 			if(_sportButton.getText().equals("Basketball")){
+				_gameInfo.setAwayScore(((BasketballGames)_game).getAwayScoreText());
+				_gameInfo.setHomeScore(((BasketballGames)_game).getHomeScoreText());
 				intent = new Intent(getApplicationContext(), BasketballStatsActivity.class);
 				intent.putExtra(StaticFinalVars.GAME_INFO, _gameInfo);			
 				intent.putExtra(StaticFinalVars.GAME_LOG, _playbyplay);
@@ -223,6 +228,8 @@ public class ViewStatsActivity extends Activity{
 				intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 0);
 			}
 			else if (_sportButton.getText().equals("Football")){
+				//_gameInfo.setAwayScore(((FootballGames)_game).getAwayScoreText());
+				//_gameInfo.setHomeScore(((FootballGames)_game).getHomeScoreText());
 				intent = new Intent(getApplicationContext(), FootballStatsActivity.class);
 				intent.putExtra(StaticFinalVars.GAME_INFO, _gameInfo);			
 				intent.putExtra(StaticFinalVars.GAME_LOG, _playbyplay);
@@ -231,6 +238,8 @@ public class ViewStatsActivity extends Activity{
 				intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 0);
 			}
 			else if (_sportButton.getText().equals("Hockey")){
+				_gameInfo.setAwayScore(((HockeyGames)_game).getAwayScoreText());
+				_gameInfo.setHomeScore(((HockeyGames)_game).getHomeScoreText());
 				intent = new Intent(getApplicationContext(), HockeyStatsActivity.class);
 				intent.putExtra(StaticFinalVars.GAME_INFO, _gameInfo);			
 				intent.putExtra(StaticFinalVars.GAME_LOG, _playbyplay);
@@ -239,6 +248,8 @@ public class ViewStatsActivity extends Activity{
 				intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 0);
 			}
 			else { // Soccer
+				_gameInfo.setAwayScore(((SoccerGames)_game).getAwayScoreText());
+				_gameInfo.setHomeScore(((SoccerGames)_game).getHomeScoreText());
 				intent = new Intent(getApplicationContext(), SoccerStatsActivity.class);
 				intent.putExtra(StaticFinalVars.GAME_INFO, _gameInfo);			
 				intent.putExtra(StaticFinalVars.GAME_LOG, _playbyplay);

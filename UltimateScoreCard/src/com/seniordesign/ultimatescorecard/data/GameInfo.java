@@ -15,6 +15,7 @@ public class GameInfo implements Serializable{
 	public Teams _homeTeam, _awayTeam;
 	public ArrayList<Players> _homeTeamPlayers, _awayTeamPlayers;
 	public long g_id;
+	private String home_score, away_score;
 	
 	public GameInfo(Teams _homeTeamPull, Teams _awayTeamPull,
 			ArrayList<Players> _homeTeamPlayersPull,
@@ -24,6 +25,22 @@ public class GameInfo implements Serializable{
 		_homeTeamPlayers = _homeTeamPlayersPull;
 		_awayTeamPlayers = _awayTeamPlayersPull;
 		this.g_id = g_id;
+	}
+	
+	public void setHomeScore(String homescore){
+		home_score = homescore;
+	}
+	
+	public void setAwayScore(String awayscore){
+		away_score = awayscore;
+	}
+	
+	public String getHomeScore(){
+		return home_score;
+	}
+	
+	public String getAwayScore(){
+		return away_score;
 	}
 	
 	public Teams getHomeTeam(){

@@ -1162,6 +1162,8 @@ public class BasketballActivity extends Activity{
 		case R.id.boxscore:
 			intent = new Intent(getApplicationContext(), BasketballStatsActivity.class);			
 			_gameInfo = _gti.getGameInfo();
+			_gameInfo.setAwayScore(_gti.getAwayScoreText());
+			_gameInfo.setHomeScore(_gti.getHomeScoreText());
 			_playbyplay = (ArrayList<PlayByPlay>) _basketball_db.getPlayByPlayGame(g_id);
 			_homeShots = (ArrayList<ShotChartCoords>) _basketball_db.getAllTeamShotsGame(_gti.gethometid(), g_id);
 			_awayShots = (ArrayList<ShotChartCoords>) _basketball_db.getAllTeamShotsGame(_gti.getawaytid(), g_id);
@@ -1177,6 +1179,8 @@ public class BasketballActivity extends Activity{
 		case R.id.gameLog:
 			intent = new Intent(getApplicationContext(), BasketballStatsActivity.class);	
 			_gameInfo = _gti.getGameInfo();
+			_gameInfo.setAwayScore(_gti.getAwayScoreText());
+			_gameInfo.setHomeScore(_gti.getHomeScoreText());
 			_playbyplay = (ArrayList<PlayByPlay>) _basketball_db.getPlayByPlayGame(g_id);
 			_homeShots = (ArrayList<ShotChartCoords>) _basketball_db.getAllTeamShotsGame(_gti.gethometid(), g_id);
 			_awayShots = (ArrayList<ShotChartCoords>) _basketball_db.getAllTeamShotsGame(_gti.getawaytid(), g_id);

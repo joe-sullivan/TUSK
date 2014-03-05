@@ -46,6 +46,15 @@ public class BasketballIndividualShotChartFragment extends Fragment{
 		Teams team = ((BasketballIndividualStatActivity) getActivity())._team;
 		_gameInfo = ((BasketballIndividualStatActivity) getActivity())._gameInfo;
 		
+		TextView homeScore = (TextView)getView().findViewById(R.id.homeScoreTextView);
+		homeScore.setText(_gameInfo.getHomeScore());
+		TextView awayScore = (TextView)getView().findViewById(R.id.awayScoreTextView);
+		awayScore.setText(_gameInfo.getAwayScore());
+		TextView homeAbbr = (TextView)getView().findViewById(R.id.homeTextView);
+		homeAbbr.setText(_gameInfo.getHomeTeam().getabbv());
+		TextView awayAbbr = (TextView)getView().findViewById(R.id.awayTextView);
+		awayAbbr.setText(_gameInfo.getAwayTeam().getabbv());
+		
 		if(name.equals(team.getabbv() + " Stats")){
 			for(ShotChartCoords shot: shots){
 				int[] location = new int[2];

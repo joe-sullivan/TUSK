@@ -1,6 +1,8 @@
 package com.seniordesign.ultimatescorecard.data.basketball;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import android.content.Context;
 
@@ -45,7 +47,8 @@ public class BasketballGameTime extends GameTime {
 		_home_t_id = _home.gettid();
 		_away_t_id = _away.gettid();
 		
-		g_id = _basketball_db.createGame(new Games(_home_t_id, _away_t_id, "TEST1"));
+		String date = DateFormat.getDateTimeInstance().format(new Date());
+		g_id = _basketball_db.createGame(new Games(_home_t_id, _away_t_id, date));
 
 		ArrayList<Players> _homeTeamPlayer = (ArrayList<Players>) _basketball_db.getPlayersTeam(_home_t_id);
 		ArrayList<Players> _awayTeamPlayer = (ArrayList<Players>) _basketball_db.getPlayersTeam(_away_t_id);

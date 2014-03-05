@@ -1,6 +1,8 @@
 package com.seniordesign.ultimatescorecard.data.soccer;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import android.content.Context;
 
@@ -43,7 +45,8 @@ public class SoccerGameTime extends GameTime {
 		_home_t_id = _home.gettid();
 		_away_t_id = _away.gettid();
 		
-		g_id = _soccer_db.createGame(new Games(_home_t_id, _away_t_id, "INSERT DATE HERE"));
+		String date = DateFormat.getDateTimeInstance().format(new Date());
+		g_id = _soccer_db.createGame(new Games(_home_t_id, _away_t_id, date));
 
 		ArrayList<Players> _homeTeamPlayer = (ArrayList<Players>) _soccer_db.getPlayersTeam(_home_t_id);
 		ArrayList<Players> _awayTeamPlayer = (ArrayList<Players>) _soccer_db.getPlayersTeam(_away_t_id);
