@@ -79,18 +79,18 @@ public class MainActivity extends Activity{
 		_hockey_db = new HockeyDatabaseHelper(getApplicationContext());
 
 		//.onUpgrade will reset databases (i.e. erase all data stored in them)
-		//_basketball_db.onCreate(_basketball_db.getWritableDatabase());
-		_basketball_db.onUpgrade(_basketball_db.getWritableDatabase(),0,0);
+		_basketball_db.onCreate(_basketball_db.getWritableDatabase());
+		//_basketball_db.onUpgrade(_basketball_db.getWritableDatabase(),0,0);
 		
 		//_football_db.onCreate(_football_db.getWritableDatabase());
 		//_football_db.onUpgrade(_football_db.getWritableDatabase(),0,0);
 		
-		//_soccer_db.onCreate(_soccer_db.getWritableDatabase());
-		_soccer_db.onUpgrade(_soccer_db.getWritableDatabase(),0,0);
+		_soccer_db.onCreate(_soccer_db.getWritableDatabase());
+		//_soccer_db.onUpgrade(_soccer_db.getWritableDatabase(),0,0);
 		
-		//_hockey_db.onCreate(_hockey_db.getWritableDatabase());
-		_hockey_db.onUpgrade(_hockey_db.getWritableDatabase(),0,0);
-
+		_hockey_db.onCreate(_hockey_db.getWritableDatabase());
+		//_hockey_db.onUpgrade(_hockey_db.getWritableDatabase(),0,0);
+/*
 		//Test Basketball Teams and players
 		Teams spurs = new Teams("San Antonio Spurs", "SAS", "Gregg Popovich", "Basketball");
 		Teams rockets = new Teams("Houston Rockets", "HOU", "Kevin McHale", "Basketball");
@@ -277,8 +277,8 @@ public class MainActivity extends Activity{
 		long NA23_id = _basketball_db.createPlayers(NA23);
 		long TW25_id = _basketball_db.createPlayers(TW25);
 		long AB35_id = _basketball_db.createPlayers(AB35);
-
-/*		
+*/		
+/*
 		//Test Football Teams and players
 		Teams patriots = new Teams("New England Patriots", "NWE", "Bill Belichick", "Football");
 		Teams jets = new Teams("New York Jets", "NYJ", "Rex Ryan", "Football");
@@ -433,7 +433,7 @@ public class MainActivity extends Activity{
 		long MJ27_id = _football_db.createPlayers(MJ27);
 
 */	
-		
+/*		
 		//Test Hockey Teams and players
 		Teams rangers = new Teams("New York Rangers", "NYR", "Alain Vigneault", "Hockey");
 		Teams bruins = new Teams("Boston Bruins", "BOS", "Claude Julien", "Hockey");
@@ -576,9 +576,9 @@ public class MainActivity extends Activity{
 		long JW14_id = _hockey_db.createPlayers(JW14);
 		long DK74_id = _hockey_db.createPlayers(DK74);
 		long DB23_id = _hockey_db.createPlayers(DB23);		
+*/
 
-		
-		
+/*
 		//Test Soccer Teams and players
 		Teams america = new Teams("United States", "USA", "Jurgen Klinsmann", "Soccer");
 		Teams spain = new Teams("Spain", "ESP", "Vincente del Bosque", "Soccer");
@@ -764,7 +764,7 @@ public class MainActivity extends Activity{
 		long P18_id = _soccer_db.createPlayers(P18);
 		long R7_id = _soccer_db.createPlayers(R7);
 		long Ne10_id = _soccer_db.createPlayers(Ne10);
-	
+*/	
 /*	
 		Log.d("GameStats count", "GameStats Count: " + _basketball_db.getAllGameStats().size());
 		ArrayList<ShotChartCoords> shots = (ArrayList<ShotChartCoords>) _basketball_db.getAllShots();
