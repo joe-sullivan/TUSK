@@ -39,7 +39,7 @@ import android.widget.Toast;
 //in sync with activity_choose_team.xml
 public class ChooseTeamActivity extends Activity{
 	LinearLayout _listOfTeams;																			//refers to the linear layout where we add the team names
-	Button _deleteButton;																				//obviously refers to the delete button
+	Button _addEditTeam, _deleteButton;																				//obviously refers to the delete button
 	private SharedPreferences _teamsEntered;															//this is where we can store some information
 	private Editor _prefEditor;																			//use the preference editor to edit the shared preference
 	private boolean _selectAwayTeam = false;															//false = select Home team, true = select Away team
@@ -58,26 +58,43 @@ public class ChooseTeamActivity extends Activity{
 		setContentView(R.layout.activity_choose_team);
 		_sportType = getIntent().getExtras().getString(StaticFinalVars.SPORT_TYPE);
 		
+		_addEditTeam = (Button) findViewById (R.id.createNewTeam);
+		_deleteButton = (Button) findViewById (R.id.deleteTeamButton);
+		
 		//databases
 		if(_sportType.equals("basketball")){
 			_db = new BasketballDatabaseHelper(getApplicationContext());
+			findViewById(R.id.chooseTeamActivity).setBackgroundResource(R.drawable.background_basketball);
+			_addEditTeam.setBackgroundResource(R.drawable.view_style_slant);
+			_deleteButton.setBackgroundResource(R.drawable.view_style_slant);
 		}
 		else if(_sportType.equals("hockey")){
 			_db = new HockeyDatabaseHelper(getApplicationContext());
+			findViewById(R.id.chooseTeamActivity).setBackgroundResource(R.drawable.background_hockey);
+			_addEditTeam.setBackgroundResource(R.drawable.view_style_gradiant);
+			_deleteButton.setBackgroundResource(R.drawable.view_style_gradiant);
 		}
 		else if(_sportType.equals("soccer")){
 			_db = new SoccerDatabaseHelper(getApplicationContext());
+			findViewById(R.id.chooseTeamActivity).setBackgroundResource(R.drawable.background_soccer);
+			_addEditTeam.setBackgroundResource(R.drawable.view_style_slant);
+			_deleteButton.setBackgroundResource(R.drawable.view_style_slant);
 		}
 		else if(_sportType.equals("football")){
 			_db = new FootballDatabaseHelper(getApplicationContext());
+			_addEditTeam.setBackgroundResource(R.drawable.view_style_slant);
+			_deleteButton.setBackgroundResource(R.drawable.view_style_slant);
 		}
-		_teamSelectTitle = (TextView) findViewById(R.id.team_selection_title);							//getting the view of some features implemented in xml
+		else{ //should never get here anyways
+			_addEditTeam.setBackgroundResource(R.drawable.view_style_slant);
+			_deleteButton.setBackgroundResource(R.drawable.view_style_slant);
+		}
+		
+		_teamSelectTitle = (TextView) findViewById(R.id.team_selection_title);
 		_listOfTeams = (LinearLayout) findViewById (R.id.teamListLayout);
-		_deleteButton = (Button) findViewById (R.id.deleteTeamButton);
 		
 		//load teams from database (maybe put it catch for empty database?
 		loadTeams();
-
 	}	
 	
 	//when back button is hit to return to this page (restart it)
@@ -91,7 +108,7 @@ public class ChooseTeamActivity extends Activity{
 		_deleteButton.setEnabled(true);																	//reset the delete button
 		for(int i=0; i < _listOfTeams.getChildCount(); i++){											//refresh all items in the linear layout
 			TextView newItem = ((TextView)_listOfTeams.getChildAt(i));	
-			newItem.setBackgroundColor(getResources().getColor(R.color.white));
+			newItem.setBackgroundResource(R.drawable.view_style_plain_long);
 			newItem.setTextColor(getResources().getColor(R.color.black));
 		}
 	}
@@ -187,7 +204,7 @@ public class ChooseTeamActivity extends Activity{
 						confirmTeams(textView);																	//call confirmTeam method to got to next activity
 					}
 					else{																						//basically, here, we're cancelling our selection
-						textView.setBackgroundColor(getResources().getColor(R.color.white));
+						textView.setBackgroundResource(R.drawable.view_style_plain_long);
 						textView.setTextColor(getResources().getColor(R.color.black));
 						_teamSelectTitle.setText(getResources().getString(R.string.home_team_select_title)); 	//back to selecting home team
 						_teams[0] = null;																		//set first team (home team) to null
@@ -233,7 +250,7 @@ public class ChooseTeamActivity extends Activity{
 		confirmDialog.setNegativeButton("No", new DialogInterface.OnClickListener(){							//the negative no button		
 			@Override
 			public void onClick(DialogInterface arg0, int arg1) {							
-				tv.setBackgroundColor(getResources().getColor(R.color.white));									//undo the selection of the second (away) team
+				tv.setBackgroundResource(R.drawable.view_style_plain_long);									//undo the selection of the second (away) team
 				tv.setTextColor(getResources().getColor(R.color.black));
 				_teams[1] = null;
 			}
@@ -247,13 +264,13 @@ public class ChooseTeamActivity extends Activity{
 		textView.setText(teamName);																			//here, we're dynamically programming them in Java
 		textView.setPadding(5,5,5,5);
 		textView.setTextSize(24);
+		textView.setBackgroundResource(R.drawable.view_style_plain_long);
 		return textView;
 	}
 
 	//deleting a team from the linear layout we called "listOfTeams"
 	public void deleteATeam(View view){
-		if(_listOfTeams.getChildCount() > 0){																		//as long as we have items to delete, then we can use this
-			
+		if(_listOfTeams.getChildCount() > 0){	
 			_teamSelectTitle.setText(getResources().getString(R.string.delete_team_title));
 			_setDelete = true;											
 		}
