@@ -1,6 +1,12 @@
 package com.seniordesign.ultimatescorecard;
 
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,11 +30,15 @@ import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.widget.Button;
 
 //this class refers to the main (opening screen)
@@ -52,25 +62,32 @@ public class MainActivity extends Activity{
 		_basketballButton = (Button) findViewById(R.id.basketballButton);									//referring to the basketball button
 		_basketballButton.setBackgroundResource(R.drawable.view_style_plain_short);
 		_basketballButton.setOnClickListener(basketballButtonListener);										//setting a click listener for the button
+		_basketballButton.setOnTouchListener(shortButtonTouchListener);
 		
 		_footballButton = (Button) findViewById(R.id.footballButton);										//referring to the football button
 		_footballButton.setBackgroundResource(R.drawable.view_style_plain_short);
 		_footballButton.setOnClickListener(footballButtonListener);											//setting a click listener for the button
-	
+		_footballButton.setOnTouchListener(shortButtonTouchListener);
+		
 		_hockeyButton = (Button) findViewById(R.id.hockeyButton);											//referring to the baseball button
 		_hockeyButton.setBackgroundResource(R.drawable.view_style_plain_short);
 		_hockeyButton.setOnClickListener(hockeyButtonListener);												//setting a click listener for the button
+		_hockeyButton.setOnTouchListener(shortButtonTouchListener);
 		
 		_soccerButton = (Button) findViewById(R.id.soccerButton);											//referring to the soccer button
 		_soccerButton.setBackgroundResource(R.drawable.view_style_plain_short);
 		_soccerButton.setOnClickListener(soccerButtonListener);												//setting a click listener for the button
-	
+		_soccerButton.setOnTouchListener(shortButtonTouchListener);
+		
 		_viewStatsButton = (Button) findViewById(R.id.viewStatisticButton);
 		_viewStatsButton.setBackgroundResource(R.drawable.view_style_plain_long);
 		_viewStatsButton.setOnClickListener(viewStatsListener);
+		_viewStatsButton.setOnTouchListener(longButtonTouchListener);
 		
 		_optionsButton = (Button) findViewById(R.id.optionButton);
 		_optionsButton.setBackgroundResource(R.drawable.view_style_plain_long);
+		_optionsButton.setOnClickListener(optionListener);
+		_optionsButton.setOnTouchListener(longButtonTouchListener);
 		
 		//databases
 		_basketball_db = new BasketballDatabaseHelper(getApplicationContext());
@@ -787,7 +804,7 @@ public class MainActivity extends Activity{
 	// click listener for basketball button
 	public OnClickListener basketballButtonListener = new OnClickListener(){
 		@Override
-		public void onClick(View view) {																	//on click
+		public void onClick(View view) {
 			Intent intent = new Intent(getApplicationContext(), ChooseTeamActivity.class);					//create new intent (you have intentions to do something)
 			intent.putExtra(StaticFinalVars.SPORT_TYPE, "basketball");
 			startActivity(intent);																			//execute the intent
@@ -821,6 +838,38 @@ public class MainActivity extends Activity{
 			Intent intent = new Intent(getApplicationContext(), ChooseTeamActivity.class);					//create new intent (you have intentions to do something)
 			intent.putExtra(StaticFinalVars.SPORT_TYPE, "soccer");
 			startActivity(intent);																
+		}
+	};
+	
+	//touch listener for short buttons - recoloring when clicked
+	public OnTouchListener shortButtonTouchListener = new OnTouchListener(){
+		@Override
+		public boolean onTouch(View view, MotionEvent event) {
+			if(event.getAction() == MotionEvent.ACTION_DOWN){
+				view.setBackgroundResource(R.drawable.view_style_plain_short_clicked);
+				((Button)view).setTextColor(getResources().getColor(R.color.white));		
+			}
+			else if(event.getAction() == MotionEvent.ACTION_UP){
+				view.setBackgroundResource(R.drawable.view_style_plain_short);
+				((Button)view).setTextColor(getResources().getColor(R.color.black));	
+			}
+			return false;
+		}
+	};
+	
+	//touch listener for long buttons - recoloring when clicked
+	public OnTouchListener longButtonTouchListener = new OnTouchListener(){
+		@Override
+		public boolean onTouch(View view, MotionEvent event) {
+			if(event.getAction() == MotionEvent.ACTION_DOWN){
+				view.setBackgroundResource(R.drawable.view_style_plain_long_clicked);
+				((Button)view).setTextColor(getResources().getColor(R.color.white));		
+			}
+			else if(event.getAction() == MotionEvent.ACTION_UP){
+				view.setBackgroundResource(R.drawable.view_style_plain_long);
+				((Button)view).setTextColor(getResources().getColor(R.color.black));	
+			}
+			return false;
 		}
 	};
 	
@@ -860,11 +909,17 @@ public class MainActivity extends Activity{
 				startActivity(intent);																
 			}
 		};
+		
+	public OnClickListener optionListener = new OnClickListener(){
+		@Override
+		public void onClick(View view) {
+			
+		}
+	};
 	
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
 	}
-	
 	
 }

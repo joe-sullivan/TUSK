@@ -19,19 +19,17 @@ import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerDatabaseHelper;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,9 +37,7 @@ import android.widget.Toast;
 //in sync with activity_choose_team.xml
 public class ChooseTeamActivity extends Activity{
 	LinearLayout _listOfTeams;																			//refers to the linear layout where we add the team names
-	Button _addEditTeam, _deleteButton;																				//obviously refers to the delete button
-	private SharedPreferences _teamsEntered;															//this is where we can store some information
-	private Editor _prefEditor;																			//use the preference editor to edit the shared preference
+	Button _addEditTeam, _deleteButton;														//this is where we can store some information
 	private boolean _selectAwayTeam = false;															//false = select Home team, true = select Away team
 	private boolean _setDelete = false;																	//false = we can delete a team, true = we can't delete a team
 	private Teams[] _teams = new Teams[2];																//Array of two Teams, used for passing teams to next activity
@@ -60,13 +56,16 @@ public class ChooseTeamActivity extends Activity{
 		
 		_addEditTeam = (Button) findViewById (R.id.createNewTeam);
 		_deleteButton = (Button) findViewById (R.id.deleteTeamButton);
+		_addEditTeam.setOnTouchListener(longButtonTouchListener);
+		_deleteButton.setOnTouchListener(longButtonTouchListener);
 		
 		//databases
 		if(_sportType.equals("basketball")){
 			_db = new BasketballDatabaseHelper(getApplicationContext());
 			findViewById(R.id.chooseTeamActivity).setBackgroundResource(R.drawable.background_basketball);
-			_addEditTeam.setBackgroundResource(R.drawable.view_style_slant);
+			_addEditTeam.setBackgroundResource(R.drawable.view_style_slant);			
 			_deleteButton.setBackgroundResource(R.drawable.view_style_slant);
+			
 		}
 		else if(_sportType.equals("hockey")){
 			_db = new HockeyDatabaseHelper(getApplicationContext());
@@ -110,6 +109,7 @@ public class ChooseTeamActivity extends Activity{
 			TextView newItem = ((TextView)_listOfTeams.getChildAt(i));	
 			newItem.setBackgroundResource(R.drawable.view_style_plain_long);
 			newItem.setTextColor(getResources().getColor(R.color.black));
+			_addEditTeam.setText(getResources().getString(R.string.create_new_team));
 		}
 	}
 	
@@ -119,23 +119,6 @@ public class ChooseTeamActivity extends Activity{
 		teams = (ArrayList<Teams>) _db.getAllTeams();
 		for(Teams t: teams){
 			this.addNewTeam(t.gettname());
-		}
-	}
-
-	//saving team name in linear layout to the shared preference in phone
-	@SuppressLint("CommitPrefEdits")
-	private void saveTeams(){
-		StringBuilder sb = new StringBuilder();															//building the string to save
-		for(int i=0; i < _listOfTeams.getChildCount(); i++){
-			sb.append(((TextView)_listOfTeams.getChildAt(i)).getText().toString()+",");					//put all the items in the list in one string separated by commas
-		}
-		if(sb.toString().length() > 0){																	//if our list is NOT empty
-			_prefEditor.putString(_sportType+"TeamList", sb.toString());									//put the string in shared preferences
-			_prefEditor.commit();																		//commit the change
-		}
-		else{																							//we no longer have anything in our list
-			_prefEditor.clear();																		//clear saved material in shared preference
-			_prefEditor.commit();																		//commit the change
 		}
 	}
 	
@@ -163,18 +146,24 @@ public class ChooseTeamActivity extends Activity{
 	
 	//actually add a new team (list item) to our view
 	private void addNewTeam(String teamName){
-		final TextView textView = newTextView(teamName);														//creating a new text view giving the string we want it to display (Team Name)
-		textView.setOnClickListener(new OnClickListener(){														//making this text view clickable
+		TextView textView = newTextView(teamName);														//creating a new text view giving the string we want it to display (Team Name)
+		textView.setOnClickListener(addTeamListener());
+		_listOfTeams.addView(textView);																			//add the textView to the linear layout
+	} 
+	
+	//click listener for each of the items (teams) in list
+	private OnClickListener addTeamListener(){
+		OnClickListener addTeamListener = new OnClickListener(){
 			@Override
 			public void onClick(View view) {
-				textView.setBackgroundColor(getResources().getColor(R.color.black));							//change color of background and text when view is clicked
-				textView.setTextColor(getResources().getColor(R.color.white));
+				view.setBackgroundColor(getResources().getColor(R.color.black));							//change color of background and text when view is clicked
+				((TextView)view).setTextColor(getResources().getColor(R.color.white));
 				if(_setDelete){																					//removing the item, we're in delete mode
-					_listOfTeams.removeView(textView);
+					_listOfTeams.removeView(view);
 					
 					Teams curTeam = null;
 					for(Teams t: teams){
-						if(t.gettname().equals(textView.getText())){
+						if(t.gettname().equals(((TextView)view).getText())){
 							curTeam = t;
 							break;
 						}
@@ -186,36 +175,54 @@ public class ChooseTeamActivity extends Activity{
 				}
 				else if(!_selectAwayTeam){																		//we are selecting home team, now change interface to prompt for away team selection
 					for(Teams t: teams){
-						if(t.gettname().equals(textView.getText().toString())){
+						if(t.gettname().equals(((TextView)view).getText().toString())){
 							_teams[0] = t;
 						}
 					}
 					_teamSelectTitle.setText(getResources().getString(R.string.away_team_select_title));
+					_addEditTeam.setText("Edit Selected Team");
 					_selectAwayTeam = true;
 					_deleteButton.setEnabled(false);															//when one team is selected, disable the delete feature
 				}
 				else{																							//not in delete mode, so one team was selected
-					if(!_teams[0].gettname().equals(textView.getText().toString())){	
+					if(!_teams[0].gettname().equals(((TextView)view).getText().toString())){	
 						for(Teams t: teams){
-							if(t.gettname().equals(textView.getText().toString())){
+							if(t.gettname().equals(((TextView)view).getText().toString())){
 								_teams[1] = t;
 							}
 						}												//add the second team to the string array
-						confirmTeams(textView);																	//call confirmTeam method to got to next activity
+						confirmTeams((TextView)view);																	//call confirmTeam method to got to next activity
 					}
 					else{																						//basically, here, we're cancelling our selection
-						textView.setBackgroundResource(R.drawable.view_style_plain_long);
-						textView.setTextColor(getResources().getColor(R.color.black));
+						view.setBackgroundResource(R.drawable.view_style_plain_long);
+						((TextView)view).setTextColor(getResources().getColor(R.color.black));
 						_teamSelectTitle.setText(getResources().getString(R.string.home_team_select_title)); 	//back to selecting home team
+						_addEditTeam.setText(getResources().getString(R.string.create_new_team));
 						_teams[0] = null;																		//set first team (home team) to null
 						_selectAwayTeam = false;																//we're not selecting the away team anymore
 						_deleteButton.setEnabled(true);															//enable the delete button
 					}
 				}
 			}
-		});
-		_listOfTeams.addView(textView);																			//add the textView to the linear layout
-	} 
+			
+		};
+		return addTeamListener;
+	}
+	
+	public OnTouchListener longButtonTouchListener = new OnTouchListener(){
+		@Override
+		public boolean onTouch(View view, MotionEvent event) {
+			if(event.getAction() == MotionEvent.ACTION_DOWN){
+				view.setBackgroundResource(R.drawable.view_style_plain_long_clicked);
+				((Button)view).setTextColor(getResources().getColor(R.color.white));		
+			}
+			else if(event.getAction() == MotionEvent.ACTION_UP){
+				view.setBackgroundResource(R.drawable.view_style_plain_long);
+				((Button)view).setTextColor(getResources().getColor(R.color.black));	
+			}
+			return false;
+		}
+	};
 	
 	//confirm that those are the teams that we want to keep scores for
 	public void confirmTeams(final TextView tv){

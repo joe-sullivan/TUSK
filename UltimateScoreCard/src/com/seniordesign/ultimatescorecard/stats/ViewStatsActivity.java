@@ -1,5 +1,8 @@
 package com.seniordesign.ultimatescorecard.stats;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 import com.seniordesign.ultimatescorecard.R;
@@ -35,14 +38,18 @@ import android.app.Activity;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public class ViewStatsActivity extends Activity{
-	private Button _sportButton, _teamButton, _gameButton, _searchButton;
+	private Button _sportButton, _teamButton, _gameButton, _searchButton, _sendButton;
 	private ArrayList<Teams> _teams = new ArrayList<Teams>();
 	private ArrayList<Games> _games = new ArrayList<Games>();
 	private DatabaseHelper _db;
@@ -64,7 +71,9 @@ public class ViewStatsActivity extends Activity{
 		_gameButton = (Button)findViewById(R.id.choose_game_button);
 		_gameButton.setOnClickListener(selectGameListener);
 		_searchButton = (Button)findViewById(R.id.search_button);
-		_searchButton.setOnClickListener(searchListener);		
+		_searchButton.setOnClickListener(searchListener);	
+		_sendButton = (Button)findViewById(R.id.send_game_button);
+		_sendButton.setOnClickListener(sendListener);
 	}
 	
 	private OnClickListener selectSportListener = new OnClickListener(){
@@ -87,6 +96,7 @@ public class ViewStatsActivity extends Activity{
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					_sportButton.setText(arrayAdapter.getItem(which));
+					changeBackground(arrayAdapter.getItem(which));
 					buttonEnabler(true, false, false);
 					resetButtonText(true, true);
 					dialog.dismiss();
@@ -261,10 +271,59 @@ public class ViewStatsActivity extends Activity{
 		}		
 	};
 	
+	public OnClickListener sendListener = new OnClickListener(){
+		@Override
+		public void onClick(View view) {
+			/*if(isExternalStorageWritable()){
+				File sdCard = Environment.getExternalStorageDirectory();
+				File file = new File(sdCard, "/tempScoreCard.txt");
+				FileOutputStream fos;
+				try {
+					fos = new FileOutputStream(file);
+					OutputStreamWriter osw = new OutputStreamWriter(fos);
+					osw.write("A Debilitating Virus \n");
+					osw.write("A Very Debilitating Virus");
+					osw.flush();
+					osw.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}				
+			  
+				Intent intent = new Intent(Intent.ACTION_SEND);
+				intent.putExtra(Intent.EXTRA_SUBJECT, "Very Important Email");
+				intent.putExtra(Intent.EXTRA_EMAIL, new String[] {"cheung.chen@uconn.edu"});
+				intent.putExtra(Intent.EXTRA_TEXT, "Your computer is now infected with a debilitating virus.");
+				intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(Environment.getExternalStorageDirectory().toString()+"/tempScoreCard.txt")));
+				intent.setType("text/plain");
+				startActivityForResult(Intent.createChooser(intent, "Send Mail"), StaticFinalVars.EMAIL);
+			}*/
+		}
+	};
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data){
+		if(requestCode == StaticFinalVars.EMAIL){
+			File sdCard = Environment.getExternalStorageDirectory();
+			File file = new File(sdCard, "/tempScoreCard.txt");
+            if(file.exists()){
+            	file.delete();  
+            }
+		}
+	}
+	
+	private boolean isExternalStorageWritable(){
+		String state = Environment.getExternalStorageState();
+	    if (Environment.MEDIA_MOUNTED.equals(state)) {
+	        return true;
+	    }
+	    return false;		
+	}
+	
 	private void buttonEnabler(boolean team, boolean game, boolean search){
 		_teamButton.setEnabled(team);
 		_gameButton.setEnabled(game);
 		_searchButton.setEnabled(search);
+		_sendButton.setEnabled(search);
 	}
 	
 	private void resetButtonText(boolean team, boolean game){
@@ -275,45 +334,19 @@ public class ViewStatsActivity extends Activity{
 			_gameButton.setText(getResources().getString(R.string.choose_game));
 		}
 	}
-/*	
-	//fake team depending on type of sport -- erase when database integrated
-	private void fakeTeams(String type){
-		_teams.clear();
-		if(type.equals("Basketball")){
-			_teams.add("San Antonio Spurs");
-			_teams.add("Houston Rockets");
-			_teams.add("Memphis Grizzlies");
-			_teams.add("New Orleans Pelicans");
-			_teams.add("Dallas Mavericks");	
+	
+	private void changeBackground(String sport){
+		if(sport.equals("Basketball")){
+			((LinearLayout)findViewById(R.id.view_stats_background)).setBackgroundResource(R.drawable.background_basketball);
 		}
-		else if(type.equals("Football")){
-			_teams.add("New England Patriots");
-			_teams.add("Dallas Cowboys");
-			_teams.add("New Orlean Saints");
-			_teams.add("Houston Texans");
-			_teams.add("New York Giants");	
+		else if (sport.equals("Football")){
+			((LinearLayout)findViewById(R.id.view_stats_background)).setBackgroundResource(R.drawable.background_football);
 		}
-		else if(type.equals("Hockey")){
-			_teams.add("LA Kings");
-			_teams.add("Dallas Stars");
-			_teams.add("New York Rangers");
-			_teams.add("Boston Bruins");
-			_teams.add("Calgary Flames");	
+		else if (sport.equals("Soccer")){
+			((LinearLayout)findViewById(R.id.view_stats_background)).setBackgroundResource(R.drawable.background_soccer);
 		}
 		else {
-			_teams.add("England");
-			_teams.add("Germany");
-			_teams.add("United States");
-			_teams.add("South Korea");
-			_teams.add("Argentina");	
+			((LinearLayout)findViewById(R.id.view_stats_background)).setBackgroundResource(R.drawable.background_hockey);
 		}
 	}
-	
-	//generate a list of dates for games -- erase when database integrated
-	private void fakeGames(){
-		for(int i=0; i<25; i++){
-			_games.add("Febuary/" +i+ "/2014");
-		}
-	}
-	*/
 }
