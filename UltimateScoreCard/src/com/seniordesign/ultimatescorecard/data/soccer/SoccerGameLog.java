@@ -1,6 +1,5 @@
 package com.seniordesign.ultimatescorecard.data.soccer;
 
-import java.util.ArrayList;
 import com.seniordesign.ultimatescorecard.data.GameLog;
 import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
 import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerDatabaseHelper;
@@ -10,7 +9,6 @@ public class SoccerGameLog extends GameLog{
 	private String _thePlay;
 	
 	public SoccerGameLog(){
-		_gameLog = new ArrayList<String>();
 	}
 	
 	public void shootsAndScores(String scorer, String assist, String time){

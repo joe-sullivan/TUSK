@@ -4,13 +4,10 @@ import java.util.ArrayList;
 
 import com.seniordesign.ultimatescorecard.R;
 import com.seniordesign.ultimatescorecard.data.GameInfo;
-import com.seniordesign.ultimatescorecard.data.hockey.HockeyPlayer;
-import com.seniordesign.ultimatescorecard.data.hockey.HockeyTeam;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
 import com.seniordesign.ultimatescorecard.sqlite.helper.ShotChartCoords;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyDatabaseHelper;
-import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyGameStats;
 import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyGames;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
 
@@ -18,7 +15,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.widget.TextView;
 
 public class HockeyIndividualStatActivity extends FragmentActivity{
 
@@ -34,6 +30,7 @@ public class HockeyIndividualStatActivity extends FragmentActivity{
 	protected ArrayList<ShotChartCoords> _shots;
 	protected GameInfo _gameInfo;
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

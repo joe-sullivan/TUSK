@@ -12,7 +12,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -89,22 +88,13 @@ public class SoccerIndividualShotChartFragment extends Fragment{
 	}
 	
 	private void addCourtImage(){
-		/*
-		ImageView grassField = new ImageView(getActivity());
-		grassField.setImageDrawable(getResources().getDrawable(R.drawable.grassfield));
-		ImageView pitchLines = new ImageView(getActivity());
-		pitchLines.setImageDrawable(getResources().getDrawable(R.drawable.soccerfield));
-		*/
+		
 		_shotIcons = new RelativeLayout(getActivity());
 		RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams
 				(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.MATCH_PARENT);
 		_shotIcons.setLayoutParams(rp);
 		
-		//((FrameLayout)getView().findViewById(R.id.shotChartFrame)).addView(grassField);
-		//((FrameLayout)getView().findViewById(R.id.shotChartFrame)).addView(pitchLines);
-		((RelativeLayout)getView().findViewById(R.id.interactiveFrame)).addView(_shotIcons);
-		//((RelativeLayout)getView().findViewById(R.id.shotChart)).setBackgroundColor(0xFF007A10);
-	
+		((RelativeLayout)getView().findViewById(R.id.interactiveFrame)).addView(_shotIcons);	
 	}
 	
 	private void displayShots(boolean hitMiss, int[] shotLocation){

@@ -1,7 +1,5 @@
 package com.seniordesign.ultimatescorecard.data.hockey;
 
-import java.util.ArrayList;
-
 import com.seniordesign.ultimatescorecard.data.GameLog;
 import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
 import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyDatabaseHelper;
@@ -11,7 +9,6 @@ public class HockeyGameLog extends GameLog{
 	private String _thePlay;
 	
 	public HockeyGameLog(){
-		_gameLog = new ArrayList<String>();
 	}
 	
 	public void shootsAndScores(String scorer, String assist1, String assist2, String time){

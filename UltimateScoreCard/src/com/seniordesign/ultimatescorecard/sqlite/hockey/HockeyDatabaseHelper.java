@@ -5,11 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.seniordesign.ultimatescorecard.data.hockey.HockeyPlayer;
-import com.seniordesign.ultimatescorecard.sqlite.DatabaseHelper;
+import com.seniordesign.ultimatescorecard.sqlite.helper.DatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
-import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
-import com.seniordesign.ultimatescorecard.sqlite.helper.ShotChartCoords;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 
 import android.content.ContentValues;
@@ -17,7 +15,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 public class HockeyDatabaseHelper extends DatabaseHelper{
@@ -32,26 +29,9 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
     private static final String DATABASE_NAME = "HockeyStats";
 	
     //Table Names
-    private static final String TABLE_GAMES = "games";
     private static final String TABLE_HOCKEY_GAME_STATS = "hockey_game_stats";
-    private static final String TABLE_PLAYERS = "players";
-    private static final String TABLE_TEAMS = "teams";
-    private static final String TABLE_PLAY_BY_PLAY = "play_by_play";
-    private static final String TABLE_SHOT_CHART_COORDS = "shot_chart_coords";
 
-
-    //Common Column Names
-    private static final String KEY_G_ID = "g_id";
-    private static final String KEY_P_ID = "p_id";
-    private static final String KEY_T_ID = "t_id";
-    private static final String KEY_A_ID = "a_id";
-    private static final String KEY_PERIOD = "period";
-    
-    //GAMES Table - column names
-    private static final String KEY_HOME_ID = "home_id";
-    private static final String KEY_AWAY_ID = "away_id";
-    private static final String KEY_DATE = "date";
-    
+    //GAMES Table - column names  
     private static final String KEY_HOME_SOG = "home_sog";
     private static final String KEY_HOME_GOALS = "home_goals";
     private static final String KEY_HOME_SAVES = "home_saves";
@@ -83,28 +63,6 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
     private static final String KEY_PEN_MAJOR = "pen_major";
     private static final String KEY_PEN_MISCONDUCT = "pen_misconduct";
 
-    //PLAYERS Table - column names
-    private static final String KEY_P_NAME = "p_name";
-    private static final String KEY_P_NUM = "p_num";
-
-    //TEAMS Table - column names
-    private static final String KEY_T_NAME = "t_name";
-    private static final String KEY_ABBV = "abbv";
-    private static final String KEY_C_NAME = "c_name";
-    private static final String KEY_SPORT = "sport";
-    
-    
-    //PLAY_BY_PLAY Table - column names
-    private static final String KEY_ACTION = "action";
-    private static final String KEY_TIME = "time";
-    private static final String KEY_HOME_SCORE = "home_score";
-    private static final String KEY_AWAY_SCORE = "away_score";
-
-    //SHOT_CHART_COORDS Table - column names
-    private static final String KEY_X = "x";
-    private static final String KEY_Y = "y";
-    private static final String KEY_MADE = "made";
-
     //Table Create Statements
     //GAMES table create statement
     private static final String CREATE_TABLE_GAMES = "CREATE TABLE IF NOT EXISTS " + TABLE_GAMES 
@@ -129,31 +87,6 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
     		+ KEY_AST + " INTEGER, " + KEY_PEN_MINOR + " INTEGER, " + KEY_PEN_MAJOR + " INTEGER, "
     		+ KEY_PEN_MISCONDUCT + " INTEGER, "+ KEY_SAVES + " INTEGER, " + KEY_GOALS_ALLOWED + " INTEGER"
     		+ ")"; 
-    
-    //PLAYERS table create statement
-    private static final String CREATE_TABLE_PLAYERS = "CREATE TABLE IF NOT EXISTS " + TABLE_PLAYERS 
-    		+ "(" + KEY_P_ID + " INTEGER PRIMARY KEY," 
-    		+ KEY_T_ID + " INTEGER, "
-    		// + FOREIGN KEY REFERENCES " + TABLE_TEAMS + "(" + KEY_T_ID + ")," 
-    		+ KEY_P_NAME + " VARCHAR(45)," + KEY_P_NUM + " INTEGER" + ")"; 
-    
-    //TEAMS table create statement
-    private static final String CREATE_TABLE_TEAMS = "CREATE TABLE IF NOT EXISTS " + TABLE_TEAMS 
-    		+ "(" + KEY_T_ID + " INTEGER PRIMARY KEY," + KEY_T_NAME + " VARCHAR(45)," 
-    		+ KEY_ABBV + " VARCHAR(45)," + KEY_C_NAME + " VARCHAR(45),"+ KEY_SPORT + " VARCHAR(45)" + ")"; 
-    
-    //PLAY_BY_PLAY table create statement
-    private static final String CREATE_TABLE_PLAY_BY_PLAY = "CREATE TABLE IF NOT EXISTS " + TABLE_PLAY_BY_PLAY 
-    		+ "(" + KEY_A_ID + " INTEGER PRIMARY KEY," + KEY_G_ID + " INTEGER," 
-    		+ KEY_ACTION + " VARCHAR(45)," + KEY_TIME + " VARCHAR(45)," + KEY_PERIOD + " VARCHAR(10)," +  KEY_HOME_SCORE + " INTEGER, " 
-    		+ KEY_AWAY_SCORE + " INTEGER" + ")";
-    
-    //SHOT_CHART_COORDS table create statement
-    private static final String CREATE_TABLE_SHOT_CHART_COORDS = "CREATE TABLE IF NOT EXISTS " + TABLE_SHOT_CHART_COORDS 
-    		+ "(" + KEY_SHOT_ID + " INTEGER PRIMARY KEY," + KEY_G_ID + " INTEGER," 
-    		+ KEY_P_ID + " INTEGER," + KEY_T_ID + " INTEGER,"
-    		+ KEY_X + " INTEGER," + KEY_Y + " INTEGER," 
-    		+ KEY_MADE + " VARCHAR(4)" + ")";
     
     public HockeyDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

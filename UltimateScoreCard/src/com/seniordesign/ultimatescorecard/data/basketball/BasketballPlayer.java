@@ -1,29 +1,12 @@
 package com.seniordesign.ultimatescorecard.data.basketball;
 
 import java.io.Serializable;
-
-import android.util.Log;
-
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
 
 public class BasketballPlayer extends Players implements Serializable{
 	private static final long serialVersionUID = 8138078955965364135L;
 	private long g_id;
-	private int _threePtsMade = 0;
-	private int _threePtsMiss = 0;
-	private int _twoPtsMade = 0;
-	private int _twoPtsMiss = 0;
-	private int _freeThrowMade = 0;
-	private int _freeThrowMiss = 0;
-	private int _rebounds = 0;
-	private int _assists = 0;
-	private int _steals = 0;
-	private int _blocks = 0;
-	private int _turnovers = 0;
-	private int _fouls = 0;
-	private int _techFouls = 0;
-	private int _flagFouls = 0;
 	private BasketballDatabaseHelper db;
 	private boolean home;
 	
@@ -50,50 +33,7 @@ public class BasketballPlayer extends Players implements Serializable{
 		this.db = db;
 	}
 	
-	//getting values about a player
-	public int getRebounds(){
-		return _rebounds;
-	}
-	public int getAssists(){
-		return _assists;
-	}
-	public int getSteals(){
-		return _steals;
-	}
-	public int getBlocks(){
-		return _blocks;
-	}
-	public int getTurnovers(){
-		return _turnovers;
-	}
-	public int getFTMade(){
-		return _freeThrowMade;
-	}
-	public int getFTMiss(){
-		return _freeThrowMiss;
-	}
-	public int getThreePtsMade(){
-		return _threePtsMade;
-	}
-	public int getThreePtsMiss(){
-		return _threePtsMiss;
-	}
-	public int getTwoPtsMade(){
-		return _twoPtsMade;
-	}
-	public int getTwoPtsMiss(){
-		return _twoPtsMiss;
-	}
-	public int getFouls(){
-		return _fouls;
-	}
-	public int getTechFouls(){
-		return _techFouls;
-	}
-	public int getFlagFouls(){
-		return _flagFouls;
-	}
-	
+
 	//changing the values in a game
 	public void madeThree(){
 		db.addStats(g_id, p_id, "pts", 3);
@@ -281,43 +221,4 @@ public class BasketballPlayer extends Players implements Serializable{
 	public int pointScored(){
 		return 	db.getPlayerGameStat(g_id, p_id, "pts");
 	}
-	
-	
-	
-	
-/*
-	public int pointScored(){
-		return (_threePtsMade*3) + (_twoPtsMade*2) + _freeThrowMade;
-	}
-	
-	public int fieldGoalMade(){
-		return _threePtsMade + _twoPtsMade;
-	}
-	
-	public int fieldGoalAttempted(){
-		return _threePtsMade + _twoPtsMade + _threePtsMiss + _twoPtsMiss;
-	}
-	
-	public int freeThrowAttempted(){
-		return _freeThrowMade + _freeThrowMiss;
-	}
-
-	public double freeThrowPCT(){
-		if(freeThrowAttempted() > 0){
-			return (double) _freeThrowMade / freeThrowAttempted();
-		}
-		else{
-			return 0.0;
-		}
-	}
-	
-	public double fieldGoalPCT(){
-		if(fieldGoalAttempted() > 0){
-			return (double) fieldGoalMade() / fieldGoalAttempted();
-		}
-		else{
-			return 0.0;
-		}
-	}
-	*/
 }

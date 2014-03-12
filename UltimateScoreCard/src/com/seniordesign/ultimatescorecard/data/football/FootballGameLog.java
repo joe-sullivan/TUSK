@@ -1,8 +1,8 @@
 package com.seniordesign.ultimatescorecard.data.football;
 
-import java.util.ArrayList;
-
 import com.seniordesign.ultimatescorecard.data.GameLog;
+import com.seniordesign.ultimatescorecard.sqlite.football.FootballDatabaseHelper;
+import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
 
 import android.util.Log;
 
@@ -12,7 +12,6 @@ public class FootballGameLog extends GameLog{
 	private String _eventType;
 	
 	public FootballGameLog(){
-		_gameLog = new ArrayList<String>();
 	}
 	
 	public void setPlayer1(String player, String event){
@@ -34,5 +33,17 @@ public class FootballGameLog extends GameLog{
 			_thePlay = yards + " yards return for " +_players[0];
 		}
 		Log.e("The Play", _thePlay);
+	}
+	
+	public void recordActivity(String time){
+		if(time.equals("Restart Clock")){
+			PlayByPlay pbp = new PlayByPlay(g_id, _thePlay + ".", time, null, 0, 0);
+			((FootballDatabaseHelper) _db).createPlayByPlay(pbp);
+		}
+		else{
+			_timeStamp = time;
+			PlayByPlay pbp = new PlayByPlay(g_id,"(" + _timeStamp + ")" + _thePlay + ".", time, null, 0, 0);
+			((FootballDatabaseHelper) _db).createPlayByPlay(pbp);
+		}
 	}
 }

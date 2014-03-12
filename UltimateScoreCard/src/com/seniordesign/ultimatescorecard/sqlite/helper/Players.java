@@ -2,8 +2,6 @@ package com.seniordesign.ultimatescorecard.sqlite.helper;
 
 import java.io.Serializable;
 
-import android.database.sqlite.SQLiteOpenHelper;
-
 public class Players implements Serializable{
 	/**
 	 * 

@@ -1,7 +1,5 @@
 package com.seniordesign.ultimatescorecard.data.basketball;
 
-import java.util.ArrayList;
-
 import com.seniordesign.ultimatescorecard.data.GameLog;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
@@ -10,7 +8,6 @@ public class BasketballGameLog extends GameLog {;
 	private static final long serialVersionUID = 1439589895554308837L;
 	
 	public BasketballGameLog(){
-		_gameLog = new ArrayList<String>();
 	}
 	
 	public void shooting(int value, boolean madeMiss, String player){

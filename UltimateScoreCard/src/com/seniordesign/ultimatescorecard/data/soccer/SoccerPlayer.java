@@ -3,21 +3,11 @@ package com.seniordesign.ultimatescorecard.data.soccer;
 import java.io.Serializable;
 
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
-import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerDatabaseHelper;
 
 public class SoccerPlayer extends Players implements Serializable{
 	private static final long serialVersionUID = -2038938909025112867L;
 	private long g_id;
-	private int _goals;
-	private int _shotMissed;
-	private int _sog;
-	private int _assist;
-	private int _saves;
-	private int _goals_allowed;
-	private int _fouls;
-	private int _yellowCard;
-	private int _redCard;
 	private SoccerDatabaseHelper db;
 	private boolean home;
 	
@@ -41,31 +31,6 @@ public class SoccerPlayer extends Players implements Serializable{
 	public void setdb(SoccerDatabaseHelper db){
 		this.db = db;
 	}	
-
-	public int getGoals(){
-		return _goals;
-	}
-	public int getShotMissed(){
-		return _shotMissed;
-	}
-	public int getAssists(){
-		return _assist;
-	}	
-	public int getSaves(){
-		return _saves;
-	}
-	public int getGoalsAllowed(){
-		return _goals_allowed;
-	}	
-	public int getFouls(){
-		return _fouls;
-	}
-	public int getYellow(){
-		return _yellowCard;
-	}
-	public int getRed(){
-		return _redCard;
-	}
 	
 	public void scoreGoal(){
 		db.addStats(g_id, p_id, "shots", 1);
@@ -98,9 +63,7 @@ public class SoccerPlayer extends Players implements Serializable{
 		}
 	}
 	
-	public void shotMissed(){
-		int i = db.addStats(g_id, p_id, "shots", 1);
-		
+	public void shotMissed(){		
 		if(home){
 			db.addTeamStats(g_id, "home_shots", 1);
 		}

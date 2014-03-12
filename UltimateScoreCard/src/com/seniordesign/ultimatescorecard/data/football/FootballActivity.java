@@ -1,11 +1,19 @@
 package com.seniordesign.ultimatescorecard.data.football;
 
+import java.util.ArrayList;
+
 import com.seniordesign.ultimatescorecard.R;
 import com.seniordesign.ultimatescorecard.R.color;
 import com.seniordesign.ultimatescorecard.R.drawable;
 import com.seniordesign.ultimatescorecard.R.id;
 import com.seniordesign.ultimatescorecard.R.layout;
 import com.seniordesign.ultimatescorecard.clock.GameClock;
+import com.seniordesign.ultimatescorecard.data.GameInfo;
+import com.seniordesign.ultimatescorecard.data.basketball.BasketballGameTime;
+import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
+import com.seniordesign.ultimatescorecard.sqlite.football.FootballDatabaseHelper;
+import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
+import com.seniordesign.ultimatescorecard.sqlite.helper.ShotChartCoords;
 import com.seniordesign.ultimatescorecard.view.FlyOutContainer;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
 
@@ -43,18 +51,39 @@ public class FootballActivity extends Activity{
 	ScrollView _fieldScroll;
 	LinearLayout _fieldOfPlay;
 	
+	private FootballDatabaseHelper _football_db;
+	
 	private GameClock _gameClock;
 	private FootballGameTime _gti;
-	private FootballGameLog _gameLog;
+	private FootballGameLog _gameLog = new FootballGameLog();
 	private boolean _fieldActive = false;
+	private ArrayList<PlayByPlay> _playbyplay;
+	private GameInfo _gameInfo;
+	private long g_id;
+	private ArrayList<ShotChartCoords> _homeShots, _awayShots;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		_root = (FlyOutContainer)this.getLayoutInflater().inflate(R.layout.activity_football, null);													
-		_gti = (FootballGameTime) getIntent().getSerializableExtra(StaticFinalVars.GAME_INFO); 	
+		//databases
+		_football_db = new FootballDatabaseHelper(getApplicationContext());
+		
+		_root = (FlyOutContainer)this.getLayoutInflater().inflate(R.layout.activity_football, null);	//root is modified view with fly-out container														
+		_gti = (FootballGameTime) getIntent().getSerializableExtra(StaticFinalVars.GAME_TIME); 					//get our team informations class
+		
 		_gameLog = new FootballGameLog();
 		setContentView(_root);
+		
+		//databases
+		_gti.setContext(this);
+		g_id = _gti.createTeams();
+		_gameLog.setdb(_football_db);
+		_gameLog.setgid(g_id);
+		_gameInfo = _gti.getGameInfo();
+		_playbyplay = new ArrayList<PlayByPlay>();
+				
+
 		
 		_awayTextView = (TextView)findViewById(R.id.awayTextView);
 		_awayTextView.setText(_gti.getAwayAbbr());					

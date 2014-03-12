@@ -1,24 +1,14 @@
 package com.seniordesign.ultimatescorecard.stats;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 import com.seniordesign.ultimatescorecard.R;
 import com.seniordesign.ultimatescorecard.data.GameInfo;
-import com.seniordesign.ultimatescorecard.data.basketball.BasketballGameLog;
-import com.seniordesign.ultimatescorecard.data.basketball.BasketballGameTime;
-import com.seniordesign.ultimatescorecard.data.football.FootballGameLog;
-import com.seniordesign.ultimatescorecard.data.football.FootballGameTime;
-import com.seniordesign.ultimatescorecard.data.hockey.HockeyGameLog;
-import com.seniordesign.ultimatescorecard.data.hockey.HockeyGameTime;
-import com.seniordesign.ultimatescorecard.data.soccer.SoccerGameLog;
-import com.seniordesign.ultimatescorecard.data.soccer.SoccerGameTime;
-import com.seniordesign.ultimatescorecard.sqlite.DatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballGames;
 import com.seniordesign.ultimatescorecard.sqlite.football.FootballDatabaseHelper;
+import com.seniordesign.ultimatescorecard.sqlite.helper.DatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
 import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
@@ -38,7 +28,6 @@ import android.app.Activity;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
@@ -46,7 +35,6 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 public class ViewStatsActivity extends Activity{
 	private Button _sportButton, _teamButton, _gameButton, _searchButton, _sendButton;
@@ -60,9 +48,6 @@ public class ViewStatsActivity extends Activity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);	
 		setContentView(R.layout.activity_view_stats);
-		
-		//generate a list of dates for games -- erase when database integrated
-		//fakeGames();
 		
 		_sportButton = (Button)findViewById(R.id.choose_sport_button);
 		_sportButton.setOnClickListener(selectSportListener);
@@ -112,10 +97,7 @@ public class ViewStatsActivity extends Activity{
 			Builder builder = new Builder(ViewStatsActivity.this);
 			builder.setTitle("Select Sport");
 			final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String> (ViewStatsActivity.this, android.R.layout.select_dialog_singlechoice);
-			
-			//fake team depending on type of sport -- erase when database integrated
-			//fakeTeams(_sportButton.getText().toString());
-			
+	
 			//databases
 			_sport = _sportButton.getText().toString();
 			if(_sport.equals("Basketball")){
@@ -311,6 +293,7 @@ public class ViewStatsActivity extends Activity{
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	private boolean isExternalStorageWritable(){
 		String state = Environment.getExternalStorageState();
 	    if (Environment.MEDIA_MOUNTED.equals(state)) {

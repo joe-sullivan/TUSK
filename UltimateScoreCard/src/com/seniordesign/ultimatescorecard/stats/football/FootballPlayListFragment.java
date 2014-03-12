@@ -1,7 +1,5 @@
 package com.seniordesign.ultimatescorecard.stats.football;
 
-import java.util.ArrayList;
-
 import com.seniordesign.ultimatescorecard.R;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -27,10 +25,12 @@ public class FootballPlayListFragment extends Fragment{
 	
 	private void addTextViews(){
 		LinearLayout layout = ((LinearLayout) getView().findViewById(R.id.listofPlays));
+		/*
 		ArrayList<String> log = ((FootballStatsActivity) getActivity()).getGameLog().getGameLog();
 		for(int i=0; i<log.size(); i++){
 			layout.addView(newTextView(log.get(i)));	
 		}
+		*/
 	}
 	
 	private TextView newTextView(String teamName){

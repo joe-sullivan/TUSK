@@ -30,6 +30,7 @@ public class SoccerIndividualStatActivity extends FragmentActivity{
 	protected ArrayList<ShotChartCoords> _shots;
 	protected GameInfo _gameInfo;
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -52,7 +53,6 @@ public class SoccerIndividualStatActivity extends FragmentActivity{
         _pagerAdapter = new SoccerIndividualStatPageAdapter(getSupportFragmentManager());
         _pager.setAdapter(_pagerAdapter);
         _pager.setCurrentItem(value);
-		
 		
 	}
 

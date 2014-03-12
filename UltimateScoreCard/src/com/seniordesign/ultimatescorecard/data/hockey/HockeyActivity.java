@@ -4,14 +4,10 @@ import java.util.ArrayList;
 
 import com.seniordesign.ultimatescorecard.R;
 import com.seniordesign.ultimatescorecard.data.GameInfo;
-import com.seniordesign.ultimatescorecard.data.basketball.BasketballGameLog;
-import com.seniordesign.ultimatescorecard.data.basketball.BasketballGameTime;
-import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
 import com.seniordesign.ultimatescorecard.sqlite.helper.ShotChartCoords;
 import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyDatabaseHelper;
 import com.seniordesign.ultimatescorecard.stats.hockey.HockeyStatsActivity;
-import com.seniordesign.ultimatescorecard.substitution.BasketballSubstitutionActivity;
 import com.seniordesign.ultimatescorecard.view.GameClock;
 import com.seniordesign.ultimatescorecard.view.ShotIconAdder;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
@@ -332,17 +328,14 @@ public class HockeyActivity extends Activity{
 				String player = arrayAdapter.getItem(which);
 				if(type.equals("Minor")){
 					_gti.getTeam().getPlayer(player).minorPenalty();
-					_gti.getTeam().getPlayer(player).addPenaltyMins(2);
 					_gameLog.penalty(player, type,_gameClockView.getText().toString());
 				}
 				else if(type.equals("Major")){
 					_gti.getTeam().getPlayer(player).majorPenalty();
-					_gti.getTeam().getPlayer(player).addPenaltyMins(5);
 					_gameLog.penalty(player, type,_gameClockView.getText().toString());
 				}
 				else if(type.equals("Misconduct")){
 					_gti.getTeam().getPlayer(player).misconductPenalty();
-					_gti.getTeam().getPlayer(player).addPenaltyMins(10);
 					_gameLog.penalty(player, type,_gameClockView.getText().toString());
 				}
 				else if(type.equals("Penalty")){

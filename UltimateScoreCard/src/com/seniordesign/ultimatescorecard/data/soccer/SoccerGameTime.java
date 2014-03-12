@@ -22,7 +22,6 @@ public class SoccerGameTime extends GameTime {
 	private long g_id;
 	private Context _context;
 	private Teams _home, _away;
-	private ArrayList<SoccerPlayer> _homeTeamPlayers, _awayTeamPlayers;
 	private long _home_t_id, _away_t_id;
 	public GameInfo _gameInfo;
 	private ArrayList<Players> _homeTeamPlayersPull, _awayTeamPlayersPull;
@@ -91,9 +90,6 @@ public class SoccerGameTime extends GameTime {
 	
 	public void setGameInfo(GameInfo gameInfo){
 		_gameInfo = gameInfo;
-		//_homeTeam.setTeamOrder(_gameInfo.getHomePlayers());
-		//_awayTeam.setTeamOrder(_gameInfo.getAwayPlayers());
-
 	}
 	
 	public SoccerPlayer getPlayer(String whichTeam, int player){

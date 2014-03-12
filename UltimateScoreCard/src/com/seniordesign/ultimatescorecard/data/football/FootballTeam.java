@@ -3,19 +3,57 @@ package com.seniordesign.ultimatescorecard.data.football;
 import java.util.ArrayList;
 
 import com.seniordesign.ultimatescorecard.data.Team;
+import com.seniordesign.ultimatescorecard.data.basketball.BasketballPlayer;
+import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
+import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 
 public class FootballTeam extends Team{
 	private static final long serialVersionUID = -4547516998953968383L;
 	private ArrayList<FootballPlayer> players = new ArrayList<FootballPlayer>();
+	private Teams _team;
+	private long _t_id, _g_id;
 	
 	public FootballTeam (String teamName, boolean homeTeam){
 		super(teamName,homeTeam);
 		_homeTeam = homeTeam;
-		_teamName = teamName;
-		setTeamAbbr(teamName);
-		setTeamPlayers(teamName);	
+		_teamName = teamName;	
 	}
 	
+	public void setTeamAbbr(){
+		//if(_team.getabbv()!=null){
+			_teamAbbr = _team.getabbv();
+		/*
+		}
+		else {
+			if(_homeTeam){
+				_teamAbbr = "Home";
+			}
+			else{
+				_teamAbbr = "Away";
+			}
+		}
+		*/
+	}
+	
+	public void setgid(long g_id){
+		_g_id = g_id;
+		setTeamPlayers(players);	
+	}
+	
+	public void setData(long g_id, Teams team, ArrayList<FootballPlayer> players){
+		_g_id = g_id;
+		_team = team;
+		this.players = players;
+		setTeamPlayers(players);
+	}
+	
+	private void setTeamPlayers(ArrayList<FootballPlayer> players){
+		//use string to get t_id, then get players on that team
+		for(FootballPlayer p: players){
+			p.setgid(_g_id);
+		}
+	}
+/*	
 	private void setTeamAbbr(String team){
 		if(team.equals("New England Patriots")){
 			_teamAbbr = "NE";
@@ -117,7 +155,7 @@ public class FootballTeam extends Team{
 			players.add(new FootballPlayer("Player 10"));
 		}
 	}
-	
+*/	
 	public FootballPlayer getPlayer(int player){
 		return players.get(player);
 	}
@@ -157,4 +195,20 @@ public class FootballTeam extends Team{
 	public int numberPlayers() {
 		return players.size();
 	}	
+	
+	public long gettid(){
+		return _t_id;
+	}
+	
+	public void setTeamOrder(ArrayList<Players> ps){
+		ArrayList<FootballPlayer> temp = new ArrayList<FootballPlayer>();
+		for(Players p: ps){
+			for(FootballPlayer p2: players){
+				if(p.getpname().equals(p2.getpname())){
+					temp.add(p2);
+				}
+			}
+		}
+		players = temp;
+	}
 }

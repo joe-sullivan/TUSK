@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import com.seniordesign.ultimatescorecard.R;
 import com.seniordesign.ultimatescorecard.data.GameInfo;
-import com.seniordesign.ultimatescorecard.data.hockey.HockeyGameLog;
-import com.seniordesign.ultimatescorecard.data.hockey.HockeyGameTime;
 import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
 import com.seniordesign.ultimatescorecard.sqlite.helper.ShotChartCoords;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
@@ -22,6 +20,7 @@ public class HockeyStatsActivity extends FragmentActivity{
 	private ArrayList<PlayByPlay> _gameLog;
 	private ArrayList<ShotChartCoords> _homeShots, _awayShots;
 
+	@SuppressWarnings("unchecked")
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

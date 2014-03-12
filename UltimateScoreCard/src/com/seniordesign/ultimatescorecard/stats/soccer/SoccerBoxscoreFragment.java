@@ -2,7 +2,6 @@ package com.seniordesign.ultimatescorecard.stats.soccer;
 
 import com.seniordesign.ultimatescorecard.R;
 import com.seniordesign.ultimatescorecard.data.GameInfo;
-import com.seniordesign.ultimatescorecard.data.soccer.SoccerTeam;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
 import com.seniordesign.ultimatescorecard.stats.soccer.SoccerIndividualStatActivity;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
@@ -29,9 +28,7 @@ public class SoccerBoxscoreFragment extends Fragment{
 	@Override
 	public void onResume() {
 		super.onResume();
-		
-		GameInfo info = ((SoccerStatsActivity) getActivity()).getGameInfo();
-		
+				
 		((TextView)getView().findViewById(R.id.homeTeamStatText)).setText(((SoccerStatsActivity) getActivity()).getGameInfo().getHomeTeam().gettname());
 		((TextView)getView().findViewById(R.id.awayTeamStatText)).setText(((SoccerStatsActivity) getActivity()).getGameInfo().getAwayTeam().gettname());
 		
@@ -54,7 +51,6 @@ public class SoccerBoxscoreFragment extends Fragment{
 	private void addTextViews(){
 		LinearLayout layout = ((LinearLayout) getView().findViewById(R.id.playerListLayout));
 		GameInfo _gameInfo = ((SoccerStatsActivity) getActivity()).getGameInfo();
-		SoccerTeam team = null;
 		if(_lookingAtHome){
 			for(Players p: _gameInfo.getHomePlayers()){
 				layout.addView(newTextView(p.getpname()));	

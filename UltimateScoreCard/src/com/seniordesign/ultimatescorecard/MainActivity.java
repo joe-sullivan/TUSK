@@ -1,15 +1,6 @@
 package com.seniordesign.ultimatescorecard;
 
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.seniordesign.ultimatescorecard.data.basketball.BasketballPlayer;
 import com.seniordesign.ultimatescorecard.data.football.FootballPlayer;
 import com.seniordesign.ultimatescorecard.data.hockey.HockeyPlayer;
@@ -30,10 +21,7 @@ import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -99,7 +87,7 @@ public class MainActivity extends Activity{
 		_basketball_db.onCreate(_basketball_db.getWritableDatabase());
 		//_basketball_db.onUpgrade(_basketball_db.getWritableDatabase(),0,0);
 		
-		//_football_db.onCreate(_football_db.getWritableDatabase());
+		_football_db.onCreate(_football_db.getWritableDatabase());
 		//_football_db.onUpgrade(_football_db.getWritableDatabase(),0,0);
 		
 		_soccer_db.onCreate(_soccer_db.getWritableDatabase());
@@ -402,7 +390,7 @@ public class MainActivity extends Activity{
 		long GS17_id = _football_db.createPlayers(GS17);
 		long DN86_id = _football_db.createPlayers(DN86);
 		long ZS82_id = _football_db.createPlayers(ZS82);
-		long JC67_id = _football_db.createPlayers(JC67);
+		long JC67_id = _football_db.createPlayers(JC87);
 		long SR91_id = _football_db.createPlayers(SR91);
 		long CP97_id = _football_db.createPlayers(CP97);
 		long DM27_id = _football_db.createPlayers(DM27);
@@ -448,8 +436,8 @@ public class MainActivity extends Activity{
 		long JC94_id = _football_db.createPlayers(JC94);
 		long CL50_id = _football_db.createPlayers(CL50);
 		long MJ27_id = _football_db.createPlayers(MJ27);
-
-*/	
+*/
+	
 /*		
 		//Test Hockey Teams and players
 		Teams rangers = new Teams("New York Rangers", "NYR", "Alain Vigneault", "Hockey");

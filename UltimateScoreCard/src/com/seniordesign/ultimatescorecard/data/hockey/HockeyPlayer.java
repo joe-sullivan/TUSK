@@ -1,23 +1,12 @@
 package com.seniordesign.ultimatescorecard.data.hockey;
 
 import java.io.Serializable;
-
-import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
 import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyDatabaseHelper;
 
 public class HockeyPlayer extends Players implements Serializable{
 	private static final long serialVersionUID = 5690367601028394271L;
 	private long g_id;
-	private int _goals;
-	private int _shotMissed;
-	private int _sog;
-	private int _assist;
-	private int _saves;
-	private int _minors;
-	private int _majors;
-	private int _misconduct;
-	private int _penaltyMins;
 	private HockeyDatabaseHelper db;
 	private boolean home;
 
@@ -42,34 +31,6 @@ public class HockeyPlayer extends Players implements Serializable{
 	public void setdb(HockeyDatabaseHelper db){
 		this.db = db;
 	}	
-	
-	public int getGoals(){
-		return _goals;
-	}
-	public int getShotMissed(){
-		return _shotMissed;
-	}
-	public int getAssist(){
-		return _assist;
-	}
-	public int getSaves(){
-		return _saves;
-	}
-	public int getMinors(){
-		return _minors;
-	}
-	public int getMajors(){
-		return _majors;
-	}
-	public int getMisconduct(){
-		return _misconduct;
-	}
-	public int getPenaltyMins(){
-		return _penaltyMins;
-	}
-	public void addPenaltyMins(int minutes){
-		_penaltyMins+=minutes;
-	}
 	
 	//databases
 	public void scoreGoal(){

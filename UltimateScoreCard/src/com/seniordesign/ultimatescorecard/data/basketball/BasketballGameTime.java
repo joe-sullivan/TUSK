@@ -24,9 +24,8 @@ public class BasketballGameTime extends GameTime {
 	private long g_id;
 	private Context _context;
 	private Teams _home, _away;
-	private ArrayList<BasketballPlayer> _homeTeamPlayers, _awayTeamPlayers;
 	private long _home_t_id, _away_t_id;
-	public GameInfo _gameInfo;
+	private GameInfo _gameInfo;
 	private ArrayList<Players> _homeTeamPlayersPull, _awayTeamPlayersPull;
 		
 	public BasketballGameTime(Teams home, Teams away){
@@ -94,7 +93,6 @@ public class BasketballGameTime extends GameTime {
 		_gameInfo = gameInfo;
 		_homeTeam.setTeamOrder(_gameInfo.getHomePlayers());
 		_awayTeam.setTeamOrder(_gameInfo.getAwayPlayers());
-
 	}
 	
 	//getting the name of a player given team name and which player 
@@ -158,6 +156,7 @@ public class BasketballGameTime extends GameTime {
 			return ""+ _homeTeam.getScore();
 		}
 	}
+	
 	public String getAwayScoreText(){
 		if(_awayTeam.getScore() < 10){
 			return "00"+ _awayTeam.getScore();
@@ -184,14 +183,6 @@ public class BasketballGameTime extends GameTime {
 	
 	public void willKeepPossession(boolean which){
 		_keepPossession = which;
-	}
-	
-	public BasketballTeam getTheHomeTeam(){
-		return _homeTeam;
-	}
-	
-	public BasketballTeam getTheAwayTeam(){
-		return _awayTeam;
 	}
 	
 	public String getTeamPossession(boolean flip){

@@ -11,9 +11,9 @@ import com.seniordesign.ultimatescorecard.data.hockey.HockeyActivity;
 import com.seniordesign.ultimatescorecard.data.hockey.HockeyGameTime;
 import com.seniordesign.ultimatescorecard.data.soccer.SoccerActivity;
 import com.seniordesign.ultimatescorecard.data.soccer.SoccerGameTime;
-import com.seniordesign.ultimatescorecard.sqlite.DatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.football.FootballDatabaseHelper;
+import com.seniordesign.ultimatescorecard.sqlite.helper.DatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerDatabaseHelper;
@@ -81,6 +81,7 @@ public class ChooseTeamActivity extends Activity{
 		}
 		else if(_sportType.equals("football")){
 			_db = new FootballDatabaseHelper(getApplicationContext());
+			findViewById(R.id.chooseTeamActivity).setBackgroundResource(R.drawable.background_football);
 			_addEditTeam.setBackgroundResource(R.drawable.view_style_slant);
 			_deleteButton.setBackgroundResource(R.drawable.view_style_slant);
 		}

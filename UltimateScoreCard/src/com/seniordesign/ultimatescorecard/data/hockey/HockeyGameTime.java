@@ -8,7 +8,6 @@ import android.content.Context;
 
 import com.seniordesign.ultimatescorecard.data.GameInfo;
 import com.seniordesign.ultimatescorecard.data.GameTime;
-import com.seniordesign.ultimatescorecard.data.basketball.BasketballPlayer;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
@@ -23,7 +22,6 @@ public class HockeyGameTime extends GameTime{
 	private long g_id;
 	private Context _context;
 	private Teams _home, _away;
-	private ArrayList<HockeyPlayer> _homeTeamPlayers, _awayTeamPlayers;
 	private long _home_t_id, _away_t_id;
 	public GameInfo _gameInfo;
 	private ArrayList<Players> _homeTeamPlayersPull, _awayTeamPlayersPull;
@@ -91,9 +89,6 @@ public class HockeyGameTime extends GameTime{
 	
 	public void setGameInfo(GameInfo gameInfo){
 		_gameInfo = gameInfo;
-		//_homeTeam.setTeamOrder(_gameInfo.getHomePlayers());
-		//_awayTeam.setTeamOrder(_gameInfo.getAwayPlayers());
-
 	}
 	
 	public HockeyPlayer getPlayer(String whichTeam, int player){

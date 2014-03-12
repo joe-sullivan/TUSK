@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.seniordesign.ultimatescorecard.R;
 import com.seniordesign.ultimatescorecard.data.GameInfo;
-import com.seniordesign.ultimatescorecard.data.hockey.HockeyPlayer;
 import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
 import com.seniordesign.ultimatescorecard.sqlite.helper.ShotChartCoords;
 import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerDatabaseHelper;
@@ -529,13 +528,6 @@ public class SoccerActivity extends Activity{
 		_gameClock.start();
 		enableButtons();
 		mainButtonSet();
-	}
-	
-	private void stopClock(){
-		_gameClock.stop();
-		disableButtons();
-		_awayScoreTextView.setOnClickListener(null);
-		_homeScoreTextView.setOnClickListener(null);
 	}
 	
 	private void stopClockNotButtons(){

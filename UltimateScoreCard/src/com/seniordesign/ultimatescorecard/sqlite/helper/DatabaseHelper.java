@@ -1,11 +1,8 @@
-package com.seniordesign.ultimatescorecard.sqlite;
+package com.seniordesign.ultimatescorecard.sqlite.helper;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.seniordesign.ultimatescorecard.sqlite.helper.*;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -14,54 +11,78 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class DatabaseHelper extends SQLiteOpenHelper implements Serializable{
+public class DatabaseHelper extends SQLiteOpenHelper {
 	
 	// Logcat tag
-    private static final String LOG = "DatabaseHelper";
+    protected static final String LOG = "DatabaseHelper";
 	
     //Table Names
-    private static final String TABLE_GAMES = "games";
-    private static final String TABLE_PLAYERS = "players";
-    private static final String TABLE_TEAMS = "teams";
-    private static final String TABLE_PLAY_BY_PLAY = "play_by_play";
-    private static final String TABLE_SHOT_CHART_COORDS = "shot_chart_coords";
+    protected static final String TABLE_GAMES = "games";
+    protected static final String TABLE_PLAYERS = "players";
+    protected static final String TABLE_TEAMS = "teams";
+    protected static final String TABLE_PLAY_BY_PLAY = "play_by_play";
+    protected static final String TABLE_SHOT_CHART_COORDS = "shot_chart_coords";
     
     //Common Column Names
-    private static final String KEY_G_ID = "g_id";
-    private static final String KEY_P_ID = "p_id";
-    private static final String KEY_T_ID = "t_id";
-    private static final String KEY_A_ID = "a_id";
+    protected static final String KEY_G_ID = "g_id";
+    protected static final String KEY_P_ID = "p_id";
+    protected static final String KEY_T_ID = "t_id";
+    protected static final String KEY_A_ID = "a_id";
     protected static final String KEY_PERIOD = "period";
     
 
     //GAMES Table - column names
-    private static final String KEY_HOME_ID = "home_id";
-    private static final String KEY_AWAY_ID = "away_id";
-    private static final String KEY_DATE = "date";
+    protected static final String KEY_HOME_ID = "home_id";
+    protected static final String KEY_AWAY_ID = "away_id";
+    protected static final String KEY_DATE = "date";
     
     //PLAYERS Table - column names
-    private static final String KEY_P_NAME = "p_name";
-    private static final String KEY_P_NUM = "p_num";
+    protected static final String KEY_P_NAME = "p_name";
+    protected static final String KEY_P_NUM = "p_num";
 
     //TEAMS Table - column names
-    private static final String KEY_T_NAME = "t_name";
-    private static final String KEY_C_NAME = "c_name";
-    private static final String KEY_SPORT = "sport";
+    protected static final String KEY_T_NAME = "t_name";
+    protected static final String KEY_C_NAME = "c_name";
+    protected static final String KEY_SPORT = "sport";
     protected static final String KEY_ABBV = "abbv";
     
     //PLAY_BY_PLAY Table - column names
-    private static final String KEY_ACTION = "action";
-    private static final String KEY_TIME = "time";
-    private static final String KEY_HOME_SCORE = "home_score";
-    private static final String KEY_AWAY_SCORE = "away_score";
+    protected static final String KEY_ACTION = "action";
+    protected static final String KEY_TIME = "time";
+    protected static final String KEY_HOME_SCORE = "home_score";
+    protected static final String KEY_AWAY_SCORE = "away_score";
 
     //SHOT_CHART_COORDS Table - column names
-    private static final String KEY_X = "x";
-    private static final String KEY_Y = "y";
-    private static final String KEY_MADE = "made";
+    protected static final String KEY_X = "x";
+    protected static final String KEY_Y = "y";
+    protected static final String KEY_MADE = "made";
     protected static final String KEY_SHOT_ID = "shot_id";
 
-	
+  //PLAYERS table create statement
+    protected static final String CREATE_TABLE_PLAYERS = "CREATE TABLE IF NOT EXISTS " + TABLE_PLAYERS 
+    		+ "(" + KEY_P_ID + " INTEGER PRIMARY KEY," 
+    		+ KEY_T_ID + " INTEGER, "
+    		// + FOREIGN KEY REFERENCES " + TABLE_TEAMS + "(" + KEY_T_ID + ")," 
+    		+ KEY_P_NAME + " VARCHAR(45)," + KEY_P_NUM + " INTEGER" + ")"; 
+    
+    //TEAMS table create statement
+    protected static final String CREATE_TABLE_TEAMS = "CREATE TABLE IF NOT EXISTS " + TABLE_TEAMS 
+    		+ "(" + KEY_T_ID + " INTEGER PRIMARY KEY," + KEY_T_NAME + " VARCHAR(45)," 
+    		+ KEY_ABBV + " VARCHAR(45),"+ KEY_C_NAME + " VARCHAR(45),"+ KEY_SPORT + " VARCHAR(45)" + ")"; 
+    
+    //PLAY_BY_PLAY table create statement
+    protected static final String CREATE_TABLE_PLAY_BY_PLAY = "CREATE TABLE IF NOT EXISTS " + TABLE_PLAY_BY_PLAY 
+    		+ "(" + KEY_A_ID + " INTEGER PRIMARY KEY," + KEY_G_ID + " INTEGER," 
+    		+ KEY_ACTION + " VARCHAR(45)," + KEY_TIME + " VARCHAR(45)," + KEY_PERIOD + " VARCHAR(10)," + KEY_HOME_SCORE + " INTEGER, " 
+    		+ KEY_AWAY_SCORE + " INTEGER" + ")";
+    
+    //SHOT_CHART_COORDS table create statement
+    protected static final String CREATE_TABLE_SHOT_CHART_COORDS = "CREATE TABLE IF NOT EXISTS " + TABLE_SHOT_CHART_COORDS 
+    		+ "(" + KEY_SHOT_ID + " INTEGER PRIMARY KEY," + KEY_G_ID + " INTEGER," 
+    		+ KEY_P_ID + " INTEGER," + KEY_T_ID + " INTEGER,"
+    		+ KEY_X + " INTEGER," + KEY_Y + " INTEGER," 
+    		+ KEY_MADE + " VARCHAR(4)" + ")";
+    
 
 	public DatabaseHelper(Context context, String name, CursorFactory factory,
 			int version) {

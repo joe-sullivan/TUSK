@@ -11,9 +11,6 @@ import com.seniordesign.ultimatescorecard.substitution.BasketballSubstitutionAct
 import com.seniordesign.ultimatescorecard.view.DoubleParamOnClickListener;
 import com.seniordesign.ultimatescorecard.view.FlyOutContainer;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
-import com.seniordesign.ultimatescorecard.R.id;
-import com.seniordesign.ultimatescorecard.R.layout;
-import com.seniordesign.ultimatescorecard.R.menu;
 import com.seniordesign.ultimatescorecard.clock.GameClock;
 import com.seniordesign.ultimatescorecard.data.GameInfo;
 import com.seniordesign.ultimatescorecard.view.ShotIconAdder;
@@ -24,7 +21,6 @@ import android.app.Activity;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -1084,7 +1080,6 @@ public class BasketballActivity extends Activity{
 		setSlideOutButtonText(_gti.getPossession());
 		reactivateButton();	
 		setMainSettings();
-		_gameLog.setLogSize();
 		_gti.setFoulVariable(false);
 		_gti.willKeepPossession(false);
 		_gameClockView.setOnClickListener(timerClickListener);
