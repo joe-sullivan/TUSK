@@ -166,22 +166,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         
         Cursor c = db.rawQuery(selectPlayerQuery, null);
         
-        if (c!=null)
-        	c.moveToFirst();
-        
-        do {
-        	//create the instance of Players using cursor information
-		    Players player = new Players();
-		    player.setpid(c.getLong(c.getColumnIndex(KEY_P_ID)));
-		    player.settid(c.getLong(c.getColumnIndex(KEY_T_ID)));
-		    player.setpname((c.getString(c.getColumnIndex(KEY_P_NAME))));
-		    player.setpnum((c.getInt(c.getColumnIndex(KEY_P_NUM))));
-
-		    
-            // adding to players list
-            players.add(player);
-        } while(c.moveToNext());
-        
+        if (c!=null && c.moveToFirst()){
+	        
+	        do {
+	        	//create the instance of Players using cursor information
+			    Players player = new Players();
+			    player.setpid(c.getLong(c.getColumnIndex(KEY_P_ID)));
+			    player.settid(c.getLong(c.getColumnIndex(KEY_T_ID)));
+			    player.setpname((c.getString(c.getColumnIndex(KEY_P_NAME))));
+			    player.setpnum((c.getInt(c.getColumnIndex(KEY_P_NUM))));
+	
+			    
+	            // adding to players list
+	            players.add(player);
+	        } while(c.moveToNext());
+        }
         return players;
 	}
 
@@ -194,21 +193,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         
         Cursor c = db.rawQuery(selectPlayerQuery, null);
         
-        if (c!=null)
-        	c.moveToFirst();
+        if (c!=null && c.moveToFirst()){
         
-        do {
-        	//create the instance of Players using cursor information
-		    Players player = new Players();
-		    player.setpid(c.getLong(c.getColumnIndex(KEY_P_ID)));
-		    player.settid(c.getLong(c.getColumnIndex(KEY_T_ID)));
-		    player.setpname((c.getString(c.getColumnIndex(KEY_P_NAME))));
-		    player.setpnum((c.getInt(c.getColumnIndex(KEY_P_NUM))));
-		    
-            // adding to players list
-            players.add(player);
-        } while(c.moveToNext());
-        
+	        do {
+	        	//create the instance of Players using cursor information
+			    Players player = new Players();
+			    player.setpid(c.getLong(c.getColumnIndex(KEY_P_ID)));
+			    player.settid(c.getLong(c.getColumnIndex(KEY_T_ID)));
+			    player.setpname((c.getString(c.getColumnIndex(KEY_P_NAME))));
+			    player.setpnum((c.getInt(c.getColumnIndex(KEY_P_NUM))));
+			    
+	            // adding to players list
+	            players.add(player);
+	        } while(c.moveToNext());
+        }
         return players;
 	}
 	
@@ -232,21 +230,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         
         Cursor c = db.rawQuery(selectPlayerQuery, null);
         
-        if (c!=null)
-        	c.moveToFirst();
+        if (c!=null && c.moveToFirst()){
         
-        do {
-        	//create the instance of Players using cursor information
-        	Players player = new Players();
-		    player.setpid(c.getLong(c.getColumnIndex(KEY_P_ID)));
-		    player.settid(c.getLong(c.getColumnIndex(KEY_T_ID)));
-		    player.setpname((c.getString(c.getColumnIndex(KEY_P_NAME))));
-		    player.setpnum((c.getInt(c.getColumnIndex(KEY_P_NUM))));
-		   
-            // adding to players list
-            players.add(player);
-        } while(c.moveToNext());
-
+	        do {
+	        	//create the instance of Players using cursor information
+	        	Players player = new Players();
+			    player.setpid(c.getLong(c.getColumnIndex(KEY_P_ID)));
+			    player.settid(c.getLong(c.getColumnIndex(KEY_T_ID)));
+			    player.setpname((c.getString(c.getColumnIndex(KEY_P_NAME))));
+			    player.setpnum((c.getInt(c.getColumnIndex(KEY_P_NUM))));
+			   
+	            // adding to players list
+	            players.add(player);
+	        } while(c.moveToNext());
+        }
         return players;
 	}
 	
@@ -324,24 +321,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         
         Cursor c = db.rawQuery(selectQuery, null);
         
-        if (c!=null)
-        	c.moveToFirst();
+        if (c!=null && c.moveToFirst()){
         
-        do {
-        	//create the instance of Players using cursor information
-		    ShotChartCoords shot = new ShotChartCoords();
-		    shot.setshotid(c.getLong(c.getColumnIndex(KEY_SHOT_ID)));
-		    shot.setgid((c.getLong(c.getColumnIndex(KEY_G_ID))));		    
-		    shot.setpid((c.getLong(c.getColumnIndex(KEY_P_ID))));
-		    shot.settid((c.getLong(c.getColumnIndex(KEY_T_ID))));
-		    shot.setx((c.getInt(c.getColumnIndex(KEY_X))));
-		    shot.sety((c.getInt(c.getColumnIndex(KEY_Y))));
-		    shot.setmade((c.getString(c.getColumnIndex(KEY_MADE))));
-		    
-            // adding to players list
-		    shots.add(shot);
-        } while(c.moveToNext());
-        
+	        do {
+	        	//create the instance of Players using cursor information
+			    ShotChartCoords shot = new ShotChartCoords();
+			    shot.setshotid(c.getLong(c.getColumnIndex(KEY_SHOT_ID)));
+			    shot.setgid((c.getLong(c.getColumnIndex(KEY_G_ID))));		    
+			    shot.setpid((c.getLong(c.getColumnIndex(KEY_P_ID))));
+			    shot.settid((c.getLong(c.getColumnIndex(KEY_T_ID))));
+			    shot.setx((c.getInt(c.getColumnIndex(KEY_X))));
+			    shot.sety((c.getInt(c.getColumnIndex(KEY_Y))));
+			    shot.setmade((c.getString(c.getColumnIndex(KEY_MADE))));
+			    
+	            // adding to players list
+			    shots.add(shot);
+	        } while(c.moveToNext());
+        }
         return shots;
 	}
 	
@@ -354,24 +350,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         
         Cursor c = db.rawQuery(selectQuery, null);
         
-        if (c!=null)
-        	c.moveToFirst();
+        if (c!=null && c.moveToFirst()){
         
-        do {
-        	//create the instance of Players using cursor information
-		    ShotChartCoords shot = new ShotChartCoords();
-		    shot.setshotid(c.getLong(c.getColumnIndex(KEY_SHOT_ID)));
-		    shot.setgid((c.getLong(c.getColumnIndex(KEY_G_ID))));		    
-		    shot.setpid((c.getLong(c.getColumnIndex(KEY_P_ID))));
-		    shot.settid((c.getLong(c.getColumnIndex(KEY_T_ID))));
-		    shot.setx((c.getInt(c.getColumnIndex(KEY_X))));
-		    shot.sety((c.getInt(c.getColumnIndex(KEY_Y))));
-		    shot.setmade((c.getString(c.getColumnIndex(KEY_MADE))));
-
-            // adding to players list
-		    shots.add(shot);
-        } while(c.moveToNext());
-        
+	        do {
+	        	//create the instance of Players using cursor information
+			    ShotChartCoords shot = new ShotChartCoords();
+			    shot.setshotid(c.getLong(c.getColumnIndex(KEY_SHOT_ID)));
+			    shot.setgid((c.getLong(c.getColumnIndex(KEY_G_ID))));		    
+			    shot.setpid((c.getLong(c.getColumnIndex(KEY_P_ID))));
+			    shot.settid((c.getLong(c.getColumnIndex(KEY_T_ID))));
+			    shot.setx((c.getInt(c.getColumnIndex(KEY_X))));
+			    shot.sety((c.getInt(c.getColumnIndex(KEY_Y))));
+			    shot.setmade((c.getString(c.getColumnIndex(KEY_MADE))));
+	
+	            // adding to players list
+			    shots.add(shot);
+	        } while(c.moveToNext());
+        }
         return shots;
 	}
 	
@@ -416,24 +411,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         
         Cursor c = db.rawQuery(selectQuery, null);
         
-        if (c!=null)
-        	c.moveToFirst();
+        if (c!=null && c.moveToFirst()){
         
-        do {
-        	//create the instance of Players using cursor information
-		    ShotChartCoords shot = new ShotChartCoords();
-		    shot.setshotid(c.getLong(c.getColumnIndex(KEY_SHOT_ID)));
-		    shot.setgid((c.getLong(c.getColumnIndex(KEY_G_ID))));		    
-		    shot.setpid((c.getLong(c.getColumnIndex(KEY_P_ID))));
-		    shot.settid((c.getLong(c.getColumnIndex(KEY_T_ID))));
-		    shot.setx((c.getInt(c.getColumnIndex(KEY_X))));
-		    shot.sety((c.getInt(c.getColumnIndex(KEY_Y))));
-		    shot.setmade((c.getString(c.getColumnIndex(KEY_MADE))));
-
-            // adding to players list
-		    shots.add(shot);
-        } while(c.moveToNext());
-        
+	        do {
+	        	//create the instance of Players using cursor information
+			    ShotChartCoords shot = new ShotChartCoords();
+			    shot.setshotid(c.getLong(c.getColumnIndex(KEY_SHOT_ID)));
+			    shot.setgid((c.getLong(c.getColumnIndex(KEY_G_ID))));		    
+			    shot.setpid((c.getLong(c.getColumnIndex(KEY_P_ID))));
+			    shot.settid((c.getLong(c.getColumnIndex(KEY_T_ID))));
+			    shot.setx((c.getInt(c.getColumnIndex(KEY_X))));
+			    shot.sety((c.getInt(c.getColumnIndex(KEY_Y))));
+			    shot.setmade((c.getString(c.getColumnIndex(KEY_MADE))));
+	
+	            // adding to players list
+			    shots.add(shot);
+	        } while(c.moveToNext());
+        }
         return shots;
 	}
 	
@@ -466,6 +460,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	//get single team with id
 	public Teams getTeam(long t_id) {
 	    SQLiteDatabase db = this.getReadableDatabase();
+	    Teams team = new Teams();
 	    //create query to select game
 	    String selectQuery = "SELECT  * FROM " + TABLE_TEAMS + 
 	    	" WHERE " + KEY_T_ID + " = " + t_id;
@@ -474,16 +469,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	    //perform the query and store data in cursor
 	    Cursor c = db.rawQuery(selectQuery, null);
 	    //set cursor to beginning
-	    if (c != null)
-	        c.moveToFirst();
+        if (c!=null && c.moveToFirst()){
 	    //create the instance of Teams using cursor information
-	    Teams team = new Teams();
-	    team.settid(c.getLong(c.getColumnIndex(KEY_T_ID)));
-	    team.settname((c.getString(c.getColumnIndex(KEY_T_NAME))));
-	    team.setabbv((c.getString(c.getColumnIndex(KEY_ABBV))));
-	    team.setcname((c.getString(c.getColumnIndex(KEY_C_NAME))));
-	    team.setsport((c.getString(c.getColumnIndex(KEY_SPORT))));
-	 
+
+		    team.settid(c.getLong(c.getColumnIndex(KEY_T_ID)));
+		    team.settname((c.getString(c.getColumnIndex(KEY_T_NAME))));
+		    team.setabbv((c.getString(c.getColumnIndex(KEY_ABBV))));
+		    team.setcname((c.getString(c.getColumnIndex(KEY_C_NAME))));
+		    team.setsport((c.getString(c.getColumnIndex(KEY_SPORT))));
+        }
 	    return team;
 	}
 	
@@ -520,22 +514,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         
         Cursor c = db.rawQuery(selectQuery, null);
         
-        if (c!=null)
-        	c.moveToFirst();
+        if (c!=null && c.moveToFirst()){
         
-        do {
-        	//create the instance of Players using cursor information
-		    Teams team = new Teams();
-		    team.settid(c.getLong(c.getColumnIndex(KEY_T_ID)));
-		    team.settname((c.getString(c.getColumnIndex(KEY_T_NAME))));
-		    team.setabbv((c.getString(c.getColumnIndex(KEY_ABBV))));
-		    team.setcname((c.getString(c.getColumnIndex(KEY_C_NAME))));
-		    team.setsport((c.getString(c.getColumnIndex(KEY_SPORT))));
-		   
-            // adding to players list
-		    teams.add(team);
-        } while(c.moveToNext());
-        
+	        do {
+	        	//create the instance of Players using cursor information
+			    Teams team = new Teams();
+			    team.settid(c.getLong(c.getColumnIndex(KEY_T_ID)));
+			    team.settname((c.getString(c.getColumnIndex(KEY_T_NAME))));
+			    team.setabbv((c.getString(c.getColumnIndex(KEY_ABBV))));
+			    team.setcname((c.getString(c.getColumnIndex(KEY_C_NAME))));
+			    team.setsport((c.getString(c.getColumnIndex(KEY_SPORT))));
+			   
+	            // adding to players list
+			    teams.add(team);
+	        } while(c.moveToNext());
+        }
         return teams;
 	}
 	

@@ -71,7 +71,7 @@ public class BasketballGameLog extends GameLog {;
 			_thePlay = "Unforced turnover by "+ player + " ("+ option + ")";
 		}
 		else{
-			_thePlay = "Team turnover";
+			_thePlay = "Team turnover by " + player;
 		}
 	}
 	

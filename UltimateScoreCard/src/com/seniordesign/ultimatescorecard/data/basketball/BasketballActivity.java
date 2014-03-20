@@ -520,6 +520,7 @@ public class BasketballActivity extends Activity{
 	public OnClickListener teamReboundListener = new OnClickListener(){
 		@Override
 		public void onClick(View view) {
+			_gameLog.rebounding((((TextView)view).getText().toString()).replace(" Rebound", ""));
 			if(((Button)view).getText().equals(_gti.getTeamPossession(true)+" Rebound")){
 				changePossession();
 				if(_otherButton2.getText().equals("O-Rebound")){	
@@ -531,6 +532,7 @@ public class BasketballActivity extends Activity{
 					_gti.addTeamORebound();
 				}
 			}
+			recordActivity();																//record the activity
 			resetFeatures();
 		}
 	};
@@ -653,6 +655,8 @@ public class BasketballActivity extends Activity{
 	public OnClickListener teamTOListener = new OnClickListener(){
 		@Override
 		public void onClick(View view) {
+			String team = _gti.getTeamPossession(false);
+			_gameLog.turnover(false, team, null);
 			changePossession();
 			recordActivity();
 			resetFeatures();
@@ -902,6 +906,7 @@ public class BasketballActivity extends Activity{
 
 				view.setOnClickListener(FTMadeListener(this.getValue()-1, this.getString()));
 				if(this.getValue() == 1 || oneAndOne){
+					_gameLog.freeThrow(false, this.getString());
 					if(_gti.keepPossession()){
 						resetFeatures();
 						disableMainSettings();
@@ -1167,7 +1172,7 @@ public class BasketballActivity extends Activity{
 			intent.putExtra(StaticFinalVars.GAME_LOG, _playbyplay);
 			intent.putExtra(StaticFinalVars.SHOT_CHART_HOME, _homeShots);
 			intent.putExtra(StaticFinalVars.SHOT_CHART_AWAY, _awayShots);
-			intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 1);
+			intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 0);
 			startActivity(intent);		
 			break;
 			
