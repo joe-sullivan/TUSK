@@ -11,6 +11,8 @@ import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerDatabaseHelper;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -50,14 +52,24 @@ public class ShotIconAdder {
 	public void setShotHitMiss(boolean possession, boolean hitMiss){
 		_hitMiss = hitMiss;
 		LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		lp.leftMargin = _shotLocation[0]-25;
-		lp.topMargin = _shotLocation[1]+60;
+		//lp.leftMargin = _shotLocation[0]-25;
+		//lp.topMargin = _shotLocation[1]+60;
 		ImageView iv = new ImageView(_context);
 		if(hitMiss){
 			iv.setBackgroundResource(R.drawable.made_shot);
+			Bitmap b = ((BitmapDrawable)iv.getBackground()).getBitmap();
+			int w = b.getWidth();
+			int h = b.getHeight();
+			lp.leftMargin = _shotLocation[0]-w/2;
+			lp.topMargin = _shotLocation[1]-h/2;
 		}
 		else{
 			iv.setBackgroundResource(R.drawable.missed_shot);
+			Bitmap b = ((BitmapDrawable)iv.getBackground()).getBitmap();
+			int w = b.getWidth();
+			int h = b.getHeight();
+			lp.leftMargin = _shotLocation[0]-w/2;
+			lp.topMargin = _shotLocation[1]-h/2;
 		}
 		iv.setLayoutParams(lp);
 		if(possession){

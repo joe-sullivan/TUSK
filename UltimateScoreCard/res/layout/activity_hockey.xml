@@ -227,13 +227,19 @@
     <RelativeLayout
         android:id="@+id/homeShotIcons"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/interactiveFrame"
+        android:layout_alignTop="@+id/interactiveFrame" >
+
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/awayShotIcons"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/interactiveFrame"
+        android:layout_alignTop="@+id/interactiveFrame" >
+
     </RelativeLayout>
 
 </RelativeLayout>

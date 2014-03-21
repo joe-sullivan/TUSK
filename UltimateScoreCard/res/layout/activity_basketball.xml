@@ -304,18 +304,25 @@
 	            android:text="@string/choice_five" />
 	        
 	    </TableRow>
+	    
+	<RelativeLayout
+	    android:id="@+id/homeShotIcons"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_above="@+id/tripleOptionRow"
+	    android:layout_alignParentRight="true"
+	    android:layout_alignTop="@+id/interactiveFrame" >
 
-	    <RelativeLayout
-	        android:id="@+id/homeShotIcons"
-	        android:layout_width="match_parent"
-	        android:layout_height="match_parent" >
-	    </RelativeLayout>
+    </RelativeLayout>
 
-	    <RelativeLayout
-	        android:id="@+id/awayShotIcons"
-	        android:layout_width="match_parent"
-	        android:layout_height="match_parent" >
-	    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/awayShotIcons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tripleOptionRow"
+        android:layout_alignTop="@+id/interactiveFrame" >
+
+    </RelativeLayout>
 
 	</RelativeLayout>
 	
