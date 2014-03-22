@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.seniordesign.ultimatescorecard.R;
 import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -18,6 +19,8 @@ public class SoccerPlayListFragment extends Fragment{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = (View) inflater.inflate(R.layout.fragment_game_log, container, false);
+		view.setBackgroundResource(R.drawable.background_soccer);
+
         return view;
 	}
 	
@@ -25,6 +28,7 @@ public class SoccerPlayListFragment extends Fragment{
 	public void onResume() {
 		super.onResume();		
 		addTextViews();
+		((TextView)getView().findViewById(R.id.playByPlaytitle)).setTextColor(Color.WHITE);
 	}
 	
 	private void addTextViews(){
@@ -43,6 +47,7 @@ public class SoccerPlayListFragment extends Fragment{
 		textView.setText(teamName);																			//here, we're dynamically programming them in Java
 		textView.setPadding(5,5,5,5);
 		textView.setTextSize(10);
+		textView.setTextColor(Color.WHITE);
 		return textView;
 	}
 }

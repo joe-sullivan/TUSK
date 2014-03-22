@@ -24,6 +24,8 @@ public class BasketballIndividualStatFragment extends Fragment{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = (View) inflater.inflate(R.layout.fragment_individual_basketball, container, false);
 		setHasOptionsMenu(true);
+		view.setBackgroundResource(R.drawable.background_basketball);
+
 		return view;
 	}
 	

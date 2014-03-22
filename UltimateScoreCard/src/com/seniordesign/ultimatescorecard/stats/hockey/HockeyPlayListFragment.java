@@ -18,6 +18,8 @@ public class HockeyPlayListFragment extends Fragment{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = (View) inflater.inflate(R.layout.fragment_game_log, container, false);
+		view.setBackgroundResource(R.drawable.background_hockey);
+
         return view;
 	}
 	

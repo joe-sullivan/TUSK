@@ -21,6 +21,8 @@ public class BasketballBoxscoreFragment extends Fragment{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = (View) inflater.inflate(R.layout.fragment_boxscore, container, false);
+		view.setBackgroundResource(R.drawable.background_basketball);
+
         return view;
 	}
 	

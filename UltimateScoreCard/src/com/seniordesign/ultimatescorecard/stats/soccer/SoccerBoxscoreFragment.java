@@ -7,6 +7,7 @@ import com.seniordesign.ultimatescorecard.stats.soccer.SoccerIndividualStatActiv
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -22,6 +23,8 @@ public class SoccerBoxscoreFragment extends Fragment{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = (View) inflater.inflate(R.layout.fragment_boxscore, container, false);
+		view.setBackgroundResource(R.drawable.background_soccer);
+
         return view;
 	}
 	
@@ -31,6 +34,7 @@ public class SoccerBoxscoreFragment extends Fragment{
 				
 		((TextView)getView().findViewById(R.id.homeTeamStatText)).setText(((SoccerStatsActivity) getActivity()).getGameInfo().getHomeTeam().gettname());
 		((TextView)getView().findViewById(R.id.awayTeamStatText)).setText(((SoccerStatsActivity) getActivity()).getGameInfo().getAwayTeam().gettname());
+		((TextView)getView().findViewById(R.id.statisticTitle)).setTextColor(Color.WHITE);
 		
 		if(_lookingAtHome){
 			getView().findViewById(R.id.homeTeamStatText).setBackgroundColor(getResources().getColor(R.color.robin_egg_blue));
@@ -77,6 +81,7 @@ public class SoccerBoxscoreFragment extends Fragment{
 		textView.setPadding(5,5,5,5);
 		textView.setTextSize(20);
 		textView.setOnClickListener(selectPlayerListener);
+		textView.setTextColor(Color.WHITE);
 		return textView;
 	}
 	
