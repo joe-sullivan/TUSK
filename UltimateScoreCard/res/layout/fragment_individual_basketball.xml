@@ -101,6 +101,14 @@
 	        android:textSize="@dimen/large_text"/>
 	    
 	    <TextView
+	        android:id="@+id/turnoverTotal"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:padding="@dimen/padding"
+	        android:text="Turnovers" 
+	        android:textSize="@dimen/large_text"/>
+	    
+	    <TextView
 	        android:id="@+id/foulTotal"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
