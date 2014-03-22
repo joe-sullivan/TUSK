@@ -898,7 +898,7 @@ public class BasketballActivity extends Activity{
 		OnClickListener FTMissListener = new DoubleParamOnClickListener(value, str){
 			@Override
 			public void onClick(View view) {				
-				if(this.getValue()!=1){
+				if(this.getValue()!=1 && !oneAndOne){
 					_gameLog.freeThrow(false, this.getString());
 					recordActivity();
 				}

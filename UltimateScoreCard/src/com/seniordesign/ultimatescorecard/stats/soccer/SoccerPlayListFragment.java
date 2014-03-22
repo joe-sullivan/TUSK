@@ -46,7 +46,7 @@ public class SoccerPlayListFragment extends Fragment{
 		final TextView textView = new TextView(getActivity());														//these are all the stuff that you can do statically in xml
 		textView.setText(teamName);																			//here, we're dynamically programming them in Java
 		textView.setPadding(5,5,5,5);
-		textView.setTextSize(10);
+		textView.setTextSize(16);
 		textView.setTextColor(Color.WHITE);
 		return textView;
 	}

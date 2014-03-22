@@ -26,7 +26,7 @@ public class SoccerGameLog extends GameLog{
 			_thePlay = "Shot missed by "+shooter+".";
 		}
 		else{
-			_thePlay = "Shot on goal by "+shooter+", saved by " +goalie+".";
+			_thePlay = "Shot on goal by "+shooter+", saved by " +goalie;
 		}
 		recordActivity(time);
 	}
