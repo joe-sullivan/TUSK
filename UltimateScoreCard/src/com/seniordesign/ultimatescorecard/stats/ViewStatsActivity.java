@@ -389,7 +389,7 @@ public class ViewStatsActivity extends Activity{
 						osw.write("Coached By " + _home.getcname()+ "\n\n");
 
 						osw.write("Player Name & Number          |  GOALS  |  AST  |  SOG  |  PEN  |  PMINS  |  SAVES  |  GA  |\n");
-						osw.write("-------------------------------------------------------------------------------------------------------------------------------------\n");
+						osw.write("--------------------------------------------------------------------------------------------\n");
 						for(Players p: _homeTeamPlayersPull){
 							HockeyGameStats stats = ((HockeyDatabaseHelper)_db).getPlayerGameStats(g_id, p.getpid());
 							String name = String.format("%-30s", p.getpnum() + " - " + p.getpname());
@@ -404,7 +404,7 @@ public class ViewStatsActivity extends Activity{
 						}
 						
 						//Home team stats
-						osw.write("-------------------------------------------------------------------------------------------------------------------------------------\n");
+						osw.write("---------------------------------------------------------------------------------------------\n");
 						String name = String.format("%-30s", _home.getabbv() + " Total Stats");
 						String goals = String.format("%-9s", "    " + Game.gethomegoals());
 						String ast = String.format("%-7s", "   " + Game.gethomeast());
@@ -419,7 +419,7 @@ public class ViewStatsActivity extends Activity{
 						osw.write("Coached By " + _away.getcname()+ "\n\n");
 
 						osw.write("Player Name & Number          |  GOALS  |  AST  |  SOG  |  PEN  |  PMINS  |  SAVES  |  GA  |\n");
-						osw.write("-------------------------------------------------------------------------------------------------------------------------------------\n");
+						osw.write("--------------------------------------------------------------------------------------------\n");
 						for(Players p: _awayTeamPlayersPull){
 							HockeyGameStats stats = ((HockeyDatabaseHelper)_db).getPlayerGameStats(g_id, p.getpid());
 							name = String.format("%-30s", p.getpnum() + " - " + p.getpname());
@@ -434,7 +434,7 @@ public class ViewStatsActivity extends Activity{
 						}
 						
 						//Home team stats
-						osw.write("-------------------------------------------------------------------------------------------------------------------------------------\n");
+						osw.write("----------------------------------------------------------------------------------------------\n");
 						name = String.format("%-30s", _away.getabbv() + " Total Stats");
 						goals = String.format("%-9s", "    " + Game.getawaygoals());
 						ast = String.format("%-7s", "   " + Game.getawayast());
@@ -451,7 +451,7 @@ public class ViewStatsActivity extends Activity{
 						osw.write("Coached By " + _home.getcname()+ "\n\n");
 
 						osw.write("Player Name & Number          |  GOALS  |  AST  |  SOG  |  YCARD  |  RCARD  |  SAVES  |  GA  |\n");
-						osw.write("-------------------------------------------------------------------------------------------------------------------------------------\n");
+						osw.write("----------------------------------------------------------------------------------------------\n");
 						for(Players p: _homeTeamPlayersPull){
 							SoccerGameStats stats = ((SoccerDatabaseHelper)_db).getPlayerGameStats(g_id, p.getpid());
 							String name = String.format("%-30s", p.getpnum() + " - " + p.getpname());
@@ -466,7 +466,7 @@ public class ViewStatsActivity extends Activity{
 						}
 						
 						//Home team stats
-						osw.write("-------------------------------------------------------------------------------------------------------------------------------------\n");
+						osw.write("-----------------------------------------------------------------------------------------------\n");
 						String name = String.format("%-30s", _home.getabbv() + " Total Stats");
 						String goals = String.format("%-9s", "    " + Game.gethomegoals());
 						String ast = String.format("%-7s", "   " + Game.gethomeast());
@@ -481,7 +481,7 @@ public class ViewStatsActivity extends Activity{
 						osw.write("Coached By " + _away.getcname()+ "\n\n");
 
 						osw.write("Player Name & Number          |  GOALS  |  AST  |  SOG  |  YCARD  |  RCARD  |  SAVES  |  GA  |\n");
-						osw.write("-------------------------------------------------------------------------------------------------------------------------------------\n");
+						osw.write("----------------------------------------------------------------------------------------------\n");
 						for(Players p: _awayTeamPlayersPull){
 							SoccerGameStats stats = ((SoccerDatabaseHelper)_db).getPlayerGameStats(g_id, p.getpid());
 							name = String.format("%-30s", p.getpnum() + " - " + p.getpname());
@@ -496,7 +496,7 @@ public class ViewStatsActivity extends Activity{
 						}
 						
 						//Home team stats
-						osw.write("-------------------------------------------------------------------------------------------------------------------------------------\n");
+						osw.write("----------------------------------------------------------------------------------------------\n");
 						name = String.format("%-30s", _away.getabbv() + " Total Stats");
 						goals = String.format("%-9s", "    " + Game.getawaygoals());
 						ast = String.format("%-7s", "   " + Game.getawayast());
