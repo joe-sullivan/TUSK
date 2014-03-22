@@ -284,11 +284,14 @@ public class ViewStatsActivity extends Activity{
 			ArrayList<ShotChartCoords> _homeShots = (ArrayList<ShotChartCoords>) _db.getAllTeamShotsGame(_game.gethomeid(), g_id);
 			ArrayList<ShotChartCoords> _awayShots = (ArrayList<ShotChartCoords>) _db.getAllTeamShotsGame(_game.getawayid(), g_id);
 			
-			//fileName = "/" + _away.getabbv() + "vs" + _home.getabbv()+".txt";
+			String subject = _away.getabbv() + "vs" + _home.getabbv()+"_"+_game.getDate();
+			fileName = "/" + _away.getabbv() + "vs" + _home.getabbv()+"_"+_game.getDate()+".txt";
 			
 			if(isExternalStorageWritable()){
 				File sdCard = Environment.getExternalStorageDirectory();
-				File file = new File(sdCard, "/tempScoreCard.txt");
+				File folder = new File(sdCard + "/TUSK");
+				folder.mkdir();
+				File file = new File(folder, fileName);
 				FileOutputStream fos;
 				try {
 					fos = new FileOutputStream(file);
@@ -296,8 +299,9 @@ public class ViewStatsActivity extends Activity{
 					
 					if(_sportButton.getText().equals("Basketball")){
 						BasketballGames Game = (BasketballGames)_game;
-						osw.write("Home Team: " + _home.gettname() + " - " + _home.getabbv() + "\n\n");
-						
+						osw.write("Home Team: " + _home.gettname() + " - " + _home.getabbv() + "\n");
+						osw.write("Coached By " + _home.getcname()+ "\n\n");
+
 						osw.write("Player Name & Number          |  FGM-A  |  3PM-A  |  FTM-A  |  PTS  |  OREB  |  DREB  |  REB  |  AST  |  STL  |  BLK  |  TO  |  PF  |\n");
 						osw.write("-------------------------------------------------------------------------------------------------------------------------------------\n");
 						for(Players p: _homeTeamPlayersPull){
@@ -335,8 +339,9 @@ public class ViewStatsActivity extends Activity{
 						String pf = String.format("%-6s", "  " + Game.gethomepf());
 						osw.write(name + "|" + fg + "|" + _3fg + "|" + ft + "|" + pts +"|"+oreb+"|"+dreb+"|"+reb+"|"+ast+"|"+stl+"|"+blk+"|"+to+"|"+pf+"|\n");
 						
-						osw.write("\n\nAway Team: " + _away.gettname() + " - " + _away.getabbv() + "\n\n");
-						
+						osw.write("\n\nAway Team: " + _away.gettname() + " - " + _away.getabbv() + "\n");
+						osw.write("Coached By " + _away.getcname()+ "\n\n");
+
 						osw.write("Player Name & Number          |  FGM-A  |  3PM-A  |  FTM-A  |  PTS  |  OREB  |  DREB  |  REB  |  AST  |  STL  |  BLK  |  TO  |  PF  |\n");
 						osw.write("-------------------------------------------------------------------------------------------------------------------------------------\n");
 						for(Players p: _awayTeamPlayersPull){
@@ -380,8 +385,9 @@ public class ViewStatsActivity extends Activity{
 					}
 					else if(_sportButton.getText().equals("Hockey")){
 						HockeyGames Game = (HockeyGames)_game;
-						osw.write("Home Team: " + _home.gettname() + " - " + _home.getabbv() + "\n\n");
-						
+						osw.write("Home Team: " + _home.gettname() + " - " + _home.getabbv() + "\n");
+						osw.write("Coached By " + _home.getcname()+ "\n\n");
+
 						osw.write("Player Name & Number          |  GOALS  |  AST  |  SOG  |  PEN  |  PMINS  |  SAVES  |  GA  |\n");
 						osw.write("-------------------------------------------------------------------------------------------------------------------------------------\n");
 						for(Players p: _homeTeamPlayersPull){
@@ -409,8 +415,9 @@ public class ViewStatsActivity extends Activity{
 						String ga = String.format("%-6s", "  " + Game.gethomegoalsallowed());
 						osw.write(name + "|" + goals + "|" + ast + "|" + sog + "|" + pen +"|"+pmins+"|"+saves+"|"+ga+"|\n");
 						
-						osw.write("\n\nAway Team: " + _away.gettname() + " - " + _away.getabbv() + "\n\n");
-						
+						osw.write("\n\nAway Team: " + _away.gettname() + " - " + _away.getabbv() + "\n");
+						osw.write("Coached By " + _away.getcname()+ "\n\n");
+
 						osw.write("Player Name & Number          |  GOALS  |  AST  |  SOG  |  PEN  |  PMINS  |  SAVES  |  GA  |\n");
 						osw.write("-------------------------------------------------------------------------------------------------------------------------------------\n");
 						for(Players p: _awayTeamPlayersPull){
@@ -440,8 +447,9 @@ public class ViewStatsActivity extends Activity{
 					}
 					else{ //Soccer
 						SoccerGames Game = (SoccerGames)_game;
-						osw.write("Home Team: " + _home.gettname() + " - " + _home.getabbv() + "\n\n");
-						
+						osw.write("Home Team: " + _home.gettname() + " - " + _home.getabbv() + "\n");
+						osw.write("Coached By " + _home.getcname()+ "\n\n");
+
 						osw.write("Player Name & Number          |  GOALS  |  AST  |  SOG  |  YCARD  |  RCARD  |  SAVES  |  GA  |\n");
 						osw.write("-------------------------------------------------------------------------------------------------------------------------------------\n");
 						for(Players p: _homeTeamPlayersPull){
@@ -469,8 +477,9 @@ public class ViewStatsActivity extends Activity{
 						String ga = String.format("%-6s", "  " + Game.gethomegoalsallowed());
 						osw.write(name + "|" + goals + "|" + ast + "|" + sog + "|" + ycard +"|"+rcard+"|"+saves+"|"+ga+"|\n");
 						
-						osw.write("\n\nAway Team: " + _away.gettname() + " - " + _away.getabbv() + "\n\n");
-						
+						osw.write("\n\nAway Team: " + _away.gettname() + " - " + _away.getabbv() + "\n");
+						osw.write("Coached By " + _away.getcname()+ "\n\n");
+
 						osw.write("Player Name & Number          |  GOALS  |  AST  |  SOG  |  YCARD  |  RCARD  |  SAVES  |  GA  |\n");
 						osw.write("-------------------------------------------------------------------------------------------------------------------------------------\n");
 						for(Players p: _awayTeamPlayersPull){
@@ -507,10 +516,10 @@ public class ViewStatsActivity extends Activity{
 				}				
 			  
 				Intent intent = new Intent(Intent.ACTION_SEND);
-				intent.putExtra(Intent.EXTRA_SUBJECT, "Very Important Email");
+				intent.putExtra(Intent.EXTRA_SUBJECT, subject);
 				intent.putExtra(Intent.EXTRA_EMAIL, new String[] {"greg.reinhold@gmail.com"});
-				intent.putExtra(Intent.EXTRA_TEXT, "Your computer is now infected with a debilitating virus.");
-				intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(Environment.getExternalStorageDirectory().toString()+"/tempScoreCard.txt")));
+				intent.putExtra(Intent.EXTRA_TEXT, "Here's the boxscore of the " + _away.gettname() + " vs. " + _home.gettname() + " game that I recorded stats for.");
+				intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(folder.toString()+fileName)));
 				intent.setType("text/plain");
 				startActivityForResult(Intent.createChooser(intent, "Send Mail"), StaticFinalVars.EMAIL);
 			}
@@ -520,15 +529,16 @@ public class ViewStatsActivity extends Activity{
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data){
 		if(requestCode == StaticFinalVars.EMAIL){
+			/*
 			File sdCard = Environment.getExternalStorageDirectory();
 			File file = new File(sdCard, "/tempScoreCard.txt");
             if(file.exists()){
             	file.delete();  
             }
+            */
 		}
 	}
 	
-	@SuppressWarnings("unused")
 	private boolean isExternalStorageWritable(){
 		String state = Environment.getExternalStorageState();
 	    if (Environment.MEDIA_MOUNTED.equals(state)) {
