@@ -1,4 +1,4 @@
-package com.seniordesign.ultimatescorecard.networkdatabase;
+package com.seniordesign.ultimatescorecard.networkdatabase.helper;
 
 import java.util.List;
 
