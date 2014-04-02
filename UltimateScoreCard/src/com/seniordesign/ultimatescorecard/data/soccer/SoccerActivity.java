@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import com.seniordesign.ultimatescorecard.R;
 import com.seniordesign.ultimatescorecard.data.GameInfo;
+import com.seniordesign.ultimatescorecard.data.UndoInstance;
+import com.seniordesign.ultimatescorecard.data.UndoManager;
 import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
 import com.seniordesign.ultimatescorecard.sqlite.helper.ShotChartCoords;
 import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerDatabaseHelper;
@@ -57,7 +59,10 @@ public class SoccerActivity extends Activity{
 	private GameInfo _gameInfo;
 	private long g_id;
 	private ArrayList<ShotChartCoords> _homeShots, _awayShots;
-
+	
+	private UndoManager _undoManager;
+	public UndoInstance _undoInstance;
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
@@ -69,7 +74,18 @@ public class SoccerActivity extends Activity{
 		
 		//databases
 		_gti.setContext(this);
+
+		
+		_undoInstance = new UndoInstance();
+		_gameLog.setUndoInstance(_undoInstance);
+		_soccer_db.setUndoInstance(_undoInstance);
 		g_id = _gti.createTeams();
+		_undoManager = new UndoManager(_soccer_db, _gti.getHomeTeamInstance(),_gti.getAwayTeamInstance());
+		_gti.setUndoInstance(_undoInstance);
+		_undoInstance.setgid(g_id);
+
+		
+		
 		_gameLog.setdb(_soccer_db);
 		_gameLog.setgid(g_id);
 		_gameInfo = _gti.getGameInfo();
@@ -99,8 +115,12 @@ public class SoccerActivity extends Activity{
 		
 		_homeLayout = (RelativeLayout)findViewById(R.id.homeShotIcons);
 		_awayLayout = (RelativeLayout)findViewById(R.id.awayShotIcons);
-		_iconAdder = new ShotIconAdder(_homeLayout, _awayLayout, getApplicationContext(), "soccer");
 
+		
+		_iconAdder = new ShotIconAdder(_homeLayout, _awayLayout, getApplicationContext(), "soccer", _undoInstance);
+		_undoManager.setLayouts(_homeLayout, _awayLayout);
+		
+		
 		_p1Button = (Button)findViewById(R.id.extendButton1);										//our slide out buttons
 		_p2Button = (Button)findViewById(R.id.extendButton2);
 		_p3Button = (Button)findViewById(R.id.extendButton3);
@@ -124,6 +144,17 @@ public class SoccerActivity extends Activity{
 		allowMenuAndChangingPossession();
 		setTextAndListener(_option4Button, shotTakenListener, "Shot");
 		setTextAndListener(_option5Button, penaltyListener, "Penalty");
+		
+		if(_undoInstance.getiv()!=null){
+			_undoManager.addInstance(_undoInstance);
+		}
+		_undoInstance = new UndoInstance();
+		_gameLog.setUndoInstance(_undoInstance);
+		_soccer_db.setUndoInstance(_undoInstance);
+		_gti.setUndoInstance(_undoInstance);
+		_iconAdder.setUndoInstance(_undoInstance);
+		_undoInstance.setgid(g_id);
+
 	}
 	
 	private void shotButtonSet(){
@@ -671,7 +702,17 @@ public class SoccerActivity extends Activity{
 			intent.putExtra(StaticFinalVars.SUB_INFO, _gti.getGameInfo());
 			startActivityForResult(intent, SUBSTITUTION_CODE);	
 			break;
+		
+		case R.id.undo:
+			_undoManager.undo();
+			break;
+		
+		case R.id.redo:
+			_undoManager.redo();
+			break;
 		}
+		_awayScoreTextView.setText(_gti.getAwayScoreText());
+		_homeScoreTextView.setText(_gti.getHomeScoreText());
 		return true;
 	}
 	

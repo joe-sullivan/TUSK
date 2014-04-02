@@ -8,6 +8,8 @@ import android.content.Context;
 
 import com.seniordesign.ultimatescorecard.data.GameInfo;
 import com.seniordesign.ultimatescorecard.data.GameTime;
+import com.seniordesign.ultimatescorecard.data.StatData;
+import com.seniordesign.ultimatescorecard.data.UndoInstance;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
@@ -27,9 +29,10 @@ public class BasketballGameTime extends GameTime {
 	private long _home_t_id, _away_t_id;
 	private GameInfo _gameInfo;
 	private ArrayList<Players> _homeTeamPlayersPull, _awayTeamPlayersPull;
-		
+	private ArrayList<BasketballPlayer> _homeTeamPlayers, _awayTeamPlayers;
+	private UndoInstance _undoInstance;	
+	
 	public BasketballGameTime(Teams home, Teams away){
-		//databases
 		_home = home;
 		_away = away;
 	}	
@@ -38,8 +41,25 @@ public class BasketballGameTime extends GameTime {
 		_context = context;
 	}
 	
+	public void setUndoInstance(UndoInstance undoInstance){
+		_undoInstance = undoInstance;
+		_basketball_db.setUndoInstance(undoInstance);
+		if(_homeTeam!=null){
+			for(BasketballPlayer p: _homeTeamPlayers){
+				p.setdb(_basketball_db);
+			}
+		}
+		if(_awayTeam!=null){
+			for(BasketballPlayer p: _awayTeamPlayers){
+				p.setdb(_basketball_db);
+			}
+		}
+	}
+
 	public long createTeams(){
 		_basketball_db = new BasketballDatabaseHelper(_context);
+		_basketball_db.setUndoInstance(_undoInstance);
+		
 		_homeTeam = new BasketballTeam(_home.gettname(), true);
 		_awayTeam = new BasketballTeam(_away.gettname(), false);
 
@@ -52,7 +72,7 @@ public class BasketballGameTime extends GameTime {
 		ArrayList<Players> _homeTeamPlayer = (ArrayList<Players>) _basketball_db.getPlayersTeam(_home_t_id);
 		ArrayList<Players> _awayTeamPlayer = (ArrayList<Players>) _basketball_db.getPlayersTeam(_away_t_id);
 		
-		ArrayList<BasketballPlayer> _homeTeamPlayers = new ArrayList<BasketballPlayer>();
+		_homeTeamPlayers = new ArrayList<BasketballPlayer>();
 		for(Players p: _homeTeamPlayer){
 			BasketballPlayer player = new BasketballPlayer();
 			player.setpid(p.getpid());
@@ -62,7 +82,7 @@ public class BasketballGameTime extends GameTime {
 			player.setdb(_basketball_db);
 			_homeTeamPlayers.add(player);
 		}
-		ArrayList<BasketballPlayer> _awayTeamPlayers = new ArrayList<BasketballPlayer>();
+		_awayTeamPlayers = new ArrayList<BasketballPlayer>();
 		for(Players p: _awayTeamPlayer){
 			BasketballPlayer player = new BasketballPlayer();
 			player.setpid(p.getpid());
@@ -214,22 +234,34 @@ public class BasketballGameTime extends GameTime {
 	}
 	
 	public void addTeamDRebound(){
+		ArrayList<StatData> _tstats = new ArrayList<StatData>();
+
 		if(_possession){
-			_basketball_db.addTeamStats(g_id, "home_dreb", 1);
+			_tstats.add(new StatData(g_id,0,"home_dreb", 1));
 		}
 		else{
-			_basketball_db.addTeamStats(g_id, "away_dreb", 1);
-
+			_tstats.add(new StatData(g_id,0,"away_dreb", 1));
 		}
+		_basketball_db.addTeamStats(_tstats);
 	}
 	
 	public void addTeamORebound(){
+		ArrayList<StatData> _tstats = new ArrayList<StatData>();
+
 		if(_possession){
-			_basketball_db.addTeamStats(g_id, "home_oreb", 1);
+			_tstats.add(new StatData(g_id,0,"home_oreb", 1));
 		}
 		else{
-			_basketball_db.addTeamStats(g_id, "away_oreb", 1);
-
+			_tstats.add(new StatData(g_id,0,"away_oreb", 1));
 		}
+		_basketball_db.addTeamStats(_tstats);
+	}
+	
+	public BasketballTeam getHomeTeamInstance(){
+		return _homeTeam;
+	}
+	
+	public BasketballTeam getAwayTeamInstance(){
+		return _awayTeam;
 	}
 }

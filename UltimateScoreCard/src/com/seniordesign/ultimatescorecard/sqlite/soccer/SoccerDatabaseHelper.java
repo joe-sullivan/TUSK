@@ -4,6 +4,7 @@ package com.seniordesign.ultimatescorecard.sqlite.soccer;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.seniordesign.ultimatescorecard.data.StatData;
 import com.seniordesign.ultimatescorecard.data.soccer.SoccerPlayer;
 import com.seniordesign.ultimatescorecard.sqlite.helper.DatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
@@ -351,112 +352,125 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 		}
 		
 		//Adding value to points category of a player
-		public int addTeamStats(long g_id, String stat, int value){
+		@Override
+		public int addTeamStats(ArrayList<StatData> statlist){
+			
 		    SQLiteDatabase db = this.getWritableDatabase();
-		    SoccerGames game = (SoccerGames) getGame(g_id);
 		    
-		    int old_value = getTeamGameStat(g_id,stat);
-		    int new_value = old_value + value;
+		    _undoInstance.addtstats(statlist);
 		    
-		    ContentValues values = new ContentValues();
-		    	
-	        values.put(KEY_G_ID, g_id);
-	        values.put(KEY_HOME_ID, game.gethomeid());
-	        values.put(KEY_AWAY_ID, game.getawayid());
-	        values.put(KEY_DATE, game.getDate());
-
-	        if(stat==KEY_HOME_SHOTS)
-		    	values.put(KEY_HOME_SHOTS, new_value);
-		    else
-		    	values.put(KEY_HOME_SHOTS, game.gethomeshots());
-		    if(stat==KEY_HOME_SOG)
-		    	values.put(KEY_HOME_SOG, new_value);
-		    else
-		    	values.put(KEY_HOME_SOG, game.gethomesog());
-		    if(stat==KEY_HOME_GOALS)
-		    	values.put(KEY_HOME_GOALS, new_value);
-		    else
-		    	values.put(KEY_HOME_GOALS, game.gethomegoals());
-		    if(stat==KEY_HOME_AST)
-		    	values.put(KEY_HOME_AST, new_value);
-		    else
-		    	values.put(KEY_HOME_AST, game.gethomeast());
-		    if(stat==KEY_HOME_FOULS)
-		    	values.put(KEY_HOME_FOULS, new_value);
-		    else
-		    	values.put(KEY_HOME_FOULS, game.gethomefouls());
-		    if(stat==KEY_HOME_PKA)
-		    	values.put(KEY_HOME_PKA, new_value);
-		    else
-		    	values.put(KEY_HOME_PKA, game.gethomepka());
-		    if(stat==KEY_HOME_PKG)
-		    	values.put(KEY_HOME_PKG, new_value);
-		    else
-		    	values.put(KEY_HOME_PKG, game.gethomepkg());
-		    if(stat==KEY_HOME_YCARD)
-		    	values.put(KEY_HOME_YCARD, new_value);
-		    else
-		    	values.put(KEY_HOME_YCARD, game.gethomeycard());
-		    if(stat==KEY_HOME_RCARD)
-		    	values.put(KEY_HOME_RCARD, new_value);
-		    else
-		    	values.put(KEY_HOME_RCARD, game.gethomercard());
-		    if(stat==KEY_HOME_SAVES)
-		    	values.put(KEY_HOME_SAVES, new_value);
-		    else
-		    	values.put(KEY_HOME_SAVES, game.gethomesaves());
-		    if(stat==KEY_HOME_GOALS_ALLOWED)
-		    	values.put(KEY_HOME_GOALS_ALLOWED, new_value);
-		    else
-		    	values.put(KEY_HOME_GOALS_ALLOWED, game.gethomegoalsallowed());
+		    for(StatData statdata: statlist){
 		    
-	        if(stat==KEY_AWAY_SHOTS)
-		    	values.put(KEY_AWAY_SHOTS, new_value);
-		    else
-		    	values.put(KEY_AWAY_SHOTS, game.getawayshots());
-		    if(stat==KEY_AWAY_SOG)
-		    	values.put(KEY_AWAY_SOG, new_value);
-		    else
-		    	values.put(KEY_AWAY_SOG, game.getawaysog());
-		    if(stat==KEY_AWAY_GOALS)
-		    	values.put(KEY_AWAY_GOALS, new_value);
-		    else
-		    	values.put(KEY_AWAY_GOALS, game.getawaygoals());
-		    if(stat==KEY_AWAY_AST)
-		    	values.put(KEY_AWAY_AST, new_value);
-		    else
-		    	values.put(KEY_AWAY_AST, game.getawayast());
-		    if(stat==KEY_AWAY_FOULS)
-		    	values.put(KEY_AWAY_FOULS, new_value);
-		    else
-		    	values.put(KEY_AWAY_FOULS, game.getawayfouls());
-		    if(stat==KEY_AWAY_PKA)
-		    	values.put(KEY_AWAY_PKA, new_value);
-		    else
-		    	values.put(KEY_AWAY_PKA, game.getawaypka());
-		    if(stat==KEY_AWAY_PKG)
-		    	values.put(KEY_AWAY_PKG, new_value);
-		    else
-		    	values.put(KEY_AWAY_PKG, game.getawaypkg());
-		    if(stat==KEY_AWAY_YCARD)
-		    	values.put(KEY_AWAY_YCARD, new_value);
-		    else
-		    	values.put(KEY_AWAY_YCARD, game.getawayycard());
-		    if(stat==KEY_AWAY_RCARD)
-		    	values.put(KEY_AWAY_RCARD, new_value);
-		    else
-		    	values.put(KEY_AWAY_RCARD, game.getawayrcard());
-		    if(stat==KEY_AWAY_SAVES)
-		    	values.put(KEY_AWAY_SAVES, new_value);
-		    else
-		    	values.put(KEY_AWAY_SAVES, game.getawaysaves());
-		    if(stat==KEY_AWAY_GOALS_ALLOWED)
-		    	values.put(KEY_AWAY_GOALS_ALLOWED, new_value);
-		    else
-		    	values.put(KEY_AWAY_GOALS_ALLOWED, game.getawaygoalsallowed());
-		    //insert more stats here
-	        
-		    return db.update(TABLE_GAMES,  values, KEY_G_ID + " = " + g_id, null);
+		    	long g_id = statdata.getgid();
+		    	String stat = statdata.getstat();
+		    	int value = statdata.getvalue();
+		    
+			    SoccerGames game = (SoccerGames) getGame(g_id);
+			    
+			    int old_value = getTeamGameStat(g_id,stat);
+			    int new_value = old_value + value;
+			    
+			    ContentValues values = new ContentValues();
+			    	
+		        values.put(KEY_G_ID, g_id);
+		        values.put(KEY_HOME_ID, game.gethomeid());
+		        values.put(KEY_AWAY_ID, game.getawayid());
+		        values.put(KEY_DATE, game.getDate());
+	
+		        if(stat==KEY_HOME_SHOTS)
+			    	values.put(KEY_HOME_SHOTS, new_value);
+			    else
+			    	values.put(KEY_HOME_SHOTS, game.gethomeshots());
+			    if(stat==KEY_HOME_SOG)
+			    	values.put(KEY_HOME_SOG, new_value);
+			    else
+			    	values.put(KEY_HOME_SOG, game.gethomesog());
+			    if(stat==KEY_HOME_GOALS)
+			    	values.put(KEY_HOME_GOALS, new_value);
+			    else
+			    	values.put(KEY_HOME_GOALS, game.gethomegoals());
+			    if(stat==KEY_HOME_AST)
+			    	values.put(KEY_HOME_AST, new_value);
+			    else
+			    	values.put(KEY_HOME_AST, game.gethomeast());
+			    if(stat==KEY_HOME_FOULS)
+			    	values.put(KEY_HOME_FOULS, new_value);
+			    else
+			    	values.put(KEY_HOME_FOULS, game.gethomefouls());
+			    if(stat==KEY_HOME_PKA)
+			    	values.put(KEY_HOME_PKA, new_value);
+			    else
+			    	values.put(KEY_HOME_PKA, game.gethomepka());
+			    if(stat==KEY_HOME_PKG)
+			    	values.put(KEY_HOME_PKG, new_value);
+			    else
+			    	values.put(KEY_HOME_PKG, game.gethomepkg());
+			    if(stat==KEY_HOME_YCARD)
+			    	values.put(KEY_HOME_YCARD, new_value);
+			    else
+			    	values.put(KEY_HOME_YCARD, game.gethomeycard());
+			    if(stat==KEY_HOME_RCARD)
+			    	values.put(KEY_HOME_RCARD, new_value);
+			    else
+			    	values.put(KEY_HOME_RCARD, game.gethomercard());
+			    if(stat==KEY_HOME_SAVES)
+			    	values.put(KEY_HOME_SAVES, new_value);
+			    else
+			    	values.put(KEY_HOME_SAVES, game.gethomesaves());
+			    if(stat==KEY_HOME_GOALS_ALLOWED)
+			    	values.put(KEY_HOME_GOALS_ALLOWED, new_value);
+			    else
+			    	values.put(KEY_HOME_GOALS_ALLOWED, game.gethomegoalsallowed());
+			    
+		        if(stat==KEY_AWAY_SHOTS)
+			    	values.put(KEY_AWAY_SHOTS, new_value);
+			    else
+			    	values.put(KEY_AWAY_SHOTS, game.getawayshots());
+			    if(stat==KEY_AWAY_SOG)
+			    	values.put(KEY_AWAY_SOG, new_value);
+			    else
+			    	values.put(KEY_AWAY_SOG, game.getawaysog());
+			    if(stat==KEY_AWAY_GOALS)
+			    	values.put(KEY_AWAY_GOALS, new_value);
+			    else
+			    	values.put(KEY_AWAY_GOALS, game.getawaygoals());
+			    if(stat==KEY_AWAY_AST)
+			    	values.put(KEY_AWAY_AST, new_value);
+			    else
+			    	values.put(KEY_AWAY_AST, game.getawayast());
+			    if(stat==KEY_AWAY_FOULS)
+			    	values.put(KEY_AWAY_FOULS, new_value);
+			    else
+			    	values.put(KEY_AWAY_FOULS, game.getawayfouls());
+			    if(stat==KEY_AWAY_PKA)
+			    	values.put(KEY_AWAY_PKA, new_value);
+			    else
+			    	values.put(KEY_AWAY_PKA, game.getawaypka());
+			    if(stat==KEY_AWAY_PKG)
+			    	values.put(KEY_AWAY_PKG, new_value);
+			    else
+			    	values.put(KEY_AWAY_PKG, game.getawaypkg());
+			    if(stat==KEY_AWAY_YCARD)
+			    	values.put(KEY_AWAY_YCARD, new_value);
+			    else
+			    	values.put(KEY_AWAY_YCARD, game.getawayycard());
+			    if(stat==KEY_AWAY_RCARD)
+			    	values.put(KEY_AWAY_RCARD, new_value);
+			    else
+			    	values.put(KEY_AWAY_RCARD, game.getawayrcard());
+			    if(stat==KEY_AWAY_SAVES)
+			    	values.put(KEY_AWAY_SAVES, new_value);
+			    else
+			    	values.put(KEY_AWAY_SAVES, game.getawaysaves());
+			    if(stat==KEY_AWAY_GOALS_ALLOWED)
+			    	values.put(KEY_AWAY_GOALS_ALLOWED, new_value);
+			    else
+			    	values.put(KEY_AWAY_GOALS_ALLOWED, game.getawaygoalsallowed());
+			    //insert more stats here
+		        
+			    db.update(TABLE_GAMES,  values, KEY_G_ID + " = " + g_id, null);
+		    }
+			return 1;
 		}
 	
 	// Delete a Game
@@ -637,64 +651,78 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 	//ADDING STATS
 	
 	//Adding value to points category of a player
-	public int addStats(long g_id, long p_id, String stat, int value){
+	@Override
+	public int addStats(ArrayList<StatData> statlist){
+		
 	    SQLiteDatabase db = this.getWritableDatabase();
-	    SoccerGameStats stats = getPlayerGameStats(g_id, p_id);
 	    
-	    int old_value = getPlayerGameStat(g_id,p_id,stat);
-	    int new_value = old_value + value;
+	    _undoInstance.addpstats(statlist);
+
+	    for(StatData statdata: statlist){
+		    
+		    long g_id = statdata.getgid();
+		    long p_id = statdata.getpid();
+		    String stat = statdata.getstat();
+		    int value = statdata.getvalue();
 	    
-	    ContentValues values = new ContentValues();
-	    	
-	    values.put(KEY_P_ID, p_id);
-        values.put(KEY_G_ID, g_id);
-	    if(stat==KEY_SHOTS)
-	    	values.put(KEY_SHOTS, new_value);
-	    else
-	    	values.put(KEY_SHOTS, stats.getshots());
-	    if(stat==KEY_SOG)
-	    	values.put(KEY_SOG, new_value);
-	    else
-	    	values.put(KEY_SOG, stats.getsog());
-	    if(stat==KEY_GOALS)
-	    	values.put(KEY_GOALS, new_value);
-	    else
-	    	values.put(KEY_GOALS, stats.getgoals());
-	    if(stat==KEY_AST)
-	    	values.put(KEY_AST, new_value);
-	    else
-	    	values.put(KEY_AST, stats.getast());
-	    if(stat==KEY_FOULS)
-	    	values.put(KEY_FOULS, new_value);
-	    else
-	    	values.put(KEY_FOULS, stats.getfouls());
-	    if(stat==KEY_PKA)
-	    	values.put(KEY_PKA, new_value);
-	    else
-	    	values.put(KEY_PKA, stats.getpka());
-	    if(stat==KEY_PKG)
-	    	values.put(KEY_PKG, new_value);
-	    else
-	    	values.put(KEY_PKG, stats.getpkg());
-	    if(stat==KEY_YCARD)
-	    	values.put(KEY_YCARD, new_value);
-	    else
-	    	values.put(KEY_YCARD, stats.getycard());
-	    if(stat==KEY_RCARD)
-	    	values.put(KEY_RCARD, new_value);
-	    else
-	    	values.put(KEY_RCARD, stats.getrcard());
-	    if(stat==KEY_SAVES)
-	    	values.put(KEY_SAVES, new_value);
-	    else
-	    	values.put(KEY_SAVES, stats.getsaves());
-	    if(stat==KEY_GOALS_ALLOWED)
-	    	values.put(KEY_GOALS_ALLOWED, new_value);
-	    else
-	    	values.put(KEY_GOALS_ALLOWED, stats.getgoalsallowed());
-        //insert more stats here
-        
-	    return db.update(TABLE_SOCCER_GAME_STATS,  values, KEY_P_ID + " = " + p_id + " AND " + KEY_G_ID + " = " + g_id, null);
+		    SoccerGameStats stats = getPlayerGameStats(g_id, p_id);
+		    
+		    int old_value = getPlayerGameStat(g_id,p_id,stat);
+		    int new_value = old_value + value;
+		    
+		    ContentValues values = new ContentValues();
+		    	
+		    values.put(KEY_P_ID, p_id);
+	        values.put(KEY_G_ID, g_id);
+		    if(stat==KEY_SHOTS)
+		    	values.put(KEY_SHOTS, new_value);
+		    else
+		    	values.put(KEY_SHOTS, stats.getshots());
+		    if(stat==KEY_SOG)
+		    	values.put(KEY_SOG, new_value);
+		    else
+		    	values.put(KEY_SOG, stats.getsog());
+		    if(stat==KEY_GOALS)
+		    	values.put(KEY_GOALS, new_value);
+		    else
+		    	values.put(KEY_GOALS, stats.getgoals());
+		    if(stat==KEY_AST)
+		    	values.put(KEY_AST, new_value);
+		    else
+		    	values.put(KEY_AST, stats.getast());
+		    if(stat==KEY_FOULS)
+		    	values.put(KEY_FOULS, new_value);
+		    else
+		    	values.put(KEY_FOULS, stats.getfouls());
+		    if(stat==KEY_PKA)
+		    	values.put(KEY_PKA, new_value);
+		    else
+		    	values.put(KEY_PKA, stats.getpka());
+		    if(stat==KEY_PKG)
+		    	values.put(KEY_PKG, new_value);
+		    else
+		    	values.put(KEY_PKG, stats.getpkg());
+		    if(stat==KEY_YCARD)
+		    	values.put(KEY_YCARD, new_value);
+		    else
+		    	values.put(KEY_YCARD, stats.getycard());
+		    if(stat==KEY_RCARD)
+		    	values.put(KEY_RCARD, new_value);
+		    else
+		    	values.put(KEY_RCARD, stats.getrcard());
+		    if(stat==KEY_SAVES)
+		    	values.put(KEY_SAVES, new_value);
+		    else
+		    	values.put(KEY_SAVES, stats.getsaves());
+		    if(stat==KEY_GOALS_ALLOWED)
+		    	values.put(KEY_GOALS_ALLOWED, new_value);
+		    else
+		    	values.put(KEY_GOALS_ALLOWED, stats.getgoalsallowed());
+	        //insert more stats here
+	        
+		    db.update(TABLE_SOCCER_GAME_STATS,  values, KEY_P_ID + " = " + p_id + " AND " + KEY_G_ID + " = " + g_id, null);
+	    }
+		return 1;
 	}
 	
 	// ----------------------- PLAYERS table methods ------------------------- //

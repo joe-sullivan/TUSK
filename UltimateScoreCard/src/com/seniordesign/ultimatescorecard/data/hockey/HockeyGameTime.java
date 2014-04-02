@@ -8,6 +8,7 @@ import android.content.Context;
 
 import com.seniordesign.ultimatescorecard.data.GameInfo;
 import com.seniordesign.ultimatescorecard.data.GameTime;
+import com.seniordesign.ultimatescorecard.data.UndoInstance;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
@@ -26,6 +27,10 @@ public class HockeyGameTime extends GameTime{
 	public GameInfo _gameInfo;
 	private ArrayList<Players> _homeTeamPlayersPull, _awayTeamPlayersPull;
 	
+	private ArrayList<HockeyPlayer> _homeTeamPlayers, _awayTeamPlayers;
+	private UndoInstance _undoInstance;	
+	
+	
 	public HockeyGameTime (Teams home, Teams away){
 		_home = home;
 		_away = away;
@@ -35,8 +40,26 @@ public class HockeyGameTime extends GameTime{
 		_context = context;
 	}
 	
+	
+	public void setUndoInstance(UndoInstance undoInstance){
+		_undoInstance = undoInstance;
+		_hockey_db.setUndoInstance(undoInstance);
+		if(_homeTeam!=null){
+			for(HockeyPlayer p: _homeTeamPlayers){
+				p.setdb(_hockey_db);
+			}
+		}
+		if(_awayTeam!=null){
+			for(HockeyPlayer p: _awayTeamPlayers){
+				p.setdb(_hockey_db);
+			}
+		}
+	}
+		
 	public long createTeams(){
 		_hockey_db = new HockeyDatabaseHelper(_context);
+		_hockey_db.setUndoInstance(_undoInstance);
+		
 		_homeTeam = new HockeyTeam(_home.gettname(), true);
 		_awayTeam = new HockeyTeam(_away.gettname(), false);
 
@@ -49,7 +72,7 @@ public class HockeyGameTime extends GameTime{
 		ArrayList<Players> _homeTeamPlayer = (ArrayList<Players>) _hockey_db.getPlayersTeam(_home_t_id);
 		ArrayList<Players> _awayTeamPlayer = (ArrayList<Players>) _hockey_db.getPlayersTeam(_away_t_id);
 		
-		ArrayList<HockeyPlayer> _homeTeamPlayers = new ArrayList<HockeyPlayer>();
+		_homeTeamPlayers = new ArrayList<HockeyPlayer>();
 		for(Players p: _homeTeamPlayer){
 			HockeyPlayer player = new HockeyPlayer();
 			player.setpid(p.getpid());
@@ -60,7 +83,7 @@ public class HockeyGameTime extends GameTime{
 			_homeTeamPlayers.add(player);
 
 		}
-		ArrayList<HockeyPlayer> _awayTeamPlayers = new ArrayList<HockeyPlayer>();
+		_awayTeamPlayers = new ArrayList<HockeyPlayer>();
 		for(Players p: _awayTeamPlayer){
 			HockeyPlayer player = new HockeyPlayer();
 			player.setpid(p.getpid());
@@ -177,4 +200,13 @@ public class HockeyGameTime extends GameTime{
 	public long getawaytid(){
 		return _away_t_id;
 	}
+	
+	public HockeyTeam getHomeTeamInstance(){
+		return _homeTeam;
+	}
+	
+	public HockeyTeam getAwayTeamInstance(){
+		return _awayTeam;
+	}
+	
 }

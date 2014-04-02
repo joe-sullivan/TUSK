@@ -200,7 +200,7 @@ public final class R {
         public static final int icefloorBackground=0x7f0a0036;
         public static final int interactiveFrame=0x7f0a000f;
         public static final int listofPlays=0x7f0a0099;
-        public static final int nextPeriod=0x7f0a00aa;
+        public static final int nextPeriod=0x7f0a00ac;
         public static final int nextQuarter=0x7f0a00a6;
         public static final int oReboundTotal=0x7f0a003f;
         public static final int optionButton=0x7f0a004e;
@@ -214,7 +214,7 @@ public final class R {
         public static final int penaltyTypeTotal=0x7f0a009f;
         public static final int periodNumber=0x7f0a0035;
         public static final int playByPlaytitle=0x7f0a0097;
-        public static final int play_by_play=0x7f0a00ab;
+        public static final int play_by_play=0x7f0a00ad;
         public static final int playerCreation=0x7f0a002d;
         public static final int playerDialogLayout=0x7f0a005e;
         public static final int playerList=0x7f0a002e;
@@ -229,6 +229,7 @@ public final class R {
         public static final int possessionHome=0x7f0a0011;
         public static final int quarterNumber=0x7f0a0013;
         public static final int reboundTotal=0x7f0a003d;
+        public static final int redo=0x7f0a00ab;
         public static final int scoresFrame=0x7f0a0008;
         public static final int scoresFrame2=0x7f0a000b;
         public static final int scrollView=0x7f0a0098;
@@ -238,7 +239,7 @@ public final class R {
         public static final int settings=0x7f0a00a9;
         public static final int shotChart=0x7f0a00a3;
         public static final int shotOnGoalTotal=0x7f0a009d;
-        public static final int shot_chart=0x7f0a00ac;
+        public static final int shot_chart=0x7f0a00ae;
         public static final int slideoutButtons=0x7f0a0001;
         public static final int slideoutTitle=0x7f0a0000;
         public static final int soccerButton=0x7f0a004c;
@@ -265,6 +266,7 @@ public final class R {
         public static final int tripleOptionRow=0x7f0a0014;
         public static final int turnoverTotal=0x7f0a009b;
         public static final int twinOptionRow=0x7f0a001b;
+        public static final int undo=0x7f0a00aa;
         public static final int viewStatisticButton=0x7f0a004d;
         public static final int view_statistic_title=0x7f0a0058;
         public static final int view_stats_background=0x7f0a0057;

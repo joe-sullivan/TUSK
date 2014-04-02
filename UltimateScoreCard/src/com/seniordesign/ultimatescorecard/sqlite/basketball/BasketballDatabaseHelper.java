@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.seniordesign.ultimatescorecard.data.StatData;
 import com.seniordesign.ultimatescorecard.data.basketball.BasketballPlayer;
 import com.seniordesign.ultimatescorecard.sqlite.helper.DatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
@@ -28,7 +29,6 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
  
     // Database Version
     private static final int DATABASE_VERSION = 1;
- 
     // Database Name
     private static final String DATABASE_NAME = "BasketballStats";
 	
@@ -421,153 +421,163 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 	}
 	
 	//Adding value to points category of a player
-	public int addTeamStats(long g_id, String stat, int value){
+	public int addTeamStats(ArrayList<StatData> statlist){
 	    SQLiteDatabase db = this.getWritableDatabase();
-	    BasketballGames game = (BasketballGames) getGame(g_id);
 	    
-	    
-	    int old_value = getTeamGameStat(g_id,stat);
-	    int new_value = old_value + value;
-	    
-	    ContentValues values = new ContentValues();
-	    	
-        values.put(KEY_G_ID, g_id);
-        values.put(KEY_HOME_ID, game.gethomeid());
-        values.put(KEY_AWAY_ID, game.getawayid());
-        values.put(KEY_DATE, game.getDate());
+	    _undoInstance.addtstats(statlist);
 
-	    if(stat==KEY_HOME_PTS)
-	    	values.put(KEY_HOME_PTS, new_value);
-	    else
-	    	values.put(KEY_HOME_PTS, game.gethomepts());
-	    if(stat==KEY_HOME_FGM)
-	    	values.put(KEY_HOME_FGM, new_value);
-	    else
-	    	values.put(KEY_HOME_FGM, game.gethomefgm());
-	    if(stat==KEY_HOME_FGA)
-	    	values.put(KEY_HOME_FGA, new_value);
-	    else
-	    	values.put(KEY_HOME_FGA, game.gethomefga());
-	    if(stat==KEY_HOME_FGM3)
-	    	values.put(KEY_HOME_FGM3, new_value);
-	    else
-	    	values.put(KEY_HOME_FGM3, game.gethomefgm3());
-	    if(stat==KEY_HOME_FGA3)
-	    	values.put(KEY_HOME_FGA3, new_value);
-	    else
-	    	values.put(KEY_HOME_FGA3, game.gethomefga3());
-	    if(stat==KEY_HOME_FTM)
-	    	values.put(KEY_HOME_FTM, new_value);
-	    else
-	    	values.put(KEY_HOME_FTM, game.gethomeftm());
-	    if(stat==KEY_HOME_FTA)
-	    	values.put(KEY_HOME_FTA, new_value);
-	    else
-	    	values.put(KEY_HOME_FTA, game.gethomefta());
-	    if(stat==KEY_HOME_OREB)
-	    	values.put(KEY_HOME_OREB, new_value);
-	    else
-	    	values.put(KEY_HOME_OREB, game.gethomeoreb());
-	    if(stat==KEY_HOME_DREB)
-	    	values.put(KEY_HOME_DREB, new_value);
-	    else
-	    	values.put(KEY_HOME_DREB, game.gethomedreb());
-	    if(stat==KEY_HOME_AST)
-	    	values.put(KEY_HOME_AST, new_value);
-	    else
-	    	values.put(KEY_HOME_AST, game.gethomeast());
-	    if(stat==KEY_HOME_STL)
-	    	values.put(KEY_HOME_STL, new_value);
-	    else
-	    	values.put(KEY_HOME_STL, game.gethomestl());
-	    if(stat==KEY_HOME_BLK)
-	    	values.put(KEY_HOME_BLK, new_value);
-	    else
-	    	values.put(KEY_HOME_BLK, game.gethomeblk());
-	    if(stat==KEY_HOME_TO)
-	    	values.put(KEY_HOME_TO, new_value);
-	    else
-	    	values.put(KEY_HOME_TO, game.gethometo());
-	    if(stat==KEY_HOME_PF)
-	    	values.put(KEY_HOME_PF, new_value);
-	    else
-	    	values.put(KEY_HOME_PF, game.gethomepf());
-	    if(stat==KEY_HOME_TECH)
-	    	values.put(KEY_HOME_TECH, new_value);
-	    else
-	    	values.put(KEY_HOME_TECH, game.gethometech());
-	    if(stat==KEY_HOME_FLAGRANT)
-	    	values.put(KEY_HOME_FLAGRANT, new_value);
-	    else
-	    	values.put(KEY_HOME_FLAGRANT, game.gethomeflagrant());
-	    if(stat==KEY_AWAY_PTS)
-	    	values.put(KEY_AWAY_PTS, new_value);
-	    else
-	    	values.put(KEY_AWAY_PTS, game.getawaypts());
-	    if(stat==KEY_AWAY_FGM)
-	    	values.put(KEY_AWAY_FGM, new_value);
-	    else
-	    	values.put(KEY_AWAY_FGM, game.getawayfgm());
-	    if(stat==KEY_AWAY_FGA)
-	    	values.put(KEY_AWAY_FGA, new_value);
-	    else
-	    	values.put(KEY_AWAY_FGA, game.getawayfga());
-	    if(stat==KEY_AWAY_FGM3)
-	    	values.put(KEY_AWAY_FGM3, new_value);
-	    else
-	    	values.put(KEY_AWAY_FGM3, game.getawayfgm3());
-	    if(stat==KEY_AWAY_FGA3)
-	    	values.put(KEY_AWAY_FGA3, new_value);
-	    else
-	    	values.put(KEY_AWAY_FGA3, game.getawayfga3());
-	    if(stat==KEY_AWAY_FTM)
-	    	values.put(KEY_AWAY_FTM, new_value);
-	    else
-	    	values.put(KEY_AWAY_FTM, game.getawayftm());
-	    if(stat==KEY_AWAY_FTA)
-	    	values.put(KEY_AWAY_FTA, new_value);
-	    else
-	    	values.put(KEY_AWAY_FTA, game.getawayfta());
-	    if(stat==KEY_AWAY_OREB)
-	    	values.put(KEY_AWAY_OREB, new_value);
-	    else
-	    	values.put(KEY_AWAY_OREB, game.getawayoreb());
-	    if(stat==KEY_AWAY_DREB)
-	    	values.put(KEY_AWAY_DREB, new_value);
-	    else
-	    	values.put(KEY_AWAY_DREB, game.getawaydreb());
-	    if(stat==KEY_AWAY_AST)
-	    	values.put(KEY_AWAY_AST, new_value);
-	    else
-	    	values.put(KEY_AWAY_AST, game.getawayast());
-	    if(stat==KEY_AWAY_STL)
-	    	values.put(KEY_AWAY_STL, new_value);
-	    else
-	    	values.put(KEY_AWAY_STL, game.getawaystl());
-	    if(stat==KEY_AWAY_BLK)
-	    	values.put(KEY_AWAY_BLK, new_value);
-	    else
-	    	values.put(KEY_AWAY_BLK, game.getawayblk());
-	    if(stat==KEY_AWAY_TO)
-	    	values.put(KEY_AWAY_TO, new_value);
-	    else
-	    	values.put(KEY_AWAY_TO, game.getawayto());
-	    if(stat==KEY_AWAY_PF)
-	    	values.put(KEY_AWAY_PF, new_value);
-	    else
-	    	values.put(KEY_AWAY_PF, game.getawaypf());
-	    if(stat==KEY_AWAY_TECH)
-	    	values.put(KEY_AWAY_TECH, new_value);
-	    else
-	    	values.put(KEY_AWAY_TECH, game.getawaytech());
-	    if(stat==KEY_AWAY_FLAGRANT)
-	    	values.put(KEY_AWAY_FLAGRANT, new_value);
-	    else
-	    	values.put(KEY_AWAY_FLAGRANT, game.getawayflagrant());
-        
-        //insert more stats here
-        
-	    return db.update(TABLE_GAMES,  values, KEY_G_ID + " = " + g_id, null);
+	    for(StatData statdata: statlist){
+	    	
+	    	long g_id = statdata.getgid();
+	    	String stat = statdata.getstat();
+	    	int value = statdata.getvalue();
+	    
+		    BasketballGames game = (BasketballGames) getGame(g_id);
+		    
+		    
+		    int old_value = getTeamGameStat(g_id,stat);
+		    int new_value = old_value + value;
+		    
+		    ContentValues values = new ContentValues();
+		    	
+	        values.put(KEY_G_ID, g_id);
+	        values.put(KEY_HOME_ID, game.gethomeid());
+	        values.put(KEY_AWAY_ID, game.getawayid());
+	        values.put(KEY_DATE, game.getDate());
+	
+		    if(stat==KEY_HOME_PTS)
+		    	values.put(KEY_HOME_PTS, new_value);
+		    else
+		    	values.put(KEY_HOME_PTS, game.gethomepts());
+		    if(stat==KEY_HOME_FGM)
+		    	values.put(KEY_HOME_FGM, new_value);
+		    else
+		    	values.put(KEY_HOME_FGM, game.gethomefgm());
+		    if(stat==KEY_HOME_FGA)
+		    	values.put(KEY_HOME_FGA, new_value);
+		    else
+		    	values.put(KEY_HOME_FGA, game.gethomefga());
+		    if(stat==KEY_HOME_FGM3)
+		    	values.put(KEY_HOME_FGM3, new_value);
+		    else
+		    	values.put(KEY_HOME_FGM3, game.gethomefgm3());
+		    if(stat==KEY_HOME_FGA3)
+		    	values.put(KEY_HOME_FGA3, new_value);
+		    else
+		    	values.put(KEY_HOME_FGA3, game.gethomefga3());
+		    if(stat==KEY_HOME_FTM)
+		    	values.put(KEY_HOME_FTM, new_value);
+		    else
+		    	values.put(KEY_HOME_FTM, game.gethomeftm());
+		    if(stat==KEY_HOME_FTA)
+		    	values.put(KEY_HOME_FTA, new_value);
+		    else
+		    	values.put(KEY_HOME_FTA, game.gethomefta());
+		    if(stat==KEY_HOME_OREB)
+		    	values.put(KEY_HOME_OREB, new_value);
+		    else
+		    	values.put(KEY_HOME_OREB, game.gethomeoreb());
+		    if(stat==KEY_HOME_DREB)
+		    	values.put(KEY_HOME_DREB, new_value);
+		    else
+		    	values.put(KEY_HOME_DREB, game.gethomedreb());
+		    if(stat==KEY_HOME_AST)
+		    	values.put(KEY_HOME_AST, new_value);
+		    else
+		    	values.put(KEY_HOME_AST, game.gethomeast());
+		    if(stat==KEY_HOME_STL)
+		    	values.put(KEY_HOME_STL, new_value);
+		    else
+		    	values.put(KEY_HOME_STL, game.gethomestl());
+		    if(stat==KEY_HOME_BLK)
+		    	values.put(KEY_HOME_BLK, new_value);
+		    else
+		    	values.put(KEY_HOME_BLK, game.gethomeblk());
+		    if(stat==KEY_HOME_TO)
+		    	values.put(KEY_HOME_TO, new_value);
+		    else
+		    	values.put(KEY_HOME_TO, game.gethometo());
+		    if(stat==KEY_HOME_PF)
+		    	values.put(KEY_HOME_PF, new_value);
+		    else
+		    	values.put(KEY_HOME_PF, game.gethomepf());
+		    if(stat==KEY_HOME_TECH)
+		    	values.put(KEY_HOME_TECH, new_value);
+		    else
+		    	values.put(KEY_HOME_TECH, game.gethometech());
+		    if(stat==KEY_HOME_FLAGRANT)
+		    	values.put(KEY_HOME_FLAGRANT, new_value);
+		    else
+		    	values.put(KEY_HOME_FLAGRANT, game.gethomeflagrant());
+		    if(stat==KEY_AWAY_PTS)
+		    	values.put(KEY_AWAY_PTS, new_value);
+		    else
+		    	values.put(KEY_AWAY_PTS, game.getawaypts());
+		    if(stat==KEY_AWAY_FGM)
+		    	values.put(KEY_AWAY_FGM, new_value);
+		    else
+		    	values.put(KEY_AWAY_FGM, game.getawayfgm());
+		    if(stat==KEY_AWAY_FGA)
+		    	values.put(KEY_AWAY_FGA, new_value);
+		    else
+		    	values.put(KEY_AWAY_FGA, game.getawayfga());
+		    if(stat==KEY_AWAY_FGM3)
+		    	values.put(KEY_AWAY_FGM3, new_value);
+		    else
+		    	values.put(KEY_AWAY_FGM3, game.getawayfgm3());
+		    if(stat==KEY_AWAY_FGA3)
+		    	values.put(KEY_AWAY_FGA3, new_value);
+		    else
+		    	values.put(KEY_AWAY_FGA3, game.getawayfga3());
+		    if(stat==KEY_AWAY_FTM)
+		    	values.put(KEY_AWAY_FTM, new_value);
+		    else
+		    	values.put(KEY_AWAY_FTM, game.getawayftm());
+		    if(stat==KEY_AWAY_FTA)
+		    	values.put(KEY_AWAY_FTA, new_value);
+		    else
+		    	values.put(KEY_AWAY_FTA, game.getawayfta());
+		    if(stat==KEY_AWAY_OREB)
+		    	values.put(KEY_AWAY_OREB, new_value);
+		    else
+		    	values.put(KEY_AWAY_OREB, game.getawayoreb());
+		    if(stat==KEY_AWAY_DREB)
+		    	values.put(KEY_AWAY_DREB, new_value);
+		    else
+		    	values.put(KEY_AWAY_DREB, game.getawaydreb());
+		    if(stat==KEY_AWAY_AST)
+		    	values.put(KEY_AWAY_AST, new_value);
+		    else
+		    	values.put(KEY_AWAY_AST, game.getawayast());
+		    if(stat==KEY_AWAY_STL)
+		    	values.put(KEY_AWAY_STL, new_value);
+		    else
+		    	values.put(KEY_AWAY_STL, game.getawaystl());
+		    if(stat==KEY_AWAY_BLK)
+		    	values.put(KEY_AWAY_BLK, new_value);
+		    else
+		    	values.put(KEY_AWAY_BLK, game.getawayblk());
+		    if(stat==KEY_AWAY_TO)
+		    	values.put(KEY_AWAY_TO, new_value);
+		    else
+		    	values.put(KEY_AWAY_TO, game.getawayto());
+		    if(stat==KEY_AWAY_PF)
+		    	values.put(KEY_AWAY_PF, new_value);
+		    else
+		    	values.put(KEY_AWAY_PF, game.getawaypf());
+		    if(stat==KEY_AWAY_TECH)
+		    	values.put(KEY_AWAY_TECH, new_value);
+		    else
+		    	values.put(KEY_AWAY_TECH, game.getawaytech());
+		    if(stat==KEY_AWAY_FLAGRANT)
+		    	values.put(KEY_AWAY_FLAGRANT, new_value);
+		    else
+		    	values.put(KEY_AWAY_FLAGRANT, game.getawayflagrant());
+	        
+	        //insert more stats here
+		    db.update(TABLE_GAMES,  values, KEY_G_ID + " = " + g_id, null);
+	    }
+	    return 1;
 	}
 	
 	// Delete a Game
@@ -622,32 +632,32 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 		    Log.i(LOG, selectQuery);
 		    //perform the query and store data in cursor
 		    Cursor c = db.rawQuery(selectQuery, null);
-		    //set cursor to beginning
-		    if (c != null)
-		        c.moveToFirst();
-		    //create the instance of Games using cursor information
+		  //create the instance of Games using cursor information
 		    BasketballGameStats stats = new BasketballGameStats();
-		    stats.setgid(c.getLong(c.getColumnIndex(KEY_G_ID)));
-		    stats.setpid(c.getLong(c.getColumnIndex(KEY_P_ID)));
-		    stats.setpts((c.getInt(c.getColumnIndex(KEY_PTS))));
-		    stats.setfgm((c.getInt(c.getColumnIndex(KEY_FGM))));
-		    stats.setfga(c.getInt(c.getColumnIndex(KEY_FGA)));
-		    stats.setfgm3(c.getInt(c.getColumnIndex(KEY_FGM3)));
-		    stats.setfga3(c.getInt(c.getColumnIndex(KEY_FGA3)));
-		    stats.setftm(c.getInt(c.getColumnIndex(KEY_FTM)));
-		    stats.setfta(c.getInt(c.getColumnIndex(KEY_FTA)));
-		    stats.setoreb(c.getInt(c.getColumnIndex(KEY_OREB)));
-		    stats.setdreb(c.getInt(c.getColumnIndex(KEY_DREB)));
-		    stats.setast(c.getInt(c.getColumnIndex(KEY_AST)));
-		    stats.setstl(c.getInt(c.getColumnIndex(KEY_STL)));
-		    stats.setblk(c.getInt(c.getColumnIndex(KEY_BLK)));
-		    stats.setto(c.getInt(c.getColumnIndex(KEY_TO)));
-		    stats.setpf(c.getInt(c.getColumnIndex(KEY_PF)));
-		    stats.settech(c.getInt(c.getColumnIndex(KEY_TECH)));
-		    stats.setflagrant(c.getInt(c.getColumnIndex(KEY_FLAGRANT)));
-
-		    //Insert more stats here
 		    
+		    //set cursor to beginning
+		    if (c != null && c.moveToFirst()){
+			    stats.setgid(c.getLong(c.getColumnIndex(KEY_G_ID)));
+			    stats.setpid(c.getLong(c.getColumnIndex(KEY_P_ID)));
+			    stats.setpts((c.getInt(c.getColumnIndex(KEY_PTS))));
+			    stats.setfgm((c.getInt(c.getColumnIndex(KEY_FGM))));
+			    stats.setfga(c.getInt(c.getColumnIndex(KEY_FGA)));
+			    stats.setfgm3(c.getInt(c.getColumnIndex(KEY_FGM3)));
+			    stats.setfga3(c.getInt(c.getColumnIndex(KEY_FGA3)));
+			    stats.setftm(c.getInt(c.getColumnIndex(KEY_FTM)));
+			    stats.setfta(c.getInt(c.getColumnIndex(KEY_FTA)));
+			    stats.setoreb(c.getInt(c.getColumnIndex(KEY_OREB)));
+			    stats.setdreb(c.getInt(c.getColumnIndex(KEY_DREB)));
+			    stats.setast(c.getInt(c.getColumnIndex(KEY_AST)));
+			    stats.setstl(c.getInt(c.getColumnIndex(KEY_STL)));
+			    stats.setblk(c.getInt(c.getColumnIndex(KEY_BLK)));
+			    stats.setto(c.getInt(c.getColumnIndex(KEY_TO)));
+			    stats.setpf(c.getInt(c.getColumnIndex(KEY_PF)));
+			    stats.settech(c.getInt(c.getColumnIndex(KEY_TECH)));
+			    stats.setflagrant(c.getInt(c.getColumnIndex(KEY_FLAGRANT)));
+	
+			    //Insert more stats here
+		    }
 		    return stats;
 		}
 		
@@ -772,85 +782,97 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 		//ADDING STATS
 		
 		//Adding value to points category of a player
-		public int addStats(long g_id, long p_id, String stat, int value){
+		public int addStats(ArrayList<StatData> statlist){
 		    SQLiteDatabase db = this.getWritableDatabase();
-		    BasketballGameStats stats = getPlayerGameStats(g_id, p_id);
-		    
-		    int old_value = getPlayerGameStat(g_id,p_id,stat);
-		    int new_value = old_value + value;
-		    
-		    ContentValues values = new ContentValues();
-		    	
-		    values.put(KEY_P_ID, p_id);
-	        values.put(KEY_G_ID, g_id);
-		    if(stat==KEY_PTS)
-		    	values.put(KEY_PTS, new_value);
-		    else
-		    	values.put(KEY_PTS, stats.getpts());
-		    if(stat==KEY_FGM)
-		    	values.put(KEY_FGM, new_value);
-		    else
-		    	values.put(KEY_FGM, stats.getfgm());
-		    if(stat==KEY_FGA)
-		    	values.put(KEY_FGA, new_value);
-		    else
-		    	values.put(KEY_FGA, stats.getfga());
-		    if(stat==KEY_FGM3)
-		    	values.put(KEY_FGM3, new_value);
-		    else
-		    	values.put(KEY_FGM3, stats.getfgm3());
-		    if(stat==KEY_FGA3)
-		    	values.put(KEY_FGA3, new_value);
-		    else
-		    	values.put(KEY_FGA3, stats.getfga3());
-		    if(stat==KEY_FTM)
-		    	values.put(KEY_FTM, new_value);
-		    else
-		    	values.put(KEY_FTM, stats.getftm());
-		    if(stat==KEY_FTA)
-		    	values.put(KEY_FTA, new_value);
-		    else
-		    	values.put(KEY_FTA, stats.getfta());
-		    if(stat==KEY_OREB)
-		    	values.put(KEY_OREB, new_value);
-		    else
-		    	values.put(KEY_OREB, stats.getoreb());
-		    if(stat==KEY_DREB)
-		    	values.put(KEY_DREB, new_value);
-		    else
-		    	values.put(KEY_DREB, stats.getdreb());
-		    if(stat==KEY_AST)
-		    	values.put(KEY_AST, new_value);
-		    else
-		    	values.put(KEY_AST, stats.getast());
-		    if(stat==KEY_STL)
-		    	values.put(KEY_STL, new_value);
-		    else
-		    	values.put(KEY_STL, stats.getstl());
-		    if(stat==KEY_BLK)
-		    	values.put(KEY_BLK, new_value);
-		    else
-		    	values.put(KEY_BLK, stats.getblk());
-		    if(stat==KEY_TO)
-		    	values.put(KEY_TO, new_value);
-		    else
-		    	values.put(KEY_TO, stats.getto());
-		    if(stat==KEY_PF)
-		    	values.put(KEY_PF, new_value);
-		    else
-		    	values.put(KEY_PF, stats.getpf());
-		    if(stat==KEY_TECH)
-		    	values.put(KEY_TECH, new_value);
-		    else
-		    	values.put(KEY_TECH, stats.gettech());
-		    if(stat==KEY_FLAGRANT)
-		    	values.put(KEY_FLAGRANT, new_value);
-		    else
-		    	values.put(KEY_FLAGRANT, stats.getflagrant());
-	        
-	        //insert more stats here
-	        
-		    return db.update(TABLE_BASKETBALL_GAME_STATS,  values, KEY_P_ID + " = " + p_id + " AND " + KEY_G_ID + " = " + g_id, null);
+		   
+		    _undoInstance.addpstats(statlist);
+
+		    for(StatData statdata: statlist){
+			    
+			    long g_id = statdata.getgid();
+			    long p_id = statdata.getpid();
+			    String stat = statdata.getstat();
+			    int value = statdata.getvalue();
+			    
+			    BasketballGameStats stats = getPlayerGameStats(g_id, p_id);
+			    
+			    int old_value = getPlayerGameStat(g_id,p_id,stat);
+			    int new_value = old_value + value;
+			    
+			    ContentValues values = new ContentValues();
+			    	
+			    values.put(KEY_P_ID, p_id);
+		        values.put(KEY_G_ID, g_id);
+			    if(stat==KEY_PTS)
+			    	values.put(KEY_PTS, new_value);
+			    else
+			    	values.put(KEY_PTS, stats.getpts());
+			    if(stat==KEY_FGM)
+			    	values.put(KEY_FGM, new_value);
+			    else
+			    	values.put(KEY_FGM, stats.getfgm());
+			    if(stat==KEY_FGA)
+			    	values.put(KEY_FGA, new_value);
+			    else
+			    	values.put(KEY_FGA, stats.getfga());
+			    if(stat==KEY_FGM3)
+			    	values.put(KEY_FGM3, new_value);
+			    else
+			    	values.put(KEY_FGM3, stats.getfgm3());
+			    if(stat==KEY_FGA3)
+			    	values.put(KEY_FGA3, new_value);
+			    else
+			    	values.put(KEY_FGA3, stats.getfga3());
+			    if(stat==KEY_FTM)
+			    	values.put(KEY_FTM, new_value);
+			    else
+			    	values.put(KEY_FTM, stats.getftm());
+			    if(stat==KEY_FTA)
+			    	values.put(KEY_FTA, new_value);
+			    else
+			    	values.put(KEY_FTA, stats.getfta());
+			    if(stat==KEY_OREB)
+			    	values.put(KEY_OREB, new_value);
+			    else
+			    	values.put(KEY_OREB, stats.getoreb());
+			    if(stat==KEY_DREB)
+			    	values.put(KEY_DREB, new_value);
+			    else
+			    	values.put(KEY_DREB, stats.getdreb());
+			    if(stat==KEY_AST)
+			    	values.put(KEY_AST, new_value);
+			    else
+			    	values.put(KEY_AST, stats.getast());
+			    if(stat==KEY_STL)
+			    	values.put(KEY_STL, new_value);
+			    else
+			    	values.put(KEY_STL, stats.getstl());
+			    if(stat==KEY_BLK)
+			    	values.put(KEY_BLK, new_value);
+			    else
+			    	values.put(KEY_BLK, stats.getblk());
+			    if(stat==KEY_TO)
+			    	values.put(KEY_TO, new_value);
+			    else
+			    	values.put(KEY_TO, stats.getto());
+			    if(stat==KEY_PF)
+			    	values.put(KEY_PF, new_value);
+			    else
+			    	values.put(KEY_PF, stats.getpf());
+			    if(stat==KEY_TECH)
+			    	values.put(KEY_TECH, new_value);
+			    else
+			    	values.put(KEY_TECH, stats.gettech());
+			    if(stat==KEY_FLAGRANT)
+			    	values.put(KEY_FLAGRANT, new_value);
+			    else
+			    	values.put(KEY_FLAGRANT, stats.getflagrant());
+		        
+		        //insert more stats here
+			    
+			    db.update(TABLE_BASKETBALL_GAME_STATS,  values, KEY_P_ID + " = " + p_id + " AND " + KEY_G_ID + " = " + g_id, null);
+		    }
+		    return 1;
 		}
 		
 	

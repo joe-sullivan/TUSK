@@ -13,6 +13,8 @@ import com.seniordesign.ultimatescorecard.view.FlyOutContainer;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
 import com.seniordesign.ultimatescorecard.clock.GameClock;
 import com.seniordesign.ultimatescorecard.data.GameInfo;
+import com.seniordesign.ultimatescorecard.data.UndoInstance;
+import com.seniordesign.ultimatescorecard.data.UndoManager;
 import com.seniordesign.ultimatescorecard.view.ShotIconAdder;
 
 import android.os.Bundle;
@@ -65,6 +67,9 @@ public class BasketballActivity extends Activity{
 	private long g_id;
 	private ArrayList<ShotChartCoords> _homeShots, _awayShots;
 	
+	private UndoManager _undoManager;
+	public UndoInstance _undoInstance;
+	
 	//on creation of the page, trying to save all items that will appear on screen into a member variable
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +83,18 @@ public class BasketballActivity extends Activity{
 		
 		//databases
 		_gti.setContext(this);
+		
+		
+		_undoInstance = new UndoInstance();
+		_gameLog.setUndoInstance(_undoInstance);
+		_basketball_db.setUndoInstance(_undoInstance);
 		g_id = _gti.createTeams();
+		_undoManager = new UndoManager(_basketball_db, _gti.getHomeTeamInstance(),_gti.getAwayTeamInstance());
+		_gti.setUndoInstance(_undoInstance);
+		_undoInstance.setgid(g_id);
+
+		
+		
 		_gameLog.setdb(_basketball_db);
 		_gameLog.setgid(g_id);
 		_gameInfo = _gti.getGameInfo();
@@ -110,7 +126,9 @@ public class BasketballActivity extends Activity{
 		
 		_homeLayout = (RelativeLayout)findViewById(R.id.homeShotIcons);
 		_awayLayout = (RelativeLayout)findViewById(R.id.awayShotIcons);
-		_iconAdder = new ShotIconAdder(_homeLayout, _awayLayout, getApplicationContext(), "basketball");
+		
+		_iconAdder = new ShotIconAdder(_homeLayout, _awayLayout, getApplicationContext(), "basketball", _undoInstance);
+		_undoManager.setLayouts(_homeLayout, _awayLayout);
 		
 		_p1Button = (Button)findViewById(R.id.extendButton1);										//our slide out buttons
 		_p2Button = (Button)findViewById(R.id.extendButton2);
@@ -261,6 +279,17 @@ public class BasketballActivity extends Activity{
 		_basketballCourt.setOnTouchListener(courtInteraction);
 		setTextAndListener(_option4Button, turnoverListener, "Turnover");
 		setTextAndListener(_option5Button, foulListener, "On Floor Foul");
+		
+		if(_undoInstance.getiv()!=null){
+			_undoManager.addInstance(_undoInstance);
+		}
+		_undoInstance = new UndoInstance();
+		_gameLog.setUndoInstance(_undoInstance);
+		_basketball_db.setUndoInstance(_undoInstance);
+		_gti.setUndoInstance(_undoInstance);
+		_iconAdder.setUndoInstance(_undoInstance);
+		_undoInstance.setgid(g_id);
+	
 		zeroTimeDisabler();
 	}
 	
@@ -1223,7 +1252,17 @@ public class BasketballActivity extends Activity{
 			intent.putExtra(StaticFinalVars.SUB_INFO, _gti.getGameInfo());
 			startActivityForResult(intent, SUBSTITUTION_CODE);	
 			break;
+		
+		case R.id.undo:
+			_undoManager.undo();
+			break;
+		
+		case R.id.redo:
+			_undoManager.redo();
+			break;
 		}
+		_awayScoreTextView.setText(_gti.getAwayScoreText());
+		_homeScoreTextView.setText(_gti.getHomeScoreText());
 		return true;
 	}
 

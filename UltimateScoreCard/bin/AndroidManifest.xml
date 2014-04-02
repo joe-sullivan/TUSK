@@ -134,4 +134,6 @@
             android:label="@string/view_statistics_screen" >
         </activity>        
     </application>    
+	 <!--  Internet Permissions -->
+    <uses-permission android:name="android.permission.INTERNET" /> 
 </manifest>

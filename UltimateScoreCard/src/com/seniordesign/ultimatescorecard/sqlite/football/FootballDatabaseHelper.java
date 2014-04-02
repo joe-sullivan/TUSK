@@ -4,6 +4,7 @@ package com.seniordesign.ultimatescorecard.sqlite.football;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.seniordesign.ultimatescorecard.data.StatData;
 import com.seniordesign.ultimatescorecard.data.football.FootballPlayer;
 import com.seniordesign.ultimatescorecard.sqlite.helper.DatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
@@ -1835,4 +1836,16 @@ public class FootballDatabaseHelper extends DatabaseHelper{
         if (db != null && db.isOpen())
             db.close();
     }
+
+	@Override
+	public int addStats(ArrayList<StatData> stats) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int addTeamStats(ArrayList<StatData> stats) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

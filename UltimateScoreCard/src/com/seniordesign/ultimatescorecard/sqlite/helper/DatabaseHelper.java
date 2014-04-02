@@ -2,6 +2,9 @@ package com.seniordesign.ultimatescorecard.sqlite.helper;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.seniordesign.ultimatescorecard.data.StatData;
+import com.seniordesign.ultimatescorecard.data.UndoInstance;
 import com.seniordesign.ultimatescorecard.sqlite.helper.*;
 import android.content.ContentValues;
 import android.content.Context;
@@ -11,7 +14,11 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class DatabaseHelper extends SQLiteOpenHelper {
+public abstract class DatabaseHelper extends SQLiteOpenHelper {
+	
+	
+	protected UndoInstance _undoInstance;
+	
 	
 	// Logcat tag
     protected static final String LOG = "DatabaseHelper";
@@ -117,7 +124,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         // insert row
         long a_id = db.insert(TABLE_PLAY_BY_PLAY, null, values);
- 
+        
+        pbp.setaid(a_id);
         return a_id;
 	}
 	
@@ -146,6 +154,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	        } while(c.moveToNext());
         }
         return pbps;
+	}
+	
+	// Delete PlayByPlay
+	public void deletePlayByPlay(long a_id) {
+	    SQLiteDatabase db = this.getWritableDatabase();
+	    db.delete(TABLE_PLAY_BY_PLAY, KEY_A_ID + " = ?",
+	            new String[] { String.valueOf(a_id) });
 	}
 	
 	// Delete PlayByPlay of a game
@@ -277,9 +292,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_MADE, shot.getmade());
 
         // insert row
-        long row = db.insert(TABLE_SHOT_CHART_COORDS, null, values);
- 
-        return row;
+        long shot_id = db.insert(TABLE_SHOT_CHART_COORDS, null, values);
+        
+        shot.setshotid(shot_id);
+        _undoInstance.setshot(shot);
+        
+        return shot_id;
 	}
 	
 	public List<ShotChartCoords> getAllShots(){
@@ -551,5 +569,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	    db.delete(TABLE_TEAMS, KEY_T_ID + " = ?",
 	            new String[] { String.valueOf(t_id) });
 	}
+	
+	
+	public abstract int addStats(ArrayList<StatData> stats);
+	
+	public abstract int addTeamStats(ArrayList<StatData> stats);
 
+	public void setUndoInstance(UndoInstance undoInstance){
+		_undoInstance = undoInstance;
+	}
+	
 }

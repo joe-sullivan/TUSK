@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import com.seniordesign.ultimatescorecard.R;
 import com.seniordesign.ultimatescorecard.data.GameInfo;
+import com.seniordesign.ultimatescorecard.data.UndoInstance;
+import com.seniordesign.ultimatescorecard.data.UndoManager;
 import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
 import com.seniordesign.ultimatescorecard.sqlite.helper.ShotChartCoords;
 import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyDatabaseHelper;
@@ -53,7 +55,10 @@ public class HockeyActivity extends Activity{
 	private GameInfo _gameInfo;
 	private long g_id;
 	private ArrayList<ShotChartCoords> _homeShots, _awayShots;
-
+	
+	private UndoManager _undoManager;
+	public UndoInstance _undoInstance;
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
@@ -65,7 +70,18 @@ public class HockeyActivity extends Activity{
 		
 		//databases
 		_gti.setContext(this);
+		
+		
+		_undoInstance = new UndoInstance();
+		_gameLog.setUndoInstance(_undoInstance);
+		_hockey_db.setUndoInstance(_undoInstance);
 		g_id = _gti.createTeams();
+		_undoManager = new UndoManager(_hockey_db, _gti.getHomeTeamInstance(),_gti.getAwayTeamInstance());
+		_gti.setUndoInstance(_undoInstance);
+		_undoInstance.setgid(g_id);
+
+		
+
 		_gameLog.setdb(_hockey_db);
 		_gameLog.setgid(g_id);
 		_gameInfo = _gti.getGameInfo();
@@ -94,7 +110,11 @@ public class HockeyActivity extends Activity{
 		
 		_homeLayout = (RelativeLayout)findViewById(R.id.homeShotIcons);
 		_awayLayout = (RelativeLayout)findViewById(R.id.awayShotIcons);
-		_iconAdder = new ShotIconAdder(_homeLayout, _awayLayout, getApplicationContext(), "hockey");
+		
+		
+		_iconAdder = new ShotIconAdder(_homeLayout, _awayLayout, getApplicationContext(), "hockey", _undoInstance);
+		_undoManager.setLayouts(_homeLayout, _awayLayout);
+		
 		
 		_option1Button = (Button)findViewById(R.id.optionButton1);								//more buttons and setting onClick listeners
 		_option2Button = (Button)findViewById(R.id.optionButton2);
@@ -111,6 +131,18 @@ public class HockeyActivity extends Activity{
 		allowMenuAndChangingPossession();
 		setTextAndListener(_option4Button, shotTakenListener, "Shot");
 		setTextAndListener(_option5Button, penaltyListener, "Penalty");
+		
+		if(_undoInstance.getiv()!=null){
+			_undoManager.addInstance(_undoInstance);
+		}
+		_undoInstance = new UndoInstance();
+		_gameLog.setUndoInstance(_undoInstance);
+		_hockey_db.setUndoInstance(_undoInstance);
+		_gti.setUndoInstance(_undoInstance);
+		_iconAdder.setUndoInstance(_undoInstance);
+		_undoInstance.setgid(g_id);
+
+		
 	}
 	
 	private void shotButtonSet(){
@@ -774,7 +806,16 @@ public class HockeyActivity extends Activity{
 				}
 			});
 			builder.show();
+		case R.id.undo:
+			_undoManager.undo();
+			break;
+		
+		case R.id.redo:
+			_undoManager.redo();
+			break;
 		}
+		_awayScoreTextView.setText(_gti.getAwayScoreText());
+		_homeScoreTextView.setText(_gti.getHomeScoreText());
 		return true;
 	}
 	

@@ -43,14 +43,18 @@ public class SoccerGameLog extends GameLog{
 	}
 	
 	public void recordActivity(String time){
+		
+		PlayByPlay pbp = null;
 		if(time.equals("Restart Clock")){
-			PlayByPlay pbp = new PlayByPlay(g_id, _thePlay + ".", time, null, 0, 0);
+			pbp = new PlayByPlay(g_id, _thePlay + ".", time, null, 0, 0);
 			((SoccerDatabaseHelper) _db).createPlayByPlay(pbp);
 		}
 		else{
 			_timeStamp = time;
-			PlayByPlay pbp = new PlayByPlay(g_id,"(" + _timeStamp + ")" + _thePlay + ".", time, null, 0, 0);
+			pbp = new PlayByPlay(g_id,"(" + _timeStamp + ")" + _thePlay + ".", time, null, 0, 0);
 			((SoccerDatabaseHelper) _db).createPlayByPlay(pbp);
 		}
+		_undoInstance.setpbp(pbp);
+		
 	}
 }

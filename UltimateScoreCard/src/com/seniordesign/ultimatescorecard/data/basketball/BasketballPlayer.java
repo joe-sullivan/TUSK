@@ -1,6 +1,9 @@
 package com.seniordesign.ultimatescorecard.data.basketball;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+
+import com.seniordesign.ultimatescorecard.data.StatData;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
 
@@ -36,184 +39,283 @@ public class BasketballPlayer extends Players implements Serializable{
 
 	//changing the values in a game
 	public void madeThree(){
-		db.addStats(g_id, p_id, "pts", 3);
-		db.addStats(g_id, p_id, "fgm3", 1);
-		db.addStats(g_id, p_id, "fga3", 1);
-		db.addStats(g_id, p_id, "fgm", 1);
-		db.addStats(g_id, p_id, "fga", 1);
+		ArrayList<StatData> _pstats = new ArrayList<StatData>();
+		ArrayList<StatData> _tstats = new ArrayList<StatData>();			
+
+		_pstats.add(new StatData(g_id, p_id, "pts", 3));
+		_pstats.add(new StatData(g_id, p_id, "fgm3", 1));
+		_pstats.add(new StatData(g_id, p_id, "fga3", 1));
+		_pstats.add(new StatData(g_id, p_id, "fgm", 1));
+		_pstats.add(new StatData(g_id, p_id, "fga", 1));
 		
 		if(home){
-			db.addTeamStats(g_id, "home_pts", 3);
-			db.addTeamStats(g_id,"home_fgm3", 1);
-			db.addTeamStats(g_id, "home_fga3", 1);
-			db.addTeamStats(g_id, "home_fgm", 1);
-			db.addTeamStats(g_id, "home_fga", 1);
+			_tstats.add(new StatData(g_id,0, "home_pts", 3));
+			_tstats.add(new StatData(g_id,0,"home_fgm3", 1));
+			_tstats.add(new StatData(g_id,0, "home_fga3", 1));
+			_tstats.add(new StatData(g_id,0, "home_fgm", 1));
+			_tstats.add(new StatData(g_id,0, "home_fga", 1));
 		}
 		else{
-			db.addTeamStats(g_id, "away_pts", 3);
-			db.addTeamStats(g_id,"away_fgm3", 1);
-			db.addTeamStats(g_id, "away_fga3", 1);
-			db.addTeamStats(g_id, "away_fgm", 1);
-			db.addTeamStats(g_id, "away_fga", 1);
+			_tstats.add(new StatData(g_id,0, "away_pts", 3));
+			_tstats.add(new StatData(g_id,0,"away_fgm3", 1));
+			_tstats.add(new StatData(g_id,0, "away_fga3", 1));
+			_tstats.add(new StatData(g_id,0, "away_fgm", 1));
+			_tstats.add(new StatData(g_id,0, "away_fga", 1));
 		}
+		
+		db.addStats(_pstats);
+		db.addTeamStats(_tstats);
 	}
 	public void madeTwo(){
-		db.addStats(g_id, p_id, "pts", 2);
-		db.addStats(g_id, p_id, "fgm", 1);
-		db.addStats(g_id, p_id, "fga", 1);
+		ArrayList<StatData> _pstats = new ArrayList<StatData>();
+		ArrayList<StatData> _tstats = new ArrayList<StatData>();
+		
+		_pstats.add(new StatData(g_id, p_id, "pts", 2));
+		_pstats.add(new StatData(g_id, p_id, "fgm", 1));
+		_pstats.add(new StatData(g_id, p_id, "fga", 1));
 		
 		if(home){
-			db.addTeamStats(g_id, "home_pts", 2);
-			db.addTeamStats(g_id, "home_fgm", 1);
-			db.addTeamStats(g_id, "home_fga", 1);
+			_tstats.add(new StatData(g_id,0, "home_pts", 2));
+			_tstats.add(new StatData(g_id,0, "home_fgm", 1));
+			_tstats.add(new StatData(g_id,0, "home_fga", 1));
 		}
 		else{
-			db.addTeamStats(g_id, "away_pts", 2);
-			db.addTeamStats(g_id, "away_fgm", 1);
-			db.addTeamStats(g_id, "away_fga", 1);
+			_tstats.add(new StatData(g_id,0, "away_pts", 2));
+			_tstats.add(new StatData(g_id,0, "away_fgm", 1));
+			_tstats.add(new StatData(g_id,0, "away_fga", 1));
 		}
+		
+		db.addStats(_pstats);
+		db.addTeamStats(_tstats);
 	}
 	public void madeFreeThrow(){
-		db.addStats(g_id, p_id, "pts", 1);
-		db.addStats(g_id, p_id, "ftm", 1);
-		db.addStats(g_id, p_id, "fta", 1);
+		ArrayList<StatData> _pstats = new ArrayList<StatData>();
+		ArrayList<StatData> _tstats = new ArrayList<StatData>();
+		
+		_pstats.add(new StatData(g_id, p_id, "pts", 1));
+		_pstats.add(new StatData(g_id, p_id, "ftm", 1));
+		_pstats.add(new StatData(g_id, p_id, "fta", 1));
 		
 		if(home){
-			db.addTeamStats(g_id, "home_pts", 1);
-			db.addTeamStats(g_id, "home_ftm", 1);
-			db.addTeamStats(g_id, "home_fta", 1);
+			_tstats.add(new StatData(g_id,0, "home_pts", 1));
+			_tstats.add(new StatData(g_id,0, "home_ftm", 1));
+			_tstats.add(new StatData(g_id,0, "home_fta", 1));
 		}
 		else{
-			db.addTeamStats(g_id, "away_pts", 1);
-			db.addTeamStats(g_id, "away_ftm", 1);
-			db.addTeamStats(g_id, "away_fta", 1);
+			_tstats.add(new StatData(g_id,0, "away_pts", 1));
+			_tstats.add(new StatData(g_id,0, "away_ftm", 1));
+			_tstats.add(new StatData(g_id,0, "away_fta", 1));
 		}
+		
+		db.addStats(_pstats);
+		db.addTeamStats(_tstats);
 	}	
+	
 	public void missThree(){
-		db.addStats(g_id, p_id, "fga3", 1);
-		db.addStats(g_id, p_id, "fga", 1);
+		ArrayList<StatData> _pstats = new ArrayList<StatData>();
+		ArrayList<StatData> _tstats = new ArrayList<StatData>();
+		
+		_pstats.add(new StatData(g_id, p_id, "fga3", 1));
+		_pstats.add(new StatData(g_id, p_id, "fga", 1));
 		
 		if(home){
-			db.addTeamStats(g_id,"home_fga3", 1);
-			db.addTeamStats(g_id, "home_fga", 1);
+			_tstats.add(new StatData(g_id,0,"home_fga3", 1));
+			_tstats.add(new StatData(g_id,0, "home_fga", 1));
 		}
 		else{
-			db.addTeamStats(g_id, "away_fga3", 1);
-			db.addTeamStats(g_id,"away_fga", 1);
+			_tstats.add(new StatData(g_id,0, "away_fga3", 1));
+			_tstats.add(new StatData(g_id,0,"away_fga", 1));
 		}
+		
+		db.addStats(_pstats);
+		db.addTeamStats(_tstats);
 	}
+	
 	public void missTwo(){
-		db.addStats(g_id, p_id, "fga", 1);
+		ArrayList<StatData> _pstats = new ArrayList<StatData>();
+		ArrayList<StatData> _tstats = new ArrayList<StatData>();
+		
+		_pstats.add(new StatData(g_id, p_id, "fga", 1));
 		
 		if(home){
-			db.addTeamStats(g_id, "home_fga", 1);
+			_tstats.add(new StatData(g_id,0, "home_fga", 1));
 		}
 		else{
-			db.addTeamStats(g_id,"away_fga", 1);
+			_tstats.add(new StatData(g_id,0,"away_fga", 1));
 		}
 		
+		db.addStats(_pstats);
+		db.addTeamStats(_tstats);
 	}	
+	
 	public void missFreeThrow(){
-		db.addStats(g_id, p_id, "fta", 1);
+		ArrayList<StatData> _pstats = new ArrayList<StatData>();
+		ArrayList<StatData> _tstats = new ArrayList<StatData>();
+		
+		_pstats.add(new StatData(g_id, p_id, "fta", 1));
 		
 		if(home){
-			db.addTeamStats(g_id, "home_fta", 1);
+			_tstats.add(new StatData(g_id,0, "home_fta", 1));
 		}
 		else{
-			db.addTeamStats(g_id,"away_fta", 1);
+			_tstats.add(new StatData(g_id,0,"away_fta", 1));
 		}
+		
+		db.addStats(_pstats);
+		db.addTeamStats(_tstats);
 	}	
+	
 	public void grabDRebound(){
-		db.addStats(g_id, p_id, "dreb", 1);
+		ArrayList<StatData> _pstats = new ArrayList<StatData>();
+		ArrayList<StatData> _tstats = new ArrayList<StatData>();
+		
+		_pstats.add(new StatData(g_id, p_id, "dreb", 1));
 		
 		if(home){
-			db.addTeamStats(g_id,"home_dreb", 1);
+			_tstats.add(new StatData(g_id,0,"home_dreb", 1));
 		}
 		else{
-			db.addTeamStats(g_id, "away_dreb", 1);
+			_tstats.add(new StatData(g_id,0, "away_dreb", 1));
 		}
+		
+		db.addStats(_pstats);
+		db.addTeamStats(_tstats);
 	}
 	
 	public void grabORebound(){
-		db.addStats(g_id, p_id, "oreb", 1);
+		ArrayList<StatData> _pstats = new ArrayList<StatData>();
+		ArrayList<StatData> _tstats = new ArrayList<StatData>();
+		
+		_pstats.add(new StatData(g_id, p_id, "oreb", 1));
 		
 		if(home){
-			db.addTeamStats(g_id,"home_oreb", 1);
+			_tstats.add(new StatData(g_id,0,"home_oreb", 1));
 		}
 		else{
-			db.addTeamStats(g_id, "away_oreb", 1);
+			_tstats.add(new StatData(g_id,0, "away_oreb", 1));
 		}
+		
+		db.addStats(_pstats);
+		db.addTeamStats(_tstats);
 	}
 	
 	public void dishAssist(){
-		db.addStats(g_id, p_id, "ast", 1);
+		ArrayList<StatData> _pstats = new ArrayList<StatData>();
+		ArrayList<StatData> _tstats = new ArrayList<StatData>();
+		
+		_pstats.add(new StatData(g_id, p_id, "ast", 1));
 		
 		if(home){
-			db.addTeamStats(g_id,"home_ast", 1);
+			_tstats.add(new StatData(g_id,0,"home_ast", 1));
 		}
 		else{
-			db.addTeamStats(g_id, "away_ast", 1);
+			_tstats.add(new StatData(g_id,0, "away_ast", 1));
 		}
+		
+		db.addStats(_pstats);
+		db.addTeamStats(_tstats);
 	}
+	
 	public void stealsBall(){
-		db.addStats(g_id, p_id, "stl", 1);
+		ArrayList<StatData> _pstats = new ArrayList<StatData>();
+		ArrayList<StatData> _tstats = new ArrayList<StatData>();
+		
+		_pstats.add(new StatData(g_id, p_id, "stl", 1));
 		
 		if(home){
-			db.addTeamStats(g_id,"home_stl", 1);
+			_tstats.add(new StatData(g_id,0,"home_stl", 1));
 		}
 		else{
-			db.addTeamStats(g_id, "away_stl", 1);
+			_tstats.add(new StatData(g_id,0, "away_stl", 1));
 		}
+		
+		db.addStats(_pstats);
+		db.addTeamStats(_tstats);
 	}
+	
 	public void blocksShot(){
-		db.addStats(g_id, p_id, "blk", 1);
+		ArrayList<StatData> _pstats = new ArrayList<StatData>();
+		ArrayList<StatData> _tstats = new ArrayList<StatData>();
+		
+		_pstats.add(new StatData(g_id, p_id, "blk", 1));
 		
 		if(home){
-			db.addTeamStats(g_id,"home_blk", 1);
+			_tstats.add(new StatData(g_id,0,"home_blk", 1));
 		}
 		else{
-			db.addTeamStats(g_id, "away_blk", 1);
+			_tstats.add(new StatData(g_id,0, "away_blk", 1));
 		}
+		
+		db.addStats(_pstats);
+		db.addTeamStats(_tstats);
 	}
+	
 	public void turnedOver(){
-		db.addStats(g_id, p_id, "turnover", 1);
+		ArrayList<StatData> _pstats = new ArrayList<StatData>();
+		ArrayList<StatData> _tstats = new ArrayList<StatData>();
+		
+		_pstats.add(new StatData(g_id, p_id, "turnover", 1));
 		
 		if(home){
-			db.addTeamStats(g_id,"home_turnover", 1);
+			_tstats.add(new StatData(g_id,0,"home_turnover", 1));
 		}
 		else{
-			db.addTeamStats(g_id, "away_turnover", 1);
+			_tstats.add(new StatData(g_id,0, "away_turnover", 1));
 		}
+		
+		db.addStats(_pstats);
+		db.addTeamStats(_tstats);
 	}
+	
 	public void commitFoul(){
-		db.addStats(g_id, p_id, "pf", 1);
+		ArrayList<StatData> _pstats = new ArrayList<StatData>();
+		ArrayList<StatData> _tstats = new ArrayList<StatData>();
+		
+		_pstats.add(new StatData(g_id, p_id, "pf", 1));
 		
 		if(home){
-			db.addTeamStats(g_id,"home_pf", 1);
+			_tstats.add(new StatData(g_id,0,"home_pf", 1));
 		}
 		else{
-			db.addTeamStats(g_id, "away_pf", 1);
+			_tstats.add(new StatData(g_id,0, "away_pf", 1));
 		}
+		
+		db.addStats(_pstats);
+		db.addTeamStats(_tstats);
 	}
+	
 	public void commitTechFoul(){
-		db.addStats(g_id, p_id, "tech", 1);
+		ArrayList<StatData> _pstats = new ArrayList<StatData>();
+		ArrayList<StatData> _tstats = new ArrayList<StatData>();
+		
+		_pstats.add(new StatData(g_id, p_id, "tech", 1));
 		
 		if(home){
-			db.addTeamStats(g_id,"home_tech", 1);
+			_tstats.add(new StatData(g_id,0,"home_tech", 1));
 		}
 		else{
-			db.addTeamStats(g_id, "away_tech", 1);
+			_tstats.add(new StatData(g_id,0, "away_tech", 1));
 		}
+		
+		db.addStats(_pstats);
+		db.addTeamStats(_tstats);
 	}
+	
 	public void commitFlagFoul(){
-		db.addStats(g_id, p_id, "flagrant", 1);
+		ArrayList<StatData> _pstats = new ArrayList<StatData>();
+		ArrayList<StatData> _tstats = new ArrayList<StatData>();
+		
+		_pstats.add(new StatData(g_id, p_id, "flagrant", 1));
 		
 		if(home){
-			db.addTeamStats(g_id,"home_flagrant", 1);
+			_tstats.add(new StatData(g_id,0,"home_flagrant", 1));
 		}
 		else{
-			db.addTeamStats(g_id, "away_flagrant", 1);
+			_tstats.add(new StatData(g_id,0, "away_flagrant", 1));
 		}
+		
+		db.addStats(_pstats);
+		db.addTeamStats(_tstats);
 	}
 	
 	//calculated stats

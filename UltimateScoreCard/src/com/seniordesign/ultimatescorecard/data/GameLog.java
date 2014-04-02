@@ -10,7 +10,11 @@ public class GameLog implements Serializable{
 	protected String _timeStamp;
 	protected SQLiteOpenHelper _db;
 	protected long g_id;
+	protected UndoInstance _undoInstance;
 	
+	public void setUndoInstance(UndoInstance undoInstance){
+		_undoInstance = undoInstance;
+	}
 	
 	public void setdb(SQLiteOpenHelper db){
 		_db = db;
