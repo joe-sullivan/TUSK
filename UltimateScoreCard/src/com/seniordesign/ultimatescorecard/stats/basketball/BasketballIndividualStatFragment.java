@@ -3,8 +3,6 @@ package com.seniordesign.ultimatescorecard.stats.basketball;
 import java.util.ArrayList;
 
 import com.seniordesign.ultimatescorecard.R;
-import com.seniordesign.ultimatescorecard.data.basketball.BasketballPlayer;
-import com.seniordesign.ultimatescorecard.data.basketball.BasketballTeam;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballGameStats;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballGames;
@@ -26,6 +24,8 @@ public class BasketballIndividualStatFragment extends Fragment{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = (View) inflater.inflate(R.layout.fragment_individual_basketball, container, false);
 		setHasOptionsMenu(true);
+		view.setBackgroundResource(R.drawable.background_basketball);
+
 		return view;
 	}
 	
@@ -67,6 +67,7 @@ public class BasketballIndividualStatFragment extends Fragment{
 				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.assistTotal)).setText("Assists: "+game.gethomeast());
 				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.stealTotal)).setText("Steals: "+game.gethomestl());
 				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.blocksTotal)).setText("Blocks: "+game.gethomeblk());
+				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.turnoverTotal)).setText("Turnovers: "+game.gethometo());
 				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.foulTotal)).setText("Fouls: "+game.gethomepf());
 				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.techFouls)).setText("Technical Fouls: "+game.gethometech());
 				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.flagrantFouls)).setText("Flagrant Fouls: "+game.gethomeflagrant());
@@ -98,6 +99,7 @@ public class BasketballIndividualStatFragment extends Fragment{
 				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.assistTotal)).setText("Assists: "+game.getawayast());
 				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.stealTotal)).setText("Steals: "+game.getawaystl());
 				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.blocksTotal)).setText("Blocks: "+game.getawayblk());
+				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.turnoverTotal)).setText("Turnovers: "+game.getawayto());
 				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.foulTotal)).setText("Fouls: "+game.getawaypf());
 				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.techFouls)).setText("Technical Fouls: "+game.getawaytech());
 				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.flagrantFouls)).setText("Flagrant Fouls: "+game.getawayflagrant());
@@ -137,6 +139,7 @@ public class BasketballIndividualStatFragment extends Fragment{
 			((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.assistTotal)).setText("Assists: "+stats.getast());
 			((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.stealTotal)).setText("Steals: "+stats.getstl());
 			((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.blocksTotal)).setText("Blocks: "+stats.getblk());
+			((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.turnoverTotal)).setText("Turnovers: "+stats.getto());
 			((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.foulTotal)).setText("Fouls: "+stats.getpf());
 			((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.techFouls)).setText("Technical Fouls: "+stats.gettech());
 			((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.flagrantFouls)).setText("Flagrant Fouls: "+stats.getflagrant());

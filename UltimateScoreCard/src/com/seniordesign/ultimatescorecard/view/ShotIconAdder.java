@@ -3,14 +3,17 @@ package com.seniordesign.ultimatescorecard.view;
 import java.util.ArrayList;
 
 import com.seniordesign.ultimatescorecard.R;
-import com.seniordesign.ultimatescorecard.sqlite.DatabaseHelper;
+import com.seniordesign.ultimatescorecard.data.UndoInstance;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
+import com.seniordesign.ultimatescorecard.sqlite.helper.DatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
 import com.seniordesign.ultimatescorecard.sqlite.helper.ShotChartCoords;
 import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerDatabaseHelper;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -26,11 +29,13 @@ public class ShotIconAdder {
 	private DatabaseHelper _db;
 	private String _sport;
 	
-	public ShotIconAdder (RelativeLayout home, RelativeLayout away, Context context, String sport){
+	private UndoInstance _undoInstance;
+	public ShotIconAdder (RelativeLayout home, RelativeLayout away, Context context, String sport, UndoInstance undoInstance){
 		_homeLayout = home;
 		_awayLayout = away;
 		_context = context;
 		_sport = sport;
+		_undoInstance = undoInstance;
 		if(_sport.equals("basketball")){
 			_db = new BasketballDatabaseHelper(context);
 		}
@@ -40,6 +45,12 @@ public class ShotIconAdder {
 		else if(_sport.equals("soccer")){
 			_db = new SoccerDatabaseHelper(context);
 		}
+		_db.setUndoInstance(_undoInstance);
+	}
+	
+	public void setUndoInstance(UndoInstance undoInstance){
+		_undoInstance = undoInstance;
+		_db.setUndoInstance(_undoInstance);
 	}
 	
 	public void setShotLocation(int x, int y){
@@ -50,14 +61,22 @@ public class ShotIconAdder {
 	public void setShotHitMiss(boolean possession, boolean hitMiss){
 		_hitMiss = hitMiss;
 		LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		lp.leftMargin = _shotLocation[0]-25;
-		lp.topMargin = _shotLocation[1]+60;
 		ImageView iv = new ImageView(_context);
 		if(hitMiss){
 			iv.setBackgroundResource(R.drawable.made_shot);
+			Bitmap b = ((BitmapDrawable)iv.getBackground()).getBitmap();
+			int w = b.getWidth();
+			int h = b.getHeight();
+			lp.leftMargin = _shotLocation[0]-w/2;
+			lp.topMargin = _shotLocation[1]-h/2;
 		}
 		else{
 			iv.setBackgroundResource(R.drawable.missed_shot);
+			Bitmap b = ((BitmapDrawable)iv.getBackground()).getBitmap();
+			int w = b.getWidth();
+			int h = b.getHeight();
+			lp.leftMargin = _shotLocation[0]-w/2;
+			lp.topMargin = _shotLocation[1]-h/2;
 		}
 		iv.setLayoutParams(lp);
 		if(possession){
@@ -66,6 +85,10 @@ public class ShotIconAdder {
 		else{
 			_awayLayout.addView(iv);
 		}
+		
+		_undoInstance.setiv(iv);
+		_undoInstance.sethome(possession);
+		
 	}
 	
 	public void setPlayer(String pname){
@@ -99,16 +122,10 @@ public class ShotIconAdder {
 
 		if(_hitMiss){
 			_db.createShot(new ShotChartCoords(g_id, player.getpid(), player.gettid(), _shotLocation[0], _shotLocation[1], "make"));
-
 		}
 		else{
 			_db.createShot(new ShotChartCoords(g_id, player.getpid(), player.gettid(), _shotLocation[0], _shotLocation[1], "miss"));
 
-		}
-		ArrayList<ShotChartCoords> shots = (ArrayList<ShotChartCoords>) _db.getAllShots();
-
-		for(ShotChartCoords shot: shots){
-			Log.i("shot", "Shot team: " + shot.gettid());
 		}
 	}
 }

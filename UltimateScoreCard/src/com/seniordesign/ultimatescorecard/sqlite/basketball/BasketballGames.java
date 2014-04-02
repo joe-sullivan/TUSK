@@ -4,6 +4,8 @@ import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
 
 public class BasketballGames extends Games{
 
+	private static final long serialVersionUID = 5090276336298642304L;
+	
 	int home_pts;
 	int home_fgm;
 	int home_fga;

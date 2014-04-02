@@ -7,14 +7,16 @@ import com.seniordesign.ultimatescorecard.data.GameInfo;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
 import com.seniordesign.ultimatescorecard.sqlite.helper.ShotChartCoords;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
-import com.seniordesign.ultimatescorecard.stats.soccer.SoccerIndividualStatActivity;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,6 +25,11 @@ import android.widget.RelativeLayout.LayoutParams;
 public class HockeyIndividualShotChartFragment extends Fragment {
 	private RelativeLayout _shotIcons;
 	protected GameInfo _gameInfo;
+	private Button _option1Button, _option2Button, _option3Button;
+	private String name;
+	private Teams team;
+	private ArrayList<ShotChartCoords> shots;
+	private ArrayList<Players> players;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,10 +43,17 @@ public class HockeyIndividualShotChartFragment extends Fragment {
 		super.onResume();
 		addCourtImage();
 		
-		ArrayList<ShotChartCoords> shots = ((HockeyIndividualStatActivity) getActivity())._shots;
-		String name = ((HockeyIndividualStatActivity) getActivity())._name;
-		ArrayList<Players> players = ((HockeyIndividualStatActivity) getActivity())._players;
-		Teams team = ((HockeyIndividualStatActivity) getActivity())._team;
+		_option1Button = (Button)(TextView)getView().findViewById(R.id.optionButton1);								//more buttons and setting onClick listeners
+		_option2Button = (Button)(TextView)getView().findViewById(R.id.optionButton2);
+		_option3Button = (Button)(TextView)getView().findViewById(R.id.optionButton3);
+		setTextAndListener(_option1Button, AllShotsListener(), "All Shots");
+		setTextAndListener(_option2Button, madeListener(), "Made");
+		setTextAndListener(_option3Button, missedListener(), "Missed");
+		
+		shots = ((HockeyIndividualStatActivity) getActivity())._shots;
+		name = ((HockeyIndividualStatActivity) getActivity())._name;
+		players = ((HockeyIndividualStatActivity) getActivity())._players;
+		team = ((HockeyIndividualStatActivity) getActivity())._team;
 		_gameInfo = ((HockeyIndividualStatActivity) getActivity())._gameInfo;
 
 <<<<<<< HEAD
@@ -55,12 +69,18 @@ public class HockeyIndividualShotChartFragment extends Fragment {
 		homeAbbr.setText(_gameInfo.getHomeTeam().getabbv());
 		TextView awayAbbr = (TextView)getView().findViewById(R.id.awayTextView);
 		awayAbbr.setText(_gameInfo.getAwayTeam().getabbv());
+<<<<<<< HEAD
 		
 <<<<<<< HEAD
 >>>>>>> FETCH_HEAD
 =======
 >>>>>>> FETCH_HEAD
+=======
+		TextView nameText = (TextView)getView().findViewById(R.id.gameClock);
+
+>>>>>>> FETCH_HEAD
 		if(name.equals(team.getabbv() + " Stats")){
+			nameText.setText(team.getabbv());
 			for(ShotChartCoords shot: shots){
 				int[] location = new int[2];
 				location[0] = shot.getx();
@@ -75,7 +95,8 @@ public class HockeyIndividualShotChartFragment extends Fragment {
 		}
 		
 		else{
-		
+			nameText.setText(name);
+
 			Players player = null;
 			for(Players p: players){
 				if(p.getpname().equals(name)){
@@ -100,37 +121,171 @@ public class HockeyIndividualShotChartFragment extends Fragment {
 	}
 	
 	private void addCourtImage(){
-		/*
-		ImageView icefloor = new ImageView(getActivity());
-		icefloor.setImageDrawable(getResources().getDrawable(R.drawable.icefloor));
-		ImageView rinkLines = new ImageView(getActivity());
-		rinkLines.setImageDrawable(getResources().getDrawable(R.drawable.hockeyice));
-		*/
 		_shotIcons= new RelativeLayout(getActivity());
 		RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams
 				(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.MATCH_PARENT);
 		_shotIcons.setLayoutParams(rp);
 		
-		//((FrameLayout)getView().findViewById(R.id.shotChartFrame)).addView(icefloor);
-		//((FrameLayout)getView().findViewById(R.id.shotChartFrame)).addView(rinkLines);
 		((RelativeLayout)getView().findViewById(R.id.interactiveFrame)).addView(_shotIcons);
-		//((RelativeLayout)getView().findViewById(R.id.shotChart)).setBackgroundColor(0xFFFFFFFF);
-
 	}
 	
 	private void displayShots(boolean hitMiss, int[] shotLocation){
 		LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		lp.leftMargin = shotLocation[0];
-		lp.topMargin = shotLocation[1];
+		//lp.leftMargin = shotLocation[0];
+		//lp.topMargin = shotLocation[1];
 		ImageView iv = new ImageView(getActivity());
 		if(hitMiss){
 			iv.setBackgroundResource(R.drawable.made_shot);
+			Bitmap b = ((BitmapDrawable)iv.getBackground()).getBitmap();
+			int w = b.getWidth();
+			int h = b.getHeight();
+			lp.leftMargin = shotLocation[0]-w/2;
+			lp.topMargin = shotLocation[1]-h/2;
 		}
 		else{
 			iv.setBackgroundResource(R.drawable.missed_shot);
+			Bitmap b = ((BitmapDrawable)iv.getBackground()).getBitmap();
+			int w = b.getWidth();
+			int h = b.getHeight();
+			lp.leftMargin = shotLocation[0]-w/2;
+			lp.topMargin = shotLocation[1]-h/2;
 		}
 		iv.setLayoutParams(lp);
 		_shotIcons.addView(iv);
+	}
+	
+	public OnClickListener madeListener(){
+		OnClickListener madeListener = new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				_shotIcons.removeAllViews();
+				if(name.equals(team.getabbv() + " Stats")){
+					for(ShotChartCoords shot: shots){
+						int[] location = new int[2];
+						location[0] = shot.getx();
+						location[1] = shot.gety();
+						if(shot.getmade().equals("make")){
+							displayShots(true, location);
+						}	
+					}	
+				}
+				
+				else{
+				
+					Players player = null;
+					for(Players p: players){
+						if(p.getpname().equals(name)){
+							player = p;
+						}
+					}		
+			
+					for(ShotChartCoords shot: shots){
+						if(player.getpid()==shot.getpid()){
+							int[] location = new int[2];
+							location[0] = shot.getx();
+							location[1] = shot.gety();
+							if(shot.getmade().equals("make")){
+								displayShots(true, location);
+							}
+						}
+					}
+				}
+			}
+		};
+		return madeListener;
+	}
+	
+	public OnClickListener missedListener(){
+		OnClickListener missedListener = new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				_shotIcons.removeAllViews();
+				if(name.equals(team.getabbv() + " Stats")){
+					for(ShotChartCoords shot: shots){
+						int[] location = new int[2];
+						location[0] = shot.getx();
+						location[1] = shot.gety();
+						if(shot.getmade().equals("miss")){
+							displayShots(false, location);
+						}		
+					}	
+				}
+				
+				else{
+				
+					Players player = null;
+					for(Players p: players){
+						if(p.getpname().equals(name)){
+							player = p;
+						}
+					}		
+			
+					for(ShotChartCoords shot: shots){
+						if(player.getpid()==shot.getpid()){
+							int[] location = new int[2];
+							location[0] = shot.getx();
+							location[1] = shot.gety();
+							if(shot.getmade().equals("miss")){
+								displayShots(false, location);
+							}
+						}
+					}
+				}
+			}
+		};
+		return missedListener;
+	}
+	
+	public OnClickListener AllShotsListener(){
+		OnClickListener AllShotsListener = new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				_shotIcons.removeAllViews();
+				if(name.equals(team.getabbv() + " Stats")){
+					for(ShotChartCoords shot: shots){
+						int[] location = new int[2];
+						location[0] = shot.getx();
+						location[1] = shot.gety();
+						if(shot.getmade().equals("make")){
+							displayShots(true, location);
+						}	
+						else if(shot.getmade().equals("miss")){
+							displayShots(false, location);
+						}		
+					}	
+				}
+				
+				else{
+				
+					Players player = null;
+					for(Players p: players){
+						if(p.getpname().equals(name)){
+							player = p;
+						}
+					}		
+			
+					for(ShotChartCoords shot: shots){
+						if(player.getpid()==shot.getpid()){
+							int[] location = new int[2];
+							location[0] = shot.getx();
+							location[1] = shot.gety();
+							if(shot.getmade().equals("make")){
+								displayShots(true, location);
+							}
+							else if(shot.getmade().equals("miss")){
+								displayShots(false, location);
+							}
+						}
+					}
+				}
+			}
+		};
+		return AllShotsListener;
+	}
+	
+	private void setTextAndListener(Button button, OnClickListener listener, String text){
+		button.setText(text);
+		button.setOnClickListener(listener);
 	}
 	
 }

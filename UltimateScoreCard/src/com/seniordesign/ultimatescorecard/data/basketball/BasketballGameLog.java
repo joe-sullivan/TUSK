@@ -1,7 +1,5 @@
 package com.seniordesign.ultimatescorecard.data.basketball;
 
-import java.util.ArrayList;
-
 import com.seniordesign.ultimatescorecard.data.GameLog;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
@@ -10,7 +8,6 @@ public class BasketballGameLog extends GameLog {;
 	private static final long serialVersionUID = 1439589895554308837L;
 	
 	public BasketballGameLog(){
-		_gameLog = new ArrayList<String>();
 	}
 	
 	public void shooting(int value, boolean madeMiss, String player){
@@ -74,7 +71,7 @@ public class BasketballGameLog extends GameLog {;
 			_thePlay = "Unforced turnover by "+ player + " ("+ option + ")";
 		}
 		else{
-			_thePlay = "Team turnover";
+			_thePlay = "Team turnover by " + player;
 		}
 	}
 	
@@ -88,15 +85,17 @@ public class BasketballGameLog extends GameLog {;
 	}
 	
 	public void recordActivity(String time){
+		PlayByPlay pbp = null;
 		if(time.equals("Restart Clock")){
-			PlayByPlay pbp = new PlayByPlay(g_id, _thePlay + ".", time, null, 0, 0);
+			pbp = new PlayByPlay(g_id, _thePlay + ".", time, null, 0, 0);
 			((BasketballDatabaseHelper) _db).createPlayByPlay(pbp);
 		}
 		else{
 			_timeStamp = time;
-			PlayByPlay pbp = new PlayByPlay(g_id,"(" + _timeStamp + ")" + _thePlay + ".", time, null, 0, 0);
+			pbp = new PlayByPlay(g_id,"(" + _timeStamp + ")" + _thePlay + ".", time, null, 0, 0);
 			((BasketballDatabaseHelper) _db).createPlayByPlay(pbp);
 		}
+		_undoInstance.setpbp(pbp);
 	}
 	
 }

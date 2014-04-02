@@ -9,6 +9,7 @@ import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerGameStats;
 import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerGames;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -23,6 +24,8 @@ public class SoccerIndividualStatFragment extends Fragment{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = (View) inflater.inflate(R.layout.fragment_individual_soccer, container, false);
+		view.setBackgroundResource(R.drawable.background_soccer);
+
 		return view;
 	}
 	
@@ -37,6 +40,17 @@ public class SoccerIndividualStatFragment extends Fragment{
 		boolean home = ((SoccerIndividualStatActivity) getActivity())._home;
 		ArrayList<Players> players = ((SoccerIndividualStatActivity) getActivity())._players;
 		long g_id = ((SoccerIndividualStatActivity) getActivity()).g_id;
+		
+		((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.playerName)).setTextColor(Color.WHITE);
+		((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.teamName)).setTextColor(Color.WHITE);
+		((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.goalTotal)).setTextColor(Color.WHITE);
+		((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.assistTotal)).setTextColor(Color.WHITE);
+		((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.shotOnGoalTotal)).setTextColor(Color.WHITE);
+		((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.penaltyTotal)).setTextColor(Color.WHITE);
+		((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.penaltyTypeTotal)).setTextColor(Color.WHITE);
+		((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.goalieTitle)).setTextColor(Color.WHITE);
+		((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.goalieStats)).setTextColor(Color.WHITE);
+
 		
 		if(name.equals(team.getabbv() + " Stats")){
 			if(home){

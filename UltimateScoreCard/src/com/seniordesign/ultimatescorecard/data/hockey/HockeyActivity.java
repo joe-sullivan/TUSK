@@ -4,14 +4,12 @@ import java.util.ArrayList;
 
 import com.seniordesign.ultimatescorecard.R;
 import com.seniordesign.ultimatescorecard.data.GameInfo;
-import com.seniordesign.ultimatescorecard.data.basketball.BasketballGameLog;
-import com.seniordesign.ultimatescorecard.data.basketball.BasketballGameTime;
-import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
+import com.seniordesign.ultimatescorecard.data.UndoInstance;
+import com.seniordesign.ultimatescorecard.data.UndoManager;
 import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
 import com.seniordesign.ultimatescorecard.sqlite.helper.ShotChartCoords;
 import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyDatabaseHelper;
 import com.seniordesign.ultimatescorecard.stats.hockey.HockeyStatsActivity;
-import com.seniordesign.ultimatescorecard.substitution.BasketballSubstitutionActivity;
 import com.seniordesign.ultimatescorecard.view.GameClock;
 import com.seniordesign.ultimatescorecard.view.ShotIconAdder;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
@@ -57,7 +55,10 @@ public class HockeyActivity extends Activity{
 	private GameInfo _gameInfo;
 	private long g_id;
 	private ArrayList<ShotChartCoords> _homeShots, _awayShots;
-
+	
+	private UndoManager _undoManager;
+	public UndoInstance _undoInstance;
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
@@ -69,7 +70,18 @@ public class HockeyActivity extends Activity{
 		
 		//databases
 		_gti.setContext(this);
+		
+		
+		_undoInstance = new UndoInstance();
+		_gameLog.setUndoInstance(_undoInstance);
+		_hockey_db.setUndoInstance(_undoInstance);
 		g_id = _gti.createTeams();
+		_undoManager = new UndoManager(_hockey_db, _gti.getHomeTeamInstance(),_gti.getAwayTeamInstance());
+		_gti.setUndoInstance(_undoInstance);
+		_undoInstance.setgid(g_id);
+
+		
+
 		_gameLog.setdb(_hockey_db);
 		_gameLog.setgid(g_id);
 		_gameInfo = _gti.getGameInfo();
@@ -98,7 +110,11 @@ public class HockeyActivity extends Activity{
 		
 		_homeLayout = (RelativeLayout)findViewById(R.id.homeShotIcons);
 		_awayLayout = (RelativeLayout)findViewById(R.id.awayShotIcons);
-		_iconAdder = new ShotIconAdder(_homeLayout, _awayLayout, getApplicationContext(), "hockey");
+		
+		
+		_iconAdder = new ShotIconAdder(_homeLayout, _awayLayout, getApplicationContext(), "hockey", _undoInstance);
+		_undoManager.setLayouts(_homeLayout, _awayLayout);
+		
 		
 		_option1Button = (Button)findViewById(R.id.optionButton1);								//more buttons and setting onClick listeners
 		_option2Button = (Button)findViewById(R.id.optionButton2);
@@ -115,6 +131,18 @@ public class HockeyActivity extends Activity{
 		allowMenuAndChangingPossession();
 		setTextAndListener(_option4Button, shotTakenListener, "Shot");
 		setTextAndListener(_option5Button, penaltyListener, "Penalty");
+		
+		if(_undoInstance.getiv()!=null){
+			_undoManager.addInstance(_undoInstance);
+		}
+		_undoInstance = new UndoInstance();
+		_gameLog.setUndoInstance(_undoInstance);
+		_hockey_db.setUndoInstance(_undoInstance);
+		_gti.setUndoInstance(_undoInstance);
+		_iconAdder.setUndoInstance(_undoInstance);
+		_undoInstance.setgid(g_id);
+
+		
 	}
 	
 	private void shotButtonSet(){
@@ -203,6 +231,7 @@ public class HockeyActivity extends Activity{
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						dialog.dismiss();
+						allowMenuAndChangingPossession();
 					}
 				});			
 				builder.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
@@ -249,6 +278,7 @@ public class HockeyActivity extends Activity{
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					dialog.dismiss();
+					allowMenuAndChangingPossession();
 				}
 			});			
 			builder.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
@@ -332,17 +362,14 @@ public class HockeyActivity extends Activity{
 				String player = arrayAdapter.getItem(which);
 				if(type.equals("Minor")){
 					_gti.getTeam().getPlayer(player).minorPenalty();
-					_gti.getTeam().getPlayer(player).addPenaltyMins(2);
 					_gameLog.penalty(player, type,_gameClockView.getText().toString());
 				}
 				else if(type.equals("Major")){
 					_gti.getTeam().getPlayer(player).majorPenalty();
-					_gti.getTeam().getPlayer(player).addPenaltyMins(5);
 					_gameLog.penalty(player, type,_gameClockView.getText().toString());
 				}
 				else if(type.equals("Misconduct")){
 					_gti.getTeam().getPlayer(player).misconductPenalty();
-					_gti.getTeam().getPlayer(player).addPenaltyMins(10);
 					_gameLog.penalty(player, type,_gameClockView.getText().toString());
 				}
 				else if(type.equals("Penalty")){
@@ -383,6 +410,7 @@ public class HockeyActivity extends Activity{
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					dialog.dismiss();
+					allowMenuAndChangingPossession();
 				}
 			});			
 			builder.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
@@ -707,6 +735,7 @@ public class HockeyActivity extends Activity{
 			intent.putExtra(StaticFinalVars.GAME_LOG, _playbyplay);
 			intent.putExtra(StaticFinalVars.SHOT_CHART_HOME, _homeShots);
 			intent.putExtra(StaticFinalVars.SHOT_CHART_AWAY, _awayShots);
+			intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 0);
 			startActivity(intent);		
 			break;
 			
@@ -730,6 +759,7 @@ public class HockeyActivity extends Activity{
 			intent.putExtra(StaticFinalVars.GAME_LOG, _playbyplay);
 			intent.putExtra(StaticFinalVars.SHOT_CHART_HOME, _homeShots);
 			intent.putExtra(StaticFinalVars.SHOT_CHART_AWAY, _awayShots);
+			intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 1);
 			startActivity(intent);
 			break;
 		
@@ -792,7 +822,16 @@ public class HockeyActivity extends Activity{
 				}
 			});
 			builder.show();
+		case R.id.undo:
+			_undoManager.undo();
+			break;
+		
+		case R.id.redo:
+			_undoManager.redo();
+			break;
 		}
+		_awayScoreTextView.setText(_gti.getAwayScoreText());
+		_homeScoreTextView.setText(_gti.getHomeScoreText());
 		return true;
 	}
 	

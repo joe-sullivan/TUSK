@@ -3,12 +3,10 @@ package com.seniordesign.ultimatescorecard.data.basketball;
 import java.util.ArrayList;
 
 import com.seniordesign.ultimatescorecard.data.Team;
-import com.seniordesign.ultimatescorecard.sqlite.basketball.*;
 import com.seniordesign.ultimatescorecard.sqlite.helper.*;
 
 public class BasketballTeam extends Team{
 	private static final long serialVersionUID = -4547516998953968383L;
-	private int _teamFouls = 0;
 	private ArrayList<BasketballPlayer> players = new ArrayList<BasketballPlayer>();
 	private Teams _team;
 	private long _t_id, _g_id;
@@ -18,23 +16,10 @@ public class BasketballTeam extends Team{
 		super(teamName,homeTeam);
 		_homeTeam = homeTeam;
 		_teamName = teamName;
-
 	}
 	
 	public void setTeamAbbr(){
-		//if(_team.getabbv()!=null){
-			_teamAbbr = _team.getabbv();
-		/*
-		}
-		else {
-			if(_homeTeam){
-				_teamAbbr = "Home";
-			}
-			else{
-				_teamAbbr = "Away";
-			}
-		}
-		*/
+		_teamAbbr = _team.getabbv();
 	}
 	
 	public void setgid(long g_id){
@@ -85,10 +70,6 @@ public class BasketballTeam extends Team{
 			}
 		}
 		return null;
-	}
-		
-	public void teamFoul(){
-		_teamFouls++;
 	}
 	
 	public int numberPlayers(){

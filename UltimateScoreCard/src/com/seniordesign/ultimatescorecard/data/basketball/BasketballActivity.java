@@ -11,11 +11,10 @@ import com.seniordesign.ultimatescorecard.substitution.BasketballSubstitutionAct
 import com.seniordesign.ultimatescorecard.view.DoubleParamOnClickListener;
 import com.seniordesign.ultimatescorecard.view.FlyOutContainer;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
-import com.seniordesign.ultimatescorecard.R.id;
-import com.seniordesign.ultimatescorecard.R.layout;
-import com.seniordesign.ultimatescorecard.R.menu;
 import com.seniordesign.ultimatescorecard.clock.GameClock;
 import com.seniordesign.ultimatescorecard.data.GameInfo;
+import com.seniordesign.ultimatescorecard.data.UndoInstance;
+import com.seniordesign.ultimatescorecard.data.UndoManager;
 import com.seniordesign.ultimatescorecard.view.ShotIconAdder;
 
 import android.os.Bundle;
@@ -24,7 +23,6 @@ import android.app.Activity;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -69,6 +67,9 @@ public class BasketballActivity extends Activity{
 	private long g_id;
 	private ArrayList<ShotChartCoords> _homeShots, _awayShots;
 	
+	private UndoManager _undoManager;
+	public UndoInstance _undoInstance;
+	
 	//on creation of the page, trying to save all items that will appear on screen into a member variable
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +83,18 @@ public class BasketballActivity extends Activity{
 		
 		//databases
 		_gti.setContext(this);
+		
+		
+		_undoInstance = new UndoInstance();
+		_gameLog.setUndoInstance(_undoInstance);
+		_basketball_db.setUndoInstance(_undoInstance);
 		g_id = _gti.createTeams();
+		_undoManager = new UndoManager(_basketball_db, _gti.getHomeTeamInstance(),_gti.getAwayTeamInstance());
+		_gti.setUndoInstance(_undoInstance);
+		_undoInstance.setgid(g_id);
+
+		
+		
 		_gameLog.setdb(_basketball_db);
 		_gameLog.setgid(g_id);
 		_gameInfo = _gti.getGameInfo();
@@ -114,7 +126,9 @@ public class BasketballActivity extends Activity{
 		
 		_homeLayout = (RelativeLayout)findViewById(R.id.homeShotIcons);
 		_awayLayout = (RelativeLayout)findViewById(R.id.awayShotIcons);
-		_iconAdder = new ShotIconAdder(_homeLayout, _awayLayout, getApplicationContext(), "basketball");
+		
+		_iconAdder = new ShotIconAdder(_homeLayout, _awayLayout, getApplicationContext(), "basketball", _undoInstance);
+		_undoManager.setLayouts(_homeLayout, _awayLayout);
 		
 		_p1Button = (Button)findViewById(R.id.extendButton1);										//our slide out buttons
 		_p2Button = (Button)findViewById(R.id.extendButton2);
@@ -265,6 +279,17 @@ public class BasketballActivity extends Activity{
 		_basketballCourt.setOnTouchListener(courtInteraction);
 		setTextAndListener(_option4Button, turnoverListener, "Turnover");
 		setTextAndListener(_option5Button, foulListener, "On Floor Foul");
+		
+		if(_undoInstance.getiv()!=null){
+			_undoManager.addInstance(_undoInstance);
+		}
+		_undoInstance = new UndoInstance();
+		_gameLog.setUndoInstance(_undoInstance);
+		_basketball_db.setUndoInstance(_undoInstance);
+		_gti.setUndoInstance(_undoInstance);
+		_iconAdder.setUndoInstance(_undoInstance);
+		_undoInstance.setgid(g_id);
+	
 		zeroTimeDisabler();
 	}
 	
@@ -524,6 +549,7 @@ public class BasketballActivity extends Activity{
 	public OnClickListener teamReboundListener = new OnClickListener(){
 		@Override
 		public void onClick(View view) {
+			_gameLog.rebounding((((TextView)view).getText().toString()).replace(" Rebound", ""));
 			if(((Button)view).getText().equals(_gti.getTeamPossession(true)+" Rebound")){
 				changePossession();
 				if(_otherButton2.getText().equals("O-Rebound")){	
@@ -535,6 +561,7 @@ public class BasketballActivity extends Activity{
 					_gti.addTeamORebound();
 				}
 			}
+			recordActivity();																//record the activity
 			resetFeatures();
 		}
 	};
@@ -657,6 +684,8 @@ public class BasketballActivity extends Activity{
 	public OnClickListener teamTOListener = new OnClickListener(){
 		@Override
 		public void onClick(View view) {
+			String team = _gti.getTeamPossession(false);
+			_gameLog.turnover(false, team, null);
 			changePossession();
 			recordActivity();
 			resetFeatures();
@@ -898,7 +927,7 @@ public class BasketballActivity extends Activity{
 		OnClickListener FTMissListener = new DoubleParamOnClickListener(value, str){
 			@Override
 			public void onClick(View view) {				
-				if(this.getValue()!=1){
+				if(this.getValue()!=1 && !oneAndOne){
 					_gameLog.freeThrow(false, this.getString());
 					recordActivity();
 				}
@@ -906,6 +935,7 @@ public class BasketballActivity extends Activity{
 
 				view.setOnClickListener(FTMadeListener(this.getValue()-1, this.getString()));
 				if(this.getValue() == 1 || oneAndOne){
+					_gameLog.freeThrow(false, this.getString());
 					if(_gti.keepPossession()){
 						resetFeatures();
 						disableMainSettings();
@@ -1084,7 +1114,6 @@ public class BasketballActivity extends Activity{
 		setSlideOutButtonText(_gti.getPossession());
 		reactivateButton();	
 		setMainSettings();
-		_gameLog.setLogSize();
 		_gti.setFoulVariable(false);
 		_gti.willKeepPossession(false);
 		_gameClockView.setOnClickListener(timerClickListener);
@@ -1180,7 +1209,7 @@ public class BasketballActivity extends Activity{
 			intent.putExtra(StaticFinalVars.GAME_LOG, _playbyplay);
 			intent.putExtra(StaticFinalVars.SHOT_CHART_HOME, _homeShots);
 			intent.putExtra(StaticFinalVars.SHOT_CHART_AWAY, _awayShots);
-			intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 1);
+			intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 0);
 			startActivity(intent);		
 			break;
 			
@@ -1239,7 +1268,17 @@ public class BasketballActivity extends Activity{
 			intent.putExtra(StaticFinalVars.SUB_INFO, _gti.getGameInfo());
 			startActivityForResult(intent, SUBSTITUTION_CODE);	
 			break;
+		
+		case R.id.undo:
+			_undoManager.undo();
+			break;
+		
+		case R.id.redo:
+			_undoManager.redo();
+			break;
 		}
+		_awayScoreTextView.setText(_gti.getAwayScoreText());
+		_homeScoreTextView.setText(_gti.getHomeScoreText());
 		return true;
 	}
 

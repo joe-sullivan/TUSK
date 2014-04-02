@@ -6,9 +6,9 @@ import com.seniordesign.ultimatescorecard.data.basketball.BasketballPlayer;
 import com.seniordesign.ultimatescorecard.data.football.FootballPlayer;
 import com.seniordesign.ultimatescorecard.data.hockey.HockeyPlayer;
 import com.seniordesign.ultimatescorecard.data.soccer.SoccerPlayer;
-import com.seniordesign.ultimatescorecard.sqlite.DatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.football.FootballDatabaseHelper;
+import com.seniordesign.ultimatescorecard.sqlite.helper.DatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyDatabaseHelper;
@@ -19,7 +19,6 @@ import android.app.Activity;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,9 +64,6 @@ public class CreateTeamActivity extends Activity{
 		else if(_sportType.equals("football")){
 			_db = new FootballDatabaseHelper(this);
 		}
-		/*
-		 * elseif( other database yada yada yada)
-		 */
 		
 
 		if(!teamEditor.equals("")){
@@ -90,11 +86,10 @@ public class CreateTeamActivity extends Activity{
 			
 			//get List of players on curTeam from database
 			ArrayList<Players> players = (ArrayList<Players>) _db.getPlayersTeam2(t_id);
-			//use below after pulling player names and jersey number
+			//add players names and numbers to view
 			for(Players p: players){
 				_playerList.addView(newPlayerItem(p.getpname(), ((Integer)p.getpnum()).toString()));
 			}
-			//once you get the t_id, save it in the variable so the players can access it.
 			
 			_oldTeamName = teamEditor;
 			
@@ -166,12 +161,13 @@ public class CreateTeamActivity extends Activity{
 						((HockeyDatabaseHelper) _db).createPlayers(new HockeyPlayer(t_id, playerName, playerNumber));
 					}
 					else if(_sportType.equals("football")){
-						//((FootballDatabaseHelper) _db).createPlayers(new FootballPlayer(t_id, playerName, playerNumber));
+						((FootballDatabaseHelper) _db).createPlayers(new FootballPlayer(t_id, playerName, playerNumber));
 					}
-					//else if(other sports)... databases
+					//else if(other sports that could be added)... 
 				}
 			}
 			
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 			if(editing){
@@ -193,6 +189,8 @@ public class CreateTeamActivity extends Activity{
 =======
 >>>>>>> FETCH_HEAD
 
+=======
+>>>>>>> FETCH_HEAD
 			if(editing){
 				ArrayList<Teams> teams = (ArrayList<Teams>) _db.getAllTeams();
 				Teams cur = null;
@@ -224,8 +222,6 @@ public class CreateTeamActivity extends Activity{
 					}
 					BasketballPlayer p = new BasketballPlayer(t_id, pname, 0);
 					((BasketballDatabaseHelper) _db).createPlayers(p);
-					_playerList.addView(newPlayerItem(p.getpname(), ((Integer)p.getpnum()).toString()));
-
 				}
 			}
 			else if(_sportType.equals("hockey")&&num<6){
@@ -239,7 +235,6 @@ public class CreateTeamActivity extends Activity{
 					}
 					HockeyPlayer p = new HockeyPlayer(t_id, pname, 0);
 					((HockeyDatabaseHelper) _db).createPlayers(p);
-					_playerList.addView(newPlayerItem(p.getpname(), ((Integer)p.getpnum()).toString()));
 				}
 			}
 			else if(_sportType.equals("soccer")&&num<11){
@@ -253,7 +248,6 @@ public class CreateTeamActivity extends Activity{
 					}
 					SoccerPlayer p = new SoccerPlayer(t_id, pname, 0);
 					((SoccerDatabaseHelper) _db).createPlayers(p);
-					//_playerList.addView(newPlayerItem(p.getpname(), ((Integer)p.getpnum()).toString()));
 				}
 			}
 			else if(_sportType.equals("football")&&num<11){
@@ -265,9 +259,8 @@ public class CreateTeamActivity extends Activity{
 							pname+="a";
 						}
 					}
-					//FootballPlayer p = new FootballPlayer(t_id, pname, 0);
-					//((FootballDatabaseHelper) _db).createPlayers(p);
-					//_playerList.addView(newPlayerItem(p.getpname(), ((Integer)p.getpnum()).toString()));
+					FootballPlayer p = new FootballPlayer(t_id, pname, 0);
+					((FootballDatabaseHelper) _db).createPlayers(p);
 				}
 			}
 

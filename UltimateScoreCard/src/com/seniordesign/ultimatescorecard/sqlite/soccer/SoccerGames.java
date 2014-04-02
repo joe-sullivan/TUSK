@@ -4,6 +4,7 @@ import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
 
 public class SoccerGames extends Games{
 
+	private static final long serialVersionUID = -4169498672945890878L;
 	int home_shots;
 	int home_sog; //shots on goal
 	int home_goals;

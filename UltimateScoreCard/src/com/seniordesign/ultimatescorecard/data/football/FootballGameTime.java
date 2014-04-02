@@ -1,8 +1,19 @@
 package com.seniordesign.ultimatescorecard.data.football;
 
+import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
+import com.seniordesign.ultimatescorecard.data.GameInfo;
 import com.seniordesign.ultimatescorecard.data.GameTime;
+import com.seniordesign.ultimatescorecard.data.football.FootballPlayer;
+import com.seniordesign.ultimatescorecard.data.football.FootballTeam;
+import com.seniordesign.ultimatescorecard.sqlite.football.FootballDatabaseHelper;
+import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
+import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 
+import android.content.Context;
 import android.util.Log;
 
 public class FootballGameTime extends GameTime{
@@ -12,10 +23,82 @@ public class FootballGameTime extends GameTime{
 	private String[] _lineOfScrimmage = new String[]{"OWN","0"};
 	private int[] _downDistance = new int[]{0,0};
 	private boolean _aReturn = false;
-		
+	//databases
+	public FootballDatabaseHelper _football_db;
+	private long g_id;
+	private Context _context;
+	private Teams _home, _away;
+	private ArrayList<FootballPlayer> _homeTeamPlayers, _awayTeamPlayers;
+	private long _home_t_id, _away_t_id;
+	public GameInfo _gameInfo;
+	private ArrayList<Players> _homeTeamPlayersPull, _awayTeamPlayersPull;
+			
 	public FootballGameTime(Teams home, Teams away){
-		_homeTeam = new FootballTeam(home.gettname(), true);
-		_awayTeam = new FootballTeam(away.gettname(), false);
+		//databases
+		_home = home;
+		_away = away;
+	}	
+	
+	public void setContext(Context context){
+		_context = context;
+	}
+	
+	public long createTeams(){
+		_football_db = new FootballDatabaseHelper(_context);
+		_homeTeam = new FootballTeam(_home.gettname(), true);
+		_awayTeam = new FootballTeam(_away.gettname(), false);
+
+		_home_t_id = _home.gettid();
+		_away_t_id = _away.gettid();
+		
+		String date = DateFormat.getDateTimeInstance().format(new Date());
+		g_id = _football_db.createGame(new Games(_home_t_id, _away_t_id, date));
+
+		ArrayList<Players> _homeTeamPlayer = (ArrayList<Players>) _football_db.getPlayersTeam(_home_t_id);
+		ArrayList<Players> _awayTeamPlayer = (ArrayList<Players>) _football_db.getPlayersTeam(_away_t_id);
+		
+		ArrayList<FootballPlayer> _homeTeamPlayers = new ArrayList<FootballPlayer>();
+		for(Players p: _homeTeamPlayer){
+			FootballPlayer player = new FootballPlayer();
+			player.setpid(p.getpid());
+			player.settid(p.gettid());
+			player.setpname(p.getpname());
+			player.setpnum(p.getpnum());
+			player.setdb(_football_db);
+			_homeTeamPlayers.add(player);
+		}
+		ArrayList<FootballPlayer> _awayTeamPlayers = new ArrayList<FootballPlayer>();
+		for(Players p: _awayTeamPlayer){
+			FootballPlayer player = new FootballPlayer();
+			player.setpid(p.getpid());
+			player.settid(p.gettid());
+			player.setpname(p.getpname());
+			player.setpnum(p.getpnum());
+			player.setdb(_football_db);
+			_awayTeamPlayers.add(player);
+
+		}
+		
+		_homeTeam.setData(g_id, _home, _homeTeamPlayers);
+		_awayTeam.setData(g_id, _away, _awayTeamPlayers);
+		_homeTeam.setTeamAbbr();
+		_awayTeam.setTeamAbbr();
+		_homeTeamPlayersPull = (ArrayList<Players>) _football_db.getPlayersTeam2(_home_t_id);
+		_awayTeamPlayersPull = (ArrayList<Players>) _football_db.getPlayersTeam2(_away_t_id);
+		_gameInfo = new GameInfo(_home, _away, _homeTeamPlayersPull, _awayTeamPlayersPull, g_id);
+
+		return g_id;
+	}
+	
+	public GameInfo getGameInfo(){
+		return _gameInfo;
+	}
+	
+	public void setGameInfo(GameInfo gameInfo){
+		_gameInfo = gameInfo;
+		_homeTeam.setTeamOrder(_gameInfo.getHomePlayers());
+		_awayTeam.setTeamOrder(_gameInfo.getAwayPlayers());
+
 	}
 		
 	//Getter and setter for team names

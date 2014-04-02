@@ -3,9 +3,6 @@ package com.seniordesign.ultimatescorecard.sqlite.basketball;
 import java.io.Serializable;
 
 public class BasketballGameStats implements Serializable {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 600722506563740291L;
 	long p_id;
 	long g_id;

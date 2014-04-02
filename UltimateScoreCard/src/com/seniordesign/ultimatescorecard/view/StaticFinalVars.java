@@ -28,6 +28,8 @@ public class StaticFinalVars {
 	public static final String SHOT_CHART_HOME = "shotChartHome";
 	public static final String SHOT_CHART_AWAY = "shotChartAway";
 	public static final String SHOT_CHART = "shotChart";
+	
+	public static final int EMAIL = 3;
 
 	
 	//score keeping interface to substitutions page

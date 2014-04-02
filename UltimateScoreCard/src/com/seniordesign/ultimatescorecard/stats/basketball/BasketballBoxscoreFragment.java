@@ -2,10 +2,7 @@ package com.seniordesign.ultimatescorecard.stats.basketball;
 
 import com.seniordesign.ultimatescorecard.R;
 import com.seniordesign.ultimatescorecard.data.GameInfo;
-import com.seniordesign.ultimatescorecard.data.basketball.BasketballTeam;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
-import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
-import com.seniordesign.ultimatescorecard.stats.soccer.SoccerStatsActivity;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
 
 import android.content.Intent;
@@ -24,14 +21,14 @@ public class BasketballBoxscoreFragment extends Fragment{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = (View) inflater.inflate(R.layout.fragment_boxscore, container, false);
+		view.setBackgroundResource(R.drawable.background_basketball);
+
         return view;
 	}
 	
 	@Override
 	public void onResume() {
-		super.onResume();
-		GameInfo info = ((BasketballStatsActivity) getActivity()).getGameInfo();
-		
+		super.onResume();		
 		((TextView)getView().findViewById(R.id.homeTeamStatText)).setText(((BasketballStatsActivity) getActivity()).getGameInfo().getHomeTeam().gettname());
 		((TextView)getView().findViewById(R.id.awayTeamStatText)).setText(((BasketballStatsActivity) getActivity()).getGameInfo().getAwayTeam().gettname());
 		

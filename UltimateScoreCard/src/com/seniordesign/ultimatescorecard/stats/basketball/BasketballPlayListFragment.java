@@ -18,6 +18,8 @@ public class BasketballPlayListFragment extends Fragment{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = (View) inflater.inflate(R.layout.fragment_game_log, container, false);
+		view.setBackgroundResource(R.drawable.background_basketball);
+
         return view;
 	}
 	
@@ -42,7 +44,7 @@ public class BasketballPlayListFragment extends Fragment{
 		final TextView textView = new TextView(getActivity());														//these are all the stuff that you can do statically in xml
 		textView.setText(teamName);																			//here, we're dynamically programming them in Java
 		textView.setPadding(5,5,5,5);
-		textView.setTextSize(10);
+		textView.setTextSize(16);
 		return textView;
 	}
 }

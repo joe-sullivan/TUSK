@@ -18,6 +18,7 @@ import android.content.Context;
 
 import com.seniordesign.ultimatescorecard.data.GameInfo;
 import com.seniordesign.ultimatescorecard.data.GameTime;
+import com.seniordesign.ultimatescorecard.data.UndoInstance;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
@@ -32,10 +33,12 @@ public class SoccerGameTime extends GameTime {
 	private long g_id;
 	private Context _context;
 	private Teams _home, _away;
-	private ArrayList<SoccerPlayer> _homeTeamPlayers, _awayTeamPlayers;
 	private long _home_t_id, _away_t_id;
 	public GameInfo _gameInfo;
 	private ArrayList<Players> _homeTeamPlayersPull, _awayTeamPlayersPull;
+	
+	private ArrayList<SoccerPlayer> _homeTeamPlayers, _awayTeamPlayers;
+	private UndoInstance _undoInstance;	
 	
 	
 	public SoccerGameTime (Teams home, Teams away){
@@ -47,8 +50,26 @@ public class SoccerGameTime extends GameTime {
 		_context = context;
 	}
 	
+	
+	public void setUndoInstance(UndoInstance undoInstance){
+		_undoInstance = undoInstance;
+		_soccer_db.setUndoInstance(undoInstance);
+		if(_homeTeam!=null){
+			for(SoccerPlayer p: _homeTeamPlayers){
+				p.setdb(_soccer_db);
+			}
+		}
+		if(_awayTeam!=null){
+			for(SoccerPlayer p: _awayTeamPlayers){
+				p.setdb(_soccer_db);
+			}
+		}
+	}
+	
 	public long createTeams(){
 		_soccer_db = new SoccerDatabaseHelper(_context);
+		_soccer_db.setUndoInstance(_undoInstance);
+		
 		_homeTeam = new SoccerTeam(_home.gettname(), true);
 		_awayTeam = new SoccerTeam(_away.gettname(), false);
 
@@ -70,7 +91,7 @@ public class SoccerGameTime extends GameTime {
 		ArrayList<Players> _homeTeamPlayer = (ArrayList<Players>) _soccer_db.getPlayersTeam(_home_t_id);
 		ArrayList<Players> _awayTeamPlayer = (ArrayList<Players>) _soccer_db.getPlayersTeam(_away_t_id);
 		
-		ArrayList<SoccerPlayer> _homeTeamPlayers = new ArrayList<SoccerPlayer>();
+		_homeTeamPlayers = new ArrayList<SoccerPlayer>();
 		for(Players p: _homeTeamPlayer){
 			SoccerPlayer player = new SoccerPlayer();
 			player.setpid(p.getpid());
@@ -81,7 +102,7 @@ public class SoccerGameTime extends GameTime {
 			_homeTeamPlayers.add(player);
 
 		}
-		ArrayList<SoccerPlayer> _awayTeamPlayers = new ArrayList<SoccerPlayer>();
+		_awayTeamPlayers = new ArrayList<SoccerPlayer>();
 		for(Players p: _awayTeamPlayer){
 			SoccerPlayer player = new SoccerPlayer();
 			player.setpid(p.getpid());
@@ -110,9 +131,6 @@ public class SoccerGameTime extends GameTime {
 	
 	public void setGameInfo(GameInfo gameInfo){
 		_gameInfo = gameInfo;
-		//_homeTeam.setTeamOrder(_gameInfo.getHomePlayers());
-		//_awayTeam.setTeamOrder(_gameInfo.getAwayPlayers());
-
 	}
 	
 	public SoccerPlayer getPlayer(String whichTeam, int player){
@@ -201,4 +219,14 @@ public class SoccerGameTime extends GameTime {
 	public long getawaytid(){
 		return _away_t_id;
 	}
+	
+	
+	public SoccerTeam getHomeTeamInstance(){
+		return _homeTeam;
+	}
+	
+	public SoccerTeam getAwayTeamInstance(){
+		return _awayTeam;
+	}
+	
 }

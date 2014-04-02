@@ -1,6 +1,5 @@
 package com.seniordesign.ultimatescorecard.data.soccer;
 
-import java.util.ArrayList;
 import com.seniordesign.ultimatescorecard.data.GameLog;
 import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
 import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerDatabaseHelper;
@@ -10,7 +9,6 @@ public class SoccerGameLog extends GameLog{
 	private String _thePlay;
 	
 	public SoccerGameLog(){
-		_gameLog = new ArrayList<String>();
 	}
 	
 	public void shootsAndScores(String scorer, String assist, String time){
@@ -28,7 +26,7 @@ public class SoccerGameLog extends GameLog{
 			_thePlay = "Shot missed by "+shooter+".";
 		}
 		else{
-			_thePlay = "Shot on goal by "+shooter+", saved by " +goalie+".";
+			_thePlay = "Shot on goal by "+shooter+", saved by " +goalie;
 		}
 		recordActivity(time);
 	}
@@ -45,14 +43,18 @@ public class SoccerGameLog extends GameLog{
 	}
 	
 	public void recordActivity(String time){
+		
+		PlayByPlay pbp = null;
 		if(time.equals("Restart Clock")){
-			PlayByPlay pbp = new PlayByPlay(g_id, _thePlay + ".", time, null, 0, 0);
+			pbp = new PlayByPlay(g_id, _thePlay + ".", time, null, 0, 0);
 			((SoccerDatabaseHelper) _db).createPlayByPlay(pbp);
 		}
 		else{
 			_timeStamp = time;
-			PlayByPlay pbp = new PlayByPlay(g_id,"(" + _timeStamp + ")" + _thePlay + ".", time, null, 0, 0);
+			pbp = new PlayByPlay(g_id,"(" + _timeStamp + ")" + _thePlay + ".", time, null, 0, 0);
 			((SoccerDatabaseHelper) _db).createPlayByPlay(pbp);
 		}
+		_undoInstance.setpbp(pbp);
+		
 	}
 }

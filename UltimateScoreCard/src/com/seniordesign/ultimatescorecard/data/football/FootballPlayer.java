@@ -2,11 +2,14 @@ package com.seniordesign.ultimatescorecard.data.football;
 
 import java.io.Serializable;
 
+import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
+import com.seniordesign.ultimatescorecard.sqlite.football.FootballDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
 
 public class FootballPlayer extends Players implements Serializable{
 	private static final long serialVersionUID = 8138078955965364135L;
 	private String _name;
+	private long g_id;
 	private int _completion = 0;
 	private int _attempt = 0;
 	private int _passYards = 0;
@@ -25,9 +28,30 @@ public class FootballPlayer extends Players implements Serializable{
 	private int _interceptions = 0;
 	private int _forcedFumble = 0;
 	private int _tackle = 0;
+	private FootballDatabaseHelper db;
+	private boolean home;
 		
-	public FootballPlayer (String name){
-		_name = name;
+	public FootballPlayer(){
+		super();
+	}
+	
+	public FootballPlayer(long g_id, String p_name, int p_num){
+		super(g_id, p_name, p_num);
+	}
+	
+	public void setgid(long g_id){
+		this.g_id = g_id;
+		
+		if(db.getGame(g_id).gethomeid()==t_id){
+			home=true;
+		}
+		else{
+			home=false;
+		}
+	}
+	
+	public void setdb(FootballDatabaseHelper db){
+		this.db = db;
 	}
 	public String getName(){
 		return _name;

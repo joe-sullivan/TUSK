@@ -4,10 +4,7 @@ import java.util.ArrayList;
 
 import com.seniordesign.ultimatescorecard.R;
 import com.seniordesign.ultimatescorecard.data.GameInfo;
-import com.seniordesign.ultimatescorecard.data.basketball.BasketballPlayer;
-import com.seniordesign.ultimatescorecard.data.basketball.BasketballTeam;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
-import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballGameStats;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballGames;
 import com.seniordesign.ultimatescorecard.sqlite.helper.*;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
@@ -16,7 +13,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.widget.TextView;
 
 public class BasketballIndividualStatActivity extends FragmentActivity{
 	private ViewPager _pager;
@@ -31,6 +27,7 @@ public class BasketballIndividualStatActivity extends FragmentActivity{
 	protected ArrayList<ShotChartCoords> _shots;
 	protected GameInfo _gameInfo;
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

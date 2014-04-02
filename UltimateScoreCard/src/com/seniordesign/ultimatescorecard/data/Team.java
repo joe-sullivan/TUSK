@@ -8,7 +8,6 @@ public class Team implements Serializable{
 	protected String _teamAbbr;
 	protected boolean _homeTeam;
 	protected int _score = 0; 
-	protected int _teamTurnovers = 0;
 	
 	public Team (String teamName, boolean homeTeam){
 		_homeTeam = homeTeam;
@@ -30,16 +29,8 @@ public class Team implements Serializable{
 	public void increaseScore(int points){
 		_score += points;
 	}	
-	
-	public void teamTurnover(){
-		_teamTurnovers++;
-	}
-	
+		
 	public int getScore(){
 		return _score;
-	}
-	
-	public int getTeamTurnovers(){
-		return _teamTurnovers;
 	}
 }

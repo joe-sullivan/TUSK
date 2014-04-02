@@ -4,21 +4,16 @@ package com.seniordesign.ultimatescorecard.sqlite.football;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.seniordesign.ultimatescorecard.data.StatData;
 import com.seniordesign.ultimatescorecard.data.football.FootballPlayer;
-import com.seniordesign.ultimatescorecard.sqlite.DatabaseHelper;
-import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballGameStats;
+import com.seniordesign.ultimatescorecard.sqlite.helper.DatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
 import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
-import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
-import com.seniordesign.ultimatescorecard.sqlite.helper.ShotChartCoords;
-import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 public class FootballDatabaseHelper extends DatabaseHelper{
@@ -33,11 +28,6 @@ public class FootballDatabaseHelper extends DatabaseHelper{
     private static final String DATABASE_NAME = "FootballStats";
 	
     //Table Names
-    private static final String TABLE_GAMES = "games";
-    private static final String TABLE_PLAYERS = "players";
-    private static final String TABLE_TEAMS = "teams";
-    private static final String TABLE_PLAY_BY_PLAY = "play_by_play";
-    private static final String TABLE_SHOT_CHART_COORDS = "shot_chart_coords";
     private static final String TABLE_FOOTBALL_GAME_STATS_PASSING = "football_game_stats_passing";
     private static final String TABLE_FOOTBALL_GAME_STATS_RUSHING = "football_game_stats_rushing";
     private static final String TABLE_FOOTBALL_GAME_STATS_RECEIVING = "football_game_stats_receiving";
@@ -47,39 +37,9 @@ public class FootballDatabaseHelper extends DatabaseHelper{
     private static final String TABLE_FOOTBALL_GAME_STATS_PUNTING = "football_game_stats_punting";
     private static final String TABLE_FOOTBALL_GAME_STATS_RETURNS= "football_game_stats_returns";
 
-    //Common Column Names
-    private static final String KEY_G_ID = "g_id";
-    private static final String KEY_P_ID = "p_id";
-    private static final String KEY_T_ID = "t_id";
-    private static final String KEY_A_ID = "a_id";
-    private static final String KEY_PERIOD = "period";
-
     //GAMES Table - column names
-    private static final String KEY_HOME_ID = "home_id";
-    private static final String KEY_AWAY_ID = "away_id";
-    private static final String KEY_DATE = "date";
     
-   
-    //PLAYERS Table - column names
-    private static final String KEY_P_NAME = "p_name";
-    private static final String KEY_P_NUM = "p_num";
-
-    //TEAMS Table - column names
-    private static final String KEY_T_NAME = "t_name";
-    private static final String KEY_C_NAME = "c_name";
-    private static final String KEY_SPORT = "sport";
     
-    //PLAY_BY_PLAY Table - column names
-    private static final String KEY_ACTION = "action";
-    private static final String KEY_TIME = "time";
-    private static final String KEY_HOME_SCORE = "home_score";
-    private static final String KEY_AWAY_SCORE = "away_score";
-
-    //SHOT_CHART_COORDS Table - column names
-    private static final String KEY_X = "x";
-    private static final String KEY_Y = "y";
-    private static final String KEY_MADE = "made";
-
     //FOOTBALLGAMESTATS - common columns
     private static final String KEY_ATT = "att";
     private static final String KEY_YDS = "yds";
@@ -131,7 +91,6 @@ public class FootballDatabaseHelper extends DatabaseHelper{
     private static final String CREATE_TABLE_GAMES = "CREATE TABLE IF NOT EXISTS " + TABLE_GAMES 
     		+ "(" + KEY_G_ID + " INTEGER PRIMARY KEY," + KEY_HOME_ID + " INTEGER," 
     		+ KEY_AWAY_ID + " INTEGER," + KEY_DATE + " DATE" + ")"; 
-    //Doesn't include SPORT yet...
 
     //FOOTBALL_GAME_STATS_PASSING table create statement
     private static final String CREATE_TABLE_FOOTBALL_GAME_STATS_PASSING = "CREATE TABLE IF NOT EXISTS " + TABLE_FOOTBALL_GAME_STATS_PASSING 
@@ -188,30 +147,6 @@ public class FootballDatabaseHelper extends DatabaseHelper{
     		+ KEY_KRT + " INTEGER, " + KEY_KYDS + " INTEGER, " + KEY_KTDS + " INTEGER, "
     		+ KEY_PRT + " INTEGER, " + KEY_PYDS + " INTEGER, " + KEY_PTDS + " INTEGER"
     		+ ")"; 
-    
-    //PLAYERS table create statement
-    private static final String CREATE_TABLE_PLAYERS = "CREATE TABLE IF NOT EXISTS " + TABLE_PLAYERS 
-    		+ "(" + KEY_P_ID + " INTEGER PRIMARY KEY," 
-    		+ KEY_T_ID + " INTEGER, "
-    		// + FOREIGN KEY REFERENCES " + TABLE_TEAMS + "(" + KEY_T_ID + ")," 
-    		+ KEY_P_NAME + " VARCHAR(45)," + KEY_P_NUM + " INTEGER" + ")"; 
-    
-    //TEAMS table create statement
-    private static final String CREATE_TABLE_TEAMS = "CREATE TABLE IF NOT EXISTS " + TABLE_TEAMS 
-    		+ "(" + KEY_T_ID + " INTEGER PRIMARY KEY," + KEY_T_NAME + " VARCHAR(45)," 
-    		+ KEY_C_NAME + " VARCHAR(45),"+ KEY_SPORT + " VARCHAR(45)" + ")"; 
-    
-    //PLAY_BY_PLAY table create statement
-    private static final String CREATE_TABLE_PLAY_BY_PLAY = "CREATE TABLE IF NOT EXISTS " + TABLE_PLAY_BY_PLAY 
-    		+ "(" + KEY_A_ID + " INTEGER PRIMARY KEY," + KEY_G_ID + " INTEGER," 
-    		+ KEY_ACTION + " VARCHAR(45)," + KEY_TIME + " VARCHAR(45)," + KEY_PERIOD + " VARCHAR(10)," + KEY_HOME_SCORE + " INTEGER, " 
-    		+ KEY_AWAY_SCORE + " INTEGER" + ")";
-    
-    //SHOT_CHART_COORDS table create statement
-    private static final String CREATE_TABLE_SHOT_CHART_COORDS = "CREATE TABLE IF NOT EXISTS " + TABLE_SHOT_CHART_COORDS 
-    		+ "(" + KEY_A_ID + " INTEGER PRIMARY KEY," + KEY_G_ID + " INTEGER," 
-    		+ KEY_P_ID + " INTEGER," + KEY_X + " INTEGER," + KEY_Y + " INTEGER," 
-    		+ KEY_MADE + " VARCHAR(4)" + ")";
     
     public FootballDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -274,10 +209,10 @@ public class FootballDatabaseHelper extends DatabaseHelper{
  
         // insert row
         long g_id = db.insert(TABLE_GAMES, null, values);
-        
+ /*      
         List<Players> home_players = getPlayersTeam(game.gethomeid());
         List<Players> away_players = getPlayersTeam(game.getawayid());
-/*
+
         for(Players player : home_players){
         	createGameStats(player.getpid(), g_id);
         }
@@ -1871,7 +1806,7 @@ public class FootballDatabaseHelper extends DatabaseHelper{
 	}
 	
 	//get single player
-	public Players getPlayer(long p_id) {
+	public FootballPlayer getPlayer(long p_id) {
 	    SQLiteDatabase db = this.getReadableDatabase();
 	    //create query to select game
 	    String selectQuery = "SELECT  * FROM " + TABLE_PLAYERS + 
@@ -1884,7 +1819,7 @@ public class FootballDatabaseHelper extends DatabaseHelper{
 	    if (c != null)
 	        c.moveToFirst();
 	    //create the instance of Teams using cursor information
-	    Players player = new Players();
+	    FootballPlayer player = new FootballPlayer();
 	    player.setpid(c.getLong(c.getColumnIndex(KEY_P_ID)));
 	    player.settid(c.getLong(c.getColumnIndex(KEY_T_ID)));
 	    player.setpname((c.getString(c.getColumnIndex(KEY_P_NAME))));
@@ -1892,169 +1827,8 @@ public class FootballDatabaseHelper extends DatabaseHelper{
 	 
 	    return player;
 	}
-	
-	public List<Players> getPlayersTeam(long t_id){
-	    SQLiteDatabase db = this.getReadableDatabase();
-		List<Players> players = new ArrayList<Players>();
-		String selectPlayerQuery = "SELECT * FROM " + TABLE_PLAYERS + " WHERE " + KEY_T_ID + " = " + t_id;
-        
-        Log.i(LOG, selectPlayerQuery);
-        
-        Cursor c = db.rawQuery(selectPlayerQuery, null);
-        
-        if (c!=null)
-        	c.moveToFirst();
-        
-        do {
-        	//create the instance of Players using cursor information
-		    Players player = new Players();
-		    player.setpid(c.getLong(c.getColumnIndex(KEY_P_ID)));
-		    player.settid(c.getLong(c.getColumnIndex(KEY_T_ID)));
-		    player.setpname((c.getString(c.getColumnIndex(KEY_P_NAME))));
-		    player.setpnum((c.getInt(c.getColumnIndex(KEY_P_NUM))));
-		    
-            // adding to players list
-            players.add(player);
-        } while(c.moveToNext());
-        
-        return players;
-	}
-	
-	public List<Players> getAllPlayers(){
-	    SQLiteDatabase db = this.getReadableDatabase();
-		List<Players> players = new ArrayList<Players>();
-		String selectPlayerQuery = "SELECT * FROM " + TABLE_PLAYERS;
-        
-        Log.i(LOG, selectPlayerQuery);
-        
-        Cursor c = db.rawQuery(selectPlayerQuery, null);
-        
-        if (c!=null)
-        	c.moveToFirst();
-        
-        
-        do {
-        	//create the instance of Players using cursor information
-		    Players player = new Players();
-		    player.setpid(c.getLong(c.getColumnIndex(KEY_P_ID)));
-		    player.settid(c.getLong(c.getColumnIndex(KEY_T_ID)));
-		    player.setpname((c.getString(c.getColumnIndex(KEY_P_NAME))));
-		    player.setpnum((c.getInt(c.getColumnIndex(KEY_P_NUM))));
-		   
-            // adding to players list
-            players.add(player);
-        } while(c.moveToNext());
 
-        return players;
-	}
-	
-	// Delete a Player
-	public void deletePlayer(long p_id) {
-	    SQLiteDatabase db = this.getWritableDatabase();
-	    db.delete(TABLE_PLAYERS, KEY_P_ID + " = " + p_id, null);
-	}
-		
-	
-	// Delete Players on a team
-	public void deletePlayers(long t_id) {
-	    SQLiteDatabase db = this.getWritableDatabase();
-	    db.delete(TABLE_PLAYERS, KEY_T_ID + " = ?",
-	            new String[] { String.valueOf(t_id) });
-	}
-		
-	// ----------------------- TEAMS table methods ------------------------- //
 
-	public long createTeams(Teams team){
-		SQLiteDatabase db = this.getWritableDatabase();
-		 
-        ContentValues values = new ContentValues();
-        //values.put(KEY_T_ID, team.gettid());
-        values.put(KEY_T_NAME, team.gettname());
-        values.put(KEY_C_NAME, team.getcname());
-        values.put(KEY_SPORT, team.getSport());
-
-        // insert row
-        long p_id = db.insert(TABLE_TEAMS, null, values);
- 
-        return p_id;
-	}
-	
-	//get single team
-	public Teams getTeam(long t_id) {
-	    SQLiteDatabase db = this.getReadableDatabase();
-	    //create query to select game
-	    String selectQuery = "SELECT  * FROM " + TABLE_TEAMS + 
-	    	" WHERE " + KEY_T_ID + " = " + t_id;
-	    //Log the query
-	    Log.i(LOG, selectQuery);
-	    //perform the query and store data in cursor
-	    Cursor c = db.rawQuery(selectQuery, null);
-	    //set cursor to beginning
-	    if (c != null)
-	        c.moveToFirst();
-	    //create the instance of Teams using cursor information
-	    Teams team = new Teams();
-	    team.settid(c.getLong(c.getColumnIndex(KEY_T_ID)));
-	    team.settname((c.getString(c.getColumnIndex(KEY_T_NAME))));
-	    team.setcname((c.getString(c.getColumnIndex(KEY_C_NAME))));
-	    team.setsport((c.getString(c.getColumnIndex(KEY_SPORT))));
-	 
-	    return team;
-	}
-	
-	public List<Teams> getAllTeams(){
-	    SQLiteDatabase db = this.getReadableDatabase();
-		List<Teams> teams = new ArrayList<Teams>();
-		String selectQuery = "SELECT * FROM " + TABLE_TEAMS;
-        
-        Log.i(LOG, selectQuery);
-        
-        Cursor c = db.rawQuery(selectQuery, null);
-        
-        if (c!=null)
-        	c.moveToFirst();
-        
-        do {
-        	//create the instance of Players using cursor information
-		    Teams team = new Teams();
-		    team.settid(c.getLong(c.getColumnIndex(KEY_T_ID)));
-		    team.settname((c.getString(c.getColumnIndex(KEY_T_NAME))));
-		    team.setcname((c.getString(c.getColumnIndex(KEY_C_NAME))));
-		    team.setsport((c.getString(c.getColumnIndex(KEY_SPORT))));
-		   
-            // adding to players list
-		    teams.add(team);
-        } while(c.moveToNext());
-        
-        return teams;
-	}
-	
-	// Delete a Team
-	public void deleteTeam(long t_id) {
-		deletePlayers(t_id);
-	    SQLiteDatabase db = this.getWritableDatabase();
-	    db.delete(TABLE_TEAMS, KEY_T_ID + " = ?",
-	            new String[] { String.valueOf(t_id) });
-	}
-	
-	
-	
-	public void deleteAll(){
-	    List<Games> games = getAllGames();
-	    for(Games g: games){
-	    	deleteGame(g.getgid());
-	    	deletePlayByPlayGame(g.getgid());
-	    }
-	    
-	    List<Teams> teams = getAllTeams();
-	    for(Teams t: teams){
-	    	deleteTeam(t.gettid());
-	    }
-
-	}
-	
-	
-	
 	
 	// closing database
     public void closeDB() {
@@ -2062,4 +1836,16 @@ public class FootballDatabaseHelper extends DatabaseHelper{
         if (db != null && db.isOpen())
             db.close();
     }
+
+	@Override
+	public int addStats(ArrayList<StatData> stats) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int addTeamStats(ArrayList<StatData> stats) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

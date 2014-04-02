@@ -8,9 +8,6 @@ import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 
 public class GameInfo implements Serializable{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -531764763226162832L;
 	public Teams _homeTeam, _awayTeam;
 	public ArrayList<Players> _homeTeamPlayers, _awayTeamPlayers;
@@ -78,15 +75,6 @@ public class GameInfo implements Serializable{
 	public long getgid(){
 		return g_id;
 	}
-
-	public int numberPlayers(boolean homeTeam){
-		if(homeTeam){
-			return _homeTeamPlayers.size();
-		}
-		else{
-			return _awayTeamPlayers.size();
-		}
-	}
 	
 	public Players getPlayer(int player, boolean home){
 		if(home){
@@ -95,24 +83,6 @@ public class GameInfo implements Serializable{
 		else{
 			return _awayTeamPlayers.get(player);
 		}
-	}
-	
-	public Players getPlayer(String player, boolean home){
-		if(home){
-			for(int i=0; i<_homeTeamPlayers.size(); i++){
-				if(player.equals(_homeTeamPlayers.get(i).getpname())){
-					return _homeTeamPlayers.get(i);
-				}
-			}
-		}
-		else{
-			for(int i=0; i<_awayTeamPlayers.size(); i++){
-				if(player.equals(_awayTeamPlayers.get(i).getpname())){
-					return _awayTeamPlayers.get(i);
-				}
-			}
-		}
-		return null;
 	}
 	
 	public int getPlayerAsPositionInArray(String player, boolean home){
