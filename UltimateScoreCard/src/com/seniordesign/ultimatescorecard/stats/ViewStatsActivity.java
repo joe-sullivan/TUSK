@@ -15,6 +15,10 @@ import com.seniordesign.ultimatescorecard.data.soccer.SoccerGameTime;
 import com.seniordesign.ultimatescorecard.sqlite.DatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballGames;
+>>>>>>> FETCH_HEAD
 =======
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballGames;
 >>>>>>> FETCH_HEAD
@@ -26,7 +30,13 @@ import com.seniordesign.ultimatescorecard.sqlite.helper.ShotChartCoords;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyDatabaseHelper;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerDatabaseHelper;
+=======
+import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyGames;
+import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerDatabaseHelper;
+import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerGames;
+>>>>>>> FETCH_HEAD
 =======
 import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyGames;
 import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerDatabaseHelper;
@@ -226,6 +236,11 @@ public class ViewStatsActivity extends Activity{
 			
 			if(_sportButton.getText().equals("Basketball")){
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+				_gameInfo.setAwayScore(((BasketballGames)_game).getAwayScoreText());
+				_gameInfo.setHomeScore(((BasketballGames)_game).getHomeScoreText());
+>>>>>>> FETCH_HEAD
 =======
 				_gameInfo.setAwayScore(((BasketballGames)_game).getAwayScoreText());
 				_gameInfo.setHomeScore(((BasketballGames)_game).getHomeScoreText());
@@ -239,6 +254,11 @@ public class ViewStatsActivity extends Activity{
 			}
 			else if (_sportButton.getText().equals("Football")){
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+				//_gameInfo.setAwayScore(((FootballGames)_game).getAwayScoreText());
+				//_gameInfo.setHomeScore(((FootballGames)_game).getHomeScoreText());
+>>>>>>> FETCH_HEAD
 =======
 				//_gameInfo.setAwayScore(((FootballGames)_game).getAwayScoreText());
 				//_gameInfo.setHomeScore(((FootballGames)_game).getHomeScoreText());
@@ -252,6 +272,11 @@ public class ViewStatsActivity extends Activity{
 			}
 			else if (_sportButton.getText().equals("Hockey")){
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+				_gameInfo.setAwayScore(((HockeyGames)_game).getAwayScoreText());
+				_gameInfo.setHomeScore(((HockeyGames)_game).getHomeScoreText());
+>>>>>>> FETCH_HEAD
 =======
 				_gameInfo.setAwayScore(((HockeyGames)_game).getAwayScoreText());
 				_gameInfo.setHomeScore(((HockeyGames)_game).getHomeScoreText());
@@ -265,6 +290,11 @@ public class ViewStatsActivity extends Activity{
 			}
 			else { // Soccer
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+				_gameInfo.setAwayScore(((SoccerGames)_game).getAwayScoreText());
+				_gameInfo.setHomeScore(((SoccerGames)_game).getHomeScoreText());
+>>>>>>> FETCH_HEAD
 =======
 				_gameInfo.setAwayScore(((SoccerGames)_game).getAwayScoreText());
 				_gameInfo.setHomeScore(((SoccerGames)_game).getHomeScoreText());

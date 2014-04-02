@@ -59,6 +59,7 @@ public class ChooseTeamActivity extends Activity{
 		_sportType = getIntent().getExtras().getString(StaticFinalVars.SPORT_TYPE);
 		
 <<<<<<< HEAD
+<<<<<<< HEAD
 		//databases
 		if(_sportType.equals("basketball")){
 			_db = new BasketballDatabaseHelper(getApplicationContext());
@@ -83,6 +84,11 @@ public class ChooseTeamActivity extends Activity{
 		_addEditTeam = (Button) findViewById (R.id.createNewTeam);
 		_deleteButton = (Button) findViewById (R.id.deleteTeamButton);
 		
+=======
+		_addEditTeam = (Button) findViewById (R.id.createNewTeam);
+		_deleteButton = (Button) findViewById (R.id.deleteTeamButton);
+		
+>>>>>>> FETCH_HEAD
 		//databases
 		if(_sportType.equals("basketball")){
 			_db = new BasketballDatabaseHelper(getApplicationContext());
@@ -117,6 +123,9 @@ public class ChooseTeamActivity extends Activity{
 		
 		//load teams from database (maybe put it catch for empty database?
 		loadTeams();
+<<<<<<< HEAD
+>>>>>>> FETCH_HEAD
+=======
 >>>>>>> FETCH_HEAD
 	}	
 	
@@ -294,8 +303,12 @@ public class ChooseTeamActivity extends Activity{
 	//deleting a team from the linear layout we called "listOfTeams"
 	public void deleteATeam(View view){
 <<<<<<< HEAD
+<<<<<<< HEAD
 		if(_listOfTeams.getChildCount() > 0){																		//as long as we have items to delete, then we can use this
 			
+=======
+		if(_listOfTeams.getChildCount() > 0){	
+>>>>>>> FETCH_HEAD
 =======
 		if(_listOfTeams.getChildCount() > 0){	
 >>>>>>> FETCH_HEAD

@@ -16,6 +16,10 @@ public class GameInfo implements Serializable{
 	public ArrayList<Players> _homeTeamPlayers, _awayTeamPlayers;
 	public long g_id;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+	private String home_score, away_score;
+>>>>>>> FETCH_HEAD
 =======
 	private String home_score, away_score;
 >>>>>>> FETCH_HEAD
@@ -31,7 +35,10 @@ public class GameInfo implements Serializable{
 	}
 	
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> FETCH_HEAD
 	public void setHomeScore(String homescore){
 		home_score = homescore;
 	}
@@ -48,6 +55,9 @@ public class GameInfo implements Serializable{
 		return away_score;
 	}
 	
+<<<<<<< HEAD
+>>>>>>> FETCH_HEAD
+=======
 >>>>>>> FETCH_HEAD
 	public Teams getHomeTeam(){
 		return _homeTeam;

@@ -1,7 +1,13 @@
 package com.seniordesign.ultimatescorecard.data.basketball;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import java.util.ArrayList;
+=======
+import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+>>>>>>> FETCH_HEAD
 =======
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -52,7 +58,12 @@ public class BasketballGameTime extends GameTime {
 		_away_t_id = _away.gettid();
 		
 <<<<<<< HEAD
+<<<<<<< HEAD
 		g_id = _basketball_db.createGame(new Games(_home_t_id, _away_t_id, "TEST1"));
+=======
+		String date = DateFormat.getDateTimeInstance().format(new Date());
+		g_id = _basketball_db.createGame(new Games(_home_t_id, _away_t_id, date));
+>>>>>>> FETCH_HEAD
 =======
 		String date = DateFormat.getDateTimeInstance().format(new Date());
 		g_id = _basketball_db.createGame(new Games(_home_t_id, _away_t_id, date));

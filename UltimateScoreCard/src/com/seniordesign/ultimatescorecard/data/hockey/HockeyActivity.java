@@ -691,6 +691,11 @@ public class HockeyActivity extends Activity{
 			intent = new Intent(getApplicationContext(), HockeyStatsActivity.class);			
 			_gameInfo = _gti.getGameInfo();
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+			_gameInfo.setAwayScore(_gti.getAwayScoreText());
+			_gameInfo.setHomeScore(_gti.getHomeScoreText());
+>>>>>>> FETCH_HEAD
 =======
 			_gameInfo.setAwayScore(_gti.getAwayScoreText());
 			_gameInfo.setHomeScore(_gti.getHomeScoreText());
@@ -709,6 +714,11 @@ public class HockeyActivity extends Activity{
 			intent = new Intent(getApplicationContext(), HockeyStatsActivity.class);
 			_gameInfo = _gti.getGameInfo();
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+			_gameInfo.setAwayScore(_gti.getAwayScoreText());
+			_gameInfo.setHomeScore(_gti.getHomeScoreText());
+>>>>>>> FETCH_HEAD
 =======
 			_gameInfo.setAwayScore(_gti.getAwayScoreText());
 			_gameInfo.setHomeScore(_gti.getHomeScoreText());

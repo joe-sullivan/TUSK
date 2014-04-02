@@ -55,6 +55,7 @@ public final class R {
     public static final class drawable {
         public static final int background=0x7f020000;
 <<<<<<< HEAD
+<<<<<<< HEAD
         public static final int basketball=0x7f020001;
         public static final int basketballcourt=0x7f020002;
         public static final int basketballcourtmask=0x7f020003;
@@ -230,6 +231,80 @@ public final class R {
         public static final int basketballButton=0x7f0a0049;
         public static final int basketballCourt=0x7f0a0016;
         public static final int basketballCourtMask=0x7f0a0017;
+=======
+        public static final int background_basketball=0x7f020001;
+        public static final int background_hockey=0x7f020002;
+        public static final int background_soccer=0x7f020003;
+        public static final int basketball=0x7f020004;
+        public static final int basketballcourt=0x7f020005;
+        public static final int basketballcourtmask=0x7f020006;
+        public static final int football=0x7f020007;
+        public static final int football_left=0x7f020008;
+        public static final int football_left_blue=0x7f020009;
+        public static final int football_left_yellow=0x7f02000a;
+        public static final int football_lefthash=0x7f02000b;
+        public static final int football_middle=0x7f02000c;
+        public static final int football_middle_blue=0x7f02000d;
+        public static final int football_middle_yellow=0x7f02000e;
+        public static final int football_middlehash=0x7f02000f;
+        public static final int football_right=0x7f020010;
+        public static final int football_right_blue=0x7f020011;
+        public static final int football_right_yellow=0x7f020012;
+        public static final int football_righthash=0x7f020013;
+        public static final int grassfield=0x7f020014;
+        public static final int hardwood=0x7f020015;
+        public static final int hockey=0x7f020016;
+        public static final int hockeyice=0x7f020017;
+        public static final int hockeypuck=0x7f020018;
+        public static final int ic_launcher=0x7f020019;
+        public static final int icefloor=0x7f02001a;
+        public static final int made_shot=0x7f02001b;
+        public static final int missed_shot=0x7f02001c;
+        public static final int soccerball=0x7f02001d;
+        public static final int soccerfield=0x7f02001e;
+        public static final int title=0x7f02001f;
+        public static final int view_style_gradiant=0x7f020020;
+        public static final int view_style_plain=0x7f020021;
+        public static final int view_style_plain_long=0x7f020022;
+        public static final int view_style_plain_short=0x7f020023;
+        public static final int view_style_slant=0x7f020024;
+    }
+    public static final class id {
+        public static final int SubTitleText=0x7f0a0052;
+        public static final int active10Name=0x7f0a0076;
+        public static final int active10View=0x7f0a0075;
+        public static final int active11Name=0x7f0a0078;
+        public static final int active11View=0x7f0a0077;
+        public static final int active1Name=0x7f0a0061;
+        public static final int active1View=0x7f0a0060;
+        public static final int active2Name=0x7f0a0063;
+        public static final int active2View=0x7f0a0062;
+        public static final int active3Name=0x7f0a0065;
+        public static final int active3View=0x7f0a0064;
+        public static final int active4Name=0x7f0a0067;
+        public static final int active4View=0x7f0a0066;
+        public static final int active5Name=0x7f0a0069;
+        public static final int active5View=0x7f0a0068;
+        public static final int active6Name=0x7f0a006e;
+        public static final int active6View=0x7f0a006d;
+        public static final int active7Name=0x7f0a0070;
+        public static final int active7View=0x7f0a006f;
+        public static final int active8Name=0x7f0a0072;
+        public static final int active8View=0x7f0a0071;
+        public static final int active9Name=0x7f0a0074;
+        public static final int active9View=0x7f0a0073;
+        public static final int activePlayerFrag=0x7f0a005f;
+        public static final int addPlayer=0x7f0a002f;
+        public static final int assistTotal=0x7f0a0040;
+        public static final int awayScoreTextView=0x7f0a000d;
+        public static final int awayShotIcons=0x7f0a001f;
+        public static final int awayTeamStatText=0x7f0a0090;
+        public static final int awayTeamSubText=0x7f0a0055;
+        public static final int awayTextView=0x7f0a0009;
+        public static final int basketballButton=0x7f0a0049;
+        public static final int basketballCourt=0x7f0a0016;
+        public static final int basketballCourtMask=0x7f0a0017;
+>>>>>>> FETCH_HEAD
         public static final int bench10Name=0x7f0a008d;
         public static final int bench10View=0x7f0a008c;
         public static final int bench1Name=0x7f0a007b;
@@ -267,12 +342,16 @@ public final class R {
         public static final int deleteTeamButton=0x7f0a0027;
         public static final int editGame=0x7f0a00a1;
         public static final int editPlayer=0x7f0a0030;
+<<<<<<< HEAD
+>>>>>>> FETCH_HEAD
+=======
 >>>>>>> FETCH_HEAD
         public static final int extendButton1=0x7f0a0002;
         public static final int extendButton2=0x7f0a0003;
         public static final int extendButton3=0x7f0a0004;
         public static final int extendButton4=0x7f0a0005;
         public static final int extendButton5=0x7f0a0006;
+<<<<<<< HEAD
 <<<<<<< HEAD
         public static final int fieldGoal3Total=0x7f0a00a6;
         public static final int fieldGoalTotal=0x7f0a003a;
@@ -309,6 +388,8 @@ public final class R {
         public static final int oReboundTotal=0x7f0a003e;
         public static final int optionButton=0x7f0a004d;
 =======
+=======
+>>>>>>> FETCH_HEAD
         public static final int fieldGoal3Total=0x7f0a0097;
         public static final int fieldGoalTotal=0x7f0a003b;
         public static final int fieldOfPlayList=0x7f0a0034;
@@ -341,12 +422,16 @@ public final class R {
         public static final int nextQuarter=0x7f0a00a2;
         public static final int oReboundTotal=0x7f0a003f;
         public static final int optionButton=0x7f0a004e;
+<<<<<<< HEAD
+>>>>>>> FETCH_HEAD
+=======
 >>>>>>> FETCH_HEAD
         public static final int optionButton1=0x7f0a0018;
         public static final int optionButton2=0x7f0a0019;
         public static final int optionButton3=0x7f0a001a;
         public static final int optionButton4=0x7f0a001c;
         public static final int optionButton5=0x7f0a001d;
+<<<<<<< HEAD
 <<<<<<< HEAD
         public static final int penaltyMinsTotal=0x7f0a00ab;
         public static final int penaltyTotal=0x7f0a00a9;
@@ -466,6 +551,57 @@ public final class R {
         public static final int techFouls=0x7f0a0044;
         public static final int titleFrame=0x7f0a0007;
         public static final int titleFrame2=0x7f0a000a;
+=======
+        public static final int penaltyMinsTotal=0x7f0a009c;
+        public static final int penaltyTotal=0x7f0a009a;
+        public static final int penaltyTypeTotal=0x7f0a009b;
+        public static final int periodNumber=0x7f0a0035;
+        public static final int playByPlaytitle=0x7f0a0094;
+        public static final int play_by_play=0x7f0a00a7;
+        public static final int playerCreation=0x7f0a002d;
+        public static final int playerDialogLayout=0x7f0a005c;
+        public static final int playerList=0x7f0a002e;
+        public static final int playerListLayout=0x7f0a0093;
+        public static final int playerName=0x7f0a0038;
+        public static final int playerNameEditText=0x7f0a005d;
+        public static final int playerNumberEditText=0x7f0a005e;
+        public static final int playerScrollView=0x7f0a002c;
+        public static final int playersScrollView=0x7f0a0092;
+        public static final int pointTotal=0x7f0a003a;
+        public static final int possessionAway=0x7f0a0010;
+        public static final int possessionHome=0x7f0a0011;
+        public static final int quarterNumber=0x7f0a0013;
+        public static final int reboundTotal=0x7f0a003d;
+        public static final int scoresFrame=0x7f0a0008;
+        public static final int scoresFrame2=0x7f0a000b;
+        public static final int scrollView=0x7f0a0095;
+        public static final int scrollViewForSoccerSubstitution=0x7f0a006a;
+        public static final int search_button=0x7f0a005b;
+        public static final int settings=0x7f0a00a5;
+        public static final int shotChart=0x7f0a009f;
+        public static final int shotOnGoalTotal=0x7f0a0099;
+        public static final int shot_chart=0x7f0a00a8;
+        public static final int slideoutButtons=0x7f0a0001;
+        public static final int slideoutTitle=0x7f0a0000;
+        public static final int soccerButton=0x7f0a004c;
+        public static final int soccerfield=0x7f0a0050;
+        public static final int statisticTitle=0x7f0a0091;
+        public static final int statsPager=0x7f0a0051;
+        public static final int statsTitle=0x7f0a008e;
+        public static final int stealTotal=0x7f0a0041;
+        public static final int substitution=0x7f0a00a0;
+        public static final int tabText=0x7f0a0053;
+        public static final int teamAbbrEditText=0x7f0a002a;
+        public static final int teamCreationTitle=0x7f0a0028;
+        public static final int teamListLayout=0x7f0a0026;
+        public static final int teamName=0x7f0a0039;
+        public static final int teamNameEditText=0x7f0a0029;
+        public static final int teamScrollView=0x7f0a0024;
+        public static final int team_selection_title=0x7f0a0022;
+        public static final int techFouls=0x7f0a0044;
+        public static final int titleFrame=0x7f0a0007;
+        public static final int titleFrame2=0x7f0a000a;
+>>>>>>> FETCH_HEAD
         public static final int titleImageView=0x7f0a0046;
         public static final int titleRow=0x7f0a0021;
         public static final int topButtonsRow=0x7f0a0047;
@@ -473,6 +609,9 @@ public final class R {
         public static final int twinOptionRow=0x7f0a001b;
         public static final int viewStatisticButton=0x7f0a004d;
         public static final int view_statistic_title=0x7f0a0057;
+<<<<<<< HEAD
+>>>>>>> FETCH_HEAD
+=======
 >>>>>>> FETCH_HEAD
     }
     public static final class layout {

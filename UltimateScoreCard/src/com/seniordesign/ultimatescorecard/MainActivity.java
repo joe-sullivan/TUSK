@@ -6,6 +6,10 @@ import java.util.List;
 
 import com.seniordesign.ultimatescorecard.data.basketball.BasketballPlayer;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+import com.seniordesign.ultimatescorecard.data.football.FootballPlayer;
+>>>>>>> FETCH_HEAD
 =======
 import com.seniordesign.ultimatescorecard.data.football.FootballPlayer;
 >>>>>>> FETCH_HEAD
@@ -46,8 +50,11 @@ public class MainActivity extends Activity{
 
 	public Context context = this;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	
 	
+=======
+>>>>>>> FETCH_HEAD
 =======
 >>>>>>> FETCH_HEAD
 
@@ -66,7 +73,12 @@ public class MainActivity extends Activity{
 		_footballButton.setOnClickListener(footballButtonListener);											//setting a click listener for the button
 	
 <<<<<<< HEAD
+<<<<<<< HEAD
 		_hockeyButton = (Button) findViewById(R.id.hockeyButton);										//referring to the baseball button
+=======
+		_hockeyButton = (Button) findViewById(R.id.hockeyButton);											//referring to the baseball button
+		_hockeyButton.setBackgroundResource(R.drawable.view_style_plain_short);
+>>>>>>> FETCH_HEAD
 =======
 		_hockeyButton = (Button) findViewById(R.id.hockeyButton);											//referring to the baseball button
 		_hockeyButton.setBackgroundResource(R.drawable.view_style_plain_short);
@@ -79,15 +91,21 @@ public class MainActivity extends Activity{
 	
 		_viewStatsButton = (Button) findViewById(R.id.viewStatisticButton);
 <<<<<<< HEAD
+<<<<<<< HEAD
 		_viewStatsButton.setOnClickListener(viewStatsListener);
 		
 =======
+=======
+>>>>>>> FETCH_HEAD
 		_viewStatsButton.setBackgroundResource(R.drawable.view_style_plain_long);
 		_viewStatsButton.setOnClickListener(viewStatsListener);
 		
 		_optionsButton = (Button) findViewById(R.id.optionButton);
 		_optionsButton.setBackgroundResource(R.drawable.view_style_plain_long);
 		
+<<<<<<< HEAD
+>>>>>>> FETCH_HEAD
+=======
 >>>>>>> FETCH_HEAD
 		//databases
 		_basketball_db = new BasketballDatabaseHelper(getApplicationContext());
@@ -100,6 +118,7 @@ public class MainActivity extends Activity{
 		//_basketball_db.onUpgrade(_basketball_db.getWritableDatabase(),0,0);
 		
 		//_football_db.onCreate(_football_db.getWritableDatabase());
+<<<<<<< HEAD
 <<<<<<< HEAD
 		_football_db.onUpgrade(_football_db.getWritableDatabase(),0,0);
 		
@@ -135,6 +154,8 @@ public class MainActivity extends Activity{
 		BasketballPlayer TJ6 = new BasketballPlayer(rockets_id, "Terrence Jones", 6);
 		BasketballPlayer AB0 = new BasketballPlayer(rockets_id, "Aaron Brooks", 0);
 =======
+=======
+>>>>>>> FETCH_HEAD
 		//_football_db.onUpgrade(_football_db.getWritableDatabase(),0,0);
 		
 		_soccer_db.onCreate(_soccer_db.getWritableDatabase());
@@ -227,6 +248,9 @@ public class MainActivity extends Activity{
 		BasketballPlayer JH11 = new BasketballPlayer(pelicans_id, "Jrue Holliday", 11);
 		BasketballPlayer JW5 = new BasketballPlayer(pelicans_id, "Jeff Withey", 5);
 		BasketballPlayer JS14 = new BasketballPlayer(pelicans_id, "Jason Smith", 14);
+<<<<<<< HEAD
+>>>>>>> FETCH_HEAD
+=======
 >>>>>>> FETCH_HEAD
 		
 		BasketballPlayer PN0 = new BasketballPlayer(huskies_id, "Phillip Nolan", 0);
@@ -246,6 +270,7 @@ public class MainActivity extends Activity{
 		BasketballPlayer AB35 = new BasketballPlayer(huskies_id, "Amida Brimah", 35);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 		
 		long MG20_id = _basketball_db.createPlayers(MG20);
 		long TD21_id = _basketball_db.createPlayers(TD21);
@@ -262,6 +287,8 @@ public class MainActivity extends Activity{
 		long AB0_id = _basketball_db.createPlayers(AB0);
 		
 =======
+=======
+>>>>>>> FETCH_HEAD
 		long TP9_id = _basketball_db.createPlayers(TP9);
 		long DG4_id = _basketball_db.createPlayers(DG4);
 		long KL2_id = _basketball_db.createPlayers(KL2);
@@ -332,6 +359,9 @@ public class MainActivity extends Activity{
 		long JW5_id = _basketball_db.createPlayers(JW5);
 		long JS14_id = _basketball_db.createPlayers(JS14);
 	
+<<<<<<< HEAD
+>>>>>>> FETCH_HEAD
+=======
 >>>>>>> FETCH_HEAD
 		long PN0_id = _basketball_db.createPlayers(PN0);
 		long DD2_id = _basketball_db.createPlayers(DD2);
@@ -348,6 +378,7 @@ public class MainActivity extends Activity{
 		long NA23_id = _basketball_db.createPlayers(NA23);
 		long TW25_id = _basketball_db.createPlayers(TW25);
 		long AB35_id = _basketball_db.createPlayers(AB35);
+<<<<<<< HEAD
 <<<<<<< HEAD
 	*/	
 /*		
@@ -517,6 +548,8 @@ public class MainActivity extends Activity{
 		Log.d("Shot count", "Shot Count: " + shots.size());
 
 =======
+=======
+>>>>>>> FETCH_HEAD
 */		
 /*
 		//Test Football Teams and players
@@ -1009,6 +1042,9 @@ public class MainActivity extends Activity{
 		Log.d("GameStats count", "GameStats Count: " + _basketball_db.getAllGameStats().size());
 		ArrayList<ShotChartCoords> shots = (ArrayList<ShotChartCoords>) _basketball_db.getAllShots();
 		Log.d("Shot count", "Shot Count: " + shots.size());
+<<<<<<< HEAD
+>>>>>>> FETCH_HEAD
+=======
 >>>>>>> FETCH_HEAD
 		for(ShotChartCoords shot: shots){
 			Log.d("Shot count", "Shot Count: " + shot.getshotid());
@@ -1016,6 +1052,7 @@ public class MainActivity extends Activity{
 			Log.d("Shot count", "Shot Count: " + shot.getmade());
 			Log.d("Shot count", "Shot Count: " + shot.getx());
 			Log.d("Shot count", "Shot Count: " + shot.gety());
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 		}
@@ -1027,13 +1064,20 @@ public class MainActivity extends Activity{
 		}
 */	
 >>>>>>> FETCH_HEAD
+=======
+		}
+*/	
+>>>>>>> FETCH_HEAD
 		//close database helper
 		_basketball_db.close();
 		_football_db.close();
 		_soccer_db.close();
 		_hockey_db.close();
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> FETCH_HEAD
 =======
 >>>>>>> FETCH_HEAD
 	}

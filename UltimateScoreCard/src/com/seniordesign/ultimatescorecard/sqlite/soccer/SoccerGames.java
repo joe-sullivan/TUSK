@@ -259,7 +259,10 @@ public class SoccerGames extends Games{
     	}
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> FETCH_HEAD
     
 	public String getHomeScoreText(){
 		if(home_goals < 10){
@@ -284,5 +287,8 @@ public class SoccerGames extends Games{
 			return ""+ away_goals;
 		}
 	}
+<<<<<<< HEAD
+>>>>>>> FETCH_HEAD
+=======
 >>>>>>> FETCH_HEAD
 }

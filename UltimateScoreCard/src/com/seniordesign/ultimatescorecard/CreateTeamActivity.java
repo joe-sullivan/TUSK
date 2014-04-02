@@ -173,6 +173,7 @@ public class CreateTeamActivity extends Activity{
 			}
 			
 <<<<<<< HEAD
+<<<<<<< HEAD
 			if(editing){
 				_db.updateTeam(new Teams(teamName,teamAbbr,coachName,_sportType));
 			}
@@ -189,6 +190,8 @@ public class CreateTeamActivity extends Activity{
 			
 			t_id = cur.gettid();
 =======
+=======
+>>>>>>> FETCH_HEAD
 
 			if(editing){
 				ArrayList<Teams> teams = (ArrayList<Teams>) _db.getAllTeams();
@@ -205,6 +208,9 @@ public class CreateTeamActivity extends Activity{
 			}
 			editing = false;
 
+<<<<<<< HEAD
+>>>>>>> FETCH_HEAD
+=======
 >>>>>>> FETCH_HEAD
 			int num = _playerList.getChildCount();
 			if(_sportType.equals("basketball")&&num<5){

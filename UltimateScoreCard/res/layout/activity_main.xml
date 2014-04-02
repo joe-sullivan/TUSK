@@ -82,9 +82,14 @@
 	        android:id="@+id/viewStatisticButton"
 	        android:layout_width="fill_parent"
 <<<<<<< HEAD
+<<<<<<< HEAD
 	        android:layout_height="wrap_content"
 	        android:background="@color/light_gray" 	        
 	        android:padding="@dimen/padding"
+=======
+	        android:layout_height="wrap_content"     
+	        android:padding="@dimen/large_padding"
+>>>>>>> FETCH_HEAD
 =======
 	        android:layout_height="wrap_content"     
 	        android:padding="@dimen/large_padding"
@@ -97,8 +102,12 @@
 	        android:id="@+id/optionButton"
 	        android:layout_width="fill_parent"
 <<<<<<< HEAD
+<<<<<<< HEAD
 	        android:layout_height="wrap_content"
 	        android:background="@color/light_gray" 	        
+=======
+	        android:layout_height="wrap_content"	        
+>>>>>>> FETCH_HEAD
 =======
 	        android:layout_height="wrap_content"	        
 >>>>>>> FETCH_HEAD

@@ -182,8 +182,13 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_GAMES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_HOCKEY_GAME_STATS);
 <<<<<<< HEAD
+<<<<<<< HEAD
         //db.execSQL("DROP TABLE IF EXISTS " + TABLE_PLAYERS);
         //db.execSQL("DROP TABLE IF EXISTS " + TABLE_TEAMS);
+=======
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PLAYERS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TEAMS);
+>>>>>>> FETCH_HEAD
 =======
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PLAYERS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TEAMS);

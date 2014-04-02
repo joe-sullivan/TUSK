@@ -623,6 +623,11 @@ public class SoccerActivity extends Activity{
 			intent = new Intent(getApplicationContext(), SoccerStatsActivity.class);			
 			_gameInfo = _gti.getGameInfo();
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+			_gameInfo.setAwayScore(_gti.getAwayScoreText());
+			_gameInfo.setHomeScore(_gti.getHomeScoreText());
+>>>>>>> FETCH_HEAD
 =======
 			_gameInfo.setAwayScore(_gti.getAwayScoreText());
 			_gameInfo.setHomeScore(_gti.getHomeScoreText());
@@ -641,6 +646,11 @@ public class SoccerActivity extends Activity{
 			intent = new Intent(getApplicationContext(), SoccerStatsActivity.class);	
 			_gameInfo = _gti.getGameInfo();
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+			_gameInfo.setAwayScore(_gti.getAwayScoreText());
+			_gameInfo.setHomeScore(_gti.getHomeScoreText());
+>>>>>>> FETCH_HEAD
 =======
 			_gameInfo.setAwayScore(_gti.getAwayScoreText());
 			_gameInfo.setHomeScore(_gti.getHomeScoreText());

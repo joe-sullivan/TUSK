@@ -1163,6 +1163,11 @@ public class BasketballActivity extends Activity{
 			intent = new Intent(getApplicationContext(), BasketballStatsActivity.class);			
 			_gameInfo = _gti.getGameInfo();
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+			_gameInfo.setAwayScore(_gti.getAwayScoreText());
+			_gameInfo.setHomeScore(_gti.getHomeScoreText());
+>>>>>>> FETCH_HEAD
 =======
 			_gameInfo.setAwayScore(_gti.getAwayScoreText());
 			_gameInfo.setHomeScore(_gti.getHomeScoreText());
@@ -1183,6 +1188,11 @@ public class BasketballActivity extends Activity{
 			intent = new Intent(getApplicationContext(), BasketballStatsActivity.class);	
 			_gameInfo = _gti.getGameInfo();
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+			_gameInfo.setAwayScore(_gti.getAwayScoreText());
+			_gameInfo.setHomeScore(_gti.getHomeScoreText());
+>>>>>>> FETCH_HEAD
 =======
 			_gameInfo.setAwayScore(_gti.getAwayScoreText());
 			_gameInfo.setHomeScore(_gti.getHomeScoreText());

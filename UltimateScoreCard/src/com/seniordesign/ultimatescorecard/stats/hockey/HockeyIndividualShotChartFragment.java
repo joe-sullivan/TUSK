@@ -43,7 +43,10 @@ public class HockeyIndividualShotChartFragment extends Fragment {
 		_gameInfo = ((HockeyIndividualStatActivity) getActivity())._gameInfo;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> FETCH_HEAD
 		TextView homeScore = (TextView)getView().findViewById(R.id.homeScoreTextView);
 		homeScore.setText(_gameInfo.getHomeScore());
 		TextView awayScore = (TextView)getView().findViewById(R.id.awayScoreTextView);
@@ -53,6 +56,9 @@ public class HockeyIndividualShotChartFragment extends Fragment {
 		TextView awayAbbr = (TextView)getView().findViewById(R.id.awayTextView);
 		awayAbbr.setText(_gameInfo.getAwayTeam().getabbv());
 		
+<<<<<<< HEAD
+>>>>>>> FETCH_HEAD
+=======
 >>>>>>> FETCH_HEAD
 		if(name.equals(team.getabbv() + " Stats")){
 			for(ShotChartCoords shot: shots){
