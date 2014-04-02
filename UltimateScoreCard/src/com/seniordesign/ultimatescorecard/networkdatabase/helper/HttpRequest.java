@@ -43,21 +43,15 @@ public class HttpRequest extends AsyncTask<HttpParameter, Void, JSONObject> {
 			
 			// check for request method
 			if(method == "POST"){
-				Log.i("NH", "NH: Beginning of Post section");
 				// request method is POST
 				// defaultHttpClient
 				DefaultHttpClient httpClient = new DefaultHttpClient();
-				Log.i("NH", "NH: Before post call");
 				HttpPost httpPost = new HttpPost(url);
 				HttpPost httpPost2 = new HttpPost();
-				Log.i("NH", "NH: Before set entity");
 				httpPost.setEntity(new UrlEncodedFormEntity(params));
-				Log.i("NH", "NH: Before response");
 				HttpResponse httpResponse = httpClient.execute(httpPost);
-				Log.i("NH", "NH: Before get entity");
 				HttpEntity httpEntity = httpResponse.getEntity();
 				is = httpEntity.getContent();
-				Log.i("NH", "NH: End of Post section");
 			}else if(method == "GET"){
 				// request method is GET
 				DefaultHttpClient httpClient = new DefaultHttpClient();

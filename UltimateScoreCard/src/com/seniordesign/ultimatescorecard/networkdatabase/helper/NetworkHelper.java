@@ -34,7 +34,7 @@ public class NetworkHelper {
 	protected static final String LOG = "DatabaseHelper";
 
 	//Table Names
-	protected static final String TABLE_GAMES = "games";
+	//protected static final String TABLE_GAMES = "games";
 	protected static final String TABLE_PLAYERS = "players";
 	protected static final String TABLE_TEAMS = "teams";
 	protected static final String TABLE_PLAY_BY_PLAY = "play_by_play";
@@ -84,6 +84,7 @@ public class NetworkHelper {
 	//URL Information
 	protected static final String dburl = "http://tusk.zapto.org/php/";
 	protected static final String url_delete = dburl + "delete_entry.php";
+	protected static final String url_update = dburl + "update_table.php";
 	
 	
 	protected static final String url_insert_pbp = dburl + "insert_play_by_play.php";
@@ -107,7 +108,12 @@ public class NetworkHelper {
 	protected static final String TAG_TEAMS = "teams";
 	
 	
+	//Tags for Update/Specific Stat Retrieval
 	protected static final String TAG_WHERE = "where";
+	protected static final String TAG_QUERY = "query";
+	protected static final String TAG_TABLE = "table";
+	protected static final String TAG_COLUMN = "column";
+	protected static final String TAG_VALUE = "value";
 	// JSON parser class
 	//JSONParser jsonParser = new JSONParser();
 
@@ -123,7 +129,7 @@ public class NetworkHelper {
 		_schema = dbschema;
 	};
 
-	private List<NameValuePair> startParams() {
+	protected List<NameValuePair> startParams() {
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair(user, _user));
 		params.add(new BasicNameValuePair(password, _password));
@@ -132,7 +138,6 @@ public class NetworkHelper {
 	}
 
 	public void createPlayByPlay(PlayByPlay pbp, long aid){
-		Log.i("NH", "NH Start of play by play");
 		List<NameValuePair> params = this.startParams();
 
 		//add data from pbp to parameter list
