@@ -43,12 +43,13 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 public class ViewStatsActivity extends Activity{
-	private Button _sportButton, _teamButton, _gameButton, _searchButton, _sendButton;
+	private Button _sportButton, _teamButton, _playerButton, _gameButton, _searchButton, _sendButton;
 	private ArrayList<Teams> _teams = new ArrayList<Teams>();
 	private ArrayList<Games> _games = new ArrayList<Games>();
+	private ArrayList<Players> _players= new ArrayList<Players>();
 	private DatabaseHelper _db;
 	private String _sport;
-	private Teams _team;
+	private Teams _team;	
 	private Games _game;
 	private Teams _home, _away;
 	private String fileName;
@@ -61,6 +62,8 @@ public class ViewStatsActivity extends Activity{
 		_sportButton.setOnClickListener(selectSportListener);
 		_teamButton = (Button)findViewById(R.id.choose_team_button);
 		_teamButton.setOnClickListener(selectTeamListener);
+		_playerButton = (Button)findViewById(R.id.choose_player_button);
+		_playerButton.setOnClickListener(selectPlayerListener);
 		_gameButton = (Button)findViewById(R.id.choose_game_button);
 		_gameButton.setOnClickListener(selectGameListener);
 		_searchButton = (Button)findViewById(R.id.search_button);
@@ -137,6 +140,65 @@ public class ViewStatsActivity extends Activity{
 					_teamButton.setText(arrayAdapter.getItem(which));
 					buttonEnabler(true, true, false);
 					resetButtonText(false, true);
+					dialog.dismiss();
+				}
+			});
+			builder.show();
+		}		
+	};
+	
+	private OnClickListener selectPlayerListener = new OnClickListener(){
+		@Override
+		public void onClick(View view) {
+			Builder builder = new Builder(ViewStatsActivity.this);
+			builder.setTitle("Select Game");
+			final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String> (ViewStatsActivity.this, android.R.layout.select_dialog_singlechoice);
+			
+			String team = _teamButton.getText().toString();
+			for(Teams t: _teams){
+				if(t.gettname().equals(team)){
+					_team = t;
+					break;
+				}
+			}
+			//databases
+			if(_sport.equals("Basketball")){
+				_players = (ArrayList<Players>) (((BasketballDatabaseHelper) _db).getPlayersTeam(_team.gettid()));
+			}
+			else if(_sport.equals("Football")){
+				_players = (ArrayList<Players>) (((FootballDatabaseHelper) _db).getPlayersTeam(_team.gettid()));
+			}
+			else if(_sport.equals("Soccer")){
+				_players = (ArrayList<Players>) (((SoccerDatabaseHelper) _db).getPlayersTeam(_team.gettid()));
+			}
+			else{ // _sport.equals("Hockey")
+				_players = (ArrayList<Players>) (((HockeyDatabaseHelper) _db).getPlayersTeam(_team.gettid()));
+			}
+			arrayAdapter.add("None");
+			for(Players player : _players){
+				arrayAdapter.add(player.getpname());
+			}			
+			builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+			});			
+			builder.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					if(arrayAdapter.getItem(which).equals("None")){
+						_playerButton.setText(getResources().getString(R.string.all_players));
+					}
+					else{
+						_playerButton.setText(arrayAdapter.getItem(which));
+					}
+					if(_gameButton.getText().equals(getResources().getString(R.string.choose_game))){
+						buttonEnabler(true, true, false);			//game is not chosen, so can't proceed
+					}
+					else{
+						buttonEnabler(true, true, true);
+					}
 					dialog.dismiss();
 				}
 			});
@@ -549,6 +611,7 @@ public class ViewStatsActivity extends Activity{
 	
 	private void buttonEnabler(boolean team, boolean game, boolean search){
 		_teamButton.setEnabled(team);
+		_playerButton.setEnabled(game);
 		_gameButton.setEnabled(game);
 		_searchButton.setEnabled(search);
 		_sendButton.setEnabled(search);
@@ -559,6 +622,7 @@ public class ViewStatsActivity extends Activity{
 			_teamButton.setText(getResources().getString(R.string.choose_team));
 		}
 		if(game){
+			_playerButton.setText(getResources().getString(R.string.all_players));
 			_gameButton.setText(getResources().getString(R.string.choose_game));
 		}
 	}

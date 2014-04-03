@@ -19,7 +19,7 @@
     <string name="soccer_button">Soccer</string>
 	<string name="view_statistic_button">View Statistics</string>
 	<string name="options_button">Options</string>
-	<string name="live_tracker_button">Live Tracker</string>
+	<string name="login_button">Login</string>
     
 	<!-- Text for Team Selection Screen -->
 	<string name="home_team_select_title">Choose the Home Team:</string>
@@ -69,8 +69,10 @@
     <string name="play_by_play_view">See Play-by-Play</string>
     <string name="play_by_play_title">Play-By-Play</string>
     <string name="shot_chart_title">Shot Chart</string>
-    <string name="choose_sport">Choose Sport</string>      
+    <string name="choose_sport">Choose Sport</string>    
     <string name="choose_team">Choose Team</string>
+    <string name="choose_player">Choose Player</string>
+    <string name="all_players">All Players</string>
     <string name="choose_game">Choose Game</string>
     <string name="search_button">Search</string>
     <string name="send_game_button">Email Boxscore</string>
@@ -93,5 +95,9 @@
     <string name="period_length">Length of Each Period</string>
     <string name="save">Save</string>
     
+    <string name="username_hint">Username</string>
+    <string name="password_hint">Password</string>
+    <string name="p_name_hint">Player Name</string>
+    <string name="p_num_hint">Player Number</string>
     
 </resources>

@@ -35,7 +35,8 @@ public class CreateTeamActivity extends Activity{
 	private DatabaseHelper _db;
 	private long t_id;
 	private Teams _curTeam;
-	private boolean editing = false;
+	private boolean _editing = false;
+	private boolean _loggedIn;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,7 @@ public class CreateTeamActivity extends Activity{
 		
 		String teamEditor = getIntent().getStringExtra(StaticFinalVars.CREATE_EDIT);
 		_sportType = getIntent().getStringExtra(StaticFinalVars.SPORT_TYPE);
+		_loggedIn = getIntent().getBooleanExtra(StaticFinalVars.LOGIN_STATUS, false);
 		
 		//databases
 		if(_sportType.equals("basketball")){
@@ -67,7 +69,7 @@ public class CreateTeamActivity extends Activity{
 		
 
 		if(!teamEditor.equals("")){
-			editing = true;
+			_editing = true;
 			
 			//Pull info from database and add to scroll view
 			ArrayList<Teams> teams = (ArrayList<Teams>) _db.getAllTeams();
@@ -142,7 +144,7 @@ public class CreateTeamActivity extends Activity{
 			
 			long t_id = -1;
 			
-			if(!editing){
+			if(!_editing){
 				t_id = _db.createTeams(new Teams(teamName, teamAbbr, coachName, _sportType));
 			}
 			
@@ -150,7 +152,7 @@ public class CreateTeamActivity extends Activity{
 				String playerName = ((TextView)((LinearLayout)_playerList.getChildAt(i)).getChildAt(1)).getText().toString();
 				int playerNumber = Integer.parseInt(((TextView)((LinearLayout)_playerList.getChildAt(i)).getChildAt(0)).getText().toString());
 			
-				if(!editing){
+				if(!_editing){
 					if(_sportType.equals("basketball")){
 						((BasketballDatabaseHelper) _db).createPlayers(new BasketballPlayer(t_id, playerName, playerNumber));
 					}
@@ -167,7 +169,7 @@ public class CreateTeamActivity extends Activity{
 				}
 			}
 			
-			if(editing){
+			if(_editing){
 				ArrayList<Teams> teams = (ArrayList<Teams>) _db.getAllTeams();
 				Teams cur = null;
 				for(Teams team: teams){
@@ -180,7 +182,7 @@ public class CreateTeamActivity extends Activity{
 				t_id = cur.gettid();
 				_db.updateTeam(new Teams(t_id, teamName,teamAbbr,coachName,_sportType));
 			}
-			editing = false;
+			_editing = false;
 
 			int num = _playerList.getChildCount();
 			if(_sportType.equals("basketball")&&num<5){

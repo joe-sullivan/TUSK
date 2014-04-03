@@ -9,7 +9,7 @@
         android:id="@+id/playerNameEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Player Name" 
+        android:hint="@string/p_name_hint" 
         android:imeOptions="actionDone">
 
         <requestFocus />
@@ -19,7 +19,7 @@
         android:id="@+id/playerNumberEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Player Number"
+        android:hint="@string/p_num_hint"
         android:inputType="number" 
         android:imeOptions="actionDone"/>
 

@@ -1,6 +1,8 @@
 package com.seniordesign.ultimatescorecard;
 
 
+import java.util.ArrayList;
+
 import com.seniordesign.ultimatescorecard.data.basketball.BasketballPlayer;
 import com.seniordesign.ultimatescorecard.data.football.FootballPlayer;
 import com.seniordesign.ultimatescorecard.data.hockey.HockeyPlayer;
@@ -24,16 +26,20 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 //this class refers to the main (opening screen)
 public class MainActivity extends Activity{
 	public Button _basketballButton, _footballButton, _hockeyButton, _soccerButton; 						//these are the sport selection buttons
-	public Button _viewStatsButton, _optionsButton, _liveStatButtons; 										//these are set up for the other buttons
+	public Button _viewStatsButton, _optionsButton, _loginButton; 											//these are set up for the other buttons
 	//databases
 	public BasketballDatabaseHelper _basketball_db;
 	public FootballDatabaseHelper _football_db;
@@ -41,7 +47,8 @@ public class MainActivity extends Activity{
 	public HockeyDatabaseHelper _hockey_db;
 
 	public Context context = this;
-
+	private boolean _loggedIn = false;
+	
 	//what the program should do when screen is created
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +74,11 @@ public class MainActivity extends Activity{
 		_soccerButton.setBackgroundResource(R.drawable.view_style_plain_short);
 		_soccerButton.setOnClickListener(soccerButtonListener);												//setting a click listener for the button
 		_soccerButton.setOnTouchListener(shortButtonTouchListener);
+		
+		_loginButton = (Button) findViewById(R.id.loginButton);
+		_loginButton.setBackgroundResource(R.drawable.view_style_plain_long);
+		_loginButton.setOnClickListener(loginListener);
+		_loginButton.setOnTouchListener(longButtonTouchListener);
 		
 		_viewStatsButton = (Button) findViewById(R.id.viewStatisticButton);
 		_viewStatsButton.setBackgroundResource(R.drawable.view_style_plain_long);
@@ -796,6 +808,7 @@ public class MainActivity extends Activity{
 		public void onClick(View view) {
 			Intent intent = new Intent(getApplicationContext(), ChooseTeamActivity.class);					//create new intent (you have intentions to do something)
 			intent.putExtra(StaticFinalVars.SPORT_TYPE, "basketball");
+			intent.putExtra(StaticFinalVars.LOGIN_STATUS, _loggedIn);
 			startActivity(intent);																			//execute the intent
 		}
 	};
@@ -806,6 +819,7 @@ public class MainActivity extends Activity{
 		public void onClick(View view) {
 			Intent intent = new Intent(getApplicationContext(), ChooseTeamActivity.class);					//create new intent (you have intentions to do something)
 			intent.putExtra(StaticFinalVars.SPORT_TYPE, "football");
+			intent.putExtra(StaticFinalVars.LOGIN_STATUS, _loggedIn);
 			startActivity(intent);	
 		}
 	};
@@ -816,6 +830,7 @@ public class MainActivity extends Activity{
 		public void onClick(View view) {
 			Intent intent = new Intent(getApplicationContext(), ChooseTeamActivity.class);					//create new intent (you have intentions to do something)	
 			intent.putExtra(StaticFinalVars.SPORT_TYPE, "hockey");
+			intent.putExtra(StaticFinalVars.LOGIN_STATUS, _loggedIn);
 			startActivity(intent);														
 		}
 	};
@@ -826,6 +841,7 @@ public class MainActivity extends Activity{
 		public void onClick(View view) {
 			Intent intent = new Intent(getApplicationContext(), ChooseTeamActivity.class);					//create new intent (you have intentions to do something)
 			intent.putExtra(StaticFinalVars.SPORT_TYPE, "soccer");
+			intent.putExtra(StaticFinalVars.LOGIN_STATUS, _loggedIn);
 			startActivity(intent);																
 		}
 	};
@@ -880,7 +896,7 @@ public class MainActivity extends Activity{
 			alert.setNegativeButton("No", new DialogInterface.OnClickListener(){							//give the message box a NO button
 				@Override
 				public void onClick(DialogInterface dialog, int which) {	
-					//do nothing, just close message box					
+					dialog.dismiss();				
 				}
 			});
 			alert.show();																					//make the alert message box show up
@@ -891,13 +907,95 @@ public class MainActivity extends Activity{
 		}
 	}
 	
-	public OnClickListener viewStatsListener = new OnClickListener(){
+	public OnClickListener loginListener = new OnClickListener(){
+		@Override
+		public void onClick(View view) {
+			Builder loginDialog = new Builder(MainActivity.this);
+			loginDialog.setTitle("Login");
+			
+			LayoutInflater inflater = getLayoutInflater();
+			final View layout = inflater.inflate(R.layout.dialog_login, null);
+			loginDialog.setView(layout);
+			
+			loginDialog.setPositiveButton("Enter", new DialogInterface.OnClickListener(){	
+				@Override
+				public void onClick(DialogInterface dialog, int arg1) {
+					String username = ((EditText)layout.findViewById(R.id.usernameEditText)).getText().toString();
+					String password = ((EditText)layout.findViewById(R.id.passwordEditText)).getText().toString();
+					_loggedIn = accountAuthenication(username, password);
+					dialog.dismiss();
+				}
+			});
+			loginDialog.setNegativeButton("Create Account", new DialogInterface.OnClickListener(){		
+				@Override
+				public void onClick(DialogInterface dialog, int arg1) {		
+					String username = ((EditText)layout.findViewById(R.id.usernameEditText)).getText().toString();
+					String password = ((EditText)layout.findViewById(R.id.passwordEditText)).getText().toString();
+					confirmPassword(username, password);
+					dialog.dismiss();
+				}
+			});
+			loginDialog.show();			
+		}
+	};
+	
+	private void confirmPassword(String username, final String password){
+		Builder confirmDialog = new Builder(this);
+		confirmDialog.setTitle("Re-enter Password:");
+		
+		final EditText editText = new EditText(this);
+		editText.setHint("Re-enter Password");
+		confirmDialog.setView(editText);
+		
+		confirmDialog.setNeutralButton("Ok", new DialogInterface.OnClickListener(){	
 			@Override
-			public void onClick(View view) {
-				Intent intent = new Intent(getApplicationContext(), ViewStatsActivity.class);
-				startActivity(intent);																
+			public void onClick(DialogInterface dialog, int arg1) {
+				if(password.equals(editText.getText().toString())){
+					accountCreateSuccess();
+					dialog.dismiss();
+				}
+				else{
+					accountCreateFailed();
+					dialog.dismiss();
+				}
 			}
-		};
+		});	
+		confirmDialog.show();
+	}
+	
+	private void accountCreateSuccess(){
+		Builder successDialog = new Builder(this);
+		successDialog.setTitle("Success");
+		successDialog.setMessage("Account creation successful.");
+		successDialog.setNeutralButton("Ok", new DialogInterface.OnClickListener(){	
+			@Override
+			public void onClick(DialogInterface dialog, int arg1) {
+				dialog.dismiss();
+			}
+		});	
+		successDialog.show();
+	}
+	
+	private void accountCreateFailed(){
+		Builder failedDialog = new Builder(this);
+		failedDialog.setTitle("Failed");
+		failedDialog.setMessage("The two passwords do not match. Please re-try account creation.");
+		failedDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener(){	
+			@Override
+			public void onClick(DialogInterface dialog, int arg1) {
+				dialog.dismiss();
+			}
+		});
+		failedDialog.show();
+	}
+	
+	public OnClickListener viewStatsListener = new OnClickListener(){
+		@Override
+		public void onClick(View view) {
+			Intent intent = new Intent(getApplicationContext(), ViewStatsActivity.class);
+			startActivity(intent);																
+		}
+	};
 		
 	public OnClickListener optionListener = new OnClickListener(){
 		@Override
@@ -907,9 +1005,10 @@ public class MainActivity extends Activity{
 		}
 	};
 	
-	@Override
-	public void onBackPressed() {
-		super.onBackPressed();
-	}
-	
+	private boolean accountAuthenication(String username, String password){
+		//modify this to authenicate the username, password combination
+		//authenication success, then return true
+		//authenication fail, then return false
+		return false;
+	}	
 }

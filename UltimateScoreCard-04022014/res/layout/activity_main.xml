@@ -79,6 +79,15 @@
     </TableRow>
     
 	<Button
+	        android:id="@+id/loginButton"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"     
+	        android:padding="@dimen/large_padding"
+	       	android:text="@string/login_button" 
+	       	android:gravity="center"
+	       	android:layout_above="@+id/viewStatisticButton"/>
+	
+	<Button
 	        android:id="@+id/viewStatisticButton"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"     
@@ -96,19 +105,5 @@
 	       	android:gravity="center"
 	       	android:layout_alignParentBottom="true"
 	       	/>
-	 <!-- If Live tracker is ever implemented       	
-	       	android:layout_above="@+id/liveTrackerButton"/>
-   
     
- 
-    <Button
-	        android:id="@+id/liveTrackerButton"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:padding="@dimen/padding"
-	       	android:text="@string/live_tracker_button" 
-	       	android:gravity="center"
-	       	android:layout_alignParentBottom="true"/>
-	       	
-	 -->	
 </RelativeLayout>

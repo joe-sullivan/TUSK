@@ -43,6 +43,13 @@
        	android:text="@string/space"
         android:textAppearance="?android:attr/textAppearanceLarge" />
     
+     <Button
+        android:id="@+id/choose_player_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/all_players"
+        android:enabled="false" />
+    
     <Button
         android:id="@+id/choose_game_button"
         android:layout_width="match_parent"
