@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <!-- What other thing can be contained in a file named colors.xml
+    Color values are inputted as hexadecimal values 
+  	Use hex-color picker to find the color you want to add -->
+  	
+    <color name="red">#FF0000</color>
+    <color name="orange">#ED5B1C</color>
+    <color name="yellow">#FFFB00</color>
+    <color name="green">#007A10</color>
+    <color name="blue">#0011FF</color>
+    <color name="purple">#9000FF</color>
+    <color name="black">#000000</color>
+    <color name="brown">#663605</color>
+    <color name="gray">#A2A2A3</color>
+    <color name="white">#FFFFFF</color>
+    
+    <color name="robin_egg_blue">#00CCCC</color>
+    <color name="light_gray">#D3D3D3</color>
+    
+</resources>

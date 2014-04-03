@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background" >
+	
+    <LinearLayout
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/titleImageView"
+            android:contentDescription="@string/main_title_text"
+            android:padding="@dimen/padding"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:src="@drawable/title" />
+    </LinearLayout>
+      
+    <TableRow
+        android:id="@+id/topButtonsRow"
+        android:layout_above="@+id/bottomButtonsRow"
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content" >
+        <Button
+	        android:id="@+id/basketballButton"
+	        android:layout_width="fill_parent"
+	        android:layout_height="match_parent"
+	        android:layout_weight="1"
+	        android:background="@color/light_gray" 
+	        android:padding="@dimen/padding"
+	        android:drawableTop="@drawable/basketball"
+	        android:text="@string/basketball_button" 
+	        android:textColor="@color/black"
+	        android:textStyle="bold"/>
+    
+   		<Button
+	        android:id="@+id/hockeyButton"
+	        android:layout_width="fill_parent"
+	        android:layout_height="match_parent"
+	        android:layout_weight="1"
+	        android:background="@color/light_gray" 
+	        android:padding="@dimen/padding"
+	        android:drawableTop="@drawable/hockey"
+	        android:text="@string/hockey_button" 
+	        android:textColor="@color/black"
+	        android:textStyle="bold"/>
+    </TableRow>
+    
+	<TableRow
+	    android:id="@+id/bottomButtonsRow"
+	    android:layout_centerVertical="true"
+	    android:layout_width="match_parent"
+    	android:layout_height="wrap_content" >  
+	    <Button
+	        android:id="@+id/footballButton"
+	        android:layout_width="fill_parent"
+	        android:layout_height="match_parent"
+	        android:layout_weight="1"
+	        android:background="@color/light_gray" 	        
+	        android:padding="@dimen/padding"
+	        android:drawableTop="@drawable/football"
+	        android:text="@string/football_button" 
+	        android:textColor="@color/black"
+	        android:textStyle="bold"/>
+	    
+	    <Button
+	        android:id="@+id/soccerButton"
+	        android:layout_width="fill_parent"
+	        android:layout_height="match_parent"
+	        android:layout_weight="1"
+	        android:background="@color/light_gray" 	        
+	        android:padding="@dimen/padding"
+	        android:drawableTop="@drawable/soccerball"
+	        android:text="@string/soccer_button" 
+	        android:textColor="@color/black"
+	        android:textStyle="bold"/>
+    </TableRow>
+    
+	<Button
+	        android:id="@+id/viewStatisticButton"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"     
+	        android:padding="@dimen/large_padding"
+	       	android:text="@string/view_statistic_button" 
+	       	android:gravity="center"
+	       	android:layout_above="@+id/optionButton"/>
+		
+    <Button
+	        android:id="@+id/optionButton"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"	        
+	        android:padding="@dimen/padding"
+	       	android:text="@string/options_button" 	       	
+	       	android:gravity="center"
+	       	android:layout_alignParentBottom="true"
+	       	/>
+	 <!-- If Live tracker is ever implemented       	
+	       	android:layout_above="@+id/liveTrackerButton"/>
+   
+    
+ 
+    <Button
+	        android:id="@+id/liveTrackerButton"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:padding="@dimen/padding"
+	       	android:text="@string/live_tracker_button" 
+	       	android:gravity="center"
+	       	android:layout_alignParentBottom="true"/>
+	       	
+	 -->	
+</RelativeLayout>
