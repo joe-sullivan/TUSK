@@ -134,7 +134,7 @@ public class BasketballNetworkHelper extends NetworkHelper {
 			List<NameValuePair> params = this.startParams();
 
 			
-			params.add(new BasicNameValuePair(KEY_HOME_ID, Long.toString(g_id)));
+			params.add(new BasicNameValuePair(KEY_G_ID, Long.toString(g_id)));
 	        params.add(new BasicNameValuePair(KEY_HOME_ID, Long.toString(game.gethomeid())));
 	        params.add(new BasicNameValuePair(KEY_AWAY_ID, Long.toString(game.getawayid())));
 	        params.add(new BasicNameValuePair(KEY_DATE, game.getDate()));
@@ -635,7 +635,7 @@ public class BasketballNetworkHelper extends NetworkHelper {
 			    
 			    String w = KEY_P_ID + " = " + p_id + " AND " + KEY_G_ID + " = " + g_id;
 				List<NameValuePair> params = this.startParams();
-				params.add(new BasicNameValuePair(TAG_TABLE, TABLE_GAMES));
+				params.add(new BasicNameValuePair(TAG_TABLE, TABLE_GAME_STATS));
 				params.add(new BasicNameValuePair(TAG_COLUMN, stat));
 				params.add(new BasicNameValuePair(TAG_VALUE, Integer.toString(new_value)));
 				params.add(new BasicNameValuePair(TAG_WHERE, w));
