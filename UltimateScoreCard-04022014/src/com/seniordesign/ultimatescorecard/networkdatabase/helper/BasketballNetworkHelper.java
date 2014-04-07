@@ -38,7 +38,7 @@ public class BasketballNetworkHelper extends NetworkHelper {
     private static final String DATABASE_NAME = "BasketballStats";
 	
     //Table Names
-    private static final String TABLE_BASKETBALL_GAME_STATS = "basketball_game_stats";
+    private static final String TABLE_BASKETBALL_GAME_STATS = "BASKETBALL_GAME_STATS";
     private static final String TABLE_GAMES = "BASKETBALL_GAMES";
     private static final String TABLE_GAME_STATS = "BASKETBALL_GAME_STATS";
 
@@ -380,11 +380,11 @@ public class BasketballNetworkHelper extends NetworkHelper {
 		public int getTeamGameStat(long g_id, String stat) throws NumberFormatException, JSONException, InterruptedException, ExecutionException {
 		 
 		    //create query to select game
-		    String query = "SELECT " + stat + " FROM " + _schema + TABLE_GAMES + 
+		    String query = "SELECT " + stat + " FROM " + _schema + "." + TABLE_GAMES + 
 		    	" WHERE " + KEY_G_ID + " = " + g_id; 
 			List<NameValuePair> params = this.startParams();
 			params.add(new BasicNameValuePair(TAG_QUERY, query));
-			
+			params.add(new BasicNameValuePair(TAG_STAT, stat));
 		
 			
 			HttpParameter parameter = new HttpParameter(url_get_stat, "POST", params);
@@ -507,15 +507,13 @@ public class BasketballNetworkHelper extends NetworkHelper {
 			//get single game stat for single player
 			public int getPlayerGameStat(long g_id, long p_id, String stat) throws JSONException, InterruptedException, ExecutionException {
 				
-				
-				
 			    //create query to select game
-			    String query = "SELECT " + stat + " FROM " + TABLE_BASKETBALL_GAME_STATS + 
+			    String query = "SELECT " + stat + " FROM " + _schema + "." + TABLE_BASKETBALL_GAME_STATS + 
 				    	" WHERE " + KEY_G_ID + " = " + g_id + 
 				    	" AND " + KEY_P_ID + " = " + p_id;
 				List<NameValuePair> params = this.startParams();
 				params.add(new BasicNameValuePair(TAG_QUERY, query));
-				
+				params.add(new BasicNameValuePair(TAG_STAT, stat));
 			
 				
 				HttpParameter parameter = new HttpParameter(url_get_stat, "POST", params);

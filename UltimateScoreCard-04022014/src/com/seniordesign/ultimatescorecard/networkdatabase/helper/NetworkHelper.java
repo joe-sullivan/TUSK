@@ -91,9 +91,9 @@ public class NetworkHelper {
 	protected static final String url_get_pbp = dburl + "get_play_by_play.php";
 	protected static final String url_get_players = dburl + "get_players.php";
 	protected static final String url_update_players = dburl + "update_players.php";
-	protected static final String url_create_shot = dburl + "create_shot_chart_coords.php";
+	protected static final String url_create_shot = dburl + "insert_shot_chart_coords.php";
 	protected static final String url_get_shot = dburl + "get_shot_chart_coords.php";
-	protected static final String url_create_teams = dburl + "create_teams.php";
+	protected static final String url_create_teams = dburl + "insert_teams.php";
 	protected static final String url_get_teams = dburl + "get_teams.php";
 	protected static final String url_update_teams = dburl + "update_teams.php";
 	
@@ -167,28 +167,34 @@ public class NetworkHelper {
 
 	public List<PlayByPlay> getPlayByPlayGame(long g_id) throws JSONException, InterruptedException, ExecutionException{
 		//SQLiteDatabase db = this.getReadableDatabase();
+		Log.i("NHT:", "Beginning!");
 		String w = "where g_id = " + Long.toString(g_id);
 		List<PlayByPlay> pbps = new ArrayList<PlayByPlay>();
 		List<NameValuePair> params = this.startParams();
 		params.add(new BasicNameValuePair(TAG_WHERE, w));
 		
-	
-		
 		HttpParameter parameter = new HttpParameter(url_get_pbp, "POST", params);
+		
+		Log.i("NHT:", "Before Async");
+		
 		AsyncTask<HttpParameter, Void, JSONObject> result = new HttpRequest().execute(parameter);
 		JSONObject json = result.get();
 		JSONArray plays = json.getJSONArray(TAG_PBP);
+		Log.i("NHT:", plays.toString());
+		
+		Log.i("NHT:", "After Async");
 		
 		for (int i = 0; i < plays.length(); i++) {
 			JSONObject c = plays.getJSONObject(i);
 			PlayByPlay pbp = new PlayByPlay();
+			
 			pbp.setaid(Long.parseLong(c.getString(KEY_A_ID)));
 			pbp.setgid(Long.parseLong(c.getString(KEY_G_ID)));
 			pbp.setaction(c.getString(KEY_ACTION));
 			pbp.settime(c.getString(KEY_TIME));
 			pbp.setperiod(c.getString(KEY_PERIOD));
-			pbp.sethomescore(Integer.getInteger(c.getString(KEY_HOME_SCORE)));
-			pbp.setawayscore(Integer.getInteger(c.getString(KEY_AWAY_SCORE)));
+			pbp.sethomescore(Integer.parseInt(c.getString(KEY_HOME_SCORE)));
+			pbp.setawayscore(Integer.parseInt(c.getString(KEY_AWAY_SCORE)));
 			// adding to playbyplay list
 			pbps.add(pbp);	
 		}
@@ -268,6 +274,7 @@ public class NetworkHelper {
 
 		//add data from pbp to parameter list
 		//TODO Decide how to handle a_id
+		params.add(new BasicNameValuePair(KEY_P_ID, Long.toString(player.getpid())));
 		params.add(new BasicNameValuePair(KEY_T_ID, Long.toString(player.gettid())));
 		params.add(new BasicNameValuePair(KEY_P_NAME, player.getpname()));
 		params.add(new BasicNameValuePair(KEY_P_NUM, Integer.toString(player.getpnum())));
@@ -330,8 +337,9 @@ public class NetworkHelper {
 	// -------------------SHOT_CHART_COORDS table methods ------------------ //
 
 	//create a row of shot chart coordinates
-	public void createShot(ShotChartCoords shot){
+	public void createShot(ShotChartCoords shot, Long shot_id){
 		List<NameValuePair> params = this.startParams();
+		params.add(new BasicNameValuePair(KEY_SHOT_ID, Long.toString(shot_id)));
 		params.add(new BasicNameValuePair(KEY_G_ID, Long.toString(shot.getgid())));
 		params.add(new BasicNameValuePair(KEY_P_ID, Long.toString(shot.getpid())));
 		params.add(new BasicNameValuePair(KEY_T_ID, Long.toString(shot.gettid())));

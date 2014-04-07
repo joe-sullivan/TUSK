@@ -362,11 +362,11 @@ public class HockeyNetworkHelper extends NetworkHelper{
 	//get single game stat for team
 	public int getTeamGameStat(long g_id, String stat) throws InterruptedException, ExecutionException, JSONException {
 		//create query to select game
-		String query = "SELECT " + stat + " FROM " + _schema + TABLE_GAMES + 
+		String query = "SELECT " + stat + " FROM " + _schema + "." + TABLE_GAMES + 
 				" WHERE " + KEY_G_ID + " = " + g_id; 
 		List<NameValuePair> params = this.startParams();
 		params.add(new BasicNameValuePair(TAG_QUERY, query));
-
+		params.add(new BasicNameValuePair(TAG_STAT, stat));
 
 
 		HttpParameter parameter = new HttpParameter(url_get_stat, "POST", params);
@@ -472,12 +472,12 @@ public class HockeyNetworkHelper extends NetworkHelper{
 	//get single game stats for single player
 	public int getPlayerGameStat(long g_id, long p_id, String stat) throws InterruptedException, ExecutionException, JSONException {
 		 //create query to select game
-	    String query = "SELECT " + stat + " FROM " + TABLE_HOCKEY_GAME_STATS + 
+	    String query = "SELECT " + stat + " FROM " + _schema + "." + TABLE_HOCKEY_GAME_STATS + 
 		    	" WHERE " + KEY_G_ID + " = " + g_id + 
 		    	" AND " + KEY_P_ID + " = " + p_id;
 		List<NameValuePair> params = this.startParams();
 		params.add(new BasicNameValuePair(TAG_QUERY, query));
-		
+		params.add(new BasicNameValuePair(TAG_STAT, stat));
 	
 		
 		HttpParameter parameter = new HttpParameter(url_get_stat, "POST", params);
