@@ -658,7 +658,7 @@ public class HockeyNetworkHelper extends NetworkHelper{
 	    params.add(new BasicNameValuePair(KEY_P_NUM, Integer.toString(player.getpnum())));
 		 
 		
-		HttpParameter parameter = new HttpParameter(url_insert_game,"POST", params);
+		HttpParameter parameter = new HttpParameter(url_insert_player,"POST", params);
 		AsyncTask<HttpParameter, Void, JSONObject> result = new HttpRequest().execute(parameter);
 	}
 

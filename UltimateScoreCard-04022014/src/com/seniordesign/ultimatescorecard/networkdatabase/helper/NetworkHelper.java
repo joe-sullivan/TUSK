@@ -96,6 +96,7 @@ public class NetworkHelper {
 	protected static final String url_create_teams = dburl + "insert_teams.php";
 	protected static final String url_get_teams = dburl + "get_teams.php";
 	protected static final String url_update_teams = dburl + "update_teams.php";
+	protected static final String url_insert_player = dburl + "insert_player.php";
 	
 	//private static final String TAG_SUCCESS = "success";
 
