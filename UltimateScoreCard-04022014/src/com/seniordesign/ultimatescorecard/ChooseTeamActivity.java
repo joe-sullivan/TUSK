@@ -37,20 +37,19 @@ import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-//in sync with activity_choose_team.xml
-public class ChooseTeamActivity extends Activity{
-	//LinearLayout _listOfTeams;																			//refers to the linear layout where we add the team names
-	Button _addEditTeam, _deleteButton;																	//this is where we can store some information
+// in sync with activity_choose_team.xml
+public class ChooseTeamActivity extends Activity{													
+	Button _addEditTeam, _deleteButton;											// this is where we can store some information
 	private boolean _selectHomeTeam = false;
-	private boolean _selectAwayTeam = false;															//false = select Home team, true = select Away team
-	private boolean _setDelete = false;																	//false = we can delete a team, true = we can't delete a team
-	private Teams[] _teams = new Teams[2];																//Array of two Teams, used for passing teams to next activity
+	private boolean _selectAwayTeam = false;									// false = select Home team, true = select Away team
+	private boolean _setDelete = false;										    // false = we can delete a team, true = we can't delete a team
+	private Teams[] _teams = new Teams[2];										// Array of two Teams, used for passing teams to next activity
 	private TextView _teamSelectTitle;
 	private String _sportType;
 	//databases
 	public DatabaseHelper _db;
-	/////////////////////////////
 	public ArrayList<Teams> teamList = null;
+	//expandable list views
 	public String _childHome;
 	public String _childAway;
 	ExpandableListAdapter listAdapterHome;
@@ -104,7 +103,6 @@ public class ChooseTeamActivity extends Activity{
 		}
 		
 		_teamSelectTitle = (TextView) findViewById(R.id.team_selection_title);
-		//_listOfTeams = (LinearLayout) findViewById (R.id.teamListLayout);
 		
 		// get the expandable list view
         ex_ListViewHome = (ExpandableListView) findViewById(R.id.expListViewHome);
@@ -112,10 +110,7 @@ public class ChooseTeamActivity extends Activity{
         
         // preparing list data
         prepareListData();
-        
-		// load teams from database (maybe put it catch for empty database?
-		//loadTeams();
-		
+        		
 		// expListview Group expanded listener
         ex_ListViewHome.setOnGroupExpandListener(new OnGroupExpandListener() {
             public void onGroupExpand(int groupPosition) {
@@ -155,17 +150,17 @@ public class ChooseTeamActivity extends Activity{
                               */
         		_childHome = listDataChildHome.get(listDataHeaderHome.get(groupPositionA)).get(childPositionA);
         		teamList = (ArrayList<Teams>) _db.getAllTeams();
-        		for(Teams t: teamList){
+        		for(Teams t: teamList){								// get database 
 					if(t.gettname().equals(_childHome)){
-						_teams[0] = t; // set Home team
+						_teams[0] = t; 								// set Home team
 					}
                 }	
-        		if(teamList.size() < 2){
+        		if(teamList.size() < 2){							// if list of teams is less than 2 show message
         			Toast.makeText(getApplicationContext(), "Create Another Team", Toast.LENGTH_SHORT).show();
         			prepareListData();
 					return false;
         		}
-                if(_setDelete){											
+                if(_setDelete){										// if set delete is true	
 					Teams curTeam = null;
 					for(Teams t: teamList){
 						if(t.gettname().equals(_childHome)){
@@ -173,9 +168,9 @@ public class ChooseTeamActivity extends Activity{
 							break;
 						}
 					}
-					_db.deleteTeam(curTeam.gettid());					
+					_db.deleteTeam(curTeam.gettid());				// delete from database and refresh 		
 					_setDelete = false;
-					_deleteButton.setEnabled(true);
+					_deleteButton.setEnabled(true);	
 					_teamSelectTitle.setText(getResources().getString(R.string.home_team_select_title));
 					prepareListData();
 					return false;
@@ -274,7 +269,7 @@ public class ChooseTeamActivity extends Activity{
             }
         });
 	}	
-	
+	// change the Home team expandable list 
 	public void changeHomeListData(String child) {
         listDataHeaderHome = new ArrayList<String>();
         listDataChildHome = new HashMap<String, List<String>>();
@@ -291,6 +286,7 @@ public class ChooseTeamActivity extends Activity{
         listAdapterHome = new ExpandableListAdapter(this, listDataHeaderHome, listDataChildHome);
         ex_ListViewHome.setAdapter(listAdapterHome);
     }
+	// change the Away team expandable list 
 	public void changeAwayListData(String child) {
         listDataHeaderAway = new ArrayList<String>();
         listDataChildAway = new HashMap<String, List<String>>();
@@ -307,6 +303,7 @@ public class ChooseTeamActivity extends Activity{
         listAdapterAway = new ExpandableListAdapter(this, listDataHeaderAway, listDataChildAway);
         ex_ListViewAway.setAdapter(listAdapterAway);
     }
+	// initialize expandable lists Home and Away teams
 	public void prepareListData() {
         listDataHeaderHome = new ArrayList<String>();
         listDataHeaderAway = new ArrayList<String>();
@@ -347,29 +344,12 @@ public class ChooseTeamActivity extends Activity{
 		_teams[0] = null;																				//empty array of team names to be sent along
 		_teams[1] = null;
 		_deleteButton.setEnabled(true);																	//reset the delete button
-		/*for(int i=0; i < _listOfTeams.getChildCount(); i++){											//refresh all items in the linear layout
-			TextView newItem = ((TextView)_listOfTeams.getChildAt(i));	
-			newItem.setBackgroundResource(R.drawable.view_style_plain_long);
-			newItem.setTextColor(getResources().getColor(R.color.black));
-			_addEditTeam.setText(getResources().getString(R.string.create_new_team));
-		}*/
+		
 	}
-	
-	/*//getting string from shared preference, parsing it, and add to linear layout
-	private void loadTeams(){
-		//databases
-		teams = (ArrayList<Teams>) _db.getAllTeams();
-		for(Teams t: teams){
-			this.addNewTeam(t.gettname());
-		}
-	}*/
-	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		//_listOfTeams.removeAllViews();
-		//loadTeams();
-		prepareListData();
+		prepareListData();								 // initialize expandable list views
 	}
 
 	//when the create a team (edit selected team) button is pressed, this method is executed
@@ -397,7 +377,6 @@ public class ChooseTeamActivity extends Activity{
 			_addEditTeam.setText("Create a New Team");
 		}
 	}
-	
 	
 	public OnTouchListener longButtonTouchListener = new OnTouchListener(){
 		@Override
@@ -441,14 +420,12 @@ public class ChooseTeamActivity extends Activity{
 					intent = new Intent(getApplicationContext(), BasketballActivity.class);	
 					intent.putExtra(StaticFinalVars.GAME_TIME, new BasketballGameTime(_teams[0], _teams[1]));
 				}				
-				startActivity(intent);																			//let's go
+				startActivity(intent);																//let's go
 			}
 		});
-		confirmDialog.setNegativeButton("No", new DialogInterface.OnClickListener(){							//the negative no button		
+		confirmDialog.setNegativeButton("No", new DialogInterface.OnClickListener(){				//the negative no button		
 			@Override
-			public void onClick(DialogInterface arg0, int arg1) {							
-				//tv.setBackgroundResource(R.drawable.view_style_plain_long);									//undo the selection of the second (away) team
-				//tv.setTextColor(getResources().getColor(R.color.black));
+			public void onClick(DialogInterface arg0, int arg1) {		
 				_teams[0] = null;
 				_teams[1] = null;
 				_selectHomeTeam = false;
@@ -458,20 +435,10 @@ public class ChooseTeamActivity extends Activity{
 		        prepareListData();
 			}
 		});
-		confirmDialog.show();																					//make it happen
+		confirmDialog.show();																		//make it happen
 	}
 	
-	/*//creating the new text view and returning it
-	private TextView newTextView(String teamName){
-		final TextView textView = new TextView(this);														//these are all the stuff that you can do statically in xml
-		textView.setText(teamName);																			//here, we're dynamically programming them in Java
-		textView.setPadding(5,5,5,5);
-		textView.setTextSize(24);
-		textView.setBackgroundResource(R.drawable.view_style_plain_long);
-		return textView;
-	}*/
-
-	//deleting a team from the linear layout we called "listOfTeams"
+	//deleting a team if the database is not empty
 	public void deleteATeam(View view){
 		teamList = (ArrayList<Teams>) _db.getAllTeams();
 		if(!teamList.isEmpty()){
