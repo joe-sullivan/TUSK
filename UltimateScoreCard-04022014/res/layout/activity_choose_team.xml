@@ -20,6 +20,39 @@
         
     </TableRow>
     
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonRow"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/createNewTeam"
+        android:orientation="vertical" >
+
+        <ExpandableListView
+            android:id="@+id/expListViewHome"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="2dp"
+            android:layout_weight="0.50" >
+
+        </ExpandableListView>
+
+        <ExpandableListView
+            android:id="@+id/expListViewAway"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="2dp"
+            android:layout_weight="0.50" >
+
+        </ExpandableListView>
+
+    </LinearLayout>
+    
     <Button
         android:id="@+id/createNewTeam"
         android:layout_width="match_parent"
@@ -28,23 +61,6 @@
         android:text="@string/create_new_team" 
         android:padding="@dimen/padding"
         android:onClick="addViews"/>
-            
-    <ScrollView
-        android:id="@+id/teamScrollView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/createNewTeam" 
-    	android:layout_above="@+id/buttonRow"
-    	android:padding="@dimen/padding">
-		
-        <LinearLayout
-            android:id="@+id/teamListLayout"
-            android:layout_width="match_parent"
-        	android:layout_height="wrap_content"
-        	android:orientation="vertical">
-        	
-       	</LinearLayout>
-    </ScrollView>
     
     <TableRow
         android:id="@+id/buttonRow"
@@ -60,4 +76,6 @@
             android:onClick="deleteATeam"/>
         
     </TableRow>
+
+
 </RelativeLayout>
