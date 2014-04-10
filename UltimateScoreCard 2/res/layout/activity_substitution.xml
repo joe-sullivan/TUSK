@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+	
+    <TextView
+	        android:id="@+id/SubTitleText"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center"
+	        android:padding="@dimen/padding"
+	        android:text="@string/substitution_title"
+	        android:textAppearance="?android:attr/textAppearanceSmall" />
+    
+    <LinearLayout
+    	android:id="@+id/tabText"
+    	android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal" 
+	    android:layout_below="@+id/SubTitleText">
+    
+	    <TextView
+	        android:id="@+id/homeTeamSubText"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:gravity="center"
+	        android:padding="@dimen/padding"
+	        android:text="@string/home_sub_text"
+	        android:textAppearance="?android:attr/textAppearanceLarge"/>
+		
+	    <TextView
+	        android:id="@+id/awayTeamSubText"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:gravity="center"
+	        android:padding="@dimen/padding"
+	        android:text="@string/away_sub_text"
+	        android:textAppearance="?android:attr/textAppearanceLarge"/>
+	    
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/fragmentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tabText" >
+
+    </RelativeLayout>
+    
+</RelativeLayout>
