@@ -24,6 +24,7 @@ import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -48,6 +49,8 @@ public class MainActivity extends Activity{
 
 	public Context context = this;
 	private boolean _loggedIn = false;
+	private SharedPreferences _prefs;
+
 	
 	//what the program should do when screen is created
 	@Override
@@ -90,6 +93,27 @@ public class MainActivity extends Activity{
 		_optionsButton.setOnClickListener(optionListener);
 		_optionsButton.setOnTouchListener(longButtonTouchListener);
 		
+		//NEW
+		_prefs = this.getSharedPreferences("GameClock", Context.MODE_PRIVATE);
+		if(_prefs.getString("numPerBasketball", this.getResources().getString(R.string.number_period))==null)
+			_prefs.edit().putString("numPerBasketball", "2 Halves").commit();
+		if(_prefs.getString("numPerFootball", this.getResources().getString(R.string.number_period))==null)
+			_prefs.edit().putString("numPerFootball", "4 Quarters").commit();
+		if(_prefs.getString("numPerHockey", this.getResources().getString(R.string.number_period))==null)
+			_prefs.edit().putString("numPerHockey", "3 Periods").commit();
+		if(_prefs.getString("numPerSoccer", this.getResources().getString(R.string.number_period))==null)
+			_prefs.edit().putString("numPerSoccer", "2 Halves").commit();
+	
+		if(_prefs.getString("perLenBasketball", this.getResources().getString(R.string.number_period))==null)
+			_prefs.edit().putString("perLenBasketball", "20 Minutes").commit();
+		if(_prefs.getString("perLenFootball", this.getResources().getString(R.string.number_period))==null)
+			_prefs.edit().putString("perLenFootball", "12 Minutes").commit();
+		if(_prefs.getString("perLenHockey", this.getResources().getString(R.string.number_period))==null)
+			_prefs.edit().putString("perLenHockey", "20 Minutes").commit();
+		if(_prefs.getString("perLenSoccer", this.getResources().getString(R.string.number_period))==null)
+			_prefs.edit().putString("perLenSoccer", "45 Minutes").commit();
+		//END NEW
+			
 		//databases
 		_basketball_db = new BasketballDatabaseHelper(getApplicationContext());
 		_football_db = new FootballDatabaseHelper(getApplicationContext());

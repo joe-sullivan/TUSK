@@ -4,11 +4,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 public class BasketballStatsPageAdapter extends FragmentStatePagerAdapter {
-	private int _numberPages = 2;
-	
-	public BasketballStatsPageAdapter(FragmentManager fm) {
+	//NEW
+	private int _numberPages;
+		
+	public BasketballStatsPageAdapter(FragmentManager fm, int pages) {
 		super(fm);
+		_numberPages = pages;
 	}
+	//END NEW
 
     @Override
     public Fragment getItem(int position) {
@@ -24,4 +27,5 @@ public class BasketballStatsPageAdapter extends FragmentStatePagerAdapter {
     public int getCount() {
         return _numberPages;
     }
+ 
 }

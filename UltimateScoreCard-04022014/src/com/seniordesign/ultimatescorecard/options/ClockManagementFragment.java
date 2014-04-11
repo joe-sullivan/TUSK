@@ -106,16 +106,34 @@ public class ClockManagementFragment extends Fragment{
 			Builder builder = new Builder(ClockManagementFragment.this.getActivity());
 			builder.setTitle("Period Length: (in minutes)");
 			final EditText input = new EditText(ClockManagementFragment.this.getActivity());
+			
+			if(_sportButton.getText().equals("Basketball")){
+				input.setText((_prefs.getString("perLenBasketball", getActivity().getResources().getString(R.string.period_length))).replace(" minutes" , ""));
+			}
+			else if (_sportButton.getText().equals("Football")){
+				input.setText((_prefs.getString("perLenFootball", getActivity().getResources().getString(R.string.period_length))).replace(" minutes" , ""));
+			}
+			else if (_sportButton.getText().equals("Hockey")){
+				input.setText((_prefs.getString("perLenHockey", getActivity().getResources().getString(R.string.period_length))).replace(" minutes" , ""));		
+			}
+			else if (_sportButton.getText().equals("Soccer")){
+				input.setText((_prefs.getString("perLenSoccer", getActivity().getResources().getString(R.string.period_length))).replace(" minutes" , ""));
+			}
+			
 			builder.setView(input);
 			
 			builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					if(Integer.parseInt(input.getText().toString()) <= 120 || Integer.parseInt(input.getText().toString()) > 0){
+					if(!isInteger(input.getText().toString())){
+						popErrorDialog();
+					}
+					else if(Integer.parseInt(input.getText().toString()) <= 120 && Integer.parseInt(input.getText().toString()) > 0){
 						_perLenButton.setText(input.getText().toString()+" minutes");
 						dialog.dismiss();
 						buttonEnabler(true, true, true);
 					}
+					
 					else{
 						popErrorDialog();
 					}
@@ -210,5 +228,13 @@ public class ClockManagementFragment extends Fragment{
 		builder.show();
 	}
 	
-	
+	public static boolean isInteger(String s) {
+	    try { 
+	        Integer.parseInt(s); 
+	    } catch(NumberFormatException e) { 
+	        return false; 
+	    }
+	    // only got here if we didn't return false
+	    return true;
+	}
 }

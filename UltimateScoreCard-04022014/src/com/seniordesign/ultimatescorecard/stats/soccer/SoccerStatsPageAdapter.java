@@ -4,11 +4,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 public class SoccerStatsPageAdapter extends FragmentStatePagerAdapter {
-	private int _numberPages = 2;
-	
-	public SoccerStatsPageAdapter(FragmentManager fm) {
+	//NEW
+	private int _numberPages;
+		
+	public SoccerStatsPageAdapter(FragmentManager fm, int pages) {
 		super(fm);
+		_numberPages = pages;
 	}
+	//END NEW
 
     @Override
     public Fragment getItem(int position) {

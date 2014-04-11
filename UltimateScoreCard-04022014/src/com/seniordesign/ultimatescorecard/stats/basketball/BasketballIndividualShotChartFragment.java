@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import com.seniordesign.ultimatescorecard.R;
 import com.seniordesign.ultimatescorecard.data.GameInfo;
+import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballGames;
+import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
 import com.seniordesign.ultimatescorecard.sqlite.helper.ShotChartCoords;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
@@ -32,6 +34,8 @@ public class BasketballIndividualShotChartFragment extends Fragment{
 	private Teams team;
 	private ArrayList<ShotChartCoords> shots;
 	private ArrayList<Players> players;
+	private String player;
+	private Games _game;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -50,36 +54,56 @@ public class BasketballIndividualShotChartFragment extends Fragment{
 		setTextAndListener(_option1Button, AllShotsListener(), "All Shots");
 		setTextAndListener(_option2Button, madeListener(), "Made");
 		setTextAndListener(_option3Button, missedListener(), "Missed");
-	
+		
 		shots = ((BasketballIndividualStatActivity) getActivity())._shots;
 		name = ((BasketballIndividualStatActivity) getActivity())._name;
 		players = ((BasketballIndividualStatActivity) getActivity())._players;
 		team = ((BasketballIndividualStatActivity) getActivity())._team;
 		_gameInfo = ((BasketballIndividualStatActivity) getActivity())._gameInfo;
 		
-		TextView homeScore = (TextView)getView().findViewById(R.id.homeScoreTextView);
-		homeScore.setText(_gameInfo.getHomeScore());
-		TextView awayScore = (TextView)getView().findViewById(R.id.awayScoreTextView);
-		awayScore.setText(_gameInfo.getAwayScore());
-		TextView homeAbbr = (TextView)getView().findViewById(R.id.homeTextView);
-		homeAbbr.setText(_gameInfo.getHomeTeam().getabbv());
-		TextView awayAbbr = (TextView)getView().findViewById(R.id.awayTextView);
-		awayAbbr.setText(_gameInfo.getAwayTeam().getabbv());
+		//NEW
+		_game = ((BasketballIndividualStatActivity) getActivity())._game;
+
+		String _player = ((BasketballIndividualStatActivity) getActivity())._player;
+		if(_player!=null){
+			if(!_player.equals("All Players")){
+				name = _player;
+				TextView homeScore = (TextView)getView().findViewById(R.id.homeScoreTextView);
+				homeScore.setText(((BasketballGames)_game).getHomeScoreText());
+				TextView awayScore = (TextView)getView().findViewById(R.id.awayScoreTextView);
+				homeScore.setText(((BasketballGames)_game).getAwayScoreText());
+				TextView homeAbbr = (TextView)getView().findViewById(R.id.homeTextView);
+				TextView awayAbbr = (TextView)getView().findViewById(R.id.awayTextView);
+			}
+		}
+		else{
+			TextView homeScore = (TextView)getView().findViewById(R.id.homeScoreTextView);
+			homeScore.setText(_gameInfo.getHomeScore());
+			TextView awayScore = (TextView)getView().findViewById(R.id.awayScoreTextView);
+			awayScore.setText(_gameInfo.getAwayScore());
+			TextView homeAbbr = (TextView)getView().findViewById(R.id.homeTextView);
+			homeAbbr.setText(_gameInfo.getHomeTeam().getabbv());
+			TextView awayAbbr = (TextView)getView().findViewById(R.id.awayTextView);
+			awayAbbr.setText(_gameInfo.getAwayTeam().getabbv());
+		}
 		TextView nameText = (TextView)getView().findViewById(R.id.gameClock);
 
+		//END NEW
 		if(name.equals(team.getabbv() + " Stats")){
 			nameText.setText(team.getabbv());
 			for(ShotChartCoords shot: shots){
-				int[] location = new int[2];
-				location[0] = shot.getx();
-				location[1] = shot.gety();
-				if(shot.getmade().equals("make")){
-					displayShots(true, location);
-				}
-				else if(shot.getmade().equals("miss")){
-					displayShots(false, location);
-				}		
-			}	
+					if(shot.gettid()==team.gettid()){
+					int[] location = new int[2];
+					location[0] = shot.getx();
+					location[1] = shot.gety();
+					if(shot.getmade().equals("make")){
+						displayShots(true, location);
+					}
+					else if(shot.getmade().equals("miss")){
+						displayShots(false, location);
+					}		
+				}	
+			}
 		}
 		
 		else{

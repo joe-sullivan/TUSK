@@ -8,6 +8,7 @@ import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerGameStats;
 import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerGames;
+import com.seniordesign.ultimatescorecard.stats.basketball.BasketballIndividualStatActivity;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -40,7 +41,15 @@ public class SoccerIndividualStatFragment extends Fragment{
 		boolean home = ((SoccerIndividualStatActivity) getActivity())._home;
 		ArrayList<Players> players = ((SoccerIndividualStatActivity) getActivity())._players;
 		long g_id = ((SoccerIndividualStatActivity) getActivity()).g_id;
-		
+		//NEW
+		String _player = ((SoccerIndividualStatActivity) getActivity())._player;
+        if(_player!=null){
+			if(!_player.equals("All Players")){
+	        	name = _player;
+	        }
+        }
+		//END NEW
+        
 		((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.playerName)).setTextColor(Color.WHITE);
 		((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.teamName)).setTextColor(Color.WHITE);
 		((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.goalTotal)).setTextColor(Color.WHITE);

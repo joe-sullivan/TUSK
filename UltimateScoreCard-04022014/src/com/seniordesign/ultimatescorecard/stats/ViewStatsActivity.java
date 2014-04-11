@@ -41,6 +41,7 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class ViewStatsActivity extends Activity{
 	private Button _sportButton, _teamButton, _playerButton, _gameButton, _searchButton, _sendButton;
@@ -93,7 +94,7 @@ public class ViewStatsActivity extends Activity{
 				public void onClick(DialogInterface dialog, int which) {
 					_sportButton.setText(arrayAdapter.getItem(which));
 					changeBackground(arrayAdapter.getItem(which));
-					buttonEnabler(true, false, false);
+					buttonEnabler(true, false, false, false);
 					resetButtonText(true, true);
 					dialog.dismiss();
 				}
@@ -138,7 +139,7 @@ public class ViewStatsActivity extends Activity{
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					_teamButton.setText(arrayAdapter.getItem(which));
-					buttonEnabler(true, true, false);
+					buttonEnabler(true, true, true, false);
 					resetButtonText(false, true);
 					dialog.dismiss();
 				}
@@ -164,17 +165,22 @@ public class ViewStatsActivity extends Activity{
 			//databases
 			if(_sport.equals("Basketball")){
 				_players = (ArrayList<Players>) (((BasketballDatabaseHelper) _db).getPlayersTeam(_team.gettid()));
+				_games = (ArrayList<Games>) (((BasketballDatabaseHelper) _db).getAllGamesTeam(_team.gettid()));
 			}
 			else if(_sport.equals("Football")){
 				_players = (ArrayList<Players>) (((FootballDatabaseHelper) _db).getPlayersTeam(_team.gettid()));
+				_games = (ArrayList<Games>) (((FootballDatabaseHelper) _db).getAllGamesTeam(_team.gettid()));
+
 			}
 			else if(_sport.equals("Soccer")){
 				_players = (ArrayList<Players>) (((SoccerDatabaseHelper) _db).getPlayersTeam(_team.gettid()));
+				_games = (ArrayList<Games>) (((SoccerDatabaseHelper) _db).getAllGamesTeam(_team.gettid()));
 			}
 			else{ // _sport.equals("Hockey")
 				_players = (ArrayList<Players>) (((HockeyDatabaseHelper) _db).getPlayersTeam(_team.gettid()));
+				_games = (ArrayList<Games>) (((HockeyDatabaseHelper) _db).getAllGamesTeam(_team.gettid()));
 			}
-			arrayAdapter.add("None");
+			arrayAdapter.add("All Players");
 			for(Players player : _players){
 				arrayAdapter.add(player.getpname());
 			}			
@@ -187,17 +193,23 @@ public class ViewStatsActivity extends Activity{
 			builder.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					if(arrayAdapter.getItem(which).equals("None")){
+					if(arrayAdapter.getItem(which).equals("All Players")){
 						_playerButton.setText(getResources().getString(R.string.all_players));
+						_gameButton.setText(getResources().getString(R.string.choose_game));
 					}
 					else{
 						_playerButton.setText(arrayAdapter.getItem(which));
+						_gameButton.setText("All Games");
 					}
-					if(_gameButton.getText().equals(getResources().getString(R.string.choose_game))){
-						buttonEnabler(true, true, false);			//game is not chosen, so can't proceed
+					if(_gameButton.getText().equals(getResources().getString(R.string.choose_game))&&
+							_playerButton.getText().equals(getResources().getString(R.string.choose_player))){
+						buttonEnabler(true, true, true, false);			//game is not chosen, so can't proceed
+					}
+					else if(_gameButton.getText().equals("All Games")){
+						buttonEnabler(true, true, false, true);	
 					}
 					else{
-						buttonEnabler(true, true, true);
+						buttonEnabler(true, true, true, true);
 					}
 					dialog.dismiss();
 				}
@@ -234,8 +246,20 @@ public class ViewStatsActivity extends Activity{
 				_games = (ArrayList<Games>) (((HockeyDatabaseHelper) _db).getAllGamesTeam(_team.gettid()));
 			}
 			
+			if(!_playerButton.getText().equals("All Players")){
+				arrayAdapter.add("All Games");
+			}
 			for(Games game: _games){
-				arrayAdapter.add(game.getDate());
+				for(Teams t: _teams){
+					if(t.gettid()==game.getawayid()){
+						_away = t;
+					}
+					if(t.gettid()==game.gethomeid()){
+						_home = t;
+					}
+				}
+				String gameName = _away.getabbv() + " vs " + _home.getabbv()+":\n"+game.getDate();
+				arrayAdapter.add(gameName);
 			}			
 			builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 				@Override
@@ -247,7 +271,7 @@ public class ViewStatsActivity extends Activity{
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					_gameButton.setText(arrayAdapter.getItem(which));
-					buttonEnabler(true, true, true);
+					buttonEnabler(true, true, true, true);
 					dialog.dismiss();
 				}
 			});
@@ -260,13 +284,24 @@ public class ViewStatsActivity extends Activity{
 		public void onClick(View view) {
 			Intent intent;
 			String game = _gameButton.getText().toString();
-			for(Games g: _games){
-				if(g.getDate().equals(game)){
-					_game = g;
-					break;
+
+			//NEW
+			if(!game.equals("All Games")){
+				String[] lines = game.split("\n");
+				if(lines.length==2){
+					for(Games g: _games){
+						if(g.getDate().equals(lines[1])){
+							_game = g;
+							break;
+						}
+					}
 				}
 			}
-			
+			else if (_game == null){
+				_game = _games.get(0);
+			}
+			//END NEW
+		
 			ArrayList<Players> _homeTeamPlayersPull = (ArrayList<Players>) _db.getPlayersTeam2(_game.gethomeid());
 			ArrayList<Players> _awayTeamPlayersPull = (ArrayList<Players>) _db.getPlayersTeam2(_game.getawayid());
 			_home = _db.getTeam(_game.gethomeid());
@@ -288,6 +323,8 @@ public class ViewStatsActivity extends Activity{
 				intent.putExtra(StaticFinalVars.SHOT_CHART_HOME, _homeShots);
 				intent.putExtra(StaticFinalVars.SHOT_CHART_AWAY, _awayShots);
 				intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 0);
+				intent.putExtra(StaticFinalVars.GAMES, _games);
+				intent.putExtra(StaticFinalVars.PLAYER_NAME, _playerButton.getText().toString());
 			}
 			else if (_sportButton.getText().equals("Football")){
 				//_gameInfo.setAwayScore(((FootballGames)_game).getAwayScoreText());
@@ -298,6 +335,8 @@ public class ViewStatsActivity extends Activity{
 				intent.putExtra(StaticFinalVars.SHOT_CHART_HOME, _homeShots);
 				intent.putExtra(StaticFinalVars.SHOT_CHART_AWAY, _awayShots);
 				intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 0);
+				intent.putExtra(StaticFinalVars.GAMES, _games);
+				intent.putExtra(StaticFinalVars.PLAYER_NAME, _playerButton.getText().toString());
 			}
 			else if (_sportButton.getText().equals("Hockey")){
 				_gameInfo.setAwayScore(((HockeyGames)_game).getAwayScoreText());
@@ -308,6 +347,8 @@ public class ViewStatsActivity extends Activity{
 				intent.putExtra(StaticFinalVars.SHOT_CHART_HOME, _homeShots);
 				intent.putExtra(StaticFinalVars.SHOT_CHART_AWAY, _awayShots);
 				intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 0);
+				intent.putExtra(StaticFinalVars.GAMES, _games);
+				intent.putExtra(StaticFinalVars.PLAYER_NAME, _playerButton.getText().toString());
 			}
 			else { // Soccer
 				_gameInfo.setAwayScore(((SoccerGames)_game).getAwayScoreText());
@@ -318,7 +359,10 @@ public class ViewStatsActivity extends Activity{
 				intent.putExtra(StaticFinalVars.SHOT_CHART_HOME, _homeShots);
 				intent.putExtra(StaticFinalVars.SHOT_CHART_AWAY, _awayShots);
 				intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 0);
+				intent.putExtra(StaticFinalVars.GAMES, _games);
+				intent.putExtra(StaticFinalVars.PLAYER_NAME, _playerButton.getText().toString());
 			}
+			intent.putExtra(StaticFinalVars.TEAMS, _teams);
 			startActivity(intent);
 		}		
 	};
@@ -609,9 +653,9 @@ public class ViewStatsActivity extends Activity{
 	    return false;		
 	}
 	
-	private void buttonEnabler(boolean team, boolean game, boolean search){
+	private void buttonEnabler(boolean team, boolean player, boolean game, boolean search){
 		_teamButton.setEnabled(team);
-		_playerButton.setEnabled(game);
+		_playerButton.setEnabled(player);
 		_gameButton.setEnabled(game);
 		_searchButton.setEnabled(search);
 		_sendButton.setEnabled(search);

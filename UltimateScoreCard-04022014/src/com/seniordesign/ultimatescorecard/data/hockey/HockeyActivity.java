@@ -611,8 +611,8 @@ public class HockeyActivity extends Activity{
 		public void onClick(View view) {
 			SharedPreferences prefs = getApplicationContext().getSharedPreferences("GameClock", Context.MODE_PRIVATE);
 			int minuteTime = Integer.parseInt(prefs.getString("perLenHockey", "12 minutes").split(" ")[0]);
-			_gameClock.restartTimer(minuteTime*60*1000);
-			_gameClockView.setOnClickListener(startGameListener);
+			_gameClock = new GameClock(minuteTime*60*1000, _gameClockView);
+			_gameClockView.setOnClickListener(timerClickListener);
 			tipOff();
 		}
 	};

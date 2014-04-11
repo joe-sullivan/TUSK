@@ -43,6 +43,10 @@ public class StaticFinalVars {
 	public static final String PLAYERS_INFO = "playersInfo";
 	public static final String PLAYER_NAME = "playerName";
 	public static final String HOME_OR_AWAY = "homeOrAway";
+	public static final String GAMES = "games";
+	public static final String PLAYER = "player";
+	public static final String TEAM_INFO2 = "teamInfo2";
+	public static final String TEAMS = "teams";
 
 
 	

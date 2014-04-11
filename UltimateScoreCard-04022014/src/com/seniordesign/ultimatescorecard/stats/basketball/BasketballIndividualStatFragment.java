@@ -39,6 +39,14 @@ public class BasketballIndividualStatFragment extends Fragment{
 		boolean home = ((BasketballIndividualStatActivity) getActivity())._home;
 		ArrayList<Players> players = ((BasketballIndividualStatActivity) getActivity())._players;
 		long g_id = ((BasketballIndividualStatActivity) getActivity()).g_id;
+		//NEW
+		String _player = ((BasketballIndividualStatActivity) getActivity())._player;
+        if(_player!=null){
+			if(!_player.equals("All Players")){
+	        	name = _player;
+	        }
+        }
+		//END NEW
 		
 		if(name.equals(team.getabbv() + " Stats")){
 			if(home){

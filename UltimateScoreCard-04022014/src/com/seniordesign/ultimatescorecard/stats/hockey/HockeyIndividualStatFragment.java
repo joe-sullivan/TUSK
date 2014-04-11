@@ -8,6 +8,7 @@ import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyGameStats;
 import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyGames;
+import com.seniordesign.ultimatescorecard.stats.basketball.BasketballIndividualStatActivity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -39,7 +40,14 @@ public class HockeyIndividualStatFragment extends Fragment{
 		boolean home = ((HockeyIndividualStatActivity) getActivity())._home;
 		ArrayList<Players> players = ((HockeyIndividualStatActivity) getActivity())._players;
 		long g_id = ((HockeyIndividualStatActivity) getActivity()).g_id;
-		
+		//NEW
+		String _player = ((HockeyIndividualStatActivity) getActivity())._player;
+        if(_player!=null){
+			if(!_player.equals("All Players")){
+	        	name = _player;
+	        }
+        }
+		//END NEW
 		if(name.equals(team.getabbv() + " Stats")){
 			if(home){
 				
