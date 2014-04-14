@@ -6,8 +6,10 @@ import com.seniordesign.ultimatescorecard.R;
 import com.seniordesign.ultimatescorecard.data.GameInfo;
 import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerGames;
+import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballGames;
 import com.seniordesign.ultimatescorecard.sqlite.helper.*;
 import com.seniordesign.ultimatescorecard.stats.ViewStatsActivity;
+import com.seniordesign.ultimatescorecard.stats.basketball.BasketballIndividualStatPageAdapter;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
 
 import android.os.Bundle;
@@ -28,6 +30,8 @@ public class SoccerIndividualStatActivity extends FragmentActivity{
 	protected ArrayList<ShotChartCoords> _shots;
 	protected GameInfo _gameInfo;
 	protected String _player;
+	protected ArrayList<SoccerGames> _games;
+	protected boolean _average = false;
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -47,6 +51,10 @@ public class SoccerIndividualStatActivity extends FragmentActivity{
 
 		_player = getIntent().getStringExtra(StaticFinalVars.PLAYER);
 		_team2 = (Teams) getIntent().getSerializableExtra(StaticFinalVars.TEAM_INFO2);
+		//AVE
+		_games = (ArrayList<SoccerGames>) getIntent().getSerializableExtra(StaticFinalVars.GAMES);
+		_average = getIntent().getBooleanExtra(StaticFinalVars.AVERAGE, false);
+				
 		if(_name!=null){
 			if(_shots.isEmpty()&&!_name.equals(_team.getabbv()+" Stats")){
 				_shots = (ArrayList<ShotChartCoords>) _soccer_db.getAllTeamShotsGame(_team.gettid(), g_id);
@@ -100,7 +108,13 @@ public class SoccerIndividualStatActivity extends FragmentActivity{
 		_game = (SoccerGames) _soccer_db.getGame(g_id);
 
         _pager = (ViewPager) findViewById(R.id.statsPager);
-        _pagerAdapter = new SoccerIndividualStatPageAdapter(getSupportFragmentManager());
+      //AVE
+        if(_average){
+            _pagerAdapter = new SoccerIndividualStatPageAdapter(getSupportFragmentManager(), 1);
+        }
+        else{
+        	_pagerAdapter = new SoccerIndividualStatPageAdapter(getSupportFragmentManager(), 2);
+        }        
         _pager.setAdapter(_pagerAdapter);
         _pager.setCurrentItem(value);
 	}

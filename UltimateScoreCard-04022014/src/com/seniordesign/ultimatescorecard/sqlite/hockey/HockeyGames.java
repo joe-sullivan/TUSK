@@ -138,12 +138,12 @@ public class HockeyGames extends Games{
     	return 2*home_pen_minor + 5*home_pen_major + 10*home_pen_misconduct;
     }
     
-    public double gethomesavepercent(){
+    public String gethomesavepercent(){
     	if((home_saves+home_goals_allowed)>0){
-    		return home_saves/(home_saves+home_goals_allowed);
+    		return String.format("%.3f", home_saves/(home_saves+home_goals_allowed));
     	}
     	else{
-    		return 0.0;
+    		return "N/A";
     	}
     }
     
@@ -187,12 +187,12 @@ public class HockeyGames extends Games{
     	return 2*away_pen_minor + 5*away_pen_major + 10*away_pen_misconduct;
     }
     
-    public double getawaysavepercent(){
+    public String getawaysavepercent(){
     	if((away_saves+away_goals_allowed)>0){
-    		return away_saves/(away_saves+away_goals_allowed);
+    		return String.format("%.3f", away_saves/(away_saves+away_goals_allowed));
     	}
     	else{
-    		return 0.0;
+    		return "N/A";
     	}
     }
     

@@ -60,6 +60,8 @@ public class HockeyActivity extends Activity{
 	
 	private UndoManager _undoManager;
 	public UndoInstance _undoInstance;
+	private String quarter;
+	private int ot;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -715,10 +717,7 @@ public class HockeyActivity extends Activity{
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent = null;
 		switch(item.getItemId()){
-		
-		case R.id.settings:
-			break;
-		
+
 		case R.id.boxscore:
 			intent = new Intent(getApplicationContext(), HockeyStatsActivity.class);			
 			_gameInfo = _gti.getGameInfo();
@@ -751,11 +750,8 @@ public class HockeyActivity extends Activity{
 			startActivity(intent);
 			break;
 		
-		case R.id.editGame:
-			break;
-		
 		case R.id.nextPeriod:
-			String quarter = ((TextView)findViewById(R.id.periodNumber)).getText().toString();
+			quarter = ((TextView)findViewById(R.id.periodNumber)).getText().toString();
 			if(zeroTime()){
 				if(quarter.equals("1ST")){
 					((TextView)findViewById(R.id.periodNumber)).setText("2ND");
@@ -765,10 +761,13 @@ public class HockeyActivity extends Activity{
 				}
 				else if(quarter.equals("3RD")){
 					((TextView)findViewById(R.id.periodNumber)).setText("OT");
+					ot = 1;
 				}
 				else{
-					((TextView)findViewById(R.id.periodNumber)).setText("k-OT");
+					((TextView)findViewById(R.id.periodNumber)).setText(ot+"-OT");
+					ot++;
 				}
+				quarter = ((TextView)findViewById(R.id.periodNumber)).getText().toString();
 				SharedPreferences prefs = getApplicationContext().getSharedPreferences("GameClock", Context.MODE_PRIVATE);
 				int minuteTime = Integer.parseInt(prefs.getString("perLenBasketball", "12 minutes").split(" ")[0]);
 				_gameClock.restartTimer(minuteTime*60*1000);

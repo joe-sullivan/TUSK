@@ -3,6 +3,7 @@ package com.seniordesign.ultimatescorecard.stats.hockey;
 import java.util.ArrayList;
 
 import com.seniordesign.ultimatescorecard.R;
+import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballGameStats;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyDatabaseHelper;
@@ -48,6 +49,8 @@ public class HockeyIndividualStatFragment extends Fragment{
 	        }
         }
 		//END NEW
+      //AVE
+        boolean average = ((HockeyIndividualStatActivity) getActivity())._average;
 		if(name.equals(team.getabbv() + " Stats")){
 			if(home){
 				
@@ -98,26 +101,83 @@ public class HockeyIndividualStatFragment extends Fragment{
 					player = p;
 				}
 			}
-			HockeyGameStats stats = _db.getPlayerGameStats(g_id, player.getpid());
+			
+			//AVE
+			if(average){
+				ArrayList<HockeyGameStats> allStats = (ArrayList<HockeyGameStats>) _db.getPlayerAllGameStats(player.getpid());
+				double shots=0,sog=0,goals=0,ast=0,penminor=0,penmajor=0,penmisconduct=0,
+						saves=0,goals_allowed=0;
+				for(HockeyGameStats s: allStats){
+					shots += s.getshots();
+					sog+= s.getsog();
+					goals += s.getgoals();
+					ast =+ s.getast();
+					penminor += s.getpenminor();
+					penmajor += s.getpenmajor();
+					penmisconduct += s.getpenmisconduct();
+					saves += s.getsaves();
+					goals_allowed += s.getgoalsallowed();
+				}
+				shots /= allStats.size();
+				sog /= allStats.size();
+				goals /= allStats.size();
+				ast /= allStats.size();
+				penminor /= allStats.size();
+				penmajor /= allStats.size();
+				penmisconduct /= allStats.size();
+				saves /= allStats.size();
+				goals_allowed /= allStats.size();
 				
-			((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.playerName)).setText(player.getpname());
-			((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.teamName)).setText(team.gettname());
-			((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.goalTotal)).setText("Goals: "+stats.getgoals());
-			((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.assistTotal)).setText("Assists: "+stats.getast());
-			((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.shotOnGoalTotal)).setText("Shots On Goal: "+stats.getsog());
-			((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.penaltyTotal)).setText("Penalties: "+(stats.getpenmajor()+stats.getpenminor()+stats.getpenmisconduct()));
-			((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.penaltyTypeTotal)).setText(
-					" Minors:" + stats.getpenminor() +
-					"\n Majors: " + stats.getpenmajor() +
-					"\n Misconduct: " + stats.getpenmisconduct());
-			((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.penaltyMinsTotal)).setText("Penalty Minutes: "+stats.getpenminutes());
-			//Goalie Stats
-			((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.goalieTitle)).setText("Goalie Stats");
-			((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.goalieStats)).setText(
-				" Saves:" + stats.getsaves() +
-				"\n Goals Allowed: " + stats.getgoalsallowed() +
-
-				"\n Save %: " + stats.getsavepercent());
+			    String savepercent;
+				if((saves+goals_allowed)>0){
+					savepercent= String.format("%.3f", saves/(saves+goals_allowed));
+				}
+				else{
+					savepercent= "N/A";
+				}
+				
+				((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.playerName)).setText(player.getpname() + " - Average Stats");
+				((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.teamName)).setText(team.gettname());
+				((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.goalTotal)).setText("Goals: "+String.format("%.3f",goals));
+				((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.assistTotal)).setText("Assists: "+String.format("%.3f",ast));
+				((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.shotOnGoalTotal)).setText("Shots On Goal: "+String.format("%.3f",sog));
+				((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.penaltyTotal)).setText("Penalties: "+String.format("%.3f",(penmajor+penminor+penmisconduct)));
+				((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.penaltyTypeTotal)).setText(
+						" Minors:" + String.format("%.3f",penminor) +
+						"\n Majors: " + String.format("%.3f",penmajor) +
+						"\n Misconduct: " + String.format("%.3f",penmisconduct));
+				((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.penaltyMinsTotal)).setText("Penalty Minutes: "+String.format("%.3f",(2*penminor + 5*penmajor + 10*penmisconduct)));
+				//Goalie Stats
+				((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.goalieTitle)).setText("Goalie Stats");
+				((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.goalieStats)).setText(
+					" Saves:" + String.format("%.3f",saves) +
+					"\n Goals Allowed: " + String.format("%.3f",goals_allowed) +
+	
+					"\n Save %: " + savepercent);
+				
+			}
+			else{
+				HockeyGameStats stats = _db.getPlayerGameStats(g_id, player.getpid());
+					
+				((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.playerName)).setText(player.getpname());
+				((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.teamName)).setText(team.gettname());
+				((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.goalTotal)).setText("Goals: "+stats.getgoals());
+				((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.assistTotal)).setText("Assists: "+stats.getast());
+				((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.shotOnGoalTotal)).setText("Shots On Goal: "+stats.getsog());
+				((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.penaltyTotal)).setText("Penalties: "+(stats.getpenmajor()+stats.getpenminor()+stats.getpenmisconduct()));
+				((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.penaltyTypeTotal)).setText(
+						" Minors:" + stats.getpenminor() +
+						"\n Majors: " + stats.getpenmajor() +
+						"\n Misconduct: " + stats.getpenmisconduct());
+				((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.penaltyMinsTotal)).setText("Penalty Minutes: "+stats.getpenminutes());
+				//Goalie Stats
+				((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.goalieTitle)).setText("Goalie Stats");
+				((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.goalieStats)).setText(
+					" Saves:" + stats.getsaves() +
+					"\n Goals Allowed: " + stats.getgoalsallowed() +
+	
+					"\n Save %: " + stats.getsavepercent());
+			}
 		}
 	}
 

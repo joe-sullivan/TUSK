@@ -233,30 +233,30 @@ public class BasketballGames extends Games{
         return this.home_flagrant;
     }
     
-	public double gethomefgpercent(){
+    public String gethomefgpercent(){
 		if(home_fga > 0){
-			return (double) home_fgm / home_fga;
+			return String.format("%.3f", (double) home_fgm / home_fga);
 		}
 		else{
-			return 0.0;
+			return "N/A";
 		}
 	}
 	
-	public double gethomeftpercent(){
-		if(home_fta > 0){
-			return (double) home_ftm / home_fta;
-		}
-		else{
-			return 0.0;
-		}
-	}
-	
-	public double gethomefg3percent(){
+	public String gethomefg3percent(){
 		if(home_fga3 > 0){
-			return (double) home_fgm3 / home_fga3;
+			return String.format("%.3f", (double) home_fgm3 / home_fga3);
 		}
 		else{
-			return 0.0;
+			return "N/A";
+		}
+	}
+	
+	public String gethomeftpercent(){
+		if(home_fta > 0){
+			return String.format("%.3f", (double) home_ftm / home_fta);
+		}
+		else{
+			return "N/A";
 		}
 	}
 
@@ -324,30 +324,30 @@ public class BasketballGames extends Games{
         return this.away_flagrant;
     }
     
-	public double getawayfgpercent(){
+	public String getawayfgpercent(){
 		if(away_fga > 0){
-			return (double) away_fgm / away_fga;
+			return String.format("%.3f", (double) away_fgm / away_fga);
 		}
 		else{
-			return 0.0;
+			return "N/A";
 		}
 	}
 	
-	public double getawayfg3percent(){
+	public String getawayfg3percent(){
 		if(away_fga3 > 0){
-			return (double) away_fgm3 / away_fga3;
+			return String.format("%.3f", (double) away_fgm3 / away_fga3);
 		}
 		else{
-			return 0.0;
+			return "N/A";
 		}
 	}
 	
-	public double getawayftpercent(){
+	public String getawayftpercent(){
 		if(away_fta > 0){
-			return (double) away_ftm / away_fta;
+			return String.format("%.3f", (double) away_ftm / away_fta);
 		}
 		else{
-			return 0.0;
+			return "N/A";
 		}
 	}
 	

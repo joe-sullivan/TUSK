@@ -103,6 +103,8 @@ public class SoccerBoxscoreFragment extends Fragment{
 				String gameName = _away.getabbv() + " vs " + _home.getabbv()+":\n"+game.getDate();
 				layout.addView(newTextView(gameName));
 			}	
+			//AVE
+			layout.addView(newTextView("Average Stats"));
         }
         //END NEW
         else{
@@ -168,25 +170,42 @@ public class SoccerBoxscoreFragment extends Fragment{
 		public void onClick(View v) {
 			Intent intent = new Intent(getActivity().getApplicationContext(), SoccerIndividualStatActivity.class);
 			//NEW
-			if(_player!=null){
+			//AVE
+			String aveTest = ((TextView)v).getText().toString();
+			boolean average = aveTest.equals("Average Stats");
+			if(_playerView){
 				if(!_player.equals("All Players")){
-		        	intent.putExtra(StaticFinalVars.TEAM_INFO, ((SoccerStatsActivity) getActivity()).getGameInfo().getHomeTeam());
-		        	intent.putExtra(StaticFinalVars.TEAM_INFO2, ((SoccerStatsActivity) getActivity()).getGameInfo().getAwayTeam());
-		        	ArrayList<Players> _ps = ((SoccerStatsActivity) getActivity()).getGameInfo().getHomePlayers();
-		        	_ps.addAll(((SoccerStatsActivity) getActivity()).getGameInfo().getAwayPlayers());
-					intent.putExtra(StaticFinalVars.PLAYERS_INFO, _ps);
-					Games game = null;
-					String[] lines = ((TextView)v).getText().toString().split("\n");
-					for(Games g: _games){
-						if(g.getDate().equals(lines[1])){
-							game = g;
-							break;
-						}
+					if(average){
+						intent.putExtra(StaticFinalVars.TEAM_INFO, ((SoccerStatsActivity) getActivity()).getGameInfo().getHomeTeam());
+			        	intent.putExtra(StaticFinalVars.TEAM_INFO2, ((SoccerStatsActivity) getActivity()).getGameInfo().getAwayTeam());
+			        	ArrayList<Players> _ps = ((SoccerStatsActivity) getActivity()).getGameInfo().getHomePlayers();
+			        	_ps.addAll(((SoccerStatsActivity) getActivity()).getGameInfo().getAwayPlayers());
+						intent.putExtra(StaticFinalVars.PLAYERS_INFO, _ps);
+						intent.putExtra(StaticFinalVars.GAME_ID, ((SoccerStatsActivity) getActivity()).getGameInfo().getgid());
+						intent.putExtra(StaticFinalVars.HOME_OR_AWAY, _lookingAtHome);
+						intent.putExtra(StaticFinalVars.SHOT_CHART, new ArrayList<ShotChartCoords>());			
+				
+						
 					}
-					intent.putExtra(StaticFinalVars.GAME_ID, game.getgid());
-					intent.putExtra(StaticFinalVars.HOME_OR_AWAY, _lookingAtHome);
-					intent.putExtra(StaticFinalVars.SHOT_CHART, new ArrayList<ShotChartCoords>());			
-		        }
+					else{
+			        	intent.putExtra(StaticFinalVars.TEAM_INFO, ((SoccerStatsActivity) getActivity()).getGameInfo().getHomeTeam());
+			        	intent.putExtra(StaticFinalVars.TEAM_INFO2, ((SoccerStatsActivity) getActivity()).getGameInfo().getAwayTeam());
+			        	ArrayList<Players> _ps = ((SoccerStatsActivity) getActivity()).getGameInfo().getHomePlayers();
+			        	_ps.addAll(((SoccerStatsActivity) getActivity()).getGameInfo().getAwayPlayers());
+						intent.putExtra(StaticFinalVars.PLAYERS_INFO, _ps);
+						Games game = null;
+						String[] lines = ((TextView)v).getText().toString().split("\n");
+						for(Games g: _games){
+							if(g.getDate().equals(lines[1])){
+								game = g;
+								break;
+							}
+						}
+						intent.putExtra(StaticFinalVars.GAME_ID, game.getgid());
+						intent.putExtra(StaticFinalVars.HOME_OR_AWAY, _lookingAtHome);
+						intent.putExtra(StaticFinalVars.SHOT_CHART, new ArrayList<ShotChartCoords>());			
+					}
+				}
 				else{
 					if(_lookingAtHome){
 						intent.putExtra(StaticFinalVars.TEAM_INFO, ((SoccerStatsActivity) getActivity()).getGameInfo().getHomeTeam());
@@ -233,6 +252,7 @@ public class SoccerBoxscoreFragment extends Fragment{
 	        }
 			//NEW
 			intent.putExtra(StaticFinalVars.PLAYER, _player);
+			intent.putExtra(StaticFinalVars.AVERAGE, average);
 			//END NEW
 			startActivity(intent);
 		}

@@ -178,30 +178,30 @@ public class BasketballGameStats implements Serializable {
         return this.flagrant;
     }
     
-	public double getfgpercent(){
+	public String getfgpercent(){
 		if(fga > 0){
-			return (double) fgm / fga;
+			return String.format("%.3f", (double) fgm / fga);
 		}
 		else{
-			return 0.0;
+			return "N/A";
 		}
 	}
 	
-	public double getfg3percent(){
+	public String getfg3percent(){
 		if(fga3 > 0){
-			return (double) fgm3 / fga3;
+			return String.format("%.3f", (double) fgm3 / fga3);
 		}
 		else{
-			return 0.0;
+			return "N/A";
 		}
 	}
 	
-	public double getftpercent(){
+	public String getftpercent(){
 		if(fta > 0){
-			return (double) ftm / fta;
+			return String.format("%.3f", (double) ftm / fta);
 		}
 		else{
-			return 0.0;
+			return "N/A";
 		}
 	}
 }

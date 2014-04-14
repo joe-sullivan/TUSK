@@ -4,9 +4,6 @@
 	<item android:id="@+id/substitution"
 	    android:title="Substitution"/>
 	
-	<item android:id="@+id/editGame"
-	    android:title="Edit Game"/>
-	
 	<item android:id="@+id/nextQuarter"
 	    android:title="Next Quarter"/>
 	
@@ -15,9 +12,6 @@
 	
 	<item android:id="@+id/gameLog"
 	    android:title="Play by Play"/>
-	
-	<item android:id="@+id/settings"
-	    android:title="Settings"/>
 	
 	<item android:id="@+id/undo"
 	    android:title="Undo"/>

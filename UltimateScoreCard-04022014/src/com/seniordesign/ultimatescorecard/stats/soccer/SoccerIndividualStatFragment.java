@@ -8,7 +8,6 @@ import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerGameStats;
 import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerGames;
-import com.seniordesign.ultimatescorecard.stats.basketball.BasketballIndividualStatActivity;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -49,7 +48,9 @@ public class SoccerIndividualStatFragment extends Fragment{
 	        }
         }
 		//END NEW
-        
+        //AVE
+        boolean average = ((SoccerIndividualStatActivity) getActivity())._average;
+		
 		((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.playerName)).setTextColor(Color.WHITE);
 		((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.teamName)).setTextColor(Color.WHITE);
 		((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.goalTotal)).setTextColor(Color.WHITE);
@@ -106,23 +107,87 @@ public class SoccerIndividualStatFragment extends Fragment{
 					player = p;
 				}
 			}
-			SoccerGameStats stats = _db.getPlayerGameStats(g_id, player.getpid());
+			
+			//AVE
+			if(average){
+				ArrayList<SoccerGameStats> allStats = (ArrayList<SoccerGameStats>) _db.getPlayerAllGameStats(player.getpid());
+				double shots=0,sog=0,goals=0,ast=0,fouls=0,pka=0,pkg=0,offside=0,
+						ycard=0,rcard=0,save_opps=0,saves=0,goals_allowed=0;
+				for(SoccerGameStats s: allStats){
+					shots += s.getshots();
+					sog += s.getsog();
+					goals += s.getgoals();
+					ast += s.getast();
+					fouls += s.getfouls();
+					pka += s.getpka(); 
+					pkg += s.getpkg();
+					offside += s.getoffside();
+					ycard += s.getycard();
+					rcard += s.getrcard();
+					save_opps += s.getsaveopps();
+					saves += s.getsaves();
+					goals_allowed += s.getgoalsallowed();
+				}
 				
-			((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.playerName)).setText(player.getpname());
-			((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.teamName)).setText(team.gettname());
-			((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.goalTotal)).setText("Goals: "+stats.getgoals());
-			((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.assistTotal)).setText("Assists: "+stats.getast());
-			((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.shotOnGoalTotal)).setText("Shots On Goal: "+stats.getsog());
-			((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.penaltyTypeTotal)).setText(
-					" Yellow Cards:" + stats.getycard() +
-					"\n Red Cards: " + stats.getrcard());
-			//Goalie Stats
-			((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.goalieTitle)).setText("Goalie Stats");
-			((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.goalieStats)).setText(
-				" Saves:" + stats.getsaves() +
-				"\n Goals Allowed: " + stats.getgoalsallowed() +
-	
-				"\n Save %: " + stats.getsavepercent());
+				shots /= allStats.size();
+				sog /= allStats.size();
+				goals /= allStats.size();
+				ast /= allStats.size();
+				fouls /= allStats.size();
+				pka /= allStats.size(); 
+				pkg /= allStats.size();
+				offside /= allStats.size();
+				ycard /= allStats.size();
+				rcard /= allStats.size();
+				save_opps /= allStats.size();
+				saves /= allStats.size();
+				goals_allowed /= allStats.size();
+				
+			    String savepercent;
+		    	if((saves+goals_allowed)>0){
+		    		savepercent= String.format("%.3f", saves/(saves+goals_allowed));
+		    	}
+		    	else{
+		    		savepercent= "N/A";
+		    	}
+			    
+				
+				((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.playerName)).setText(player.getpname() + " - Average Stats");
+				((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.teamName)).setText(team.gettname());
+				((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.goalTotal)).setText("Goals: "+String.format("%.3f", goals));
+				((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.assistTotal)).setText("Assists: "+String.format("%.3f", ast));
+				((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.shotOnGoalTotal)).setText("Shots On Goal: "+String.format("%.3f", sog));
+				((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.penaltyTypeTotal)).setText(
+						" Yellow Cards:" + String.format("%.3f", ycard) +
+						"\n Red Cards: " + String.format("%.3f", rcard));
+				//Goalie Stats
+				((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.goalieTitle)).setText("Goalie Stats");
+				((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.goalieStats)).setText(
+					" Saves:" + String.format("%.3f", saves) +
+					"\n Goals Allowed: " + String.format("%.3f", goals_allowed) +
+		
+					"\n Save %: " + savepercent);		
+			}
+			else{
+				
+				SoccerGameStats stats = _db.getPlayerGameStats(g_id, player.getpid());
+					
+				((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.playerName)).setText(player.getpname());
+				((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.teamName)).setText(team.gettname());
+				((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.goalTotal)).setText("Goals: "+stats.getgoals());
+				((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.assistTotal)).setText("Assists: "+stats.getast());
+				((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.shotOnGoalTotal)).setText("Shots On Goal: "+stats.getsog());
+				((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.penaltyTypeTotal)).setText(
+						" Yellow Cards:" + stats.getycard() +
+						"\n Red Cards: " + stats.getrcard());
+				//Goalie Stats
+				((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.goalieTitle)).setText("Goalie Stats");
+				((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.goalieStats)).setText(
+					" Saves:" + stats.getsaves() +
+					"\n Goals Allowed: " + stats.getgoalsallowed() +
+		
+					"\n Save %: " + stats.getsavepercent());
+			}
 		}
 	}
 }

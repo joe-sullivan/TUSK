@@ -28,6 +28,8 @@ public class BasketballIndividualStatActivity extends FragmentActivity{
 	protected ArrayList<ShotChartCoords> _shots;
 	protected GameInfo _gameInfo;
 	protected String _player;
+	protected ArrayList<BasketballGames> _games;
+	protected boolean _average = false;
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -43,10 +45,15 @@ public class BasketballIndividualStatActivity extends FragmentActivity{
 		_home = getIntent().getBooleanExtra(StaticFinalVars.HOME_OR_AWAY, true);
 		_shots = (ArrayList<ShotChartCoords>) getIntent().getSerializableExtra(StaticFinalVars.SHOT_CHART);
 		//NEW
+
 		_basketball_db = new BasketballDatabaseHelper(BasketballIndividualStatActivity.this);
 
 		_player = getIntent().getStringExtra(StaticFinalVars.PLAYER);
 		_team2 = (Teams) getIntent().getSerializableExtra(StaticFinalVars.TEAM_INFO2);
+		//AVE
+		_games = (ArrayList<BasketballGames>) getIntent().getSerializableExtra(StaticFinalVars.GAMES);
+		_average = getIntent().getBooleanExtra(StaticFinalVars.AVERAGE, false);
+		
 		if(_name!=null){
 			if(_shots.isEmpty()&&!_name.equals(_team.getabbv()+" Stats")){
 				_shots = (ArrayList<ShotChartCoords>) _basketball_db.getAllTeamShotsGame(_team.gettid(), g_id);
@@ -100,7 +107,13 @@ public class BasketballIndividualStatActivity extends FragmentActivity{
 		_game = (BasketballGames) _basketball_db.getGame(g_id);
 
         _pager = (ViewPager) findViewById(R.id.statsPager);
-        _pagerAdapter = new BasketballIndividualStatPageAdapter(getSupportFragmentManager(), 2);
+       //AVE
+        if(_average){
+            _pagerAdapter = new BasketballIndividualStatPageAdapter(getSupportFragmentManager(), 1);
+        }
+        else{
+        	_pagerAdapter = new BasketballIndividualStatPageAdapter(getSupportFragmentManager(), 2);
+        }
         _pager.setAdapter(_pagerAdapter);
         _pager.setCurrentItem(value);
 	}
