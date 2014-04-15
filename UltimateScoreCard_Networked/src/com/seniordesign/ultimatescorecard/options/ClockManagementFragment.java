@@ -148,7 +148,7 @@ public class ClockManagementFragment extends Fragment{
 		public void onClick(View view) {
 			Builder builder = new Builder(ClockManagementFragment.this.getActivity());
 			builder.setTitle("Confirmation");	
-			builder.setMessage("Are you sure to saved these settings?");
+			builder.setMessage("Are you sure you want to save these settings?");
 			builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {

@@ -17,6 +17,7 @@ import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -27,6 +28,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -62,6 +64,9 @@ public class SoccerActivity extends Activity{
 	private long g_id;
 	private ArrayList<ShotChartCoords> _homeShots, _awayShots;
 	
+	private int[] _team1SO = new int[]{0,0,0,0,0};
+	private int[] _team2SO = new int[]{0,0,0,0,0};
+	
 	private UndoManager _undoManager;
 	public UndoInstance _undoInstance;
 	
@@ -86,8 +91,7 @@ public class SoccerActivity extends Activity{
 		_gti.setUndoInstance(_undoInstance);
 		_undoInstance.setgid(g_id);
 
-		
-		
+			
 		_gameLog.setdb(_soccer_db);
 		_gameLog.setgid(g_id);
 		_gameInfo = _gti.getGameInfo();
@@ -117,7 +121,6 @@ public class SoccerActivity extends Activity{
 		
 		_homeLayout = (RelativeLayout)findViewById(R.id.homeShotIcons);
 		_awayLayout = (RelativeLayout)findViewById(R.id.awayShotIcons);
-
 		
 		_iconAdder = new ShotIconAdder(_homeLayout, _awayLayout, getApplicationContext(), "soccer", _undoInstance);
 		_undoManager.setLayouts(_homeLayout, _awayLayout);
@@ -164,6 +167,8 @@ public class SoccerActivity extends Activity{
 		setTextAndListener(_option1Button, noGoalListener(true), "Saved");
 		setTextAndListener(_option2Button, goalScoredListener, "Goal");
 		setTextAndListener(_option3Button, noGoalListener(false), "Missed");
+		_gameClockView.setOnClickListener(null);
+		zeroTimeDisabler();	
 	}
 	
 	private void assistButtonSet(String player){
@@ -171,12 +176,15 @@ public class SoccerActivity extends Activity{
 		setTextAndListener(_option1Button, null, "Assist?");
 		setTextAndListener(_option2Button, assistListener(player), "Yes");
 		setTextAndListener(_option3Button, noAssistListener(player), "No");
+		zeroTimeDisabler();	
 	}
 	
 	private void penaltyCardsButtonSet(){
 		buttonSwap(false);
 		setTextAndListener(_option4Button, penaltyCardListener(false), "Yellow Card");
 		setTextAndListener(_option5Button, penaltyCardListener(true), "Red Card");
+		_gameClockView.setOnClickListener(null);
+		zeroTimeDisabler();	
 	}
 	
 	private void buttonSwap (boolean whichSet){
@@ -210,9 +218,15 @@ public class SoccerActivity extends Activity{
 		_option4Button.setEnabled(true);
 		_option5Button.setEnabled(true);
 	}
+	
+	private void zeroTimeDisabler(){
+		if(zeroTime()){
+			mainButtonSet();
+			disableButtons();
+		}
+	}
 
 //-----------------------------------------------------------------------------------------------	
-	
 	private OnClickListener shotTakenListener = new OnClickListener(){
 		@Override
 		public void onClick(View view) {
@@ -466,6 +480,7 @@ public class SoccerActivity extends Activity{
 							_gti.getTeam().getPlayer(player).penaltyYellow();
 						}
 						mainButtonSet();
+						_gameClockView.setOnClickListener(timerClickListener);
 					}
 				});
 				allowMenuAndChangingPossession();
@@ -529,6 +544,7 @@ public class SoccerActivity extends Activity{
 					if(!goal){
 						enableButtons();
 					}
+					_gameClockView.setOnClickListener(timerClickListener);
 					_soccerField.setOnTouchListener(null);
 				}
 				return false;
@@ -641,10 +657,7 @@ public class SoccerActivity extends Activity{
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent = null;
 		switch(item.getItemId()){
-		
-		case R.id.settings:
-			break;
-		
+			
 		case R.id.boxscore:
 			intent = new Intent(getApplicationContext(), SoccerStatsActivity.class);			
 			_gameInfo = _gti.getGameInfo();
@@ -677,23 +690,35 @@ public class SoccerActivity extends Activity{
 			startActivity(intent);
 			break;
 		
-		case R.id.editGame:
-			break;
-		
 		case R.id.nextPeriod:
+			SharedPreferences prefs = getApplicationContext().getSharedPreferences("GameClock", Context.MODE_PRIVATE);
+			int numPer = Integer.parseInt(prefs.getString("numPerSoccer", "2 Halves").split(" ")[0]);
 			String quarter = ((TextView)findViewById(R.id.periodNumber)).getText().toString();
+			quarter = ((TextView)findViewById(R.id.periodNumber)).getText().toString();
 			if(zeroTime()){
-				if(quarter.equals("1ST")){
+				if(quarter.equals("1ST") && numPer > 1){
 					((TextView)findViewById(R.id.periodNumber)).setText("2ND");
 				}
-				else if(quarter.equals("2ND")){
-					((TextView)findViewById(R.id.periodNumber)).setText("OT");
+				else if((quarter.equals("1ST") && numPer > 1) || quarter.equals("2ND")){
+					if(Integer.parseInt(_homeScoreTextView.getText().toString()) == Integer.parseInt(_awayScoreTextView.getText().toString())){
+						((TextView)findViewById(R.id.periodNumber)).setText("OT");
+					}
+					else{
+						endGame(false);
+						break;
+					}
 				}
 				else{
-					((TextView)findViewById(R.id.periodNumber)).setText("k-OT");
+					if(Integer.parseInt(_homeScoreTextView.getText().toString()) == Integer.parseInt(_awayScoreTextView.getText().toString())){
+						whichTeamShootFirst();
+					}
+					else{
+						endGame(false);
+						break;
+					}
 				}
-				SharedPreferences prefs = getApplicationContext().getSharedPreferences("GameClock", Context.MODE_PRIVATE);
-				int minuteTime = Integer.parseInt(prefs.getString("perLenSoccer", "12 minutes").split(" ")[0]);
+				quarter = ((TextView)findViewById(R.id.periodNumber)).getText().toString();
+				int minuteTime = Integer.parseInt(prefs.getString("perLenSoccer", "45 minutes").split(" ")[0]);
 				_gameClock.restartTimer(minuteTime*60*1000);
 				_gameClockView.setOnClickListener(startGameListener);
 			}
@@ -716,6 +741,198 @@ public class SoccerActivity extends Activity{
 		_awayScoreTextView.setText(_gti.getAwayScoreText());
 		_homeScoreTextView.setText(_gti.getHomeScoreText());
 		return true;
+	}
+	
+//---------------------------------------------------------------------------------------------------------------------
+	private void whichTeamShootFirst(){
+		Builder wtsfDialog = new Builder(SoccerActivity.this);
+		wtsfDialog.setTitle("Shootout:");
+		wtsfDialog.setMessage("Which team shoots first?");
+		
+		wtsfDialog.setPositiveButton(_gti.getHomeAbbr(), new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				shootOut(true);				
+			}
+		});	
+		wtsfDialog.setNegativeButton(_gti.getAwayAbbr(), new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				shootOut(false);				
+			}
+		});	
+		wtsfDialog.show();
+		
+	}
+	
+	private void shootOut(boolean home){
+		Builder builder = new Builder(SoccerActivity.this);
+		AlertDialog alert = builder.create();
+		alert.setTitle("Shootout:");
+		
+		LayoutInflater inflater = this.getLayoutInflater();
+		final View layout = inflater.inflate(R.layout.dialog_shootout, null);
+		alert.setView(layout);
+		
+		if(home){
+			((TextView)layout.findViewById(R.id.textTeam1)).setText(_gti.getHomeTeam());
+			((TextView)layout.findViewById(R.id.textTeam2)).setText(_gti.getAwayTeam());
+		}
+		else{
+			((TextView)layout.findViewById(R.id.textTeam1)).setText(_gti.getAwayTeam());
+			((TextView)layout.findViewById(R.id.textTeam2)).setText(_gti.getHomeTeam());
+		}
+		
+		((ImageView)layout.findViewById(R.id.imageViewH1)).setOnClickListener(shootOutGoalMadeListener(true,0));		
+		((Button)layout.findViewById(R.id.finishButton)).setOnClickListener(analyzeSOInputListener(home, alert));
+		alert.show();
+	}
+	
+	private OnClickListener shootOutGoalMadeListener(final boolean home, final int shotNumber){
+		OnClickListener shootOutGoalMadeListener = new OnClickListener(){
+			@Override
+			public void onClick(View view) {
+				((ImageView)view).setImageDrawable(getApplicationContext().getResources().getDrawable(R.drawable.soccerball_check));
+				if(home){
+					_team1SO[shotNumber] = 1;
+				}
+				else{
+					_team2SO[shotNumber] = 1;
+				}				
+				unlockNextShot(view);
+				view.setOnClickListener(shootOutGoalMissListener(home, shotNumber));
+			}		
+		};
+		return shootOutGoalMadeListener;
+	}
+	
+	private OnClickListener shootOutGoalMissListener(final boolean home, final int shotNumber){
+		OnClickListener shootOutGoalMadeListener = new OnClickListener(){
+			@Override
+			public void onClick(View view) {
+				((ImageView)view).setImageDrawable(getApplicationContext().getResources().getDrawable(R.drawable.soccerball_x));
+				if(home){
+					_team1SO[shotNumber] = -1;
+				}
+				else{
+					_team2SO[shotNumber] = -1;
+				}
+				view.setOnClickListener(shootOutGoalMadeListener(home, shotNumber));
+			}		
+		};
+		return shootOutGoalMadeListener;
+	}
+	
+	private void unlockNextShot(View view){
+		if(view.getId() == R.id.imageViewH1){
+			((View)view.getParent().getParent()).findViewById(R.id.imageViewA1).setOnClickListener(shootOutGoalMadeListener(false,0));
+		}
+		else if(view.getId() == R.id.imageViewA1){
+			((View)view.getParent().getParent()).findViewById(R.id.imageViewH2).setOnClickListener(shootOutGoalMadeListener(true,1));
+		}
+		else if(view.getId() == R.id.imageViewH2){
+			((View)view.getParent().getParent()).findViewById(R.id.imageViewA2).setOnClickListener(shootOutGoalMadeListener(false,1));
+		}
+		else if(view.getId() == R.id.imageViewA2){
+			((View)view.getParent().getParent()).findViewById(R.id.imageViewH3).setOnClickListener(shootOutGoalMadeListener(true,2));
+		}
+		else if(view.getId() == R.id.imageViewH3){
+			((View)view.getParent().getParent()).findViewById(R.id.imageViewA3).setOnClickListener(shootOutGoalMadeListener(false,2));
+		}
+		else if(view.getId() == R.id.imageViewA3){
+			((View)view.getParent().getParent()).findViewById(R.id.imageViewH4).setOnClickListener(shootOutGoalMadeListener(true,3));
+		}
+		else if(view.getId() == R.id.imageViewH4){
+			((View)view.getParent().getParent()).findViewById(R.id.imageViewA4).setOnClickListener(shootOutGoalMadeListener(false,3));
+		}
+		else if(view.getId() == R.id.imageViewA4){
+			((View)view.getParent().getParent()).findViewById(R.id.imageViewH5).setOnClickListener(shootOutGoalMadeListener(true,4));
+		}
+		else{
+			((View)view.getParent().getParent()).findViewById(R.id.imageViewA5).setOnClickListener(shootOutGoalMadeListener(false,4));
+		}
+	}
+	
+	private OnClickListener analyzeSOInputListener(final boolean home, final AlertDialog alert){
+		OnClickListener analyzeSOInputListener =  new OnClickListener(){
+			@Override
+			public void onClick(View view) {
+				int team1Now = 0, team2Now = 0, maxTeam1 = 5, maxTeam2 = 5;
+				for(int i=0; i<5; i++){
+					if(_team1SO[i] != 0){
+						if(_team1SO[i] == 1){ team1Now++; }
+						else{ maxTeam1--; }					
+						if(_team2SO[i] != 0){
+							if(_team2SO[i] == 1){ team2Now++; }
+							else{ maxTeam2--; }
+						}
+						else{ break; }
+					}				
+					else{ break; }
+				}
+				if(maxTeam1 < team2Now){
+					if(home){ //team 1 is home, team 2 is away --> team 2 (away) wins
+						_gti.getAwayTeamInstance().increaseScore(1);
+					}
+					else{ //team 2 is home, team 1 is away --> team 1 (home) wins
+						_gti.getHomeTeamInstance().increaseScore(1);
+					}
+					alert.cancel();
+					endGame(true);
+				}
+				else if(maxTeam2 < team1Now){
+					if(home){ //team 1 is home, team 2 is away --> team 1 (home) wins
+						_gti.getHomeTeamInstance().increaseScore(1);
+					}
+					else{ //team 2 is home, team 1 is away --> team 2 (away) wins
+						_gti.getAwayTeamInstance().increaseScore(1);
+					}
+					alert.cancel();
+					endGame(true);
+				}
+				else if(_team1SO[4] != 0 && _team1SO[4] != 0 && maxTeam1 == maxTeam2){
+					alert.cancel();
+					suddenDeathSO();
+				}
+			}
+		};
+		return analyzeSOInputListener;
+	}
+	
+	private void suddenDeathSO(){
+		Builder builder = new Builder(SoccerActivity.this);
+		builder.setTitle("Sudden Death Shootout:");
+		builder.setMessage("Who wins?");
+		builder.setPositiveButton(_gti.getAwayAbbr(), new DialogInterface.OnClickListener() {			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {				
+				_gti.getAwayTeamInstance().increaseScore(1);
+				endGame(true);
+				dialog.dismiss();				
+			}
+		});
+		builder.setNegativeButton(_gti.getHomeAbbr(), new DialogInterface.OnClickListener() {			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {				
+				_gti.getHomeTeamInstance().increaseScore(1);
+				endGame(true);
+				dialog.dismiss();				
+			}
+		});
+		builder.show();
+	}
+		
+	private void endGame(boolean shootOut){		
+		if(shootOut){
+			updateScore();
+			_gameClockView.setText("FINAL(SO)");
+		}
+		else{
+			_gameClockView.setText("FINAL");
+		}
+		_gameClockView.setOnClickListener(null);
+		_soccerField.setOnClickListener(null);
+		disableButtons();
 	}
 	
 	@Override

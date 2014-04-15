@@ -8,6 +8,7 @@ import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
 import com.seniordesign.ultimatescorecard.sqlite.helper.ShotChartCoords;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
+import com.seniordesign.ultimatescorecard.stats.basketball.BasketballStatsActivity;
 import com.seniordesign.ultimatescorecard.stats.soccer.SoccerStatsActivity;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
 
@@ -101,6 +102,8 @@ public class HockeyBoxscoreFragment extends Fragment{
 				String gameName = _away.getabbv() + " vs " + _home.getabbv()+":\n"+game.getDate();
 				layout.addView(newTextView(gameName));
 			}	
+			//AVE
+			layout.addView(newTextView("Average Stats"));
         }
         //END NEW
         else{
@@ -165,8 +168,23 @@ public class HockeyBoxscoreFragment extends Fragment{
 		public void onClick(View v) {
 			Intent intent = new Intent(getActivity().getApplicationContext(), HockeyIndividualStatActivity.class);
 			//NEW
-			if(_player!=null){
-				if(!_player.equals("All Players")){
+			//AVE
+			String aveTest = ((TextView)v).getText().toString();
+			boolean average = aveTest.equals("Average Stats");
+			if(_playerView){
+				if(average){
+					intent.putExtra(StaticFinalVars.GAMES, _games);
+		        	
+		        	intent.putExtra(StaticFinalVars.TEAM_INFO, ((HockeyStatsActivity) getActivity()).getGameInfo().getHomeTeam());
+		        	intent.putExtra(StaticFinalVars.TEAM_INFO2, ((HockeyStatsActivity) getActivity()).getGameInfo().getAwayTeam());
+		        	ArrayList<Players> _ps = ((HockeyStatsActivity) getActivity()).getGameInfo().getHomePlayers();
+		        	_ps.addAll(((HockeyStatsActivity) getActivity()).getGameInfo().getAwayPlayers());
+					intent.putExtra(StaticFinalVars.PLAYERS_INFO, _ps);
+					intent.putExtra(StaticFinalVars.GAME_ID, ((HockeyStatsActivity) getActivity()).getGameInfo().getgid());
+					intent.putExtra(StaticFinalVars.HOME_OR_AWAY, _lookingAtHome);
+					intent.putExtra(StaticFinalVars.SHOT_CHART, new ArrayList<ShotChartCoords>());	
+				}
+				else if(!_player.equals("All Players")){
 		        	intent.putExtra(StaticFinalVars.TEAM_INFO, ((HockeyStatsActivity) getActivity()).getGameInfo().getHomeTeam());
 		        	intent.putExtra(StaticFinalVars.TEAM_INFO2, ((HockeyStatsActivity) getActivity()).getGameInfo().getAwayTeam());
 		        	ArrayList<Players> _ps = ((HockeyStatsActivity) getActivity()).getGameInfo().getHomePlayers();
@@ -230,6 +248,7 @@ public class HockeyBoxscoreFragment extends Fragment{
 	        }
 			//NEW
 			intent.putExtra(StaticFinalVars.PLAYER, _player);
+			intent.putExtra(StaticFinalVars.AVERAGE, average);
 			//END NEW
 			startActivity(intent);
 		}

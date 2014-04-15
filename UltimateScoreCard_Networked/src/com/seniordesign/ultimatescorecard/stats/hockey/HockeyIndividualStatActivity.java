@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.seniordesign.ultimatescorecard.R;
 import com.seniordesign.ultimatescorecard.data.GameInfo;
+import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballGames;
 import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyGames;
 import com.seniordesign.ultimatescorecard.sqlite.helper.*;
@@ -28,6 +29,8 @@ public class HockeyIndividualStatActivity extends FragmentActivity{
 	protected ArrayList<ShotChartCoords> _shots;
 	protected GameInfo _gameInfo;
 	protected String _player;
+	protected ArrayList<BasketballGames> _games;
+	protected boolean _average = false;
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -47,6 +50,10 @@ public class HockeyIndividualStatActivity extends FragmentActivity{
 
 		_player = getIntent().getStringExtra(StaticFinalVars.PLAYER);
 		_team2 = (Teams) getIntent().getSerializableExtra(StaticFinalVars.TEAM_INFO2);
+		//AVE
+		_games = (ArrayList<BasketballGames>) getIntent().getSerializableExtra(StaticFinalVars.GAMES);
+		_average = getIntent().getBooleanExtra(StaticFinalVars.AVERAGE, false);
+		
 		if(_name!=null){
 			if(_shots.isEmpty()&&!_name.equals(_team.getabbv()+" Stats")){
 				_shots = (ArrayList<ShotChartCoords>) _hockey_db.getAllTeamShotsGame(_team.gettid(), g_id);
@@ -100,9 +107,14 @@ public class HockeyIndividualStatActivity extends FragmentActivity{
 		_game = (HockeyGames) _hockey_db.getGame(g_id);
 
         _pager = (ViewPager) findViewById(R.id.statsPager);
-        _pagerAdapter = new HockeyIndividualStatPageAdapter(getSupportFragmentManager());
-        _pager.setAdapter(_pagerAdapter);
-        _pager.setCurrentItem(value);
+       if(_average){
+           _pagerAdapter = new HockeyIndividualStatPageAdapter(getSupportFragmentManager(),1);
+       }
+       else{
+    	   _pagerAdapter = new HockeyIndividualStatPageAdapter(getSupportFragmentManager(),2);
+       }
+       _pager.setAdapter(_pagerAdapter);
+       _pager.setCurrentItem(value);
 	}
 
 	@Override

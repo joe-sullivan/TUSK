@@ -2,7 +2,7 @@
 <resources>
 	
     <!-- Really High Level Text -->
-    <string name="application_name">UltimateScoreCard</string>
+    <string name="application_name">Ultimate Scorecard</string>
     <string name="basketball_screen">Basketball</string>
     <string name="football_screen">Football</string>
     <string name="soccer_screen">Soccer</string>
@@ -99,5 +99,7 @@
     <string name="password_hint">Password</string>
     <string name="p_name_hint">Player Name</string>
     <string name="p_num_hint">Player Number</string>
+    
+    <string name="finish_shoot_out">Finish</string>
     
 </resources>

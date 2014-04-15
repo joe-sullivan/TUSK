@@ -17,7 +17,7 @@ import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerDatabaseHelper;
 public class SoccerGameTime extends GameTime {
 	private static final long serialVersionUID = 7528809796107161199L;
 	private SoccerTeam _homeTeam, _awayTeam;
-	
+		
 	//databases
 	public SoccerDatabaseHelper _soccer_db;
 	private long g_id;

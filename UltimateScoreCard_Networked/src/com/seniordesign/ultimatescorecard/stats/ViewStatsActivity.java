@@ -298,7 +298,9 @@ public class ViewStatsActivity extends Activity{
 				}
 			}
 			else if (_game == null){
-				_game = _games.get(0);
+				if(_games!=null){
+					_game = _games.get(0);
+				}
 			}
 			//END NEW
 		

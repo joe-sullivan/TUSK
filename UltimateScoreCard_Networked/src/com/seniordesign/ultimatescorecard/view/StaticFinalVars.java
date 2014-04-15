@@ -47,6 +47,7 @@ public class StaticFinalVars {
 	public static final String PLAYER = "player";
 	public static final String TEAM_INFO2 = "teamInfo2";
 	public static final String TEAMS = "teams";
+	public static final String AVERAGE = "average";
 
 
 	

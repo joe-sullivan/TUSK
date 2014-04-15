@@ -69,6 +69,7 @@ public class BasketballActivity extends Activity{
 	
 	private UndoManager _undoManager;
 	public UndoInstance _undoInstance;
+	private int ot;
 	
 	//on creation of the page, trying to save all items that will appear on screen into a member variable
 	@Override
@@ -92,8 +93,6 @@ public class BasketballActivity extends Activity{
 		_undoManager = new UndoManager(_basketball_db, _gti.getHomeTeamInstance(),_gti.getAwayTeamInstance());
 		_gti.setUndoInstance(_undoInstance);
 		_undoInstance.setgid(g_id);
-
-		
 		
 		_gameLog.setdb(_basketball_db);
 		_gameLog.setgid(g_id);
@@ -635,7 +634,7 @@ public class BasketballActivity extends Activity{
 	public OnClickListener stealByListener = new OnClickListener(){
 		@Override
 		public void onClick(View view) {
-			_gti.getPlayer(((Button)view).getText().toString()).turnedOver();
+			_gti.getPlayer(((Button)view).getText().toString()).stealsBall();
 			String stlBy = ((Button)view).getText().toString();
 			setSlideOutButtonText(_gti.getPossession());
 			changeMenu(stealFromListener(stlBy), "Stolen From: ");
@@ -648,7 +647,7 @@ public class BasketballActivity extends Activity{
 			@Override
 			public void onClick(View view) {
 				_gameLog.stealing(player, ((Button)view).getText().toString());
-				_gti.getPlayer(((Button)view).getText().toString()).stealsBall();
+				_gti.getPlayer(((Button)view).getText().toString()).turnedOver();
 				recordActivity();
 				changePossession();
 				resetFeatures();
@@ -1060,7 +1059,7 @@ public class BasketballActivity extends Activity{
 	private void tipOff(){
 		Builder tipOffAlert = new Builder(this);
 		tipOffAlert.setTitle("Game Time");
-		tipOffAlert.setMessage("Which team won tip-off?");
+		tipOffAlert.setMessage("Which team starts with possession?");
 		tipOffAlert.setPositiveButton(_gti.getAwayAbbr(), new DialogInterface.OnClickListener(){
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
@@ -1186,10 +1185,7 @@ public class BasketballActivity extends Activity{
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent = null;
 		switch(item.getItemId()){
-		
-		case R.id.settings:
-			break;
-		
+
 		case R.id.boxscore:
 			intent = new Intent(getApplicationContext(), BasketballStatsActivity.class);			
 			_gameInfo = _gti.getGameInfo();
@@ -1222,29 +1218,42 @@ public class BasketballActivity extends Activity{
 			intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 1);
 			startActivity(intent);
 			break;
-		
-		case R.id.editGame:
-			break;
-		
+			
 		case R.id.nextQuarter:
+			SharedPreferences prefs = getApplicationContext().getSharedPreferences("GameClock", Context.MODE_PRIVATE);
+			int numPer = Integer.parseInt(prefs.getString("numPerBasketball", "1 Period").split(" ")[0]);
 			String quarter = ((TextView)findViewById(R.id.quarterNumber)).getText().toString();
 			if(zeroTime()){
-				if(quarter.equals("1ST")){
+				if(quarter.equals("1ST") && numPer > 1){
 					((TextView)findViewById(R.id.quarterNumber)).setText("2ND");
 				}
-				else if(quarter.equals("2ND")){
+				else if(quarter.equals("2ND") && numPer > 2){
 					((TextView)findViewById(R.id.quarterNumber)).setText("3RD");
 				}
-				else if(quarter.equals("3RD")){
+				else if(quarter.equals("3RD") && numPer > 3){
 					((TextView)findViewById(R.id.quarterNumber)).setText("4TH");
 				}
-				else if(quarter.equals("4TH")){
-					((TextView)findViewById(R.id.quarterNumber)).setText("OT");
+				else if((quarter.equals("1ST") && numPer == 1) || (quarter.equals("2ND") && numPer == 2) ||
+						(quarter.equals("3RD") && numPer == 3) || quarter.equals("4TH")){
+					if(Integer.parseInt(_homeScoreTextView.getText().toString()) == Integer.parseInt(_awayScoreTextView.getText().toString())){
+						((TextView)findViewById(R.id.quarterNumber)).setText("OT");
+						ot = 1;
+					}
+					else{
+						endGame();
+						break;
+					}
 				}
 				else{
-					((TextView)findViewById(R.id.quarterNumber)).setText("k-OT");
+					if(Integer.parseInt(_homeScoreTextView.getText().toString()) == Integer.parseInt(_awayScoreTextView.getText().toString())){
+						ot++;
+						((TextView)findViewById(R.id.quarterNumber)).setText(ot+"-OT");
+					}
+					else{
+						endGame();
+						break;
+					}
 				}
-				SharedPreferences prefs = getApplicationContext().getSharedPreferences("GameClock", Context.MODE_PRIVATE);
 				int minuteTime = Integer.parseInt(prefs.getString("perLenBasketball", "12 minutes").split(" ")[0]);
 				_gameClock.restartTimer(minuteTime*60*1000);
 				_gameClockView.setOnClickListener(startGameListener);
@@ -1268,6 +1277,13 @@ public class BasketballActivity extends Activity{
 		_awayScoreTextView.setText(_gti.getAwayScoreText());
 		_homeScoreTextView.setText(_gti.getHomeScoreText());
 		return true;
+	}
+	
+	private void endGame(){
+		_gameClockView.setText("FINAL");
+		_gameClockView.setOnClickListener(null);
+		_basketballCourt.setOnClickListener(null);
+		disableMainSettings();
 	}
 
 	@Override
