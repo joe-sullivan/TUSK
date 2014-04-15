@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/chooseTeamActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TableRow
+        android:id="@+id/titleRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:padding="@dimen/padding">
+
+        <TextView
+            android:id="@+id/team_selection_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/home_team_select_title"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+        
+    </TableRow>
+    
+    <Button
+        android:id="@+id/createNewTeam"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titleRow"
+        android:text="@string/create_new_team" 
+        android:padding="@dimen/padding"
+        android:onClick="addViews"/>
+            
+    <ScrollView
+        android:id="@+id/teamScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/createNewTeam" 
+    	android:layout_above="@+id/buttonRow"
+    	android:padding="@dimen/padding">
+		
+        <LinearLayout
+            android:id="@+id/teamListLayout"
+            android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+        	android:orientation="vertical">
+        	
+       	</LinearLayout>
+    </ScrollView>
+    
+    <TableRow
+        android:id="@+id/buttonRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" >
+
+        <Button
+            android:id="@+id/deleteTeamButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/delete_team_button" 
+            android:onClick="deleteATeam"/>
+        
+    </TableRow>
+</RelativeLayout>

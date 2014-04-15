@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:orientation="vertical" >
+	
+	  	<TextView
+	        android:id="@+id/playerName"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:padding="@dimen/padding"
+	        android:text="Player Name" 
+	        android:textSize="@dimen/large_text"/>
+	    
+	    <TextView
+	        android:id="@+id/teamName"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:padding="@dimen/padding"
+	        android:text="Team Name" />
+	
+	    <TextView
+	        android:id="@+id/goalTotal"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:padding="@dimen/padding"
+	        android:text="Points" 
+	        android:textSize="@dimen/large_text"/>
+	    
+	    
+	    <TextView
+	        android:id="@+id/assistTotal"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:padding="@dimen/padding"
+	        android:text="Assists" 
+	        android:textSize="@dimen/large_text"/>
+	    
+	   	<TextView
+	        android:id="@+id/shotOnGoalTotal"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:padding="@dimen/padding"
+	        android:text="Shots On Goal" 
+	        android:textSize="@dimen/large_text"/>
+	    
+	    <TextView
+	        android:id="@+id/penaltyTotal"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:padding="@dimen/padding"
+	        android:text="Penalty Cards:" 
+	        android:textSize="@dimen/large_text"/>
+	    
+	    <TextView
+	        android:id="@+id/penaltyTypeTotal"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:padding="@dimen/padding"
+	        android:text="Yellow/Red" />
+	    
+	   	<TextView
+	        android:id="@+id/goalieTitle"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:padding="@dimen/padding"
+	        android:text="Goalie Title" 
+	        android:textSize="@dimen/large_text"/>
+	    
+	     <TextView
+	        android:id="@+id/goalieStats"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:padding="@dimen/padding"
+	        android:text="Saves/GoalsAllowed/Save%" />
+	    
+	
+	</LinearLayout>
+</ScrollView>
