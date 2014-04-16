@@ -1,5 +1,8 @@
 package com.seniordesign.ultimatescorecard.sqlite.helper;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -8,6 +11,7 @@ import org.json.JSONException;
 
 import com.seniordesign.ultimatescorecard.data.StatData;
 import com.seniordesign.ultimatescorecard.data.UndoInstance;
+import com.seniordesign.ultimatescorecard.networkdatabase.helper.BasketballNetworkHelper;
 import com.seniordesign.ultimatescorecard.networkdatabase.helper.NetworkHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.*;
 
@@ -21,8 +25,9 @@ import android.util.Log;
 
 public abstract class DatabaseHelper extends SQLiteOpenHelper {
 
-	protected boolean _local = false;
-	protected NetworkHelper  _net = new NetworkHelper("fulltest", "fulltest", "fulltest");
+	protected boolean _local;
+	protected NetworkHelper  _net;
+	//= new NetworkHelper("fulltest", "fulltest", "fulltest");
 
 	protected UndoInstance _undoInstance;
 
@@ -102,6 +107,41 @@ public abstract class DatabaseHelper extends SQLiteOpenHelper {
 	public DatabaseHelper(Context context, String name, CursorFactory factory,
 			int version) {
 		super(context, name, factory, version);
+		
+		_local = true;
+        //_net = new BasketballNetworkHelper("a","b","c");
+        
+        String[] login = new String[4];
+        login[0] = "";
+        login[1] = "";
+        login[2] = "";
+        login[3] = "";
+        try {
+       	 
+            BufferedReader inputReader = new BufferedReader(new InputStreamReader(
+                    context.openFileInput("myfile")));
+            String inputString;
+            StringBuffer stringBuffer = new StringBuffer();      
+            int i = 0;
+            while ((inputString = inputReader.readLine()) != null) {
+               stringBuffer.append(inputString + "\n");
+          	  login[i] = inputString;
+          	  i++;
+            }
+
+           Log.i("READ","value from file: " + stringBuffer.toString());
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+        }
+        
+        if(login[0].equalsIgnoreCase("false")){
+        _local = false;
+        _net = new NetworkHelper(login[1], login[2], login[3]);
+        }
+		
 		// TODO Auto-generated constructor stub
 	}
 

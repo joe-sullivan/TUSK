@@ -1,11 +1,15 @@
 package com.seniordesign.ultimatescorecard.sqlite.hockey;
 
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.seniordesign.ultimatescorecard.data.StatData;
 import com.seniordesign.ultimatescorecard.data.hockey.HockeyPlayer;
+import com.seniordesign.ultimatescorecard.networkdatabase.helper.BasketballNetworkHelper;
 import com.seniordesign.ultimatescorecard.networkdatabase.helper.HockeyNetworkHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.DatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
@@ -94,6 +98,39 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
 
 	public HockeyDatabaseHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+		 _local = true;
+	        //_net = new BasketballNetworkHelper("a","b","c");
+	        
+	        String[] login = new String[4];
+	        login[0] = "";
+	        login[1] = "";
+	        login[2] = "";
+	        login[3] = "";
+	        try {
+	       	 
+	            BufferedReader inputReader = new BufferedReader(new InputStreamReader(
+	                    context.openFileInput("myfile")));
+	            String inputString;
+	            StringBuffer stringBuffer = new StringBuffer();      
+	            int i = 0;
+	            while ((inputString = inputReader.readLine()) != null) {
+	               stringBuffer.append(inputString + "\n");
+	          	  login[i] = inputString;
+	          	  i++;
+	            }
+
+	           Log.i("READ","value from file: " + stringBuffer.toString());
+
+	        } catch (IOException e) {
+
+	            e.printStackTrace();
+
+	        }
+	        
+	        if(login[0].equalsIgnoreCase("false")){
+	        _local = false;
+	        _net = new HockeyNetworkHelper(login[1], login[2], login[3]);
+	        }
 	}
 
 	public HockeyDatabaseHelper(Context context, String name, CursorFactory factory,

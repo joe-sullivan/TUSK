@@ -1,6 +1,7 @@
 package com.seniordesign.ultimatescorecard;
 
 
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 import com.seniordesign.ultimatescorecard.data.basketball.BasketballPlayer;
@@ -51,48 +52,48 @@ public class MainActivity extends Activity{
 	private boolean _loggedIn = false;
 	private SharedPreferences _prefs;
 
-	
+
 	//what the program should do when screen is created
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);																	//default stuff
 		setContentView(R.layout.activity_main);																//making the activity_main.xml page appear
-		
+
 		_basketballButton = (Button) findViewById(R.id.basketballButton);									//referring to the basketball button
 		_basketballButton.setBackgroundResource(R.drawable.view_style_plain_short);
 		_basketballButton.setOnClickListener(basketballButtonListener);										//setting a click listener for the button
 		_basketballButton.setOnTouchListener(shortButtonTouchListener);
-		
+
 		_footballButton = (Button) findViewById(R.id.footballButton);										//referring to the football button
 		_footballButton.setBackgroundResource(R.drawable.view_style_plain_short);
 		_footballButton.setOnClickListener(footballButtonListener);											//setting a click listener for the button
 		_footballButton.setOnTouchListener(shortButtonTouchListener);
-		
+
 		_hockeyButton = (Button) findViewById(R.id.hockeyButton);											//referring to the baseball button
 		_hockeyButton.setBackgroundResource(R.drawable.view_style_plain_short);
 		_hockeyButton.setOnClickListener(hockeyButtonListener);												//setting a click listener for the button
 		_hockeyButton.setOnTouchListener(shortButtonTouchListener);
-		
+
 		_soccerButton = (Button) findViewById(R.id.soccerButton);											//referring to the soccer button
 		_soccerButton.setBackgroundResource(R.drawable.view_style_plain_short);
 		_soccerButton.setOnClickListener(soccerButtonListener);												//setting a click listener for the button
 		_soccerButton.setOnTouchListener(shortButtonTouchListener);
-		
+
 		_loginButton = (Button) findViewById(R.id.loginButton);
 		_loginButton.setBackgroundResource(R.drawable.view_style_plain_long);
 		_loginButton.setOnClickListener(loginListener);
 		_loginButton.setOnTouchListener(longButtonTouchListener);
-		
+
 		_viewStatsButton = (Button) findViewById(R.id.viewStatisticButton);
 		_viewStatsButton.setBackgroundResource(R.drawable.view_style_plain_long);
 		_viewStatsButton.setOnClickListener(viewStatsListener);
 		_viewStatsButton.setOnTouchListener(longButtonTouchListener);
-		
+
 		_optionsButton = (Button) findViewById(R.id.optionButton);
 		_optionsButton.setBackgroundResource(R.drawable.view_style_plain_long);
 		_optionsButton.setOnClickListener(optionListener);
 		_optionsButton.setOnTouchListener(longButtonTouchListener);
-		
+
 		//NEW
 		_prefs = this.getSharedPreferences("GameClock", Context.MODE_PRIVATE);
 		if(_prefs.getString("numPerBasketball", this.getResources().getString(R.string.number_period))==null)
@@ -103,7 +104,7 @@ public class MainActivity extends Activity{
 			_prefs.edit().putString("numPerHockey", "3 Periods").commit();
 		if(_prefs.getString("numPerSoccer", this.getResources().getString(R.string.number_period))==null)
 			_prefs.edit().putString("numPerSoccer", "2 Halves").commit();
-	
+
 		if(_prefs.getString("perLenBasketball", this.getResources().getString(R.string.number_period))==null)
 			_prefs.edit().putString("perLenBasketball", "20 Minutes").commit();
 		if(_prefs.getString("perLenFootball", this.getResources().getString(R.string.number_period))==null)
@@ -113,29 +114,29 @@ public class MainActivity extends Activity{
 		if(_prefs.getString("perLenSoccer", this.getResources().getString(R.string.number_period))==null)
 			_prefs.edit().putString("perLenSoccer", "45 Minutes").commit();
 		//END NEW
-			
+
 		//databases
 		_basketball_db = new BasketballDatabaseHelper(getApplicationContext());
 		_football_db = new FootballDatabaseHelper(getApplicationContext());
 		_soccer_db = new SoccerDatabaseHelper(getApplicationContext());
 		_hockey_db = new HockeyDatabaseHelper(getApplicationContext());
-		
+
 		//.onUpgrade will reset databases (i.e. erase all data stored in them)
-		
+
 		_basketball_db.onCreate(_basketball_db.getWritableDatabase());
 		//_basketball_db.onUpgrade(_basketball_db.getWritableDatabase(),0,0);
-		
+
 		_football_db.onCreate(_football_db.getWritableDatabase());
 		//_football_db.onUpgrade(_football_db.getWritableDatabase(),0,0);
-		
+
 		_soccer_db.onCreate(_soccer_db.getWritableDatabase());
 		//_soccer_db.onUpgrade(_soccer_db.getWritableDatabase(),0,0);
-		
+
 		_hockey_db.onCreate(_hockey_db.getWritableDatabase());
 		//_hockey_db.onUpgrade(_hockey_db.getWritableDatabase(),0,0);
-		
+
 		if(_basketball_db.getAllTeams().size()==0){
-			
+
 			//Test Basketball Teams and players
 			Teams spurs = new Teams("San Antonio Spurs", "SAS", "Gregg Popovich", "Basketball");
 			Teams rockets = new Teams("Houston Rockets", "HOU", "Kevin McHale", "Basketball");
@@ -143,14 +144,14 @@ public class MainActivity extends Activity{
 			Teams grizzlies = new Teams("Memphis Grizzlies", "MEM", "David Joerger", "Basketball");
 			Teams pelicans = new Teams("New Orleans Pelicans", "NO", "Monte Williams", "Basketball");
 			Teams huskies = new Teams("UConn Huskies", "UCONN", "Kevin Ollie", "Basketball");
-		
+
 			long spurs_id = _basketball_db.createTeams(spurs);
 			long rockets_id = _basketball_db.createTeams(rockets);
 			long mavericks_id = _basketball_db.createTeams(mavericks);
 			long grizzlies_id = _basketball_db.createTeams(grizzlies);
 			long pelicans_id = _basketball_db.createTeams(pelicans);
 			long huskies_id = _basketball_db.createTeams(huskies);
-			
+
 			BasketballPlayer TP9 = new BasketballPlayer(spurs_id, "Tony Parker", 9);
 			BasketballPlayer DG4 = new BasketballPlayer(spurs_id, "Danny Green", 4);		
 			BasketballPlayer KL2 = new BasketballPlayer(spurs_id, "Kawhi Leonard", 2);
@@ -164,7 +165,7 @@ public class MainActivity extends Activity{
 			BasketballPlayer CJ5 = new BasketballPlayer(spurs_id, "Cory Joesph", 5);
 			BasketballPlayer MB3 = new BasketballPlayer(spurs_id, "Marco Belinelli", 3);
 			BasketballPlayer AB16 = new BasketballPlayer(spurs_id, "Aron Baynes", 16);
-					
+
 			BasketballPlayer PB2 = new BasketballPlayer(rockets_id, "Patrick Beverly", 2);
 			BasketballPlayer JH13 = new BasketballPlayer(rockets_id, "James Harden", 13);
 			BasketballPlayer CP25 = new BasketballPlayer(rockets_id, "Chandler Parsons", 25);
@@ -178,7 +179,7 @@ public class MainActivity extends Activity{
 			BasketballPlayer AB0 = new BasketballPlayer(rockets_id, "Aaron Brooks", 0);
 			BasketballPlayer JH5 = new BasketballPlayer(rockets_id, "Jordan Hamilton", 5);
 			BasketballPlayer GS4 = new BasketballPlayer(rockets_id, "Greg Smith", 4);
-			
+
 			BasketballPlayer JC8 = new BasketballPlayer(mavericks_id, "Jose Calderon", 8);
 			BasketballPlayer ME11 = new BasketballPlayer(mavericks_id, "Monte Ellis", 11);
 			BasketballPlayer SM0 = new BasketballPlayer(mavericks_id, "Shawn Marion", 0);
@@ -192,7 +193,7 @@ public class MainActivity extends Activity{
 			BasketballPlayer SL3 = new BasketballPlayer(mavericks_id, "Shane Larkin", 3);
 			BasketballPlayer JC9 = new BasketballPlayer(mavericks_id, "Jae Crowder", 9);
 			BasketballPlayer BJ5 = new BasketballPlayer(mavericks_id, "Bernard James", 5);
-					
+
 			BasketballPlayer MC11 = new BasketballPlayer(grizzlies_id, "Mike Conley", 11);	
 			BasketballPlayer CL5 = new BasketballPlayer(grizzlies_id, "Courtney Lee", 5);	
 			BasketballPlayer TP21 = new BasketballPlayer(grizzlies_id, "Tayshaun Prince", 21);	
@@ -206,7 +207,7 @@ public class MainActivity extends Activity{
 			BasketballPlayer NC12 = new BasketballPlayer(grizzlies_id, "Nick Calathes", 12);	
 			BasketballPlayer TA9 = new BasketballPlayer(grizzlies_id, "Tony Allen", 9);	
 			BasketballPlayer QP20 = new BasketballPlayer(grizzlies_id, "Quincy Pondexter", 20);
-			
+
 			BasketballPlayer BR22 = new BasketballPlayer(pelicans_id, "Brian Roberts", 22);
 			BasketballPlayer EG10 = new BasketballPlayer(pelicans_id, "Eric Gordan", 10);
 			BasketballPlayer AA0 = new BasketballPlayer(pelicans_id, "Al-Farouq Aminu", 0);
@@ -220,7 +221,7 @@ public class MainActivity extends Activity{
 			BasketballPlayer JH11 = new BasketballPlayer(pelicans_id, "Jrue Holliday", 11);
 			BasketballPlayer JW5 = new BasketballPlayer(pelicans_id, "Jeff Withey", 5);
 			BasketballPlayer JS14 = new BasketballPlayer(pelicans_id, "Jason Smith", 14);
-			
+
 			BasketballPlayer PN0 = new BasketballPlayer(huskies_id, "Phillip Nolan", 0);
 			BasketballPlayer DD2 = new BasketballPlayer(huskies_id, "Deandre Daniels", 2);
 			BasketballPlayer TS3 = new BasketballPlayer(huskies_id, "Terrence Samuel", 3);
@@ -236,7 +237,7 @@ public class MainActivity extends Activity{
 			BasketballPlayer NA23 = new BasketballPlayer(huskies_id, "Nnamdi Amilo", 23);
 			BasketballPlayer TW25 = new BasketballPlayer(huskies_id, "Tor Watts", 25);
 			BasketballPlayer AB35 = new BasketballPlayer(huskies_id, "Amida Brimah", 35);
-	
+
 			long TP9_id = _basketball_db.createPlayers(TP9);
 			long DG4_id = _basketball_db.createPlayers(DG4);
 			long KL2_id = _basketball_db.createPlayers(KL2);
@@ -250,7 +251,7 @@ public class MainActivity extends Activity{
 			long CJ5_id = _basketball_db.createPlayers(CJ5);
 			long MB3_id = _basketball_db.createPlayers(MB3);
 			long AB16_id = _basketball_db.createPlayers(AB16);
-			
+
 			long PB2_id = _basketball_db.createPlayers(PB2);
 			long JH13_id = _basketball_db.createPlayers(JH13);
 			long CP25_id = _basketball_db.createPlayers(CP25);
@@ -264,7 +265,7 @@ public class MainActivity extends Activity{
 			long AB0_id = _basketball_db.createPlayers(AB0);
 			long JH5_id = _basketball_db.createPlayers(JH5);
 			long GS4_id = _basketball_db.createPlayers(GS4);
-			
+
 			long JC8_id = _basketball_db.createPlayers(JC8);
 			long ME11_id = _basketball_db.createPlayers(ME11);
 			long SM0_id = _basketball_db.createPlayers(SM0);
@@ -278,7 +279,7 @@ public class MainActivity extends Activity{
 			long SL3_id = _basketball_db.createPlayers(SL3);
 			long JC9_id = _basketball_db.createPlayers(JC9);
 			long BJ5_id = _basketball_db.createPlayers(BJ5);
-			
+
 			long MC11_id = _basketball_db.createPlayers(MC11);
 			long CL5_id = _basketball_db.createPlayers(CL5);
 			long TP21_id = _basketball_db.createPlayers(TP21);
@@ -292,7 +293,7 @@ public class MainActivity extends Activity{
 			long NC12_id = _basketball_db.createPlayers(NC12);
 			long TA9_id = _basketball_db.createPlayers(TA9);
 			long QP20_id = _basketball_db.createPlayers(QP20);
-			
+
 			long BR22_id = _basketball_db.createPlayers(BR22);
 			long EG10_id = _basketball_db.createPlayers(EG10);
 			long AA0_id = _basketball_db.createPlayers(AA0);
@@ -306,7 +307,7 @@ public class MainActivity extends Activity{
 			long JH11_id = _basketball_db.createPlayers(JH11);
 			long JW5_id = _basketball_db.createPlayers(JW5);
 			long JS14_id = _basketball_db.createPlayers(JS14);
-		
+
 			long SN13_id = _basketball_db.createPlayers(SN13);
 			long RB11_id = _basketball_db.createPlayers(RB11);
 			long NG5_id = _basketball_db.createPlayers(NG5);
@@ -322,20 +323,20 @@ public class MainActivity extends Activity{
 			long LT22_id = _basketball_db.createPlayers(LT22);
 			long NA23_id = _basketball_db.createPlayers(NA23);
 			long TW25_id = _basketball_db.createPlayers(TW25);
-		
+
 			//Test Football Teams and players
 			Teams patriots = new Teams("New England Patriots", "NWE", "Bill Belichick", "Football");
 			Teams jets = new Teams("New York Jets", "NYJ", "Rex Ryan", "Football");
 			Teams bears = new Teams("Chicago Bears", "CHI", "Marc Trestman", "Football");
 			Teams cowboys = new Teams("Dallas Cowboys", "DAL", "Jason Garrett", "Football");
 			Teams saints = new Teams("New Orleans Saints", "NO", "Sean Payton", "Football");
-		
+
 			long patriots_id = _football_db.createTeams(patriots);
 			long jets_id = _football_db.createTeams(jets);
 			long bears_id = _football_db.createTeams(bears);
 			long cowboys_id = _football_db.createTeams(cowboys);
 			long saints_id = _football_db.createTeams(saints);
-			
+
 			FootballPlayer TB12 = new FootballPlayer(patriots_id, "Tom Brady", 12);
 			FootballPlayer LB29 = new FootballPlayer(patriots_id, "LaGarette Blount", 29);		
 			FootballPlayer SR22 = new FootballPlayer(patriots_id, "Stevan Ridley", 22);
@@ -349,7 +350,7 @@ public class MainActivity extends Activity{
 			FootballPlayer VW75 = new FootballPlayer(patriots_id, "Vince Wilfork", 75);
 			FootballPlayer JM51 = new FootballPlayer(patriots_id, "Jerod Mayo", 51);
 			FootballPlayer DM32 = new FootballPlayer(patriots_id, "Devin McCourty", 32);
-					
+
 			FootballPlayer GS7 = new FootballPlayer(jets_id, "Geno Smith", 7);
 			FootballPlayer CI33 = new FootballPlayer(jets_id, "Chris Ivory", 33);
 			FootballPlayer BP29 = new FootballPlayer(jets_id, "Bilal Powell", 29);
@@ -363,7 +364,7 @@ public class MainActivity extends Activity{
 			FootballPlayer SR91 = new FootballPlayer(jets_id, "Sheldon Richardson", 91);
 			FootballPlayer CP97 = new FootballPlayer(jets_id, "Calvin Pace", 97);
 			FootballPlayer DM27 = new FootballPlayer(jets_id, "Dee Milliner", 27);
-			
+
 			FootballPlayer JC6 = new FootballPlayer(bears_id, "Jay Cutler", 6);
 			FootballPlayer MF22 = new FootballPlayer(bears_id, "Matt Forte", 22);
 			FootballPlayer MB29 = new FootballPlayer(bears_id, "Michael Bush", 29);
@@ -377,7 +378,7 @@ public class MainActivity extends Activity{
 			FootballPlayer JP90 = new FootballPlayer(bears_id, "Julius Peppers", 90);
 			FootballPlayer LB60 = new FootballPlayer(bears_id, "Lance Briggs", 60);
 			FootballPlayer MW21 = new FootballPlayer(bears_id, "Major Wright", 21);
-					
+
 			FootballPlayer TR9 = new FootballPlayer(cowboys_id, "Tony Romo", 9);	
 			FootballPlayer DM29 = new FootballPlayer(cowboys_id, "DeMarco Murray", 29);	
 			FootballPlayer JR21 = new FootballPlayer(cowboys_id, "Joesph Randle", 21);	
@@ -391,7 +392,7 @@ public class MainActivity extends Activity{
 			FootballPlayer DW94 = new FootballPlayer(cowboys_id, "DeMarcus Ware", 94);	
 			FootballPlayer SL50 = new FootballPlayer(cowboys_id, "Sean Lee", 50);	
 			FootballPlayer MC24 = new FootballPlayer(cowboys_id, "Morris Claiborne", 24);
-			
+
 			FootballPlayer DB9 = new FootballPlayer(saints_id, "Drew Brees", 9);
 			FootballPlayer MI22 = new FootballPlayer(saints_id, "Mark Ingram", 22);
 			FootballPlayer DS43 = new FootballPlayer(saints_id, "Darren Sproles", 43);
@@ -405,7 +406,7 @@ public class MainActivity extends Activity{
 			FootballPlayer JC94 = new FootballPlayer(saints_id, "Jordan Cameron", 94);
 			FootballPlayer CL50 = new FootballPlayer(saints_id, "Curtis Lofton", 50);
 			FootballPlayer MJ27 = new FootballPlayer(saints_id, "Malcolm Jenkins", 27);
-					
+
 			long TB12_id = _football_db.createPlayers(TB12);
 			long LB29_id = _football_db.createPlayers(LB29);
 			long SR22_id = _football_db.createPlayers(SR22);
@@ -419,7 +420,7 @@ public class MainActivity extends Activity{
 			long VW75_id = _football_db.createPlayers(VW75);
 			long JM51_id = _football_db.createPlayers(JM51);
 			long DM32_id = _football_db.createPlayers(DM32);
-			
+
 			long GS7_id = _football_db.createPlayers(GS7);
 			long CI33_id = _football_db.createPlayers(CI33);
 			long BP29_id = _football_db.createPlayers(BP29);
@@ -433,7 +434,7 @@ public class MainActivity extends Activity{
 			long SR91_id = _football_db.createPlayers(SR91);
 			long CP97_id = _football_db.createPlayers(CP97);
 			long DM27_id = _football_db.createPlayers(DM27);
-			
+
 			long JC6_id = _football_db.createPlayers(JC6);
 			long MF22_id = _football_db.createPlayers(MF22);
 			long MB29_id = _football_db.createPlayers(MB29);
@@ -447,7 +448,7 @@ public class MainActivity extends Activity{
 			long JP90_id = _football_db.createPlayers(JP90);
 			long LB60_id = _football_db.createPlayers(LB60);
 			long MW21_id = _football_db.createPlayers(MW21);
-			
+
 			long TR9_id = _football_db.createPlayers(TR9);
 			long DM29_id = _football_db.createPlayers(DM29);
 			long JR21_id = _football_db.createPlayers(JR21);
@@ -461,7 +462,7 @@ public class MainActivity extends Activity{
 			long DW94_id = _football_db.createPlayers(DW94);
 			long SL50_id = _football_db.createPlayers(SL50);
 			long MC24_id = _football_db.createPlayers(MC24);
-			
+
 			long DB9_id = _football_db.createPlayers(DB9);
 			long MI22_id = _football_db.createPlayers(MI22);
 			long DS43_id = _football_db.createPlayers(DS43);
@@ -475,22 +476,22 @@ public class MainActivity extends Activity{
 			long JC94_id = _football_db.createPlayers(JC94);
 			long CL50_id = _football_db.createPlayers(CL50);
 			long MJ27_id = _football_db.createPlayers(MJ27);
-	
-		
-			
+
+
+
 			//Test Hockey Teams and players
 			Teams rangers = new Teams("New York Rangers", "NYR", "Alain Vigneault", "Hockey");
 			Teams bruins = new Teams("Boston Bruins", "BOS", "Claude Julien", "Hockey");
 			Teams blackhawks = new Teams("Chicago Blackhawks", "CHI", "Joel Quenneville", "Hockey");
 			Teams penguins = new Teams("Pittsburg Penguins", "PIT", "Dan Bylsma", "Hockey");
 			Teams kings = new Teams("Los Angeles Kings", "LA", "Darryl Sutter", "Hockey");
-			
+
 			long rangers_id = _hockey_db.createTeams(rangers);
 			long bruins_id = _hockey_db.createTeams(bruins);
 			long blackhawks_id = _hockey_db.createTeams(blackhawks);
 			long penguins_id = _hockey_db.createTeams(penguins);
 			long kings_id = _hockey_db.createTeams(kings);
-			
+
 			HockeyPlayer HL30 = new HockeyPlayer(rangers_id, "Henrik Lunqvist", 30);
 			HockeyPlayer DG5 = new HockeyPlayer(rangers_id, "Dan Girardi", 5);
 			HockeyPlayer RM27 = new HockeyPlayer(rangers_id, "Ryan McDonagh", 27);
@@ -503,7 +504,7 @@ public class MainActivity extends Activity{
 			HockeyPlayer CK20 = new HockeyPlayer(rangers_id, "Chris Kreider", 20);
 			HockeyPlayer RN61 = new HockeyPlayer(rangers_id, "Rick Nash", 61);
 			HockeyPlayer RC24 = new HockeyPlayer(rangers_id, "Ryan Callahan", 24);
-			
+
 			HockeyPlayer TR40 = new HockeyPlayer(bruins_id, "Tuukka Rask", 40);
 			HockeyPlayer TK47 = new HockeyPlayer(bruins_id, "Torey Krug", 47);
 			HockeyPlayer ZC33 = new HockeyPlayer(bruins_id, "Zdeno Chara", 33);
@@ -516,7 +517,7 @@ public class MainActivity extends Activity{
 			HockeyPlayer ML17 = new HockeyPlayer(bruins_id, "Milan Lucic", 17);
 			HockeyPlayer RS18 = new HockeyPlayer(bruins_id, "Reilly Smith", 18);
 			HockeyPlayer BM63 = new HockeyPlayer(bruins_id, "Brad Marchand", 63);
-			
+
 			HockeyPlayer CC50 = new HockeyPlayer(blackhawks_id, "Corey Crawford", 50);
 			HockeyPlayer DK2 = new HockeyPlayer(blackhawks_id, "Duncan Keith", 2);
 			HockeyPlayer BS7 = new HockeyPlayer(blackhawks_id, "Brent Seabrook", 7);
@@ -529,7 +530,7 @@ public class MainActivity extends Activity{
 			HockeyPlayer PS10 = new HockeyPlayer(blackhawks_id, "Patick Sharp", 10);
 			HockeyPlayer MH81 = new HockeyPlayer(blackhawks_id, "Marian Hossa", 81);
 			HockeyPlayer BS20 = new HockeyPlayer(blackhawks_id, "Brandon Saad", 20);
-			
+
 			HockeyPlayer MF29 = new HockeyPlayer(penguins_id, "Marc-Andre Fleury", 29);
 			HockeyPlayer MN2 = new HockeyPlayer(penguins_id, "Matt Niskanen", 2);
 			HockeyPlayer OM3 = new HockeyPlayer(penguins_id, "Olli Maatta", 3);
@@ -542,7 +543,7 @@ public class MainActivity extends Activity{
 			HockeyPlayer JN18 = new HockeyPlayer(penguins_id, "James Neal", 18);
 			HockeyPlayer JJ36 = new HockeyPlayer(penguins_id, "Jussi Jokinen", 36);
 			HockeyPlayer PD9 = new HockeyPlayer(penguins_id, "Pascal Dupuis", 9);
-			
+
 			HockeyPlayer JQ32 = new HockeyPlayer(kings_id, "Jonathan Quick", 32);
 			HockeyPlayer DD8 = new HockeyPlayer(kings_id, "Drew Doughty", 8);
 			HockeyPlayer SV26 = new HockeyPlayer(kings_id, "Slava Voynov", 26);
@@ -555,7 +556,7 @@ public class MainActivity extends Activity{
 			HockeyPlayer JW14 = new HockeyPlayer(kings_id, "Justin Williams", 14);
 			HockeyPlayer DK74 = new HockeyPlayer(kings_id, "Dwight King", 74);
 			HockeyPlayer DB23 = new HockeyPlayer(kings_id, "Dustin Brown", 23);	
-			
+
 			long HL30_id = _hockey_db.createPlayers(HL30);
 			long DG5_id = _hockey_db.createPlayers(DG5);
 			long RM27_id = _hockey_db.createPlayers(RM27);
@@ -568,7 +569,7 @@ public class MainActivity extends Activity{
 			long CK20_id = _hockey_db.createPlayers(CK20);
 			long RN61_id = _hockey_db.createPlayers(RN61);
 			long RC24_id = _hockey_db.createPlayers(RC24);
-			
+
 			long TR40_id = _hockey_db.createPlayers(TR40);
 			long TK47_id = _hockey_db.createPlayers(TK47);
 			long ZC33_id = _hockey_db.createPlayers(ZC33);
@@ -581,7 +582,7 @@ public class MainActivity extends Activity{
 			long ML17_id = _hockey_db.createPlayers(ML17);
 			long RS18_id = _hockey_db.createPlayers(RS18);
 			long BM63_id = _hockey_db.createPlayers(BM63);
-			
+
 			long CC50_id = _hockey_db.createPlayers(CC50);
 			long DK2_id = _hockey_db.createPlayers(DK2);
 			long BS7_id = _hockey_db.createPlayers(BS7);
@@ -594,7 +595,7 @@ public class MainActivity extends Activity{
 			long PS10_id = _hockey_db.createPlayers(PS10);
 			long MH81_id = _hockey_db.createPlayers(MH81);
 			long BS20_id = _hockey_db.createPlayers(BS20);
-	
+
 			long MF29_id = _hockey_db.createPlayers(MF29);
 			long MN2_id = _hockey_db.createPlayers(MN2);
 			long OM3_id = _hockey_db.createPlayers(OM3);
@@ -607,7 +608,7 @@ public class MainActivity extends Activity{
 			long JN18_id = _hockey_db.createPlayers(JN18);
 			long JJ36_id = _hockey_db.createPlayers(JJ36);
 			long PD9_id = _hockey_db.createPlayers(PD9);
-			
+
 			long JQ32_id = _hockey_db.createPlayers(JQ32);
 			long DD8_id = _hockey_db.createPlayers(DD8);
 			long SV26_id = _hockey_db.createPlayers(SV26);
@@ -620,9 +621,9 @@ public class MainActivity extends Activity{
 			long JW14_id = _hockey_db.createPlayers(JW14);
 			long DK74_id = _hockey_db.createPlayers(DK74);
 			long DB23_id = _hockey_db.createPlayers(DB23);		
-	
-	
-	
+
+
+
 			//Test Soccer Teams and players
 			Teams america = new Teams("United States", "USA", "Jurgen Klinsmann", "Soccer");
 			Teams spain = new Teams("Spain", "ESP", "Vincente del Bosque", "Soccer");
@@ -631,8 +632,8 @@ public class MainActivity extends Activity{
 			Teams england = new Teams("England", "ENG", "Roy Hodgson", "Soccer");
 			Teams argentina = new Teams("Argentina", "ARG", "Alejandro Sabella", "Soccer");
 			Teams brazil = new Teams("Brazil", "BRZ", "Luiz Felipe Scolari", "Soccer");
-			
-			
+
+
 			long america_id = _soccer_db.createTeams(america);
 			long spain_id = _soccer_db.createTeams(spain);
 			long germany_id = _soccer_db.createTeams(germany);
@@ -640,7 +641,7 @@ public class MainActivity extends Activity{
 			long england_id = _soccer_db.createTeams(england);
 			long argentina_id = _soccer_db.createTeams(argentina);
 			long brazil_id = _soccer_db.createTeams(brazil);
-			
+
 			SoccerPlayer TH1 = new SoccerPlayer(america_id, "Tim Howard", 1);
 			SoccerPlayer DB11 = new SoccerPlayer(america_id, "DaMarcus Beasley", 11);
 			SoccerPlayer OO8 = new SoccerPlayer(america_id, "Oguchi Onyewu", 8);
@@ -652,7 +653,7 @@ public class MainActivity extends Activity{
 			SoccerPlayer LD10 = new SoccerPlayer(america_id, "Landon Donovan", 10);
 			SoccerPlayer CD9 = new SoccerPlayer(america_id, "Clint Dempsey", 9);
 			SoccerPlayer JA17 = new SoccerPlayer(america_id, "Jozy Altidore", 17);
-			
+
 			SoccerPlayer IC1 = new SoccerPlayer(spain_id, "Iker Casillas", 1);
 			SoccerPlayer SR15 = new SoccerPlayer(spain_id, "Sergio Ramos", 15);
 			SoccerPlayer AA17 = new SoccerPlayer(spain_id, "Alvaro Arbeloa", 17);
@@ -664,7 +665,7 @@ public class MainActivity extends Activity{
 			SoccerPlayer DV9 = new SoccerPlayer(spain_id, "David Villa", 9);
 			SoccerPlayer FT7 = new SoccerPlayer(spain_id, "Fernando Torres", 7);
 			SoccerPlayer P5 = new SoccerPlayer(spain_id, "Pedro", 5);
-			
+
 			SoccerPlayer MN1 = new SoccerPlayer(germany_id, "Manuel Neuer", 1);
 			SoccerPlayer PL16 = new SoccerPlayer(germany_id, "Philipp Lahm", 16);
 			SoccerPlayer PM17 = new SoccerPlayer(germany_id, "Per Mertesacker", 17);
@@ -676,7 +677,7 @@ public class MainActivity extends Activity{
 			SoccerPlayer MG19 = new SoccerPlayer(germany_id, "Mario Gotze", 19);
 			SoccerPlayer MR11 = new SoccerPlayer(germany_id, "Marco Reus", 11);
 			SoccerPlayer MK10 = new SoccerPlayer(germany_id, "Max Kruse", 10);
-			
+
 			SoccerPlayer JH1 = new SoccerPlayer(england_id, "Joe Hart", 1);
 			SoccerPlayer AC3 = new SoccerPlayer(england_id, "Ashley Cole", 3);
 			SoccerPlayer GJ2 = new SoccerPlayer(england_id, "Glen Johnson", 2);
@@ -688,7 +689,7 @@ public class MainActivity extends Activity{
 			SoccerPlayer WR10 = new SoccerPlayer(england_id, "Wayne Rooney", 10);
 			SoccerPlayer JD18 = new SoccerPlayer(england_id, "Jermaine Defoe", 18);
 			SoccerPlayer DS15 = new SoccerPlayer(england_id, "Daniel Sturridge", 15);
-			
+
 			SoccerPlayer E1 = new SoccerPlayer(portugal_id, "Eduardo", 1);
 			SoccerPlayer BA22 = new SoccerPlayer(portugal_id, "Bruno Alves", 22);
 			SoccerPlayer P3 = new SoccerPlayer(portugal_id, "Pepe", 3);
@@ -700,7 +701,7 @@ public class MainActivity extends Activity{
 			SoccerPlayer RS11 = new SoccerPlayer(portugal_id, "Rafa Silva", 11);
 			SoccerPlayer CR7 = new SoccerPlayer(portugal_id, "Cristiano Ronaldo", 7);
 			SoccerPlayer HP9 = new SoccerPlayer(portugal_id, "Helder Postiga", 9);
-			
+
 			SoccerPlayer SR1 = new SoccerPlayer(argentina_id, "Sergio Romero", 1);
 			SoccerPlayer PZ5 = new SoccerPlayer(argentina_id, "Pablo Zabaleta", 5);
 			SoccerPlayer FF21 = new SoccerPlayer(argentina_id, "Federico Fernandez", 21);
@@ -712,7 +713,7 @@ public class MainActivity extends Activity{
 			SoccerPlayer RA11 = new SoccerPlayer(argentina_id, "Ricardo Alvarez", 11);
 			SoccerPlayer LM10 = new SoccerPlayer(argentina_id, "Lionel Messi", 10);
 			SoccerPlayer GH9 = new SoccerPlayer(argentina_id, "Gonzalo Higuain", 9);
-	
+
 			SoccerPlayer JC12 = new SoccerPlayer(brazil_id, "Juilo Cesar", 12);
 			SoccerPlayer TS3a = new SoccerPlayer(brazil_id, "Thaigo Silva", 3);
 			SoccerPlayer DA2 = new SoccerPlayer(brazil_id, "Dani Alves", 2);
@@ -724,7 +725,7 @@ public class MainActivity extends Activity{
 			SoccerPlayer P18 = new SoccerPlayer(brazil_id, "Paulinho", 18);
 			SoccerPlayer R7 = new SoccerPlayer(brazil_id, "Robinho", 7);
 			SoccerPlayer Ne10 = new SoccerPlayer(brazil_id, "Neymar", 10);
-			
+
 			long TH1_id = _soccer_db.createPlayers(TH1);
 			long DB11_id = _soccer_db.createPlayers(DB11);
 			long OO8_id = _soccer_db.createPlayers(OO8);
@@ -736,7 +737,7 @@ public class MainActivity extends Activity{
 			long LD10_id = _soccer_db.createPlayers(LD10);
 			long CD9_id = _soccer_db.createPlayers(CD9);
 			long JA17_id = _soccer_db.createPlayers(JA17);
-			
+
 			long IC1_id = _soccer_db.createPlayers(IC1);
 			long SR15_id = _soccer_db.createPlayers(SR15);
 			long AA17_id = _soccer_db.createPlayers(AA17);
@@ -748,7 +749,7 @@ public class MainActivity extends Activity{
 			long DV9_id = _soccer_db.createPlayers(DV9);
 			long FT7_id = _soccer_db.createPlayers(FT7);
 			long P5_id = _soccer_db.createPlayers(P5);
-			
+
 			long MN1_id = _soccer_db.createPlayers(MN1);
 			long PL16_id = _soccer_db.createPlayers(PL16);
 			long PM17_id = _soccer_db.createPlayers(PM17);
@@ -760,7 +761,7 @@ public class MainActivity extends Activity{
 			long MG19_id = _soccer_db.createPlayers(MG19);
 			long MR11_id = _soccer_db.createPlayers(MR11);
 			long MK10_id = _soccer_db.createPlayers(MK10);
-			
+
 			long JH1_id = _soccer_db.createPlayers(JH1);
 			long AC3_id = _soccer_db.createPlayers(AC3);
 			long GJ2_id = _soccer_db.createPlayers(GJ2);
@@ -772,7 +773,7 @@ public class MainActivity extends Activity{
 			long WR10_id = _soccer_db.createPlayers(WR10);
 			long JD18_id = _soccer_db.createPlayers(JD18);
 			long DS15_id = _soccer_db.createPlayers(DS15);
-			
+
 			long E1_id = _soccer_db.createPlayers(E1);
 			long BA22_id = _soccer_db.createPlayers(BA22);
 			long P3_id = _soccer_db.createPlayers(P3);
@@ -784,7 +785,7 @@ public class MainActivity extends Activity{
 			long RS11_id = _soccer_db.createPlayers(RS11);
 			long CR7_id = _soccer_db.createPlayers(CR7);
 			long HP9_id = _soccer_db.createPlayers(HP9);	
-			
+
 			long SR1_id = _soccer_db.createPlayers(SR1);
 			long PZ5_id = _soccer_db.createPlayers(PZ5);
 			long FF21_id = _soccer_db.createPlayers(FF21);
@@ -796,7 +797,7 @@ public class MainActivity extends Activity{
 			long RA11_id = _soccer_db.createPlayers(RA11);
 			long LM10_id = _soccer_db.createPlayers(LM10);
 			long GH9_id = _soccer_db.createPlayers(GH9);
-		
+
 			long JC12_id = _soccer_db.createPlayers(JC12);
 			long TS3a_id = _soccer_db.createPlayers(TS3a);
 			long DA2_id = _soccer_db.createPlayers(DA2);
@@ -809,8 +810,10 @@ public class MainActivity extends Activity{
 			long R7_id = _soccer_db.createPlayers(R7);
 			long Ne10_id = _soccer_db.createPlayers(Ne10);
 		}
-	
-/*	
+
+
+
+		/*	
 		Log.d("GameStats count", "GameStats Count: " + _basketball_db.getAllGameStats().size());
 		ArrayList<ShotChartCoords> shots = (ArrayList<ShotChartCoords>) _basketball_db.getAllShots();
 		Log.d("Shot count", "Shot Count: " + shots.size());
@@ -821,14 +824,28 @@ public class MainActivity extends Activity{
 			Log.d("Shot count", "Shot Count: " + shot.getx());
 			Log.d("Shot count", "Shot Count: " + shot.gety());
 		}
-*/	
+		 */	
 		//close database helper
 		_basketball_db.close();
 		_football_db.close();
 		_soccer_db.close();
 		_hockey_db.close();
+
+
+		String filename = "myfile";
+		String string = "true";
+		FileOutputStream outputStream;
+
+		try {
+			outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+			outputStream.write(string.getBytes());
+			outputStream.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
-		
+
 	// click listener for basketball button
 	public OnClickListener basketballButtonListener = new OnClickListener(){
 		@Override
@@ -839,7 +856,7 @@ public class MainActivity extends Activity{
 			startActivity(intent);																			//execute the intent
 		}
 	};
-	
+
 	//click listener for football button
 	public OnClickListener footballButtonListener = new OnClickListener(){
 		@Override
@@ -850,7 +867,7 @@ public class MainActivity extends Activity{
 			startActivity(intent);	
 		}
 	};
-	
+
 	//click listener for hockey button
 	public OnClickListener hockeyButtonListener = new OnClickListener(){
 		@Override
@@ -861,7 +878,7 @@ public class MainActivity extends Activity{
 			startActivity(intent);														
 		}
 	};
-	
+
 	//click listener for soccer button
 	public OnClickListener soccerButtonListener = new OnClickListener(){
 		@Override
@@ -872,7 +889,7 @@ public class MainActivity extends Activity{
 			startActivity(intent);																
 		}
 	};
-	
+
 	//touch listener for short buttons - recoloring when clicked
 	public OnTouchListener shortButtonTouchListener = new OnTouchListener(){
 		@Override
@@ -888,7 +905,7 @@ public class MainActivity extends Activity{
 			return false;
 		}
 	};
-	
+
 	//touch listener for long buttons - recoloring when clicked
 	public OnTouchListener longButtonTouchListener = new OnTouchListener(){
 		@Override
@@ -904,7 +921,7 @@ public class MainActivity extends Activity{
 			return false;
 		}
 	};
-	
+
 	//if you press the back button in the main screen prompt a message box asking to comfirm the action
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -912,7 +929,7 @@ public class MainActivity extends Activity{
 			Builder alert = new Builder(this);																//creating the alert message
 			alert.setTitle("Exit this Application?");
 			alert.setMessage("Are you sure you want to exit?");
-			
+
 			alert.setPositiveButton("Yes", new DialogInterface.OnClickListener(){							//give it the YES button
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
@@ -933,23 +950,47 @@ public class MainActivity extends Activity{
 			return super.onKeyDown(keyCode, event);
 		}
 	}
-	
+
 	public OnClickListener loginListener = new OnClickListener(){
 		@Override
 		public void onClick(View view) {
 			Builder loginDialog = new Builder(MainActivity.this);
 			loginDialog.setTitle("Login");
-			
+
 			LayoutInflater inflater = getLayoutInflater();
 			final View layout = inflater.inflate(R.layout.dialog_login, null);
 			loginDialog.setView(layout);
-			
+
 			loginDialog.setPositiveButton("Enter", new DialogInterface.OnClickListener(){	
 				@Override
 				public void onClick(DialogInterface dialog, int arg1) {
 					String username = ((EditText)layout.findViewById(R.id.usernameEditText)).getText().toString();
 					String password = ((EditText)layout.findViewById(R.id.passwordEditText)).getText().toString();
 					_loggedIn = accountAuthenication(username, password);
+					
+					if(_loggedIn){
+						//TODO Check if values being entered correctly
+						String filename = "myfile";
+						String string = "false" + "\n" + username + "\n" + password + "\n" + username;
+						FileOutputStream outputStream;
+
+						try {
+							outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+							outputStream.write(string.getBytes());
+							outputStream.close();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						
+						//databases
+						_basketball_db = new BasketballDatabaseHelper(getApplicationContext());
+						_football_db = new FootballDatabaseHelper(getApplicationContext());
+						_soccer_db = new SoccerDatabaseHelper(getApplicationContext());
+						_hockey_db = new HockeyDatabaseHelper(getApplicationContext());
+						
+
+					}
+
 					dialog.dismiss();
 				}
 			});
@@ -965,15 +1006,15 @@ public class MainActivity extends Activity{
 			loginDialog.show();			
 		}
 	};
-	
+
 	private void confirmPassword(String username, final String password){
 		Builder confirmDialog = new Builder(this);
 		confirmDialog.setTitle("Re-enter Password:");
-		
+
 		final EditText editText = new EditText(this);
 		editText.setHint("Re-enter Password");
 		confirmDialog.setView(editText);
-		
+
 		confirmDialog.setNeutralButton("Ok", new DialogInterface.OnClickListener(){	
 			@Override
 			public void onClick(DialogInterface dialog, int arg1) {
@@ -989,7 +1030,7 @@ public class MainActivity extends Activity{
 		});	
 		confirmDialog.show();
 	}
-	
+
 	private void accountCreateSuccess(){
 		Builder successDialog = new Builder(this);
 		successDialog.setTitle("Success");
@@ -1002,7 +1043,7 @@ public class MainActivity extends Activity{
 		});	
 		successDialog.show();
 	}
-	
+
 	private void accountCreateFailed(){
 		Builder failedDialog = new Builder(this);
 		failedDialog.setTitle("Failed");
@@ -1015,7 +1056,7 @@ public class MainActivity extends Activity{
 		});
 		failedDialog.show();
 	}
-	
+
 	public OnClickListener viewStatsListener = new OnClickListener(){
 		@Override
 		public void onClick(View view) {
@@ -1023,7 +1064,7 @@ public class MainActivity extends Activity{
 			startActivity(intent);																
 		}
 	};
-		
+
 	public OnClickListener optionListener = new OnClickListener(){
 		@Override
 		public void onClick(View view) {
@@ -1031,11 +1072,12 @@ public class MainActivity extends Activity{
 			startActivity(intent);	
 		}
 	};
-	
+
 	private boolean accountAuthenication(String username, String password){
+		//TODO
 		//modify this to authenicate the username, password combination
 		//authenication success, then return true
 		//authenication fail, then return false
-		return false;
+		return true;
 	}	
 }
