@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activePlayerFrag"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:id="@+id/scrollViewForSoccerSubstitution"
+        android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+		
+        <RelativeLayout
+            android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+	
+			<TextView
+		       android:id="@+id/goalie_text"
+		       android:layout_width="wrap_content"
+		       android:layout_height="wrap_content"
+		       android:text="@string/goalie_text"
+		       android:padding="@dimen/padding"
+		       android:textAppearance="?android:attr/textAppearanceLarge" />
+            
+			<LinearLayout 
+			    android:id="@+id/active1View"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/goalie_text"
+			    android:padding="@dimen/padding"
+			    android:orientation="vertical">
+		
+		        <TextView
+		            android:id="@+id/active1Name"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/player_generic"
+		            android:textAppearance="?android:attr/textAppearanceLarge" />
+		
+		        
+			</LinearLayout>	
+			
+			<TextView
+		       android:id="@+id/field_player_text"
+		       android:layout_width="wrap_content"
+		       android:layout_height="wrap_content"
+		       android:layout_below="@id/active1View"
+		       android:text="@string/field_player_text" 
+		       android:padding="@dimen/padding"
+		       android:textAppearance="?android:attr/textAppearanceLarge"/>
+			
+		    <LinearLayout 
+			    android:id="@+id/active2View"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/field_player_text"
+			    android:padding="@dimen/padding"
+			    android:orientation="vertical">
+				
+		        <TextView
+		            android:id="@+id/active2Name"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/player_generic"
+		            android:textAppearance="?android:attr/textAppearanceLarge" />
+		
+			</LinearLayout>	
+			
+		    <LinearLayout 
+			    android:id="@+id/active3View"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/active2View"
+			    android:padding="@dimen/padding"
+			    android:orientation="vertical">
+				
+		        <TextView
+		            android:id="@+id/active3Name"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/player_generic"
+		            android:textAppearance="?android:attr/textAppearanceLarge" />
+		
+		        
+			</LinearLayout>	
+			
+		    <LinearLayout 
+			    android:id="@+id/active4View"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/active3View"
+			    android:padding="@dimen/padding"
+			    android:orientation="vertical">
+				
+		        <TextView
+		            android:id="@+id/active4Name"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/player_generic"
+		            android:textAppearance="?android:attr/textAppearanceLarge" />
+		
+		        
+			</LinearLayout>	
+			
+		    <LinearLayout 
+			    android:id="@+id/active5View"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/active4View"
+			    android:padding="@dimen/padding"
+			    android:orientation="vertical">
+				
+		        <TextView
+		            android:id="@+id/active5Name"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/player_generic"
+		            android:textAppearance="?android:attr/textAppearanceLarge" />
+		
+		        
+			</LinearLayout>	
+			
+		    <LinearLayout 
+			    android:id="@+id/active6View"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/active5View"
+			    android:padding="@dimen/padding"
+			    android:orientation="vertical">
+				
+		        <TextView
+		            android:id="@+id/active6Name"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/player_generic"
+		            android:textAppearance="?android:attr/textAppearanceLarge" />
+		
+			</LinearLayout>	
+			
+		    <LinearLayout 
+			    android:id="@+id/active7View"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/active6View"
+			    android:padding="@dimen/padding"
+			    android:orientation="vertical">
+				
+		        <TextView
+		            android:id="@+id/active7Name"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/player_generic"
+		            android:textAppearance="?android:attr/textAppearanceLarge" />
+		
+			</LinearLayout>
+			
+		    <LinearLayout 
+			    android:id="@+id/active8View"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/active7View"
+			    android:padding="@dimen/padding"
+			    android:orientation="vertical">
+				
+		        <TextView
+		            android:id="@+id/active8Name"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/player_generic"
+		            android:textAppearance="?android:attr/textAppearanceLarge" />
+		
+			</LinearLayout>
+			
+		    <LinearLayout 
+			    android:id="@+id/active9View"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/active8View"
+			    android:padding="@dimen/padding"
+			    android:orientation="vertical">
+				
+		        <TextView
+		            android:id="@+id/active9Name"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/player_generic"
+		            android:textAppearance="?android:attr/textAppearanceLarge" />
+		
+			</LinearLayout>
+			
+		    <LinearLayout 
+			    android:id="@+id/active10View"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/active9View"
+			    android:padding="@dimen/padding"
+			    android:orientation="vertical">
+				
+		        <TextView
+		            android:id="@+id/active10Name"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/player_generic"
+		            android:textAppearance="?android:attr/textAppearanceLarge" />
+		
+			</LinearLayout>
+			
+		    <LinearLayout 
+			    android:id="@+id/active11View"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/active10View"
+			    android:padding="@dimen/padding"
+			    android:orientation="vertical">
+				
+		        <TextView
+		            android:id="@+id/active11Name"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/player_generic"
+		            android:textAppearance="?android:attr/textAppearanceLarge" />
+		
+			</LinearLayout>
+		</RelativeLayout>
+	</ScrollView> 
+</RelativeLayout>
+

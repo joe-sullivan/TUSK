@@ -1,0 +1,304 @@
+ <!-- basketball interface -->
+ <com.seniordesign.ultimatescorecard.view.FlyOutContainer 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+ 	<!-- flyoutMenuBar settings -->
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black">
+
+        <TextView
+            android:id="@+id/slideoutTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/slideout_title"
+            android:textColor="@color/white"
+           	android:textAppearance="?android:attr/textAppearanceLarge"  />
+        
+        <LinearLayout
+            android:id="@+id/slideoutButtons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/slideoutTitle"
+            android:layout_alignParentBottom="true"
+        	android:orientation="vertical">
+	        <Button
+	            android:id="@+id/extendButton1"
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent"
+	            android:layout_weight="1"
+	            android:text="@string/player_1" />
+	
+	        <Button
+	            android:id="@+id/extendButton2"
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent"
+	            android:layout_weight="1"
+	            android:text="@string/player_2" />
+	
+	        <Button
+	            android:id="@+id/extendButton3"
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent"
+	            android:layout_weight="1"
+	            android:text="@string/player_3" />
+	        
+	        <Button
+	            android:id="@+id/extendButton4"
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent"
+	            android:layout_weight="1"
+	            android:text="@string/player_4" />
+	        
+	        <Button
+	            android:id="@+id/extendButton5"
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent"
+	            android:layout_weight="1"
+	            android:text="@string/player_5" />
+        </LinearLayout>
+    </RelativeLayout>
+  
+	<!-- the main window screen -->
+
+	<RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:background="@color/green"
+	    android:gravity="center"
+	    android:orientation="vertical" >
+
+	    <!-- setting up a frame for the away team and then adding a textview to display name and the dafault name is set to AWAY -->
+
+	    <FrameLayout
+	        android:id="@+id/titleFrame"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignRight="@+id/scoresFrame"
+	        android:paddingRight="@dimen/padding" >
+
+	        <TextView
+	            android:id="@+id/awayTextView"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:text="@string/away_name" />
+	    </FrameLayout>
+
+	    <!-- setting up a frame for the home team and then adding a textview to display name and the default name is set to HOME -->
+
+	    <FrameLayout
+	        android:id="@+id/titleFrame2"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignLeft="@+id/scoresFrame2"
+	        android:paddingLeft="@dimen/padding" >
+
+	        <TextView
+	            android:id="@+id/homeTextView"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:text="@string/home_name" />
+	    </FrameLayout>
+
+	    <!-- setting up a frame for the home team and then adding a textview to display score -->
+
+	    <FrameLayout
+	        android:id="@+id/scoresFrame"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/titleFrame"
+	        android:padding="@dimen/padding" >
+
+	        <TextView
+	            android:id="@+id/awayScoreTextView"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:background="@color/black"
+	            android:padding="@dimen/padding"
+	            android:text="@string/away_points"
+	            android:textColor="@color/red"
+	            android:textSize="@dimen/score_text" />
+	    </FrameLayout>
+
+	    <!-- setting up a frame for the home team and then adding a textview to display score -->
+
+	    <FrameLayout
+	        android:id="@+id/scoresFrame2"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:layout_below="@+id/titleFrame2"
+	        android:padding="@dimen/padding" >
+
+	        <TextView
+	            android:id="@+id/homeScoreTextView"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:background="@color/black"
+	            android:padding="@dimen/padding"
+	            android:text="@string/home_points"
+	            android:textColor="@color/red"
+	            android:textSize="@dimen/score_text" />
+	    </FrameLayout>
+
+	    <RelativeLayout
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_above="@+id/interactiveFrame"
+	        android:layout_alignParentTop="true"
+	        android:layout_toLeftOf="@+id/titleFrame2"
+	        android:layout_toRightOf="@+id/titleFrame" >
+
+	        <ImageView
+	            android:id="@+id/possessionAway"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_alignParentLeft="true"
+	            android:layout_alignParentTop="true"
+	            android:adjustViewBounds="true"
+	            android:contentDescription="@string/possession_marker"
+	            android:maxHeight="20dp"
+	            android:maxWidth="20dp"
+	            android:scaleType="fitCenter"
+	            android:src="@drawable/basketball"
+	            android:visibility="gone" />
+
+	        <ImageView
+	            android:id="@+id/possessionHome"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_alignParentRight="true"
+	            android:layout_alignParentTop="true"
+	            android:adjustViewBounds="true"
+	            android:contentDescription="@string/possession_marker"
+	            android:maxHeight="20dp"
+	            android:maxWidth="20dp"
+	            android:scaleType="fitCenter"
+	            android:src="@drawable/basketball"
+	            android:visibility="gone" />
+
+	        <TextView
+	            android:id="@+id/gameClock"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_alignParentLeft="true"
+	            android:layout_alignParentRight="true"
+	            android:layout_centerVertical="true"
+	            android:background="@color/black"
+	            android:gravity="center_vertical|center_horizontal"
+	            android:padding="@dimen/padding"
+	            android:text="@string/start_game"
+	            android:textAppearance="?android:attr/textAppearanceLarge"
+	            android:textColor="@color/white" />
+
+	        <TextView
+	            android:id="@+id/quarterNumber"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_above="@+id/gameClock"
+	            android:layout_alignParentTop="true"
+	            android:layout_centerHorizontal="true"
+	            android:background="@color/black"
+	            android:paddingLeft="@dimen/padding"
+	            android:paddingRight="@dimen/padding"
+	            android:text="@string/period"
+	            android:textColor="@color/white"
+	            android:textSize="@dimen/small_text" />
+	    </RelativeLayout>
+
+	    <!-- center panel: the interactive field -->
+
+	    <RelativeLayout
+	        android:id="@+id/interactiveFrame"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_above="@+id/tripleOptionRow"
+	        android:layout_below="@+id/scoresFrame2" >
+
+	        <ScrollView
+	            android:id="@+id/footballField"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content" >
+	            
+	            <LinearLayout 
+	                android:id="@+id/fieldOfPlayList"
+	                android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:orientation="vertical"> 
+		             
+		        </LinearLayout>	            
+	        </ScrollView>
+	    </RelativeLayout>
+
+	    <!-- bottom row: the buttons -->
+
+	    <TableRow
+	        android:id="@+id/tripleOptionRow"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentBottom="true"
+	        android:layout_alignParentLeft="true" >
+
+	        <Button
+	            android:id="@+id/optionButton1"
+	            android:layout_width="fill_parent"
+	            android:layout_height="match_parent"
+	            android:layout_weight="1"
+	            android:text="@string/choice_one" />
+
+	        <Button
+	            android:id="@+id/optionButton2"
+	            android:layout_width="fill_parent"
+	            android:layout_height="match_parent"
+	            android:layout_weight="1"
+	            android:text="@string/choice_two" />
+
+	        <Button
+	            android:id="@+id/optionButton3"
+	            android:layout_width="fill_parent"
+	            android:layout_height="match_parent"
+	            android:layout_weight="1"
+	            android:text="@string/choice_three" />
+	    </TableRow>
+
+	    <TableRow
+	        android:id="@+id/twinOptionRow"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentBottom="true"
+	        android:layout_alignParentLeft="true"
+	        android:visibility="gone" >
+
+	        <Button
+	            android:id="@+id/optionButton4"
+	            android:layout_width="fill_parent"
+	            android:layout_height="match_parent"
+	            android:layout_weight="1"
+	            android:text="@string/choice_four" />
+
+	        <Button
+	            android:id="@+id/optionButton5"
+	            android:layout_width="fill_parent"
+	            android:layout_height="match_parent"
+	            android:layout_weight="1"
+	            android:text="@string/choice_five" />
+	    </TableRow>
+
+	    <RelativeLayout
+	        android:id="@+id/homeShotIcons"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent" >
+	    </RelativeLayout>
+
+	    <RelativeLayout
+	        android:id="@+id/awayShotIcons"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent" >
+	    </RelativeLayout>
+	</RelativeLayout>
+	
+</com.seniordesign.ultimatescorecard.view.FlyOutContainer>
