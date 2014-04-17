@@ -76,6 +76,7 @@
     <string name="choose_game">Choose Game</string>
     <string name="search_button">Search</string>
     <string name="send_game_button">Email Boxscore</string>
+    <string name="delete_game_button">Delete Game</string>
     <string name="space">" "</string>
     <string name="view_statistics_screen">View Statistics</string>
     

@@ -70,6 +70,7 @@ public class BasketballActivity extends Activity{
 	private UndoManager _undoManager;
 	public UndoInstance _undoInstance;
 	private int ot;
+	private String _time;
 	
 	//on creation of the page, trying to save all items that will appear on screen into a member variable
 	@Override
@@ -231,6 +232,7 @@ public class BasketballActivity extends Activity{
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
 			if(event.getAction() == MotionEvent.ACTION_DOWN){									//need this if statement to keep method execution to one
+				_time = _gameClockView.getText().toString();
 				double wRatio = (double)_bitmap.getWidth()/_basketballCourtMask.getWidth();
 				double hRatio = (double)_bitmap.getHeight()/ _basketballCourtMask.getHeight();
 				int pixel = _bitmap.getPixel((int)(event.getX()*wRatio), (int)(event.getY()*hRatio));				//get where the user touches
@@ -518,7 +520,7 @@ public class BasketballActivity extends Activity{
 				_gti.getPlayer(((TextView)view).getText().toString()).grabORebound();		//increase player Offensive rebound total				
 
 			}
-			recordActivity();																//record the activity
+			recordActivity(_time);																//record the activity
 			if(_gti.foulOccurred()){														//additional stuff to do if that rebound came after a foul
 				_gti.setFoulVariable(false);												//no longer a foul play
 				_gameClockView.setOnClickListener(timerClickListener);
@@ -560,7 +562,7 @@ public class BasketballActivity extends Activity{
 					_gti.addTeamORebound();
 				}
 			}
-			recordActivity();																//record the activity
+			recordActivity(_time);																//record the activity
 			resetFeatures();
 		}
 	};
@@ -573,7 +575,7 @@ public class BasketballActivity extends Activity{
 				_gameLog.assisting(((TextView)view).getText().toString());
 				_gti.getPlayer(((TextView)view).getText().toString()).dishAssist();				//increase player assist count
 				reactivateButton();																//reactivate disabled button
-				recordActivity();																
+				recordActivity(_time);																
 				if(_gti.foulOccurred()){																	//if there is a foul on the play
 					removeView(_otherButton);
 					setSlideOutButtonText(!_gti.getPossession());										//setting up slide out menu to record who committed foul
@@ -594,7 +596,7 @@ public class BasketballActivity extends Activity{
 			@Override
 			public void onClick(View view){
 				reactivateButton();																//reactivate disabled button
-				recordActivity();																
+				recordActivity(_time);																
 				if(_gti.foulOccurred()){
 					removeView(_otherButton);
 					setSlideOutButtonText(!_gti.getPossession());										
@@ -617,6 +619,7 @@ public class BasketballActivity extends Activity{
 	public OnClickListener turnoverListener = new OnClickListener(){
 		@Override
 		public void onClick(View view) {
+			_time = _gameClockView.getText().toString();
 			setTurnoverOptionListener();
 		}
 	};
@@ -648,7 +651,7 @@ public class BasketballActivity extends Activity{
 			public void onClick(View view) {
 				_gameLog.stealing(player, ((Button)view).getText().toString());
 				_gti.getPlayer(((Button)view).getText().toString()).turnedOver();
-				recordActivity();
+				recordActivity(_time);
 				changePossession();
 				resetFeatures();
 			}
@@ -660,6 +663,7 @@ public class BasketballActivity extends Activity{
 	public OnClickListener unforcedTOListener = new OnClickListener(){
 		@Override
 		public void onClick(View view) {
+			stopClock();
 			setSlideOutButtonText(_gti.getPossession());
 			turnOverType();
 		}
@@ -672,7 +676,7 @@ public class BasketballActivity extends Activity{
 			public void onClick(View view) {
 				_gameLog.turnover(true, ((Button)view).getText().toString(), this.getString());
 				_gti.getPlayer(((Button)view).getText().toString()).turnedOver();
-				recordActivity();
+				recordActivity(_time);
 				changePossession();
 				resetFeatures();
 			}		
@@ -686,7 +690,7 @@ public class BasketballActivity extends Activity{
 			String team = _gti.getTeamPossession(false);
 			_gameLog.turnover(false, team, null);
 			changePossession();
-			recordActivity();
+			recordActivity(_time);
 			resetFeatures();
 		}
 	};
@@ -715,8 +719,9 @@ public class BasketballActivity extends Activity{
 	public OnClickListener foulListener = new OnClickListener(){
 		@Override
 		public void onClick(View view) {
+			_time = _gameClockView.getText().toString();
 			_gti.setFoulVariable(true);
-			stopClock();
+			stopClockNoButtonReset();
 			setFoulOptionListener();
 		}
 	};
@@ -815,7 +820,7 @@ public class BasketballActivity extends Activity{
 			@Override
 			public void onClick(View view) {
 				_gti.setFoulVariable(true);
-				stopClock();
+				stopClockNoButtonReset();
 				setMadeMissListener(getValue());
 				_gameClockView.setOnClickListener(null);
 			}
@@ -839,7 +844,7 @@ public class BasketballActivity extends Activity{
 					_gameLog.foulCommitted(((TextView)view).getText().toString(), 1);
 					_gti.getPlayer(((TextView)view).getText().toString()).commitFoul();
 				}
-				recordActivity();
+				recordActivity(_time);
 				_basketballCourt.setOnTouchListener(null);
 				
 				if(this.getString().equals("Offensive Foul")){
@@ -901,7 +906,7 @@ public class BasketballActivity extends Activity{
 			public void onClick(View view) {
 				_gameLog.freeThrow(true, this.getString());				
 				_gti.scoreChange(_gti.getPossession(), 1, this.getString());
-				recordActivity();
+				recordActivity(_time);
 				if(this.getValue() == 1){
 					_basketballCourt.setOnTouchListener(courtInteraction);
 					_gameClockView.setOnClickListener(timerClickListener);
@@ -928,7 +933,7 @@ public class BasketballActivity extends Activity{
 			public void onClick(View view) {				
 				if(this.getValue()!=1 && !oneAndOne){
 					_gameLog.freeThrow(false, this.getString());
-					recordActivity();
+					recordActivity(_time);
 				}
 				_gti.getPlayer(this.getString()).missFreeThrow();
 
@@ -1036,7 +1041,6 @@ public class BasketballActivity extends Activity{
 			}
 		}
 	};
-	
 	private void startClock(){
 		_gameClock.start();
 		possessionMarkerChange();
@@ -1046,6 +1050,10 @@ public class BasketballActivity extends Activity{
 	private void stopClock(){
 		_gameClock.stop();
 		disableMainSettings();
+	}
+	
+	private void stopClockNoButtonReset(){
+		_gameClock.stop();
 	}
 	
 	private boolean zeroTime(){
@@ -1105,8 +1113,8 @@ public class BasketballActivity extends Activity{
 	}
 	
 	//record the plays of the game by sending string _gameLog to be stored in an ArrayList
-	private void recordActivity(){
-		_gameLog.recordActivity(_gameClockView.getText().toString());
+	private void recordActivity(String time){
+		_gameLog.recordActivity(time);
 		_awayScoreTextView.setText(_gti.getAwayScoreText());
 		_homeScoreTextView.setText(_gti.getHomeScoreText());
 	}	
@@ -1176,7 +1184,7 @@ public class BasketballActivity extends Activity{
 	@Override
 	public boolean onMenuOpened(int featureId, Menu menu) {
 		if(_gameClock != null){	
-			stopClock();
+			stopClockNoButtonReset();
 		}
 		return super.onMenuOpened(featureId, menu);
 	}

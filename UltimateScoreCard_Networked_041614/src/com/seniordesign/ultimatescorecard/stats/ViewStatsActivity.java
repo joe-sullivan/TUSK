@@ -44,7 +44,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ViewStatsActivity extends Activity{
-	private Button _sportButton, _teamButton, _playerButton, _gameButton, _searchButton, _sendButton;
+	private Button _sportButton, _teamButton, _playerButton, _gameButton, _searchButton, _sendButton, _deleteGameButton;
 	private ArrayList<Teams> _teams = new ArrayList<Teams>();
 	private ArrayList<Games> _games = new ArrayList<Games>();
 	private ArrayList<Players> _players= new ArrayList<Players>();
@@ -71,6 +71,8 @@ public class ViewStatsActivity extends Activity{
 		_searchButton.setOnClickListener(searchListener);	
 		_sendButton = (Button)findViewById(R.id.send_game_button);
 		_sendButton.setOnClickListener(sendListener);
+		_deleteGameButton = (Button)findViewById(R.id.delete_game_button);
+		_deleteGameButton.setOnClickListener(deleteGameListener);
 	}
 	
 	private OnClickListener selectSportListener = new OnClickListener(){
@@ -202,7 +204,8 @@ public class ViewStatsActivity extends Activity{
 						_gameButton.setText("All Games");
 					}
 					if(_gameButton.getText().equals(getResources().getString(R.string.choose_game))&&
-							_playerButton.getText().equals(getResources().getString(R.string.choose_player))){
+							(_playerButton.getText().equals(getResources().getString(R.string.choose_player)) ||
+									_playerButton.getText().equals("All Players"))){
 						buttonEnabler(true, true, true, false);			//game is not chosen, so can't proceed
 					}
 					else if(_gameButton.getText().equals("All Games")){
@@ -634,6 +637,42 @@ public class ViewStatsActivity extends Activity{
 		}
 	};
 	
+	
+	private OnClickListener deleteGameListener = new OnClickListener(){
+		@Override
+		public void onClick(View view) {
+			Intent intent;
+			String game = _gameButton.getText().toString();
+
+			//NEW
+			if(!game.equals("All Games")){
+				String[] lines = game.split("\n");
+				if(lines.length==2){
+					for(Games g: _games){
+						if(g.getDate().equals(lines[1])){
+							_game = g;
+							break;
+						}
+					}
+				}
+			}
+			if(_sport.equals("Basketball")){
+				((BasketballDatabaseHelper)_db).deleteGame(_game.getgid());
+			}
+			else if(_sport.equals("Football")){
+				((FootballDatabaseHelper)_db).deleteGame(_game.getgid());
+			}
+			else if(_sport.equals("Soccer")){
+				((SoccerDatabaseHelper)_db).deleteGame(_game.getgid());
+			}
+			else{ // _sport.equals("Hockey")
+				((HockeyDatabaseHelper)_db).deleteGame(_game.getgid());
+			}
+			
+			resetButtonText(false, true);
+		}
+	};
+	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data){
 		if(requestCode == StaticFinalVars.EMAIL){
@@ -661,6 +700,7 @@ public class ViewStatsActivity extends Activity{
 		_gameButton.setEnabled(game);
 		_searchButton.setEnabled(search);
 		_sendButton.setEnabled(search);
+		_deleteGameButton.setEnabled(search);
 	}
 	
 	private void resetButtonText(boolean team, boolean game){

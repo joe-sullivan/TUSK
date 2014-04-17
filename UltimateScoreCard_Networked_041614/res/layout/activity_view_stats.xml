@@ -76,5 +76,12 @@
         android:layout_height="wrap_content"
         android:text="@string/send_game_button"
         android:enabled="false" />
+	
+	<Button
+        android:id="@+id/delete_game_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/delete_game_button"
+        android:enabled="false" />
 
 </LinearLayout>
