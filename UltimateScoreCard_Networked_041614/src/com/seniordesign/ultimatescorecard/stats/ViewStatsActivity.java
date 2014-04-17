@@ -154,7 +154,7 @@ public class ViewStatsActivity extends Activity{
 			Builder builder = new Builder(ViewStatsActivity.this);
 			builder.setTitle("Select Game");
 			final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String> (ViewStatsActivity.this, android.R.layout.select_dialog_singlechoice);
-			
+			_game = null;
 			String team = _teamButton.getText().toString();
 			for(Teams t: _teams){
 				if(t.gettname().equals(team)){

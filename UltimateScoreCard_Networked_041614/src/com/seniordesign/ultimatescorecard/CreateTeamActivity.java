@@ -275,7 +275,18 @@ public class CreateTeamActivity extends Activity{
 				String number = ((EditText)layout.findViewById(R.id.playerNumberEditText)).getText().toString();
 				if(!name.equals("") && !number.equals("")){
 					_playerList.addView(newPlayerItem(name, number));
-					((BasketballDatabaseHelper) _db).createPlayers(new BasketballPlayer(t_id, name, Integer.parseInt(number)));
+					if(_sportType.equals("basketball")){
+						((BasketballDatabaseHelper) _db).createPlayers(new BasketballPlayer(t_id, name, Integer.parseInt(number)));
+					}
+					else if(_sportType.equals("football")){
+						((FootballDatabaseHelper) _db).createPlayers(new FootballPlayer(t_id, name, Integer.parseInt(number)));
+					}	
+					else if(_sportType.equals("hockey")){
+						((HockeyDatabaseHelper) _db).createPlayers(new HockeyPlayer(t_id, name, Integer.parseInt(number)));
+					}
+					if(_sportType.equals("soccer")){
+						((SoccerDatabaseHelper) _db).createPlayers(new SoccerPlayer(t_id, name, Integer.parseInt(number)));
+					}
 				}
 				dialog.dismiss();
 			}

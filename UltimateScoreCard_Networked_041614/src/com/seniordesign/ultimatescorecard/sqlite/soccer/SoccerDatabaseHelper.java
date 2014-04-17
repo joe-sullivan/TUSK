@@ -174,8 +174,8 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 		// on upgrade drop older tables
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_GAMES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SOCCER_GAME_STATS);
-        //db.execSQL("DROP TABLE IF EXISTS " + TABLE_PLAYERS);
-        //db.execSQL("DROP TABLE IF EXISTS " + TABLE_TEAMS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PLAYERS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TEAMS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PLAY_BY_PLAY);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOT_CHART_COORDS);
 
