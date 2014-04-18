@@ -148,12 +148,12 @@ public class SoccerGameStats {
         return this.goals_allowed;
     }
     
-    public double getsavepercent(){
+    public String getsavepercent(){
     	if((saves+goals_allowed)>0){
-    		return saves/(saves+goals_allowed);
+    		return String.format("%.3f",(double)saves/(saves+goals_allowed));
     	}
     	else{
-    		return 0.0;
+    		return "N/A";
     	}
     }
 }

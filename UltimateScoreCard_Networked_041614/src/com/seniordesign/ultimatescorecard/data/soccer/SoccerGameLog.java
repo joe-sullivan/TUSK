@@ -23,7 +23,7 @@ public class SoccerGameLog extends GameLog{
 	
 	public void shootsAndMisses(String shooter, String goalie, String time){
 		if(goalie.equals("")){
-			_thePlay = "Shot missed by "+shooter+".";
+			_thePlay = "Shot missed by "+shooter;
 		}
 		else{
 			_thePlay = "Shot on goal by "+shooter+", saved by " +goalie;

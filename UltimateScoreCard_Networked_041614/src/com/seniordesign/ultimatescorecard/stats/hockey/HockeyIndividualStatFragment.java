@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.seniordesign.ultimatescorecard.R;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballGameStats;
+import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyDatabaseHelper;
@@ -105,28 +106,36 @@ public class HockeyIndividualStatFragment extends Fragment{
 			//AVE
 			if(average){
 				ArrayList<HockeyGameStats> allStats = (ArrayList<HockeyGameStats>) _db.getPlayerAllGameStats(player.getpid());
+				ArrayList<Games> games = (ArrayList<Games>) _db.getAllGamesTeam(player.gettid());
 				double shots=0,sog=0,goals=0,ast=0,penminor=0,penmajor=0,penmisconduct=0,
 						saves=0,goals_allowed=0;
+				int n = 0;
 				for(HockeyGameStats s: allStats){
-					shots += s.getshots();
-					sog+= s.getsog();
-					goals += s.getgoals();
-					ast =+ s.getast();
-					penminor += s.getpenminor();
-					penmajor += s.getpenmajor();
-					penmisconduct += s.getpenmisconduct();
-					saves += s.getsaves();
-					goals_allowed += s.getgoalsallowed();
+					for(Games g: games){
+						if(s.getgid()==g.getgid()){
+							shots += s.getshots();
+							sog+= s.getsog();
+							goals += s.getgoals();
+							ast =+ s.getast();
+							penminor += s.getpenminor();
+							penmajor += s.getpenmajor();
+							penmisconduct += s.getpenmisconduct();
+							saves += s.getsaves();
+							goals_allowed += s.getgoalsallowed();
+							n++;
+						}
+					}
+					
 				}
-				shots /= allStats.size();
-				sog /= allStats.size();
-				goals /= allStats.size();
-				ast /= allStats.size();
-				penminor /= allStats.size();
-				penmajor /= allStats.size();
-				penmisconduct /= allStats.size();
-				saves /= allStats.size();
-				goals_allowed /= allStats.size();
+				shots /= n;
+				sog /= n;
+				goals /= n;
+				ast /= n;
+				penminor /= n;
+				penmajor /= n;
+				penmisconduct /= n;
+				saves /= n;
+				goals_allowed /= n;
 				
 			    String savepercent;
 				if((saves+goals_allowed)>0){
@@ -138,20 +147,20 @@ public class HockeyIndividualStatFragment extends Fragment{
 				
 				((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.playerName)).setText(player.getpname() + " - Average Stats");
 				((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.teamName)).setText(team.gettname());
-				((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.goalTotal)).setText("Goals: "+String.format("%.3f",goals));
-				((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.assistTotal)).setText("Assists: "+String.format("%.3f",ast));
-				((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.shotOnGoalTotal)).setText("Shots On Goal: "+String.format("%.3f",sog));
-				((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.penaltyTotal)).setText("Penalties: "+String.format("%.3f",(penmajor+penminor+penmisconduct)));
+				((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.goalTotal)).setText("Goals: "+String.format("%.2f",goals));
+				((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.assistTotal)).setText("Assists: "+String.format("%.2f",ast));
+				((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.shotOnGoalTotal)).setText("Shots On Goal: "+String.format("%.2f",sog));
+				((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.penaltyTotal)).setText("Penalties: "+String.format("%.2f",(penmajor+penminor+penmisconduct)));
 				((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.penaltyTypeTotal)).setText(
-						" Minors:" + String.format("%.3f",penminor) +
-						"\n Majors: " + String.format("%.3f",penmajor) +
-						"\n Misconduct: " + String.format("%.3f",penmisconduct));
-				((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.penaltyMinsTotal)).setText("Penalty Minutes: "+String.format("%.3f",(2*penminor + 5*penmajor + 10*penmisconduct)));
+						" Minors:" + String.format("%.2f",penminor) +
+						"\n Majors: " + String.format("%.2f",penmajor) +
+						"\n Misconduct: " + String.format("%.2f",penmisconduct));
+				((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.penaltyMinsTotal)).setText("Penalty Minutes: "+String.format("%.2f",(2*penminor + 5*penmajor + 10*penmisconduct)));
 				//Goalie Stats
 				((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.goalieTitle)).setText("Goalie Stats");
 				((TextView)((HockeyIndividualStatActivity) getActivity()).findViewById(R.id.goalieStats)).setText(
-					" Saves:" + String.format("%.3f",saves) +
-					"\n Goals Allowed: " + String.format("%.3f",goals_allowed) +
+					" Saves:" + String.format("%.2f",saves) +
+					"\n Goals Allowed: " + String.format("%.2f",goals_allowed) +
 	
 					"\n Save %: " + savepercent);
 				

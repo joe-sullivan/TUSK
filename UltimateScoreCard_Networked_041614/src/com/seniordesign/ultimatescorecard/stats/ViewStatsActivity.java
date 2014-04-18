@@ -96,7 +96,7 @@ public class ViewStatsActivity extends Activity{
 				public void onClick(DialogInterface dialog, int which) {
 					_sportButton.setText(arrayAdapter.getItem(which));
 					changeBackground(arrayAdapter.getItem(which));
-					buttonEnabler(true, false, false, false);
+					buttonEnabler(true, false, false, false, false);
 					resetButtonText(true, true);
 					dialog.dismiss();
 				}
@@ -141,7 +141,7 @@ public class ViewStatsActivity extends Activity{
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					_teamButton.setText(arrayAdapter.getItem(which));
-					buttonEnabler(true, true, true, false);
+					buttonEnabler(true, true, true, false, false);
 					resetButtonText(false, true);
 					dialog.dismiss();
 				}
@@ -206,13 +206,13 @@ public class ViewStatsActivity extends Activity{
 					if(_gameButton.getText().equals(getResources().getString(R.string.choose_game))&&
 							(_playerButton.getText().equals(getResources().getString(R.string.choose_player)) ||
 									_playerButton.getText().equals("All Players"))){
-						buttonEnabler(true, true, true, false);			//game is not chosen, so can't proceed
+						buttonEnabler(true, true, true, false, false);			//game is not chosen, so can't proceed
 					}
 					else if(_gameButton.getText().equals("All Games")){
-						buttonEnabler(true, true, false, true);	
+						buttonEnabler(true, true, false, true, false);	
 					}
 					else{
-						buttonEnabler(true, true, true, true);
+						buttonEnabler(true, true, true, true, true);
 					}
 					dialog.dismiss();
 				}
@@ -274,7 +274,7 @@ public class ViewStatsActivity extends Activity{
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					_gameButton.setText(arrayAdapter.getItem(which));
-					buttonEnabler(true, true, true, true);
+					buttonEnabler(true, true, true, true, true);
 					dialog.dismiss();
 				}
 			});
@@ -376,10 +376,15 @@ public class ViewStatsActivity extends Activity{
 		@Override
 		public void onClick(View view) {
 			String game = _gameButton.getText().toString();
-			for(Games g: _games){
-				if(g.getDate().equals(game)){
-					_game = g;
-					break;
+			if(!game.equals("All Games")){
+				String[] lines = game.split("\n");
+				if(lines.length==2){
+					for(Games g: _games){
+						if(g.getDate().equals(lines[1])){
+							_game = g;
+							break;
+						}
+					}
 				}
 			}
 			
@@ -694,13 +699,13 @@ public class ViewStatsActivity extends Activity{
 	    return false;		
 	}
 	
-	private void buttonEnabler(boolean team, boolean player, boolean game, boolean search){
+	private void buttonEnabler(boolean team, boolean player, boolean game, boolean search, boolean email){
 		_teamButton.setEnabled(team);
 		_playerButton.setEnabled(player);
 		_gameButton.setEnabled(game);
 		_searchButton.setEnabled(search);
-		_sendButton.setEnabled(search);
-		_deleteGameButton.setEnabled(search);
+		_sendButton.setEnabled(email);
+		_deleteGameButton.setEnabled(email);
 	}
 	
 	private void resetButtonText(boolean team, boolean game){
@@ -724,7 +729,7 @@ public class ViewStatsActivity extends Activity{
 			((LinearLayout)findViewById(R.id.view_stats_background)).setBackgroundResource(R.drawable.background_soccer);
 		}
 		else {
-			((LinearLayout)findViewById(R.id.view_stats_background)).setBackgroundResource(R.drawable.background_hockey);
+			((LinearLayout)findViewById(R.id.view_stats_background)).setBackgroundResource(R.drawable.background_ice);
 		}
 	}
 }

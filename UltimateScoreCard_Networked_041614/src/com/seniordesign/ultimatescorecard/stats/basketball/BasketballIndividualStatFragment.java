@@ -6,6 +6,7 @@ import com.seniordesign.ultimatescorecard.R;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballGameStats;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballGames;
+import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 
@@ -126,42 +127,49 @@ public class BasketballIndividualStatFragment extends Fragment{
 			//AVE
 			if(average){
 				ArrayList<BasketballGameStats> allStats = (ArrayList<BasketballGameStats>) _db.getPlayerAllGameStats(player.getpid());
+				ArrayList<Games> games = (ArrayList<Games>) _db.getAllGamesTeam(player.gettid());
 				double pts = 0,fgm = 0,fga = 0,fgm3 = 0,fga3 = 0,ftm = 0,fta = 0,oreb = 0,dreb = 0,
 						ast = 0,stl = 0,blk = 0,to = 0,pf = 0,tech = 0,flagrant = 0;
+				int n = 0;
 				for(BasketballGameStats s: allStats){
-					pts += s.getpts();
-					fgm += s.getfgm();
-					fga += s.getfga();
-					fgm3 += s.getfgm3();
-					fga3 += s.getfga3();
-					ftm += s.getftm();
-					fta += s.getfta();
-					oreb += s.getoreb();
-					dreb += s.getdreb();
-				    ast += s.getast();
-				    stl += s.getstl();
-				    blk += s.getblk();
-				    to += s.getto();
-				    pf += s.getpf();
-				    tech += s.gettech();
-				    flagrant += s.getflagrant();
+					for(Games g: games){
+						if(s.getgid()==g.getgid()){
+							pts += s.getpts();
+							fgm += s.getfgm();
+							fga += s.getfga();
+							fgm3 += s.getfgm3();
+							fga3 += s.getfga3();
+							ftm += s.getftm();
+							fta += s.getfta();
+							oreb += s.getoreb();
+							dreb += s.getdreb();
+						    ast += s.getast();
+						    stl += s.getstl();
+						    blk += s.getblk();
+						    to += s.getto();
+						    pf += s.getpf();
+						    tech += s.gettech();
+						    flagrant += s.getflagrant();
+						    n++;
+						}
+					}
 				}
-				pts /= allStats.size();
-				fgm /= allStats.size();
-				fga /= allStats.size();
-				fgm3 /= allStats.size();
-				fga3 /= allStats.size();
-				ftm /= allStats.size();
-				fta /= allStats.size();
-				oreb /= allStats.size();
-				dreb /= allStats.size();
-			    ast /= allStats.size();
-			    stl /= allStats.size();
-			    blk /= allStats.size();
-			    to /= allStats.size();
-			    pf /= allStats.size();
-			    tech /= allStats.size();
-			    flagrant /= allStats.size();
+				pts /= n;
+				fgm /= n;
+				fga /= n;
+				fgm3 /= n;
+				fga3 /= n;
+				ftm /= n;
+				fta /= n;
+				oreb /= n;
+				dreb /= n;
+			    ast /= n;
+			    stl /= n;
+			    blk /= n;
+			    to /= n;
+			    pf /= n;
+			    tech /= n;
+			    flagrant /= n;
 			    
 			    String fgpercent;
 				if(fga > 0){

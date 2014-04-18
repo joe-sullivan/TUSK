@@ -26,20 +26,20 @@ public class HockeyGameLog extends GameLog{
 	
 	public void shootsAndMisses(String shooter, String goalie, String time){
 		if(goalie.equals("")){
-			_thePlay = "Shot missed by "+shooter+".";
+			_thePlay = "Shot missed by "+shooter;
 		}
 		else{
-			_thePlay = "Shot by "+shooter+", saved by " +goalie+".";
+			_thePlay = "Shot by "+shooter+", saved by " +goalie;
 		}
 		recordActivity(time);
 	}
 	
 	public void penaltyShot(boolean goal, String shooter, String goalie, String time){
 		if(goalie.equals("")){
-			_thePlay = "Penalty: "+shooter+" scores.";
+			_thePlay = "Penalty: "+shooter+" scores";
 		}
 		else{
-			_thePlay = "Penalty: "+goalie+" saves.";
+			_thePlay = "Penalty: "+goalie+" saves";
 		}
 		recordActivity(time);
 	}
@@ -52,7 +52,7 @@ public class HockeyGameLog extends GameLog{
 	public void recordActivity(String time){
 		PlayByPlay pbp = null;
 		if(time.equals("Restart Clock")){
-			pbp = new PlayByPlay(g_id, _thePlay + ".", time, null, 0, 0);
+			pbp = new PlayByPlay(g_id, _thePlay, time, null, 0, 0);
 			((HockeyDatabaseHelper) _db).createPlayByPlay(pbp);
 		}
 		else{

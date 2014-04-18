@@ -3,6 +3,7 @@ package com.seniordesign.ultimatescorecard.stats.soccer;
 import java.util.ArrayList;
 
 import com.seniordesign.ultimatescorecard.R;
+import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerDatabaseHelper;
@@ -111,37 +112,44 @@ public class SoccerIndividualStatFragment extends Fragment{
 			//AVE
 			if(average){
 				ArrayList<SoccerGameStats> allStats = (ArrayList<SoccerGameStats>) _db.getPlayerAllGameStats(player.getpid());
+				ArrayList<Games> games = (ArrayList<Games>) _db.getAllGamesTeam(player.gettid());
 				double shots=0,sog=0,goals=0,ast=0,fouls=0,pka=0,pkg=0,offside=0,
 						ycard=0,rcard=0,save_opps=0,saves=0,goals_allowed=0;
+				int n = 0;
 				for(SoccerGameStats s: allStats){
-					shots += s.getshots();
-					sog += s.getsog();
-					goals += s.getgoals();
-					ast += s.getast();
-					fouls += s.getfouls();
-					pka += s.getpka(); 
-					pkg += s.getpkg();
-					offside += s.getoffside();
-					ycard += s.getycard();
-					rcard += s.getrcard();
-					save_opps += s.getsaveopps();
-					saves += s.getsaves();
-					goals_allowed += s.getgoalsallowed();
+					for(Games g: games){
+						if(s.getgid()==g.getgid()){
+							shots += s.getshots();
+							sog += s.getsog();
+							goals += s.getgoals();
+							ast += s.getast();
+							fouls += s.getfouls();
+							pka += s.getpka(); 
+							pkg += s.getpkg();
+							offside += s.getoffside();
+							ycard += s.getycard();
+							rcard += s.getrcard();
+							save_opps += s.getsaveopps();
+							saves += s.getsaves();
+							goals_allowed += s.getgoalsallowed();
+							n++;
+						}
+					}
 				}
 				
-				shots /= allStats.size();
-				sog /= allStats.size();
-				goals /= allStats.size();
-				ast /= allStats.size();
-				fouls /= allStats.size();
-				pka /= allStats.size(); 
-				pkg /= allStats.size();
-				offside /= allStats.size();
-				ycard /= allStats.size();
-				rcard /= allStats.size();
-				save_opps /= allStats.size();
-				saves /= allStats.size();
-				goals_allowed /= allStats.size();
+				shots /= n;
+				sog /= n;
+				goals /= n;
+				ast /= n;
+				fouls /= n;
+				pka /= n; 
+				pkg /= n;
+				offside /= n;
+				ycard /= n;
+				rcard /= n;
+				save_opps /= n;
+				saves /= n;
+				goals_allowed /= n;
 				
 			    String savepercent;
 		    	if((saves+goals_allowed)>0){
@@ -154,17 +162,17 @@ public class SoccerIndividualStatFragment extends Fragment{
 				
 				((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.playerName)).setText(player.getpname() + " - Average Stats");
 				((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.teamName)).setText(team.gettname());
-				((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.goalTotal)).setText("Goals: "+String.format("%.3f", goals));
-				((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.assistTotal)).setText("Assists: "+String.format("%.3f", ast));
-				((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.shotOnGoalTotal)).setText("Shots On Goal: "+String.format("%.3f", sog));
+				((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.goalTotal)).setText("Goals: "+String.format("%.2f", goals));
+				((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.assistTotal)).setText("Assists: "+String.format("%.2f", ast));
+				((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.shotOnGoalTotal)).setText("Shots On Goal: "+String.format("%.2f", sog));
 				((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.penaltyTypeTotal)).setText(
-						" Yellow Cards:" + String.format("%.3f", ycard) +
-						"\n Red Cards: " + String.format("%.3f", rcard));
+						" Yellow Cards:" + String.format("%.2f", ycard) +
+						"\n Red Cards: " + String.format("%.2f", rcard));
 				//Goalie Stats
 				((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.goalieTitle)).setText("Goalie Stats");
 				((TextView)((SoccerIndividualStatActivity) getActivity()).findViewById(R.id.goalieStats)).setText(
-					" Saves:" + String.format("%.3f", saves) +
-					"\n Goals Allowed: " + String.format("%.3f", goals_allowed) +
+					" Saves:" + String.format("%.2f", saves) +
+					"\n Goals Allowed: " + String.format("%.2f", goals_allowed) +
 		
 					"\n Save %: " + savepercent);		
 			}

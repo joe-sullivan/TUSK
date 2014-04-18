@@ -438,7 +438,7 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
 			if(stat==KEY_HOME_PEN_MAJOR)
 				values.put(KEY_HOME_PEN_MAJOR, new_value);
 			else
-				values.put(KEY_HOME_PEN_MAJOR, game.gethomepenminor());
+				values.put(KEY_HOME_PEN_MAJOR, game.gethomepenmajor());
 			if(stat==KEY_HOME_PEN_MISCONDUCT)
 				values.put(KEY_HOME_PEN_MISCONDUCT, new_value);
 			else
@@ -475,7 +475,7 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
 			if(stat==KEY_AWAY_PEN_MAJOR)
 				values.put(KEY_AWAY_PEN_MAJOR, new_value);
 			else
-				values.put(KEY_AWAY_PEN_MAJOR, game.getawaypenminor());
+				values.put(KEY_AWAY_PEN_MAJOR, game.getawaypenmajor());
 			if(stat==KEY_AWAY_PEN_MISCONDUCT)
 				values.put(KEY_AWAY_PEN_MISCONDUCT, new_value);
 			else
