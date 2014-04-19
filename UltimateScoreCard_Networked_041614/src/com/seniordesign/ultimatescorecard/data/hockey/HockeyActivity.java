@@ -151,10 +151,9 @@ public class HockeyActivity extends Activity{
 	}
 	
 	private void shotButtonSet(){
-		buttonSwap(true);
-		setTextAndListener(_option1Button, noGoalListener(true), "Saved");
-		setTextAndListener(_option2Button, goalScoredListener, "Goal");
-		setTextAndListener(_option3Button, noGoalListener(false), "Missed");
+		buttonSwap(false);
+		setTextAndListener(_option4Button, noGoalListener(true), "Saved");
+		setTextAndListener(_option5Button, goalScoredListener, "Goal");
 		_gameClockView.setOnClickListener(null);
 		zeroTimeDisabler();	
 	}
