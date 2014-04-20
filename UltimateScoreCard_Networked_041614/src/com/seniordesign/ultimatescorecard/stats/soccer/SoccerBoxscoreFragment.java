@@ -56,7 +56,7 @@ public class SoccerBoxscoreFragment extends Fragment{
 		}
 		else{
 			((TextView)getView().findViewById(R.id.homeTeamStatText)).setText(_player);
-			((TextView)getView().findViewById(R.id.awayTeamStatText)).setText("");
+			((TextView)getView().findViewById(R.id.awayTeamStatText)).setVisibility(View.GONE);
 		}
 		((TextView)getView().findViewById(R.id.statisticTitle)).setTextColor(Color.WHITE);
 

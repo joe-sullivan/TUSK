@@ -81,6 +81,8 @@ public class SoccerPlayer extends Players implements Serializable{
 		ArrayList<StatData> _pstats = new ArrayList<StatData>();
 		ArrayList<StatData> _tstats = new ArrayList<StatData>();
 		
+		_pstats.add(new StatData(g_id, p_id, "shots", 1));
+
 		if(home){
 			_tstats.add(new StatData(g_id, 0, "home_shots", 1));
 		}

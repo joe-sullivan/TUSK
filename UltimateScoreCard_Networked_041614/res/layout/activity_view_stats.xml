@@ -7,8 +7,9 @@
 
     <TextView
         android:id="@+id/view_statistic_title"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="@string/view_statistics_screen"
         android:textAppearance="?android:attr/textAppearanceLarge" />
     

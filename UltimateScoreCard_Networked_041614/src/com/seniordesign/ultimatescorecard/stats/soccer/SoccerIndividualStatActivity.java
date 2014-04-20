@@ -39,7 +39,6 @@ public class SoccerIndividualStatActivity extends FragmentActivity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_stats);
 		
-		
 		_team = (Teams) getIntent().getSerializableExtra(StaticFinalVars.TEAM_INFO);
 		_players = (ArrayList<Players>) getIntent().getSerializableExtra(StaticFinalVars.PLAYERS_INFO);
 		g_id = (Long) getIntent().getSerializableExtra(StaticFinalVars.GAME_ID);

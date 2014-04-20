@@ -2,12 +2,13 @@
 <resources>
 	
     <!-- Really High Level Text -->
-    <string name="application_name">Ultimate Scorecard</string>
+    <string name="application_name">Ultimate Score Keeper</string>
     <string name="basketball_screen">Basketball</string>
     <string name="football_screen">Football</string>
     <string name="soccer_screen">Soccer</string>
     <string name="hockey_screen">Hockey</string>       
     <string name="choose_team_screen">Choose Team</string>
+    <string name="create_team_screen">Create Team</string>
     <string name="boxscore_screen">Boxscore</string>
     <string name="action_settings">Settings</string>
     

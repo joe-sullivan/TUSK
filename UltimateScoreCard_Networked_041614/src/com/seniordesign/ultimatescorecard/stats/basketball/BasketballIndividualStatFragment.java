@@ -198,33 +198,33 @@ public class BasketballIndividualStatFragment extends Fragment{
 			    
 			    ((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.playerName)).setText(player.getpname() + " - Average Stats");
 				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.teamName)).setText(team.gettname());
-				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.pointTotal)).setText("Points: "+String.format("%.3f",pts));	
+				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.pointTotal)).setText("Points: "+String.format("%.2f",pts));	
 				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.fieldGoalTotal)).setText(				
 						"Field Goals:" +
-						"\n Made: " + String.format("%.3f",fgm) +
-						"\t\t Attempted: " + String.format("%.3f",fga) +
+						"\n Made: " + String.format("%.2f",fgm) +
+						"\t\t Attempted: " + String.format("%.2f",fga) +
 						"\n FG %: " + fgpercent);	
 				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.fieldGoal3Total)).setText(				
 						"3 Point Field Goals:" +
-						"\n Made: " + String.format("%.3f",fgm3) +
-						"\t\t Attempted: " + String.format("%.3f",fga3) +
+						"\n Made: " + String.format("%.2f",fgm3) +
+						"\t\t Attempted: " + String.format("%.2f",fga3) +
 						"\n FG %: " + fg3percent);	
 				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.freeThrowTotal)).setText(
 						"Free Throws:" +
-						"\n Made: " + String.format("%.3f",ftm) +
-						"\t\t Attempted: " + String.format("%.3f",fta) +
+						"\n Made: " + String.format("%.2f",ftm) +
+						"\t\t Attempted: " + String.format("%.2f",fta) +
 						"\n FT %: " + ftpercent);	
 			
-				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.reboundTotal)).setText("Rebounds: "+String.format("%.3f",(dreb+oreb)));
-				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.dReboundTotal)).setText("Defensive Rebounds: "+String.format("%.3f",dreb));
-				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.oReboundTotal)).setText("Offensive Rebounds: "+String.format("%.3f",oreb));
-				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.assistTotal)).setText("Assists: "+String.format("%.3f",ast));
-				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.stealTotal)).setText("Steals: "+String.format("%.3f",stl));
-				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.blocksTotal)).setText("Blocks: "+String.format("%.3f",blk));
-				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.turnoverTotal)).setText("Turnovers: "+String.format("%.3f",to));
-				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.foulTotal)).setText("Fouls: "+String.format("%.3f",pf));
-				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.techFouls)).setText("Technical Fouls: "+String.format("%.3f",tech));
-				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.flagrantFouls)).setText("Flagrant Fouls: "+String.format("%.3f",flagrant));
+				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.reboundTotal)).setText("Rebounds: "+String.format("%.2f",(dreb+oreb)));
+				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.dReboundTotal)).setText("Defensive Rebounds: "+String.format("%.2f",dreb));
+				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.oReboundTotal)).setText("Offensive Rebounds: "+String.format("%.2f",oreb));
+				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.assistTotal)).setText("Assists: "+String.format("%.2f",ast));
+				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.stealTotal)).setText("Steals: "+String.format("%.2f",stl));
+				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.blocksTotal)).setText("Blocks: "+String.format("%.2f",blk));
+				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.turnoverTotal)).setText("Turnovers: "+String.format("%.2f",to));
+				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.foulTotal)).setText("Fouls: "+String.format("%.2f",pf));
+				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.techFouls)).setText("Technical Fouls: "+String.format("%.2f",tech));
+				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.flagrantFouls)).setText("Flagrant Fouls: "+String.format("%.2f",flagrant));
 			}
 		
 			else{

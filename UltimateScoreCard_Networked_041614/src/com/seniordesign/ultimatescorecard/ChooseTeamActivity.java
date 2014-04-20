@@ -386,8 +386,24 @@ public class ChooseTeamActivity extends Activity{
 				((Button)view).setTextColor(getResources().getColor(R.color.white));		
 			}
 			else if(event.getAction() == MotionEvent.ACTION_UP){
-				view.setBackgroundResource(R.drawable.view_style_plain_long);
-				((Button)view).setTextColor(getResources().getColor(R.color.black));	
+				((Button)view).setTextColor(getResources().getColor(R.color.black));		
+				if(_sportType.equals("basketball")){
+					_addEditTeam.setBackgroundResource(R.drawable.view_style_slant);			
+					_deleteButton.setBackgroundResource(R.drawable.view_style_slant);
+					
+				}
+				else if(_sportType.equals("hockey")){
+					_addEditTeam.setBackgroundResource(R.drawable.view_style_gradiant);
+					_deleteButton.setBackgroundResource(R.drawable.view_style_gradiant);
+				}
+				else if(_sportType.equals("soccer")){
+					_addEditTeam.setBackgroundResource(R.drawable.view_style_slant);
+					_deleteButton.setBackgroundResource(R.drawable.view_style_slant);
+				}
+				else if(_sportType.equals("football")){
+					_addEditTeam.setBackgroundResource(R.drawable.view_style_slant);
+					_deleteButton.setBackgroundResource(R.drawable.view_style_slant);
+				}	
 			}
 			return false;
 		}

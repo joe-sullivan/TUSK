@@ -33,6 +33,7 @@ import android.app.Activity;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -73,6 +74,7 @@ public class ViewStatsActivity extends Activity{
 		_sendButton.setOnClickListener(sendListener);
 		_deleteGameButton = (Button)findViewById(R.id.delete_game_button);
 		_deleteGameButton.setOnClickListener(deleteGameListener);
+
 	}
 	
 	private OnClickListener selectSportListener = new OnClickListener(){
@@ -96,6 +98,15 @@ public class ViewStatsActivity extends Activity{
 				public void onClick(DialogInterface dialog, int which) {
 					_sportButton.setText(arrayAdapter.getItem(which));
 					changeBackground(arrayAdapter.getItem(which));
+					_sport = arrayAdapter.getItem(which);
+					if(arrayAdapter.getItem(which).equals("Football") || arrayAdapter.getItem(which).equals("Soccer")){
+						((TextView) findViewById(R.id.view_statistic_title)).setTextColor(Color.WHITE);
+						_sportButton.setTextColor(Color.WHITE);
+					}
+					else{
+						((TextView) findViewById(R.id.view_statistic_title)).setTextColor(Color.BLACK);
+						_sportButton.setTextColor(Color.BLACK);
+					}
 					buttonEnabler(true, false, false, false, false);
 					resetButtonText(true, true);
 					dialog.dismiss();
@@ -706,6 +717,60 @@ public class ViewStatsActivity extends Activity{
 		_searchButton.setEnabled(search);
 		_sendButton.setEnabled(email);
 		_deleteGameButton.setEnabled(email);
+		
+		boolean sport = _sport.equals("Football") || _sport.equals("Soccer");
+		if(sport){
+			if(team)
+				_teamButton.setTextColor(Color.WHITE);
+			else
+				_teamButton.setTextColor(Color.LTGRAY);
+			if(player)
+				_playerButton.setTextColor(Color.WHITE);
+			else
+				_playerButton.setTextColor(Color.LTGRAY);
+			if(game)
+				_gameButton.setTextColor(Color.WHITE);
+			else
+				_gameButton.setTextColor(Color.LTGRAY);
+			if(search)
+				_searchButton.setTextColor(Color.WHITE);
+			else
+				_searchButton.setTextColor(Color.LTGRAY);
+			if(email){
+				_sendButton.setTextColor(Color.WHITE);
+				_deleteGameButton.setTextColor(Color.WHITE);
+			}
+			else{
+				_sendButton.setTextColor(Color.LTGRAY);
+				_deleteGameButton.setTextColor(Color.LTGRAY);			
+			}
+		}
+		else if(!sport){
+			if(team)
+				_teamButton.setTextColor(Color.BLACK);
+			else
+				_teamButton.setTextColor(Color.LTGRAY);
+			if(player)
+				_playerButton.setTextColor(Color.BLACK);
+			else
+				_playerButton.setTextColor(Color.LTGRAY);
+			if(game)
+				_gameButton.setTextColor(Color.BLACK);
+			else
+				_gameButton.setTextColor(Color.LTGRAY);
+			if(search)
+				_searchButton.setTextColor(Color.BLACK);
+			else
+				_searchButton.setTextColor(Color.LTGRAY);
+			if(email){
+				_sendButton.setTextColor(Color.BLACK);
+				_deleteGameButton.setTextColor(Color.BLACK);
+			}
+			else{
+				_sendButton.setTextColor(Color.LTGRAY);
+				_deleteGameButton.setTextColor(Color.LTGRAY);			
+			}
+		}
 	}
 	
 	private void resetButtonText(boolean team, boolean game){

@@ -57,7 +57,7 @@ public class HockeyBoxscoreFragment extends Fragment{
 		}
 		else{
 			((TextView)getView().findViewById(R.id.homeTeamStatText)).setText(_player);
-			((TextView)getView().findViewById(R.id.awayTeamStatText)).setText("");
+			((TextView)getView().findViewById(R.id.awayTeamStatText)).setVisibility(View.GONE);
 		}
 		if(_lookingAtHome){
 			if(!_playerView)

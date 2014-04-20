@@ -65,7 +65,7 @@
             android:name="com.seniordesign.ultimatescorecard.CreateTeamActivity"
              android:configChanges="orientation|keyboardHidden"
              android:windowSoftInputMode="stateAlwaysHidden"
-            android:label="@string/choose_team_screen" >
+            android:label="@string/create_team_screen" >
         </activity>
         
         <activity
@@ -95,13 +95,13 @@
         <activity
             android:name="com.seniordesign.ultimatescorecard.substitution.BasketballSubstitutionActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:label="@string/boxscore_screen" >
+            android:label="@string/substitution_title" >
         </activity>
         
         <activity
             android:name="com.seniordesign.ultimatescorecard.substitution.SoccerSubstitutionActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:label="@string/boxscore_screen" >
+            android:label="@string/substitution_title" >
         </activity>
         
         <activity
