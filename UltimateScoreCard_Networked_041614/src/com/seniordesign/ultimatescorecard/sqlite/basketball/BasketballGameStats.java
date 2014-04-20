@@ -204,4 +204,26 @@ public class BasketballGameStats implements Serializable {
 			return "N/A";
 		}
 	}
+	
+	public String getAst2TO(){
+		if(to>0){
+			return String.format("%.2f", (double) ast/to);
+		}
+		else{
+			return "N/A";
+		}
+	}
+	
+	public int getEfficiency(){
+		return (pts+oreb+dreb+ast+stl+blk)-(fga-fgm)+(fta-ftm)+to;
+	}
+	
+	public String getAFG(){
+		if(fga>0){
+			return String.format("%.3f", (double) (fgm+fgm3/2)/fga);
+		}
+		else{
+			return "N/A";
+		}
+	}
 }

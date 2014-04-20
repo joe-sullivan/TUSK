@@ -259,6 +259,28 @@ public class BasketballGames extends Games{
 			return "N/A";
 		}
 	}
+	
+	public String gethomeAst2TO(){
+		if(home_to>0){
+			return String.format("%.2f", (double) home_ast/home_to);
+		}
+		else{
+			return "N/A";
+		}
+	}
+	
+	public int gethomeEfficiency(){
+		return (home_pts+home_oreb+home_dreb+home_ast+home_stl+home_blk)-(home_fga-home_fgm)+(home_fta-home_ftm)+home_to;
+	}
+	
+	public String gethomeAFG(){
+		if(home_fga>0){
+			return String.format("%.3f", (double) (home_fgm+home_fgm3/2)/home_fga);
+		}
+		else{
+			return "N/A";
+		}
+	}
 
     public int getawaypts() {
         return this.away_pts;
@@ -372,6 +394,28 @@ public class BasketballGames extends Games{
 		}
 		else {
 			return ""+ away_pts;
+		}
+	}
+	
+	public String getawayAst2TO(){
+		if(away_to>0){
+			return String.format("%.2f", (double) away_ast/away_to);
+		}
+		else{
+			return "N/A";
+		}
+	}
+	
+	public int getawayEfficiency(){
+		return (away_pts+away_oreb+away_dreb+away_ast+away_stl+away_blk)-(away_fga-away_fgm)+(away_fta-away_ftm)+away_to;
+	}
+	
+	public String getawayAFG(){
+		if(away_fga>0){
+			return String.format("%.3f", (double) (away_fgm+away_fgm3/2)/away_fga);
+		}
+		else{
+			return "N/A";
 		}
 	}
 }

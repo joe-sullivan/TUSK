@@ -129,6 +129,38 @@
 	        android:layout_height="wrap_content"
 	        android:padding="@dimen/padding"
 	        android:text="Flagrant Fouls" />
+	    
+	    <TextView
+	        android:id="@+id/advanded"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:padding="@dimen/padding"
+	        android:text="Advanced Stats:" 
+	        android:textSize="@dimen/large_text"/>
+	    
+	    <TextView
+	        android:id="@+id/assist2turnover"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:padding="@dimen/padding"
+	        android:text="Assists to TOs" 
+	        android:textSize="@dimen/large_text"/>
+	    
+	    <TextView
+	        android:id="@+id/efficiency"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:padding="@dimen/padding"
+	        android:text="Efficiency" 
+	        android:textSize="@dimen/large_text"/>
+	    
+	    <TextView
+	        android:id="@+id/AFG"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:padding="@dimen/padding"
+	        android:text="AFG%" 
+	        android:textSize="@dimen/large_text"/>
 	
 	</LinearLayout>
 </ScrollView>

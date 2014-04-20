@@ -81,6 +81,8 @@ public class BasketballIndividualStatFragment extends Fragment{
 				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.foulTotal)).setText("Fouls: "+game.gethomepf());
 				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.techFouls)).setText("Technical Fouls: "+game.gethometech());
 				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.flagrantFouls)).setText("Flagrant Fouls: "+game.gethomeflagrant());
+				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.assist2turnover)).setText("AST/TO: "+game.gethomeAst2TO());
+				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.AFG)).setText("AFG%: "+game.gethomeAFG());
 		
 			}
 			else{
@@ -113,6 +115,8 @@ public class BasketballIndividualStatFragment extends Fragment{
 				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.foulTotal)).setText("Fouls: "+game.getawaypf());
 				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.techFouls)).setText("Technical Fouls: "+game.getawaytech());
 				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.flagrantFouls)).setText("Flagrant Fouls: "+game.getawayflagrant());
+				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.assist2turnover)).setText("AST/TO: "+game.getawayAst2TO());
+				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.AFG)).setText("AFG%: "+game.getawayAFG());
 		
 			}
 		}
@@ -195,6 +199,23 @@ public class BasketballIndividualStatFragment extends Fragment{
 					ftpercent= "N/A";
 				}
 				
+				String ast2TO;
+				if(to>0){
+					ast2TO = String.format("%.2f", (double) ast/to);
+				}
+				else{
+					ast2TO = "N/A";
+				}
+				
+				String AFG;
+				if(fga>0){
+					AFG = String.format("%.3f", (double) (fgm+fgm3/2)/fga);
+				}
+				else{
+					AFG = "N/A";
+				}
+				
+				
 			    
 			    ((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.playerName)).setText(player.getpname() + " - Average Stats");
 				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.teamName)).setText(team.gettname());
@@ -225,6 +246,8 @@ public class BasketballIndividualStatFragment extends Fragment{
 				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.foulTotal)).setText("Fouls: "+String.format("%.2f",pf));
 				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.techFouls)).setText("Technical Fouls: "+String.format("%.2f",tech));
 				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.flagrantFouls)).setText("Flagrant Fouls: "+String.format("%.2f",flagrant));
+				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.assist2turnover)).setText("AST/TO: "+ast2TO);
+				((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.AFG)).setText("AFG%: "+AFG);
 			}
 		
 			else{
@@ -259,6 +282,8 @@ public class BasketballIndividualStatFragment extends Fragment{
 			((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.foulTotal)).setText("Fouls: "+stats.getpf());
 			((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.techFouls)).setText("Technical Fouls: "+stats.gettech());
 			((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.flagrantFouls)).setText("Flagrant Fouls: "+stats.getflagrant());
+			((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.assist2turnover)).setText("AST/TO: "+stats.getAst2TO());
+			((TextView)((BasketballIndividualStatActivity) getActivity()).findViewById(R.id.AFG)).setText("AFG%: "+stats.getAFG());
 			}
 		}
 	}
