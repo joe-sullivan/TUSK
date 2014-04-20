@@ -219,6 +219,9 @@ public class ViewStatsActivity extends Activity{
 									_playerButton.getText().equals("All Players"))){
 						buttonEnabler(true, true, true, false, false);			//game is not chosen, so can't proceed
 					}
+					else if(_games.size()==0){
+						buttonEnabler(true,true,false,false,false);
+					}
 					else if(_gameButton.getText().equals("All Games")){
 						buttonEnabler(true, true, false, true, false);	
 					}
@@ -312,74 +315,75 @@ public class ViewStatsActivity extends Activity{
 				}
 			}
 			else if (_game == null){
-				if(_games!=null){
+				if(_games.size()!=0){
 					_game = _games.get(0);
 				}
 			}
 			//END NEW
-		
-			ArrayList<Players> _homeTeamPlayersPull = (ArrayList<Players>) _db.getPlayersTeam2(_game.gethomeid());
-			ArrayList<Players> _awayTeamPlayersPull = (ArrayList<Players>) _db.getPlayersTeam2(_game.getawayid());
-			_home = _db.getTeam(_game.gethomeid());
-			_away = _db.getTeam(_game.getawayid());
-			long g_id = _game.getgid();
-			GameInfo _gameInfo = new GameInfo(_home, _away, _homeTeamPlayersPull, _awayTeamPlayersPull, g_id);
-			
-			ArrayList<PlayByPlay> _playbyplay = (ArrayList<PlayByPlay>) _db.getPlayByPlayGame(g_id);
-			
-			ArrayList<ShotChartCoords> _homeShots = (ArrayList<ShotChartCoords>) _db.getAllTeamShotsGame(_game.gethomeid(), g_id);
-			ArrayList<ShotChartCoords> _awayShots = (ArrayList<ShotChartCoords>) _db.getAllTeamShotsGame(_game.getawayid(), g_id);
-			
-			if(_sportButton.getText().equals("Basketball")){
-				_gameInfo.setAwayScore(((BasketballGames)_game).getAwayScoreText());
-				_gameInfo.setHomeScore(((BasketballGames)_game).getHomeScoreText());
-				intent = new Intent(getApplicationContext(), BasketballStatsActivity.class);
-				intent.putExtra(StaticFinalVars.GAME_INFO, _gameInfo);			
-				intent.putExtra(StaticFinalVars.GAME_LOG, _playbyplay);
-				intent.putExtra(StaticFinalVars.SHOT_CHART_HOME, _homeShots);
-				intent.putExtra(StaticFinalVars.SHOT_CHART_AWAY, _awayShots);
-				intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 0);
-				intent.putExtra(StaticFinalVars.GAMES, _games);
-				intent.putExtra(StaticFinalVars.PLAYER_NAME, _playerButton.getText().toString());
+			if(_games.size()!=0){
+				ArrayList<Players> _homeTeamPlayersPull = (ArrayList<Players>) _db.getPlayersTeam2(_game.gethomeid());
+				ArrayList<Players> _awayTeamPlayersPull = (ArrayList<Players>) _db.getPlayersTeam2(_game.getawayid());
+				_home = _db.getTeam(_game.gethomeid());
+				_away = _db.getTeam(_game.getawayid());
+				long g_id = _game.getgid();
+				GameInfo _gameInfo = new GameInfo(_home, _away, _homeTeamPlayersPull, _awayTeamPlayersPull, g_id);
+				
+				ArrayList<PlayByPlay> _playbyplay = (ArrayList<PlayByPlay>) _db.getPlayByPlayGame(g_id);
+				
+				ArrayList<ShotChartCoords> _homeShots = (ArrayList<ShotChartCoords>) _db.getAllTeamShotsGame(_game.gethomeid(), g_id);
+				ArrayList<ShotChartCoords> _awayShots = (ArrayList<ShotChartCoords>) _db.getAllTeamShotsGame(_game.getawayid(), g_id);
+				
+				if(_sportButton.getText().equals("Basketball")){
+					_gameInfo.setAwayScore(((BasketballGames)_game).getAwayScoreText());
+					_gameInfo.setHomeScore(((BasketballGames)_game).getHomeScoreText());
+					intent = new Intent(getApplicationContext(), BasketballStatsActivity.class);
+					intent.putExtra(StaticFinalVars.GAME_INFO, _gameInfo);			
+					intent.putExtra(StaticFinalVars.GAME_LOG, _playbyplay);
+					intent.putExtra(StaticFinalVars.SHOT_CHART_HOME, _homeShots);
+					intent.putExtra(StaticFinalVars.SHOT_CHART_AWAY, _awayShots);
+					intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 0);
+					intent.putExtra(StaticFinalVars.GAMES, _games);
+					intent.putExtra(StaticFinalVars.PLAYER_NAME, _playerButton.getText().toString());
+				}
+				else if (_sportButton.getText().equals("Football")){
+					//_gameInfo.setAwayScore(((FootballGames)_game).getAwayScoreText());
+					//_gameInfo.setHomeScore(((FootballGames)_game).getHomeScoreText());
+					intent = new Intent(getApplicationContext(), FootballStatsActivity.class);
+					intent.putExtra(StaticFinalVars.GAME_INFO, _gameInfo);			
+					intent.putExtra(StaticFinalVars.GAME_LOG, _playbyplay);
+					intent.putExtra(StaticFinalVars.SHOT_CHART_HOME, _homeShots);
+					intent.putExtra(StaticFinalVars.SHOT_CHART_AWAY, _awayShots);
+					intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 0);
+					intent.putExtra(StaticFinalVars.GAMES, _games);
+					intent.putExtra(StaticFinalVars.PLAYER_NAME, _playerButton.getText().toString());
+				}
+				else if (_sportButton.getText().equals("Hockey")){
+					_gameInfo.setAwayScore(((HockeyGames)_game).getAwayScoreText());
+					_gameInfo.setHomeScore(((HockeyGames)_game).getHomeScoreText());
+					intent = new Intent(getApplicationContext(), HockeyStatsActivity.class);
+					intent.putExtra(StaticFinalVars.GAME_INFO, _gameInfo);			
+					intent.putExtra(StaticFinalVars.GAME_LOG, _playbyplay);
+					intent.putExtra(StaticFinalVars.SHOT_CHART_HOME, _homeShots);
+					intent.putExtra(StaticFinalVars.SHOT_CHART_AWAY, _awayShots);
+					intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 0);
+					intent.putExtra(StaticFinalVars.GAMES, _games);
+					intent.putExtra(StaticFinalVars.PLAYER_NAME, _playerButton.getText().toString());
+				}
+				else { // Soccer
+					_gameInfo.setAwayScore(((SoccerGames)_game).getAwayScoreText());
+					_gameInfo.setHomeScore(((SoccerGames)_game).getHomeScoreText());
+					intent = new Intent(getApplicationContext(), SoccerStatsActivity.class);
+					intent.putExtra(StaticFinalVars.GAME_INFO, _gameInfo);			
+					intent.putExtra(StaticFinalVars.GAME_LOG, _playbyplay);
+					intent.putExtra(StaticFinalVars.SHOT_CHART_HOME, _homeShots);
+					intent.putExtra(StaticFinalVars.SHOT_CHART_AWAY, _awayShots);
+					intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 0);
+					intent.putExtra(StaticFinalVars.GAMES, _games);
+					intent.putExtra(StaticFinalVars.PLAYER_NAME, _playerButton.getText().toString());
+				}
+				intent.putExtra(StaticFinalVars.TEAMS, _teams);
+				startActivity(intent);
 			}
-			else if (_sportButton.getText().equals("Football")){
-				//_gameInfo.setAwayScore(((FootballGames)_game).getAwayScoreText());
-				//_gameInfo.setHomeScore(((FootballGames)_game).getHomeScoreText());
-				intent = new Intent(getApplicationContext(), FootballStatsActivity.class);
-				intent.putExtra(StaticFinalVars.GAME_INFO, _gameInfo);			
-				intent.putExtra(StaticFinalVars.GAME_LOG, _playbyplay);
-				intent.putExtra(StaticFinalVars.SHOT_CHART_HOME, _homeShots);
-				intent.putExtra(StaticFinalVars.SHOT_CHART_AWAY, _awayShots);
-				intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 0);
-				intent.putExtra(StaticFinalVars.GAMES, _games);
-				intent.putExtra(StaticFinalVars.PLAYER_NAME, _playerButton.getText().toString());
-			}
-			else if (_sportButton.getText().equals("Hockey")){
-				_gameInfo.setAwayScore(((HockeyGames)_game).getAwayScoreText());
-				_gameInfo.setHomeScore(((HockeyGames)_game).getHomeScoreText());
-				intent = new Intent(getApplicationContext(), HockeyStatsActivity.class);
-				intent.putExtra(StaticFinalVars.GAME_INFO, _gameInfo);			
-				intent.putExtra(StaticFinalVars.GAME_LOG, _playbyplay);
-				intent.putExtra(StaticFinalVars.SHOT_CHART_HOME, _homeShots);
-				intent.putExtra(StaticFinalVars.SHOT_CHART_AWAY, _awayShots);
-				intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 0);
-				intent.putExtra(StaticFinalVars.GAMES, _games);
-				intent.putExtra(StaticFinalVars.PLAYER_NAME, _playerButton.getText().toString());
-			}
-			else { // Soccer
-				_gameInfo.setAwayScore(((SoccerGames)_game).getAwayScoreText());
-				_gameInfo.setHomeScore(((SoccerGames)_game).getHomeScoreText());
-				intent = new Intent(getApplicationContext(), SoccerStatsActivity.class);
-				intent.putExtra(StaticFinalVars.GAME_INFO, _gameInfo);			
-				intent.putExtra(StaticFinalVars.GAME_LOG, _playbyplay);
-				intent.putExtra(StaticFinalVars.SHOT_CHART_HOME, _homeShots);
-				intent.putExtra(StaticFinalVars.SHOT_CHART_AWAY, _awayShots);
-				intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 0);
-				intent.putExtra(StaticFinalVars.GAMES, _games);
-				intent.putExtra(StaticFinalVars.PLAYER_NAME, _playerButton.getText().toString());
-			}
-			intent.putExtra(StaticFinalVars.TEAMS, _teams);
-			startActivity(intent);
 		}		
 	};
 	
