@@ -209,7 +209,7 @@ public class BasketballIndividualStatFragment extends Fragment{
 				
 				String AFG;
 				if(fga>0){
-					AFG = String.format("%.3f", (double) (fgm+fgm3/2)/fga);
+					AFG = String.format("%.3f", (double) (fgm+fgm3/2.0)/fga);
 				}
 				else{
 					AFG = "N/A";

@@ -220,7 +220,7 @@ public class BasketballGameStats implements Serializable {
 	
 	public String getAFG(){
 		if(fga>0){
-			return String.format("%.3f", (double) (fgm+fgm3/2)/fga);
+			return String.format("%.3f", (double) (fgm+fgm3/2.0)/fga);
 		}
 		else{
 			return "N/A";

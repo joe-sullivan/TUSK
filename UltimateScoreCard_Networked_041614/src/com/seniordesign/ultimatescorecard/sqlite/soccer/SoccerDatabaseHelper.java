@@ -561,6 +561,7 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 	    SQLiteDatabase db = this.getWritableDatabase();
 	    db.delete(TABLE_GAMES, KEY_G_ID + " = ?",
 	            new String[] { String.valueOf(g_id) });
+	    deleteGameStats(g_id);
 	    if(!_local){
 	    _net.deleteGame(g_id);
 	    }

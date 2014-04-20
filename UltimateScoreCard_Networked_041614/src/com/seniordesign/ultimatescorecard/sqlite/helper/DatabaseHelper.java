@@ -31,8 +31,6 @@ public abstract class DatabaseHelper extends SQLiteOpenHelper {
 
 	protected UndoInstance _undoInstance;
 
-
-
 	// Logcat tag
 	protected static final String LOG = "DatabaseHelper";
 

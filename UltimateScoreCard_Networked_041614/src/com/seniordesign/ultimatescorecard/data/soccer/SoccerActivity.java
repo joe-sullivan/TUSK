@@ -150,7 +150,7 @@ public class SoccerActivity extends Activity{
 		setTextAndListener(_option4Button, shotTakenListener, "Shot");
 		setTextAndListener(_option5Button, penaltyListener, "Penalty");
 		
-		if(_undoInstance.getiv()!=null){
+		if(_undoInstance.gettstats().size()>0){
 			_undoManager.addInstance(_undoInstance);
 		}
 		_undoInstance = new UndoInstance();

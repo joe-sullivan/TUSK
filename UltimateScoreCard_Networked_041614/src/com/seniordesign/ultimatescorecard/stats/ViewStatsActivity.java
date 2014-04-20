@@ -416,7 +416,7 @@ public class ViewStatsActivity extends Activity{
 			ArrayList<ShotChartCoords> _awayShots = (ArrayList<ShotChartCoords>) _db.getAllTeamShotsGame(_game.getawayid(), g_id);
 			
 			String subject = _away.getabbv() + "vs" + _home.getabbv()+"_"+_game.getDate();
-			fileName = "/" + _away.getabbv() + "vs" + _home.getabbv()+"_"+_game.getDate()+".txt";
+			fileName = "/" + _away.getabbv() + "vs" + _home.getabbv()+"_"+_game.getDate()+".xls";
 			
 			if(isExternalStorageWritable()){
 				File sdCard = Environment.getExternalStorageDirectory();
@@ -430,6 +430,88 @@ public class ViewStatsActivity extends Activity{
 					
 					if(_sportButton.getText().equals("Basketball")){
 						BasketballGames Game = (BasketballGames)_game;
+						osw.write("Home Team: " + _home.gettname() + " - " + _home.getabbv() + "\n");
+						osw.write("Coached By " + _home.getcname()+ "\n\n");
+
+						osw.write("Player Name & Number	FGM-A	3PM-A	FTM-A	PTS	OREB	DREB	REB	AST	STL	BLK	TO	PF\n");
+						for(Players p: _homeTeamPlayersPull){
+							BasketballGameStats stats = ((BasketballDatabaseHelper)_db).getPlayerGameStats(g_id, p.getpid());
+							String name = String.format("%-30s", p.getpnum() + " - " + p.getpname());
+							String fg = String.format("%-9s", "  " + stats.getfgm() + "-"+stats.getfga());
+							String _3fg = String.format("%-9s", "  " + stats.getfgm3() + "-"+stats.getfga3());
+							String ft = String.format("%-9s", "  " + stats.getftm() + "-"+stats.getfta());
+							String pts = String.format("%-7s", "   " + stats.getpts());
+							String oreb = String.format("%-8s", "   " + stats.getoreb());
+							String dreb = String.format("%-8s", "   " + stats.getdreb());
+							String reb = String.format("%-7s", "   " + (stats.getoreb()+stats.getdreb()));
+							String ast = String.format("%-7s", "   " + stats.getast());
+							String stl = String.format("%-7s", "   " + stats.getstl());
+							String blk = String.format("%-7s", "   " + stats.getblk());
+							String to = String.format("%-6s", "  " + stats.getto());
+							String pf = String.format("%-6s", "  " + stats.getpf());
+							osw.write(name + "	" + fg + "	" + _3fg + "	" + ft + "	" + pts +"	"+oreb+"	"+dreb+"	"+reb+"	"+ast+"	"+stl+"	"+blk+"	"+to+"	"+pf+"\n");
+						}
+						
+						//Home team stats
+						osw.write("-------------------------------------------------------------------------------------------------------------------------------------\n");
+						String name = String.format("%-30s", _home.getabbv() + " Total Stats");
+						String fg = String.format("%-9s", "  " + Game.gethomefgm() + "-"+Game.gethomefga());
+						String _3fg = String.format("%-9s", "  " + Game.gethomefgm3() + "-"+Game.gethomefga3());
+						String ft = String.format("%-9s", "  " + Game.gethomeftm() + "-"+Game.gethomefta());
+						String pts = String.format("%-7s", "   " + Game.gethomepts());
+						String oreb = String.format("%-8s", "   " + Game.gethomeoreb());
+						String dreb = String.format("%-8s", "   " + Game.gethomedreb());
+						String reb = String.format("%-7s", "   " + (Game.gethomeoreb()+Game.gethomedreb()));
+						String ast = String.format("%-7s", "   " + Game.gethomeast());
+						String stl = String.format("%-7s", "   " + Game.gethomestl());
+						String blk = String.format("%-7s", "   " + Game.gethomeblk());
+						String to = String.format("%-6s", "  " + Game.gethometo());
+						String pf = String.format("%-6s", "  " + Game.gethomepf());
+						osw.write(name + "	" + fg + "	" + _3fg + "	" + ft + "	" + pts +"	"+oreb+"	"+dreb+"	"+reb+"	"+ast+"	"+stl+"	"+blk+"	"+to+"	"+pf+"\n");
+						
+						osw.write("\n\nAway Team: " + _away.gettname() + " - " + _away.getabbv() + "\n");
+						osw.write("Coached By " + _away.getcname()+ "\n\n");
+
+						osw.write("Player Name & Number	FGM-A	3PM-A	FTM-A	PTS	OREB	DREB	REB	AST	STL	BLK	TO	PF\n");
+						for(Players p: _awayTeamPlayersPull){
+							BasketballGameStats stats = ((BasketballDatabaseHelper)_db).getPlayerGameStats(g_id, p.getpid());
+							name = String.format("%-30s", p.getpnum() + " - " + p.getpname());
+							fg = String.format("%-9s", "  " + stats.getfgm() + "-"+stats.getfga());
+							_3fg = String.format("%-9s", "  " + stats.getfgm3() + "-"+stats.getfga3());
+							ft = String.format("%-9s", "  " + stats.getftm() + "-"+stats.getfta());
+							pts = String.format("%-7s", "   " + stats.getpts());
+							oreb = String.format("%-8s", "   " + stats.getoreb());
+							dreb = String.format("%-8s", "   " + stats.getdreb());
+							reb = String.format("%-7s", "   " + (stats.getoreb()+stats.getdreb()));
+							ast = String.format("%-7s", "   " + stats.getast());
+							stl = String.format("%-7s", "   " + stats.getstl());
+							blk = String.format("%-7s", "   " + stats.getblk());
+							to = String.format("%-6s", "  " + stats.getto());
+							pf = String.format("%-6s", "  " + stats.getpf());
+
+							osw.write(name + "	" + fg + "	" + _3fg + "	" + ft + "	" + pts +"	"+oreb+"	"+dreb+"	"+reb+"	"+ast+"	"+stl+"	"+blk+"	"+to+"	"+pf+"\n");
+						}
+						
+						//Away team stats
+						osw.write("-------------------------------------------------------------------------------------------------------------------------------------\n");
+						name = String.format("%-30s", _away.getabbv() + " Total Stats");
+						fg = String.format("%-9s", "  " + Game.getawayfgm() + "-"+Game.getawayfga());
+						_3fg = String.format("%-9s", "  " + Game.getawayfgm3() + "-"+Game.getawayfga3());
+						ft = String.format("%-9s", "  " + Game.getawayftm() + "-"+Game.getawayfta());
+						pts = String.format("%-7s", "   " + Game.getawaypts());
+						oreb = String.format("%-8s", "   " + Game.getawayoreb());
+						dreb = String.format("%-8s", "   " + Game.getawaydreb());
+						reb = String.format("%-7s", "   " + (Game.getawayoreb()+Game.getawaydreb()));
+						ast = String.format("%-7s", "   " + Game.getawayast());
+						stl = String.format("%-7s", "   " + Game.getawaystl());
+						blk = String.format("%-7s", "   " + Game.getawayblk());
+						to = String.format("%-6s", "  " + Game.getawayto());
+						pf = String.format("%-6s", "  " + Game.getawaypf());
+						osw.write(name + "	" + fg + "	" + _3fg + "	" + ft + "	" + pts +"	"+oreb+"	"+dreb+"	"+reb+"	"+ast+"	"+stl+"	"+blk+"	"+to+"	"+pf+"\n");
+					/* TEXT FILE FOR BASKETBALL
+					 	fileName = "/" + _away.getabbv() + "vs" + _home.getabbv()+"_"+_game.getDate()+".txt";
+
+					 	BasketballGames Game = (BasketballGames)_game;
 						osw.write("Home Team: " + _home.gettname() + " - " + _home.getabbv() + "\n");
 						osw.write("Coached By " + _home.getcname()+ "\n\n");
 
@@ -510,6 +592,9 @@ public class ViewStatsActivity extends Activity{
 						to = String.format("%-6s", "  " + Game.getawayto());
 						pf = String.format("%-6s", "  " + Game.getawaypf());
 						osw.write(name + "|" + fg + "|" + _3fg + "|" + ft + "|" + pts +"|"+oreb+"|"+dreb+"|"+reb+"|"+ast+"|"+stl+"|"+blk+"|"+to+"|"+pf+"|\n");
+		
+					 
+					 */
 					}
 					else if(_sportButton.getText().equals("Football")){
 						

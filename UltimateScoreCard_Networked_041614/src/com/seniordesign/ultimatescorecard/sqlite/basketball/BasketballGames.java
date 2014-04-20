@@ -412,7 +412,7 @@ public class BasketballGames extends Games{
 	
 	public String getawayAFG(){
 		if(away_fga>0){
-			return String.format("%.3f", (double) (away_fgm+away_fgm3/2)/away_fga);
+			return String.format("%.3f", (double) (away_fgm+away_fgm3/2.0)/away_fga);
 		}
 		else{
 			return "N/A";

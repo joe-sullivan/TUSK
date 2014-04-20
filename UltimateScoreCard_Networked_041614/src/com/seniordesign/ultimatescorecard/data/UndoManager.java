@@ -36,12 +36,14 @@ public class UndoManager {
 			UndoInstance instance = _undos.pop();
 			
 			//shots
-			_db.deleteShot(instance.getshot().getshotid());
-			if(instance.gethome()){
-				_homeLayout.removeView(instance.getiv());
-			}
-			else{
-				_awayLayout.removeView(instance.getiv());
+			if(instance.getiv()!=null){
+				_db.deleteShot(instance.getshot().getshotid());
+				if(instance.gethome()){
+					_homeLayout.removeView(instance.getiv());
+				}
+				else{
+					_awayLayout.removeView(instance.getiv());
+				}
 			}
 			
 			//playbyplay
@@ -71,12 +73,14 @@ public class UndoManager {
 			UndoInstance instance = _redos.pop();
 			
 			//shots
-			_db.createShot(instance.getshot());
-			if(instance.gethome()){
-				_homeLayout.addView(instance.getiv());
-			}
-			else{
-				_awayLayout.addView(instance.getiv());
+			if(instance.getiv()!=null){
+				_db.createShot(instance.getshot());
+				if(instance.gethome()){
+					_homeLayout.addView(instance.getiv());
+				}
+				else{
+					_awayLayout.addView(instance.getiv());
+				}
 			}
 			
 			//playbyplay

@@ -281,7 +281,7 @@ public class BasketballActivity extends Activity{
 		setTextAndListener(_option4Button, turnoverListener, "Turnover");
 		setTextAndListener(_option5Button, foulListener, "On Floor Foul");
 		
-		if(_undoInstance.getiv()!=null){
+		if(_undoInstance.gettstats().size()>0){
 			_undoManager.addInstance(_undoInstance);
 		}
 		_undoInstance = new UndoInstance();

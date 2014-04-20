@@ -79,7 +79,7 @@ public class HockeyActivity extends Activity{
 		//databases
 		_gti.setContext(this);
 		
-				_undoInstance = new UndoInstance();
+		_undoInstance = new UndoInstance();
 		_gameLog.setUndoInstance(_undoInstance);
 		_hockey_db.setUndoInstance(_undoInstance);
 		g_id = _gti.createTeams();
@@ -137,7 +137,7 @@ public class HockeyActivity extends Activity{
 		setTextAndListener(_option4Button, shotTakenListener, "Shot");
 		setTextAndListener(_option5Button, penaltyListener, "Penalty");
 		
-		if(_undoInstance.getiv()!=null){
+		if(_undoInstance.gettstats().size()>0){
 			_undoManager.addInstance(_undoInstance);
 		}
 		_undoInstance = new UndoInstance();
