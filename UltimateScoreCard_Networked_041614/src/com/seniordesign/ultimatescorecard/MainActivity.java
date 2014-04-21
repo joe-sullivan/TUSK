@@ -136,6 +136,7 @@ public class MainActivity extends Activity{
 		_hockey_db.onCreate(_hockey_db.getWritableDatabase());
 		//_hockey_db.onUpgrade(_hockey_db.getWritableDatabase(),0,0);
 
+		/*
 		if(_basketball_db.getAllTeams().size()==0){
 
 			//Test Basketball Teams and players
@@ -811,7 +812,7 @@ public class MainActivity extends Activity{
 			long R7_id = _soccer_db.createPlayers(R7);
 			long Ne10_id = _soccer_db.createPlayers(Ne10);
 		}
-
+*/
 
 
 		/*	

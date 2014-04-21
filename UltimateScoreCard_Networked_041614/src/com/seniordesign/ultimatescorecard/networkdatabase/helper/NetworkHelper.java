@@ -137,6 +137,7 @@ public class NetworkHelper {
 		return params;
 	}
 
+	
 	public void createPlayByPlay(PlayByPlay pbp, long aid){
 		List<NameValuePair> params = this.startParams();
 
@@ -150,13 +151,7 @@ public class NetworkHelper {
 		params.add(new BasicNameValuePair(KEY_PERIOD, pbp.getperiod()));
 		params.add(new BasicNameValuePair(KEY_HOME_SCORE, Integer.toString(pbp.gethomescore())));
 		params.add(new BasicNameValuePair(KEY_AWAY_SCORE, Integer.toString(pbp.getawayscore())));
-		/*
-		Log.i("NH", "NH Before sending request");
-		// sending modified data through http request
-		// Notice that update product url accepts POST method
-		JSONObject json = jsonParser.makeHttpRequest(url_insert_pbp,
-				"POST", params);
-		 */
+		
 
 		HttpParameter parameter = new HttpParameter(url_insert_pbp,	"POST", params);
 		AsyncTask<HttpParameter, Void, JSONObject> result = new HttpRequest().execute(parameter);
@@ -598,7 +593,7 @@ public class NetworkHelper {
 	// ----------------------- TEAMS table methods ------------------------- //
 
 	public void createTeams(Teams team, Long t_id){
-		Log.i("SCR", "Starting Create Team");
+		Log.i("SCR", "Starting Create Team Network Helper");
 
 		List<NameValuePair> params = this.startParams();
 		params.add(new BasicNameValuePair(KEY_T_ID, Long.toString(t_id)));
