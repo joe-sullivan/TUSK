@@ -8,7 +8,6 @@ import java.util.concurrent.ExecutionException;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.AsyncTask;
@@ -35,10 +34,10 @@ public class NetworkHelper {
 
 	//Table Names
 	//protected static final String TABLE_GAMES = "games";
-	protected static final String TABLE_PLAYERS = "players";
-	protected static final String TABLE_TEAMS = "teams";
-	protected static final String TABLE_PLAY_BY_PLAY = "play_by_play";
-	protected static final String TABLE_SHOT_CHART_COORDS = "shot_chart_coords";
+	protected static final String TABLE_PLAYERS = "PLAYERS";
+	protected static final String TABLE_TEAMS = "TEAMS";
+	protected static final String TABLE_PLAY_BY_PLAY = "PLAY_BY_PLAY";
+	protected static final String TABLE_SHOT_CHART_COORDS = "SHOT_CHART_COORDS";
 
 	//Common Column Names
 	protected static final String KEY_G_ID = "g_id";
@@ -756,7 +755,10 @@ public class NetworkHelper {
 		params.add(new BasicNameValuePair("table", TABLE_TEAMS));
 		params.add(new BasicNameValuePair("key_id", KEY_T_ID));
 		params.add(new BasicNameValuePair("key_value", Long.toString(t_id)));
-
+		Log.i("INTEG", "Delete Info");
+		Log.i("INTEG", "TABLE_TEAMS: " + TABLE_TEAMS);
+		Log.i("INTEG", "key id: " + KEY_T_ID);
+		Log.i("INTEG", "key value: " + t_id);
 		HttpParameter parameter = new HttpParameter(url_delete, "POST", params);
 		AsyncTask<HttpParameter, Void, JSONObject> result = new HttpRequest().execute(parameter);
 	}
