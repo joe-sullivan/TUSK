@@ -1004,8 +1004,6 @@ public class MainActivity extends Activity{
 					String username = ((EditText)layout.findViewById(R.id.usernameEditText)).getText().toString();
 					String password = ((EditText)layout.findViewById(R.id.passwordEditText)).getText().toString();
 					confirmPassword(username, password);
-					AdminNetworkHelper admin = new AdminNetworkHelper();
-					admin.createUser(username, password);
 					dialog.dismiss();
 				}
 			});
@@ -1013,20 +1011,29 @@ public class MainActivity extends Activity{
 		}
 	};
 
-	private void confirmPassword(String username, final String password){
+	//Changes username to final to allow for its use
+	private void confirmPassword(final String username, final String password){
 		Builder confirmDialog = new Builder(this);
 		confirmDialog.setTitle("Re-enter Password:");
 
 		final EditText editText = new EditText(this);
 		editText.setHint("Re-enter Password");
 		confirmDialog.setView(editText);
-
+		
 		confirmDialog.setNeutralButton("Ok", new DialogInterface.OnClickListener(){	
 			@Override
 			public void onClick(DialogInterface dialog, int arg1) {
 				if(password.equals(editText.getText().toString())){
+					AdminNetworkHelper admin = new AdminNetworkHelper();
+					boolean check = admin.createUser(username, password);
+					if(check){
 					accountCreateSuccess();
 					dialog.dismiss();
+					}
+					else{
+						accountCreateFailedExists();
+						dialog.dismiss();
+					}
 				}
 				else{
 					accountCreateFailed();
@@ -1078,6 +1085,19 @@ public class MainActivity extends Activity{
 			}
 		});	
 		successDialog.show();
+	}
+	
+	private void accountCreateFailedExists(){
+		Builder failedDialog = new Builder(this);
+		failedDialog.setTitle("Failed");
+		failedDialog.setMessage("The account already exists. Please re-try account creation.");
+		failedDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener(){	
+			@Override
+			public void onClick(DialogInterface dialog, int arg1) {
+				dialog.dismiss();
+			}
+		});
+		failedDialog.show();
 	}
 
 	private void accountCreateFailed(){
