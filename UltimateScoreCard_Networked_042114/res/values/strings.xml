@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	
+    <!-- Really High Level Text -->
+    <string name="application_name">Ultimate Score Keeper</string>
+    <string name="basketball_screen">Basketball</string>
+    <string name="football_screen">Football</string>
+    <string name="soccer_screen">Soccer</string>
+    <string name="hockey_screen">Hockey</string>       
+    <string name="choose_team_screen">Choose Team</string>
+    <string name="create_team_screen">Create Team</string>
+    <string name="boxscore_screen">Boxscore</string>
+    <string name="action_settings">Settings</string>
+    
+    <!-- Text Found on Main Title Page -->
+    <string name="main_title_text">The Ultimate Score Card</string>
+    <string name="basketball_button">Basketball</string>
+    <string name="hockey_button">Hockey</string>
+    <string name="football_button">Football</string>
+    <string name="soccer_button">Soccer</string>
+	<string name="view_statistic_button">View Statistics</string>
+	<string name="options_button">Options</string>
+	<string name="login_button">Login</string>
+    
+	<!-- Text for Team Selection Screen -->
+	<string name="home_team_select_title">Choose the Home Team:</string>
+	<string name="away_team_select_title">Choose the Away Team:</string>
+	<string name="delete_team_title">Choose the Team to Remove:</string>
+	<string name="delete_team_button">Delete a Team</string>
+	<string name="create_new_team">Create a New Team</string>
+	
+	<!-- Common sports terms -->
+	<string name="home_name">Home</string>
+    <string name="away_name">Away</string>
+    <string name="possession_marker">Possession Markers</string>
+    <string name="start_game">Start Game</string>
+    <string name="period">1ST</string>
+	
+    <!-- Text used in basketball interface -->
+    <string name="basketball_court">Visible image of Basketball Court</string>
+    <string name="court_mask">Hidden Basketball Court Mask</string>
+    <string name="hardwood_floor">Hardwood floor background</string>
+    
+    <string name="rebound_button">Rebound</string>
+    <string name="turnover_button">Turnover</string>
+    <string name="choice_one">Choice One</string>
+    <string name="choice_two">Choice Two</string>
+    <string name="choice_three">Choice Three</string>
+    <string name="choice_four">Choice Four</string>
+    <string name="choice_five">Choice Five</string>
+    
+    <string name="slideout_title">Title</string>
+    <string name="player_1">Player 1</string>
+    <string name="player_2">Player 2</string>
+    <string name="player_3">Player 3</string>
+    <string name="player_4">Player 4</string>
+    <string name="player_5">Player 5</string>
+    
+    <string name="away_points">000</string>
+    <string name="home_points">000</string>
+    
+    <string name="away_points_2">000</string>
+    <string name="home_points_2">000</string>
+    
+    <!-- Statistic showing screen -->
+    <string name="statistic_title">Boxscore</string>
+    <string name="stats_home_team_name">Home Team</string>
+    <string name="stats_away_team_name">Away Team</string>
+    <string name="stats_player_name">Player Name: 0 pts, 0 reb, 0 ast</string>
+    <string name="play_by_play_view">See Play-by-Play</string>
+    <string name="play_by_play_title">Play-By-Play</string>
+    <string name="shot_chart_title">Shot Chart</string>
+    <string name="choose_sport">Choose Sport</string>    
+    <string name="choose_team">Choose Team</string>
+    <string name="choose_player">Choose Player</string>
+    <string name="all_players">All Players</string>
+    <string name="choose_game">Choose Game</string>
+    <string name="search_button">Search</string>
+    <string name="send_game_button">Email Boxscore</string>
+    <string name="delete_game_button">Delete Game</string>
+    <string name="space">" "</string>
+    <string name="view_statistics_screen">View Statistics</string>
+    
+    <!-- Substituion screen texts -->
+    <string name="substitution_title">Substitution</string>
+    <string name="home_sub_text">Home Team</string>
+    <string name="away_sub_text">Away Team</string>
+    <string name="player_generic">Player</string>
+    <string name="stat_generic">Stats</string>
+    <string name="goalie_text">Goalie:</string>
+    <string name="field_player_text">Field Players:</string>
+    
+    <string name="title_activity_options">Options</string>
+    <string name="game_clocks">Game Clocks</string>
+    <string name="graphical">Graphics</string>
+    <string name="number_period">Number of Periods</string>
+    <string name="period_length">Length of Each Period</string>
+    <string name="ot_length">Length of Overtime</string>
+    <string name="save">Save</string>
+    
+    <string name="username_hint">Username</string>
+    <string name="password_hint">Password</string>
+    <string name="p_name_hint">Player Name</string>
+    <string name="p_num_hint">Player Number</string>
+    
+    <string name="finish_shoot_out">Finish</string>
+    
+</resources>
