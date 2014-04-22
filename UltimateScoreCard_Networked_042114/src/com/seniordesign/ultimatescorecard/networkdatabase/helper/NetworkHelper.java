@@ -8,7 +8,6 @@ import java.util.concurrent.ExecutionException;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.AsyncTask;
@@ -35,10 +34,10 @@ public class NetworkHelper {
 
 	//Table Names
 	//protected static final String TABLE_GAMES = "games";
-	protected static final String TABLE_PLAYERS = "players";
-	protected static final String TABLE_TEAMS = "teams";
-	protected static final String TABLE_PLAY_BY_PLAY = "play_by_play";
-	protected static final String TABLE_SHOT_CHART_COORDS = "shot_chart_coords";
+	protected static final String TABLE_PLAYERS = "PLAYERS";
+	protected static final String TABLE_TEAMS = "TEAMS";
+	protected static final String TABLE_PLAY_BY_PLAY = "PLAY_BY_PLAY";
+	protected static final String TABLE_SHOT_CHART_COORDS = "SHOT_CHART_COORDS";
 
 	//Common Column Names
 	protected static final String KEY_G_ID = "g_id";
@@ -138,6 +137,7 @@ public class NetworkHelper {
 		return params;
 	}
 
+
 	public void createPlayByPlay(PlayByPlay pbp, long aid){
 		List<NameValuePair> params = this.startParams();
 
@@ -151,13 +151,7 @@ public class NetworkHelper {
 		params.add(new BasicNameValuePair(KEY_PERIOD, pbp.getperiod()));
 		params.add(new BasicNameValuePair(KEY_HOME_SCORE, Integer.toString(pbp.gethomescore())));
 		params.add(new BasicNameValuePair(KEY_AWAY_SCORE, Integer.toString(pbp.getawayscore())));
-		/*
-		Log.i("NH", "NH Before sending request");
-		// sending modified data through http request
-		// Notice that update product url accepts POST method
-		JSONObject json = jsonParser.makeHttpRequest(url_insert_pbp,
-				"POST", params);
-		 */
+
 
 		HttpParameter parameter = new HttpParameter(url_insert_pbp,	"POST", params);
 		AsyncTask<HttpParameter, Void, JSONObject> result = new HttpRequest().execute(parameter);
@@ -377,7 +371,7 @@ public class NetworkHelper {
 
 	//create a row of shot chart coordinates
 	public void createShot(ShotChartCoords shot, Long shot_id){
-	
+
 		List<NameValuePair> params = this.startParams();
 		params.add(new BasicNameValuePair(KEY_SHOT_ID, Long.toString(shot_id)));
 		params.add(new BasicNameValuePair(KEY_G_ID, Long.toString(shot.getgid())));
@@ -396,7 +390,7 @@ public class NetworkHelper {
 	}
 
 	public List<ShotChartCoords> getAllShots() {
-	
+
 		try{
 			List<ShotChartCoords> shots = new ArrayList<ShotChartCoords>();
 			//String selectPlayerQuery = "SELECT * FROM " + TABLE_PLAYERS + " WHERE " + KEY_T_ID + " = " + t_id;
@@ -470,7 +464,7 @@ public class NetworkHelper {
 	}
 
 	public List<ShotChartCoords> getAllPlayerShots(long p_id) {
-	
+
 		try{
 			List<ShotChartCoords> shots = new ArrayList<ShotChartCoords>();
 			//String selectPlayerQuery = "SELECT * FROM " + TABLE_PLAYERS + " WHERE " + KEY_T_ID + " = " + t_id;
@@ -506,7 +500,7 @@ public class NetworkHelper {
 	}
 
 	public List<ShotChartCoords> getAllTeamShotsGame(long t_id, long g_id) {
-	
+
 		List<ShotChartCoords> shots = new ArrayList<ShotChartCoords>();
 		try{
 			//String selectPlayerQuery = "SELECT * FROM " + TABLE_PLAYERS + " WHERE " + KEY_T_ID + " = " + t_id;
@@ -514,12 +508,12 @@ public class NetworkHelper {
 			List<NameValuePair> params = this.startParams();
 			params.add(new BasicNameValuePair(TAG_WHERE, w));
 
-			
-			
+
+
 			HttpParameter parameter = new HttpParameter(url_get_shot, "POST", params);
 			AsyncTask<HttpParameter, Void, JSONObject> result = new HttpRequest().execute(parameter);
 			JSONObject json = result.get();
-			
+
 			JSONArray shotArray = json.getJSONArray(TAG_SHOTS);
 
 			for (int i = 0; i < shotArray.length(); i++) {
@@ -548,7 +542,7 @@ public class NetworkHelper {
 	}
 
 	public List<ShotChartCoords> getAllPlayerShotsGame(long p_id, long g_id) {
-		
+
 		List<ShotChartCoords> shots = new ArrayList<ShotChartCoords>();
 		try{
 			//String selectPlayerQuery = "SELECT * FROM " + TABLE_PLAYERS + " WHERE " + KEY_T_ID + " = " + t_id;
@@ -585,7 +579,7 @@ public class NetworkHelper {
 
 	// Delete a Shot
 	public void deleteShot(long shot_id) {
-		
+
 		List<NameValuePair> params = this.startParams();
 		params.add(new BasicNameValuePair("table", TABLE_SHOT_CHART_COORDS));
 		params.add(new BasicNameValuePair("key_id", KEY_SHOT_ID));
@@ -599,7 +593,7 @@ public class NetworkHelper {
 	// ----------------------- TEAMS table methods ------------------------- //
 
 	public void createTeams(Teams team, Long t_id){
-		Log.i("SCR", "Starting Create Team");
+		Log.i("SCR", "Starting Create Team Network Helper");
 
 		List<NameValuePair> params = this.startParams();
 		params.add(new BasicNameValuePair(KEY_T_ID, Long.toString(t_id)));
@@ -613,7 +607,7 @@ public class NetworkHelper {
 		Log.i("SCR", "abbv: " + team.getabbv());
 		Log.i("SCR", "c name: " + team.getcname());
 		Log.i("SCR", "sport: " + team.getSport());
-		
+
 
 		// sending modified data through http request
 		// Notice that update product url accepts POST method
@@ -628,7 +622,7 @@ public class NetworkHelper {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	//get single team with id
@@ -667,7 +661,7 @@ public class NetworkHelper {
 	//TODO check that quotes are properly escaped/needed
 	//get single team with name
 	public Teams getTeam(String t_name) {
-		
+
 		try{
 		String w = " WHERE (" + KEY_T_NAME + " = \"" + t_name + "\")";
 		List<NameValuePair> params = this.startParams();
@@ -699,7 +693,7 @@ public class NetworkHelper {
 	}
 
 	public List<Teams> getAllTeams() {	
-		
+
 		List<Teams> teams = new ArrayList<Teams>();
 		try{
 		String w = "";
@@ -733,7 +727,7 @@ public class NetworkHelper {
 	}
 
 	public void updateTeam(Teams team){
-	
+
 		String w = "where " + KEY_T_ID + " = " + Long.toString(team.gettid());
 		List<NameValuePair> params = this.startParams();
 		params.add(new BasicNameValuePair(TAG_WHERE, w));
@@ -750,13 +744,16 @@ public class NetworkHelper {
 
 	// Delete a Team
 	public void deleteTeam(long t_id) {
-	
+
 		deletePlayers(t_id);
 		List<NameValuePair> params = this.startParams();
 		params.add(new BasicNameValuePair("table", TABLE_TEAMS));
 		params.add(new BasicNameValuePair("key_id", KEY_T_ID));
 		params.add(new BasicNameValuePair("key_value", Long.toString(t_id)));
-
+		Log.i("INTEG", "Delete Info");
+		Log.i("INTEG", "TABLE_TEAMS: " + TABLE_TEAMS);
+		Log.i("INTEG", "key id: " + KEY_T_ID);
+		Log.i("INTEG", "key value: " + t_id);
 		HttpParameter parameter = new HttpParameter(url_delete, "POST", params);
 		AsyncTask<HttpParameter, Void, JSONObject> result = new HttpRequest().execute(parameter);
 	}

@@ -9,6 +9,7 @@ import com.seniordesign.ultimatescorecard.data.basketball.BasketballPlayer;
 import com.seniordesign.ultimatescorecard.data.football.FootballPlayer;
 import com.seniordesign.ultimatescorecard.data.hockey.HockeyPlayer;
 import com.seniordesign.ultimatescorecard.data.soccer.SoccerPlayer;
+import com.seniordesign.ultimatescorecard.networkdatabase.helper.AdminNetworkHelper;
 import com.seniordesign.ultimatescorecard.options.OptionsActivity;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.*;
 import com.seniordesign.ultimatescorecard.sqlite.football.FootballDatabaseHelper;
@@ -940,7 +941,7 @@ public class MainActivity extends Activity{
 					String username = ((EditText)layout.findViewById(R.id.usernameEditText)).getText().toString();
 					String password = ((EditText)layout.findViewById(R.id.passwordEditText)).getText().toString();
 					_loggedIn = accountAuthenication(username, password);
-					
+
 					if(_loggedIn){
 						//TODO Check if values being entered correctly
 						String filename = "myfile";
@@ -954,17 +955,20 @@ public class MainActivity extends Activity{
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
-						
+
 						//databases
 						_basketball_db = new BasketballDatabaseHelper(getApplicationContext());
 						_football_db = new FootballDatabaseHelper(getApplicationContext());
 						_soccer_db = new SoccerDatabaseHelper(getApplicationContext());
 						_hockey_db = new HockeyDatabaseHelper(getApplicationContext());
-						
-
+						accountLoginSuccess();
+						dialog.dismiss();
+//TODO
 					}
-
-					dialog.dismiss();
+					else{
+						accountLoginFailed();
+						dialog.dismiss();
+					}
 				}
 			});
 			loginDialog.setNegativeButton("Create Account", new DialogInterface.OnClickListener(){		
@@ -1003,6 +1007,32 @@ public class MainActivity extends Activity{
 		});	
 		confirmDialog.show();
 	}
+	
+	private void accountLoginSuccess(){
+		Builder successDialog = new Builder(this);
+		successDialog.setTitle("Success");
+		successDialog.setMessage("Account login successful.");
+		successDialog.setNeutralButton("Ok", new DialogInterface.OnClickListener(){	
+			@Override
+			public void onClick(DialogInterface dialog, int arg1) {
+				dialog.dismiss();
+			}
+		});	
+		successDialog.show();
+	}
+
+	private void accountLoginFailed(){
+		Builder failedDialog = new Builder(this);
+		failedDialog.setTitle("Failed");
+		failedDialog.setMessage("Invalid user. Please try again.");
+		failedDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener(){	
+			@Override
+			public void onClick(DialogInterface dialog, int arg1) {
+				dialog.dismiss();
+			}
+		});
+		failedDialog.show();
+	}
 
 	private void accountCreateSuccess(){
 		Builder successDialog = new Builder(this);
@@ -1015,6 +1045,19 @@ public class MainActivity extends Activity{
 			}
 		});	
 		successDialog.show();
+	}
+	
+	private void accountCreateFailedExists(){
+		Builder failedDialog = new Builder(this);
+		failedDialog.setTitle("Failed");
+		failedDialog.setMessage("The account already exists. Please re-try account creation.");
+		failedDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener(){	
+			@Override
+			public void onClick(DialogInterface dialog, int arg1) {
+				dialog.dismiss();
+			}
+		});
+		failedDialog.show();
 	}
 
 	private void accountCreateFailed(){
@@ -1047,10 +1090,7 @@ public class MainActivity extends Activity{
 	};
 
 	private boolean accountAuthenication(String username, String password){
-		//TODO
-		//modify this to authenicate the username, password combination
-		//authenication success, then return true
-		//authenication fail, then return false
-		return true;
-	}	
+		AdminNetworkHelper admin = new AdminNetworkHelper();
+		return admin.authenticateUser(username, password);
+	}
 }

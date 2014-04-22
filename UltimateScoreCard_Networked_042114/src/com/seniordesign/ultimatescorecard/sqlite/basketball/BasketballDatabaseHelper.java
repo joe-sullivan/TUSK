@@ -14,7 +14,10 @@ import com.seniordesign.ultimatescorecard.networkdatabase.helper.BasketballNetwo
 import com.seniordesign.ultimatescorecard.networkdatabase.helper.NetworkHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.DatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
+import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
+import com.seniordesign.ultimatescorecard.sqlite.helper.ShotChartCoords;
+import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -28,10 +31,10 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 	/**
 	 * 
 	 */
-	
+
 	protected boolean _local = false;
 	protected BasketballNetworkHelper  _net = new BasketballNetworkHelper("fulltest", "fulltest", "fulltest");
-	
+
 	private static final long serialVersionUID = -3785769973811870982L;
 
 	// Logcat tag
@@ -41,7 +44,7 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
     private static final int DATABASE_VERSION = 1;
     // Database Name
     private static final String DATABASE_NAME = "BasketballStats";
-	
+
     //Table Names
     private static final String TABLE_BASKETBALL_GAME_STATS = "basketball_game_stats";
 
@@ -205,12 +208,12 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
         // create new tables
         onCreate(db);
 	}
-	
+
 	// ----------------------- GAMES table methods ------------------------- //
 
 	public long createGame(Games game){
 		SQLiteDatabase db = this.getWritableDatabase();
-		 
+
         ContentValues values = new ContentValues();
         values.put(KEY_HOME_ID, game.gethomeid());
         values.put(KEY_AWAY_ID, game.getawayid());
@@ -267,7 +270,7 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
         }
         return g_id;
 	}
-	
+
 	//get single game
 	public Games getGame(long g_id) {
 		if(_local){
@@ -279,7 +282,7 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 	    Log.i(LOG, selectQuery);
 	    //perform the query and store data in cursor
 	    Cursor c = db.rawQuery(selectQuery, null);
-	   
+
 	    BasketballGames game = new BasketballGames();
 	    //set cursor to beginning
 	    if (c != null && c.moveToFirst()){
@@ -288,7 +291,7 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 	    game.sethomeid((c.getLong(c.getColumnIndex(KEY_HOME_ID))));
 	    game.setawayid((c.getLong(c.getColumnIndex(KEY_AWAY_ID))));
 	    game.setDate(c.getString(c.getColumnIndex(KEY_DATE)));
-	    
+
 	    game.sethomepts((c.getInt(c.getColumnIndex(KEY_HOME_PTS))));
 	    game.sethomefgm((c.getInt(c.getColumnIndex(KEY_HOME_FGM))));
 	    game.sethomefga(c.getInt(c.getColumnIndex(KEY_HOME_FGA)));
@@ -329,18 +332,18 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 			return _net.getGame(g_id);
 		}
 	}
-	
+
 	//Get all Games
 	public List<Games> getAllGames() {
 		if(_local){
 	    List<Games> games = new ArrayList<Games>();
 	    SQLiteDatabase db = this.getReadableDatabase();
 	    String selectQuery = "SELECT  * FROM " + TABLE_GAMES;
-	 
+
 	    Log.i(LOG, selectQuery);
-	 
+
 	    Cursor c = db.rawQuery(selectQuery, null);
-	 
+
 	    // looping through all rows and adding to list
 	    if (c.moveToFirst()) {
 	        do {
@@ -349,7 +352,7 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 	    	    game.sethomeid((c.getLong(c.getColumnIndex(KEY_HOME_ID))));
 	    	    game.setawayid((c.getLong(c.getColumnIndex(KEY_AWAY_ID))));
 	    	    game.setDate(c.getString(c.getColumnIndex(KEY_DATE)));
-	    	    
+
 	    	    game.sethomepts((c.getInt(c.getColumnIndex(KEY_HOME_PTS))));
 	    	    game.sethomefgm((c.getInt(c.getColumnIndex(KEY_HOME_FGM))));
 	    	    game.sethomefga(c.getInt(c.getColumnIndex(KEY_HOME_FGA)));
@@ -383,19 +386,19 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 	    	    game.setawaypf(c.getInt(c.getColumnIndex(KEY_AWAY_PF)));
 	    	    game.setawaytech(c.getInt(c.getColumnIndex(KEY_AWAY_TECH)));
 	    	    game.setawayflagrant(c.getInt(c.getColumnIndex(KEY_AWAY_FLAGRANT)));
-	    	    
+
 	            // adding to games list
 	            games.add(game);
 	        } while (c.moveToNext());
 	    }
-	 
+
 	    return games;
 		}
 		else {
 			return _net.getAllGames();
 		}
 	}
-	
+
 	//Get all Games played by a team
 	public List<Games> getAllGamesTeam(long t_id) {
 		if(_local){
@@ -404,11 +407,11 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 	    String selectQuery = "SELECT  * FROM " + TABLE_GAMES 
 	    		+ " WHERE " + KEY_HOME_ID + " = " + t_id 
 	    		+ " OR " + KEY_AWAY_ID + " = " + t_id;
-	 
+
 	    Log.i(LOG, selectQuery);
-	 
+
 	    Cursor c = db.rawQuery(selectQuery, null);
-	 
+
 	    // looping through all rows and adding to list
 	    if (c.moveToFirst()) {
 	        do {
@@ -417,7 +420,7 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 	    	    game.sethomeid((c.getLong(c.getColumnIndex(KEY_HOME_ID))));
 	    	    game.setawayid((c.getLong(c.getColumnIndex(KEY_AWAY_ID))));
 	    	    game.setDate(c.getString(c.getColumnIndex(KEY_DATE)));
-	    	    
+
 	    	    game.sethomepts((c.getInt(c.getColumnIndex(KEY_HOME_PTS))));
 	    	    game.sethomefgm((c.getInt(c.getColumnIndex(KEY_HOME_FGM))));
 	    	    game.sethomefga(c.getInt(c.getColumnIndex(KEY_HOME_FGA)));
@@ -451,7 +454,7 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 	    	    game.setawaypf(c.getInt(c.getColumnIndex(KEY_AWAY_PF)));
 	    	    game.setawaytech(c.getInt(c.getColumnIndex(KEY_AWAY_TECH)));
 	    	    game.setawayflagrant(c.getInt(c.getColumnIndex(KEY_AWAY_FLAGRANT)));
-	    	    
+
 	            // adding to games list
 	            games.add(game);
 	        } while (c.moveToNext());
@@ -461,7 +464,7 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 			return _net.getAllGamesTeam(t_id);
 		}
 	}
-	
+
 	//get single game stat for team
 	public int getTeamGameStat(long g_id, String stat) {
 		 Log.i("INTEG","Call to getTeamGameStat true");
@@ -470,7 +473,7 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 	    //create query to select game
 	    String selectQuery = "SELECT " + stat + " FROM " + TABLE_GAMES + 
 	    	" WHERE " + KEY_G_ID + " = " + g_id;
-	    
+
 	    //Log the query
 	    Log.i("INTEG","getTeam test");
 	    Log.i(LOG, selectQuery);
@@ -487,33 +490,33 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 			return _net.getTeamGameStat(g_id, stat);
 		}
 	}
-	
+
 	//Adding value to points category of a player
 	public int addTeamStats(ArrayList<StatData> statlist){
 		if(_local){
 	    SQLiteDatabase db = this.getWritableDatabase();
-	    
+
 	    _undoInstance.addtstats(statlist);
 
 	    for(StatData statdata: statlist){
-	    	
+
 	    	long g_id = statdata.getgid();
 	    	String stat = statdata.getstat();
 	    	int value = statdata.getvalue();
-	    
+
 		    BasketballGames game = (BasketballGames) getGame(g_id);
 		    Log.i("INTEG","local stat value: " + stat);
-		    
+
 		    int old_value = getTeamGameStat(g_id,stat);
 		    int new_value = old_value + value;
-		    
+
 		    ContentValues values = new ContentValues();
-		    	
+
 	        values.put(KEY_G_ID, g_id);
 	        values.put(KEY_HOME_ID, game.gethomeid());
 	        values.put(KEY_AWAY_ID, game.getawayid());
 	        values.put(KEY_DATE, game.getDate());
-	
+
 		    if(stat==KEY_HOME_PTS)
 		    	values.put(KEY_HOME_PTS, new_value);
 		    else
@@ -642,7 +645,7 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 		    	values.put(KEY_AWAY_FLAGRANT, new_value);
 		    else
 		    	values.put(KEY_AWAY_FLAGRANT, game.getawayflagrant());
-	        
+
 	        //insert more stats here
 		    db.update(TABLE_GAMES,  values, KEY_G_ID + " = " + g_id, null);
 	    }
@@ -652,7 +655,7 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 			return _net.addTeamStats(statlist);
 		}
 	}
-	
+
 	// Delete a Game
 	public void deleteGame(long g_id) {
 		deleteGameStats(g_id);
@@ -664,13 +667,13 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 	    	_net.deleteGame(g_id);
 	    }
 	}
-	
-	
+
+
 	// ----------------------- BASKETBALL_GAME_STATS ---------------------------- //
 
 	public void createGameStats(long p_id, long g_id){
 		SQLiteDatabase db = this.getWritableDatabase();
-		 
+
         ContentValues values = new ContentValues();
         values.put(KEY_P_ID, p_id);
         values.put(KEY_G_ID, g_id);
@@ -700,7 +703,7 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
         	_net.createGameStats(p_id, g_id);
         }
 	}
-	
+
 		//get single game stats for single player
 		public BasketballGameStats getPlayerGameStats(long g_id, long p_id) {
 			 Log.i("INTEG","getPlayerGameStats true");
@@ -710,14 +713,14 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 		    String selectQuery = "SELECT  * FROM " + TABLE_BASKETBALL_GAME_STATS + 
 		    	" WHERE " + KEY_G_ID + " = " + g_id + 
 		    	" AND " + KEY_P_ID + " = " + p_id;
-		    
+
 		    //Log the query
 		    Log.i(LOG, selectQuery);
 		    //perform the query and store data in cursor
 		    Cursor c = db.rawQuery(selectQuery, null);
 		  //create the instance of Games using cursor information
 		    BasketballGameStats stats = new BasketballGameStats();
-		    
+
 		    //set cursor to beginning
 		    if (c != null && c.moveToFirst()){
 			    stats.setgid(c.getLong(c.getColumnIndex(KEY_G_ID)));
@@ -738,7 +741,7 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 			    stats.setpf(c.getInt(c.getColumnIndex(KEY_PF)));
 			    stats.settech(c.getInt(c.getColumnIndex(KEY_TECH)));
 			    stats.setflagrant(c.getInt(c.getColumnIndex(KEY_FLAGRANT)));
-	
+
 			    //Insert more stats here
 		    }
 		    return stats;
@@ -747,7 +750,7 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 				return _net.getPlayerGameStats(g_id, p_id);
 			}
 		}
-		
+
 		//get single game stat for single player
 		public int getPlayerGameStat(long g_id, long p_id, String stat) {
 			if(_local){
@@ -756,7 +759,7 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 		    String selectQuery = "SELECT " + stat + " FROM " + TABLE_BASKETBALL_GAME_STATS + 
 		    	" WHERE " + KEY_G_ID + " = " + g_id + 
 		    	" AND " + KEY_P_ID + " = " + p_id;
-		    
+
 		    //Log the query
 		    Log.i(LOG, selectQuery);
 		    //perform the query and store data in cursor
@@ -773,7 +776,7 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 				return _net.getPlayerGameStat(g_id, p_id, stat);
 			}
 		}
-		
+
 		//Get all GameStats for player
 		public List<BasketballGameStats> getPlayerAllGameStats(long p_id) {
 			if(_local){
@@ -781,11 +784,11 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 		    SQLiteDatabase db = this.getReadableDatabase();
 		    String selectQuery = "SELECT  * FROM " + TABLE_BASKETBALL_GAME_STATS
 		    		+ " WHERE " + KEY_P_ID + " = " + p_id ;
-		 
+
 		    Log.i(LOG, selectQuery);
-		 
+
 		    Cursor c = db.rawQuery(selectQuery, null);
-		 
+
 		    // looping through all rows and adding to list
 		    if (c.moveToFirst()) {
 		        do {
@@ -811,29 +814,29 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 				    stats.setflagrant(c.getInt(c.getColumnIndex(KEY_FLAGRANT)));
 
 				    //Insert more stats here
-				    
+
 		            // adding to gameStats list
 		            gameStats.add(stats);
 		        } while (c.moveToNext());
 		    }
-		 
+
 		    return gameStats;
 			}else{
 				return _net.getPlayerAllGameStats(p_id);
 			}
 		}
-		
+
 		//Get all GameStats
 		public List<BasketballGameStats> getAllGameStats() {
 			if(_local){
 		    List<BasketballGameStats> gameStats = new ArrayList<BasketballGameStats>();
 		    SQLiteDatabase db = this.getReadableDatabase();
 		    String selectQuery = "SELECT  * FROM " + TABLE_BASKETBALL_GAME_STATS;
-		 
+
 		    Log.i(LOG, selectQuery);
-		 
+
 		    Cursor c = db.rawQuery(selectQuery, null);
-		 
+
 		    // looping through all rows and adding to list
 		    if (c.moveToFirst()) {
 		        do {
@@ -860,18 +863,18 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 				    stats.settech(c.getInt(c.getColumnIndex(KEY_TECH)));
 				    stats.setflagrant(c.getInt(c.getColumnIndex(KEY_FLAGRANT)));
 				    //Insert more stats here
-				    
+
 		            // adding to gameStats list
 		            gameStats.add(stats);
 		        } while (c.moveToNext());
 		    }
-		 
+
 		    return gameStats;
 			}else{
 				return _net.getAllGameStats();
 			}
 		}
-		
+
 		// Delete a GameStats
 		public void deleteGameStats(long g_id) {
 		    SQLiteDatabase db = this.getWritableDatabase();
@@ -881,30 +884,30 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 		    	_net.deleteGameStats(g_id);
 		    }
 		}
-		
+
 		//ADDING STATS
-		
+
 		//Adding value to points category of a player
 		public int addStats(ArrayList<StatData> statlist){
 			if(_local){
 		    SQLiteDatabase db = this.getWritableDatabase();
-		   
+
 		    _undoInstance.addpstats(statlist);
 
 		    for(StatData statdata: statlist){
-			    
+
 			    long g_id = statdata.getgid();
 			    long p_id = statdata.getpid();
 			    String stat = statdata.getstat();
 			    int value = statdata.getvalue();
-			    
+
 			    BasketballGameStats stats = getPlayerGameStats(g_id, p_id);
-			    
+
 			    int old_value = getPlayerGameStat(g_id,p_id,stat);
 			    int new_value = old_value + value;
-			    
+
 			    ContentValues values = new ContentValues();
-			    	
+
 			    values.put(KEY_P_ID, p_id);
 		        values.put(KEY_G_ID, g_id);
 			    if(stat==KEY_PTS)
@@ -971,9 +974,9 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 			    	values.put(KEY_FLAGRANT, new_value);
 			    else
 			    	values.put(KEY_FLAGRANT, stats.getflagrant());
-		        
+
 		        //insert more stats here
-			    
+
 			    db.update(TABLE_BASKETBALL_GAME_STATS,  values, KEY_P_ID + " = " + p_id + " AND " + KEY_G_ID + " = " + g_id, null);
 		    }
 		    return 1;
@@ -981,13 +984,13 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 				return _net.addStats(statlist);
 			}
 		}
-		
-	
+
+
 	// ----------------------- PLAYERS table methods ------------------------- //
 
 	public long createPlayers(BasketballPlayer player){
 		SQLiteDatabase db = this.getWritableDatabase();
-		 
+
         ContentValues values = new ContentValues();
         values.put(KEY_T_ID, player.gettid());
         values.put(KEY_P_NAME, player.getpname());
@@ -1002,7 +1005,7 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
  
         return p_id;
 	}
-	
+
 	//get single player
 	public BasketballPlayer getPlayer(long p_id) {
 		if (_local){
@@ -1024,13 +1027,228 @@ public class BasketballDatabaseHelper extends DatabaseHelper implements Serializ
 	    player.setpname((c.getString(c.getColumnIndex(KEY_P_NAME))));
 	    player.setpnum((c.getInt(c.getColumnIndex(KEY_P_NUM))));
 	    player.setdb(this);
-	 
+
 	    return player;
 		}else{
 			return _net.getPlayer(p_id);
 		}
 	}
-		
+
+
+	// ----------------------- PLAY_BY_PLAY table method --------------------- //
+
+		public long createPlayByPlay(PlayByPlay pbp){
+			long a_id = super.createPlayByPlay(pbp);
+			if (!_local){
+				Log.i("INTEG", "entering network pbp creation");
+				_net.createPlayByPlay(pbp, a_id);
+			}
+			return a_id;
+		}
+
+		public List<PlayByPlay> getPlayByPlayGame(long g_id){
+			if(_local){
+				return super.getPlayByPlayGame(g_id);
+			}
+			else{
+				return _net.getPlayByPlayGame(g_id);
+			}
+		}
+
+		// Delete PlayByPlay
+		public void deletePlayByPlay(long a_id) {
+			super.deletePlayByPlay(a_id);
+			if(!_local) {
+				_net.deletePlayByPlay(a_id);
+			}
+		}
+
+		// Delete PlayByPlay of a game
+		public void deletePlayByPlayGame(long g_id) {
+			super.deletePlayByPlayGame(g_id);
+			if(!_local){
+				_net.deletePlayByPlayGame(g_id);
+			}
+		}
+
+		// -------------------PLAYERS table methods----------------------------- //
+
+		public List<Players> getPlayersTeam(long t_id) {
+			if (_local){
+				return super.getPlayersTeam(t_id);
+			}
+			else {
+				return _net.getPlayersTeam(t_id);
+			}
+		}
+
+		public List<Players> getPlayersTeam2(long t_id)  {
+			if(_local){
+				return super.getPlayersTeam2(t_id);
+			}
+			else {
+				return _net.getPlayersTeam2(t_id);
+			}
+		}
+
+		public int updatePlayer(Players player){
+
+			if (!_local){
+				_net.updatePlayer(player);
+			}
+
+			return super.updatePlayer(player);
+		}
+
+		public List<Players> getAllPlayers() {
+			if(_local){
+				return super.getAllPlayers();
+			}
+			else {
+				return _net.getAllPlayers();
+			}
+		}
+
+		// Delete a Player
+		public void deletePlayer(long p_id) {
+			super.deletePlayer(p_id);
+			if(!_local){
+				_net.deletePlayer(p_id);
+			}
+		}
+
+
+		// Delete Players on a team
+		public void deletePlayers(long t_id) {
+			super.deletePlayers(t_id);
+			if(!_local){
+				_net.deletePlayer(t_id);
+			}
+		}
+
+
+		// -------------------SHOT_CHART_COORDS table methods ------------------ //
+
+		//create a row of shot chart coordinates
+		public long createShot(ShotChartCoords shot){
+			long shot_id = super.createShot(shot);
+			if(!_local){
+				_net.createShot(shot, shot_id);
+			}
+			return shot_id;
+		}
+
+		public List<ShotChartCoords> getAllShots(){
+			if(_local){
+				return super.getAllShots();
+			}
+			else {
+				return _net.getAllShots();
+			}
+		}
+
+		public List<ShotChartCoords> getAllTeamShots(long t_id){
+			if (_local){
+				return super.getAllTeamShots(t_id);
+			}
+			else {
+				return _net.getAllTeamShots(t_id);
+			}
+		}
+
+		public List<ShotChartCoords> getAllPlayerShots(long p_id){
+			if (_local){
+				return super.getAllPlayerShots(p_id);
+			}
+			else {
+				return _net.getAllPlayerShots(p_id);
+			}
+		}
+
+
+		public List<ShotChartCoords> getAllTeamShotsGame(long t_id, long g_id){
+			if(_local){
+				return super.getAllTeamShotsGame(t_id, g_id);
+			}
+			else{
+				return _net.getAllTeamShotsGame(t_id, g_id);
+			}
+		}
+
+		public List<ShotChartCoords> getAllPlayerShotsGame(long p_id, long g_id){
+			if(_local){
+				return super.getAllPlayerShotsGame(p_id, g_id);
+			}
+			else{
+				return _net.getAllPlayerShotsGame(p_id, g_id);
+			}
+		}
+
+		// Delete a Shot
+		public void deleteShot(long shot_id) {
+			super.deleteShot(shot_id);
+			if(!_local){
+				_net.deleteShot(shot_id);
+			}
+		}
+
+
+		// ----------------------- TEAMS table methods ------------------------- //
+
+		public long createTeams(Teams team){
+			long p_id = super.createTeams(team);
+			if(!_local){
+			_net.createTeams(team, p_id);
+			}
+
+			return p_id;
+		}
+
+		//get single team with id
+		public Teams getTeam(long t_id) {
+			if (_local){
+				return super.getTeam(t_id);
+			}
+			else{
+				return _net.getTeam(t_id);
+			}
+		}
+
+		//get single team with name
+		public Teams getTeam(String t_name) {
+			if(_local){
+				return super.getTeam(t_name);
+			}
+			else {
+				return _net.getTeam(t_name);
+			}
+		}
+
+		public List<Teams> getAllTeams(){
+			if(_local){
+				return super.getAllTeams();
+			}
+			else{
+				return _net.getAllTeams();
+			}
+		}
+
+		public int updateTeam(Teams team){
+			if(!_local){
+				_net.updateTeam(team);
+			}
+			return super.updateTeam(team);
+		}
+
+		// Delete a Team
+		public void deleteTeam(long t_id) {
+			super.deleteTeam(t_id);
+			if(!_local){
+				_net.deleteTeam(t_id);
+			}
+		}
+
+
 	// closing database
     public void closeDB() {
         SQLiteDatabase db = this.getReadableDatabase();

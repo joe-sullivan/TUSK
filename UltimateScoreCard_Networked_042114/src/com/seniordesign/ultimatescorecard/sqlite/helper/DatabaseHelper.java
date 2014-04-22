@@ -25,8 +25,8 @@ import android.util.Log;
 
 public abstract class DatabaseHelper extends SQLiteOpenHelper {
 
-	protected boolean _local;
-	protected NetworkHelper  _net;
+	protected boolean _local = true;
+	protected NetworkHelper  _net = null;
 	//= new NetworkHelper("fulltest", "fulltest", "fulltest");
 
 	protected UndoInstance _undoInstance;
@@ -105,7 +105,7 @@ public abstract class DatabaseHelper extends SQLiteOpenHelper {
 	public DatabaseHelper(Context context, String name, CursorFactory factory,
 			int version) {
 		super(context, name, factory, version);
-		
+		/*
 		_local = true;
         //_net = new BasketballNetworkHelper("a","b","c");
         
@@ -141,6 +141,8 @@ public abstract class DatabaseHelper extends SQLiteOpenHelper {
         }
 		
 		// TODO Auto-generated constructor stub
+		 
+		 */
 	}
 
 	@Override

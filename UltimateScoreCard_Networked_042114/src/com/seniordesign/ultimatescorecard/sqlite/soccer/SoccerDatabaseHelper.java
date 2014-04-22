@@ -15,7 +15,10 @@ import com.seniordesign.ultimatescorecard.networkdatabase.helper.BasketballNetwo
 import com.seniordesign.ultimatescorecard.networkdatabase.helper.SoccerNetworkHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.DatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
+import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
+import com.seniordesign.ultimatescorecard.sqlite.helper.ShotChartCoords;
+import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -28,10 +31,10 @@ import android.util.Log;
 public class SoccerDatabaseHelper extends DatabaseHelper{
 
 	protected Context _context;
-	
+
 	protected boolean _local = false;
 	protected SoccerNetworkHelper _net = new SoccerNetworkHelper("fulltest", "fulltest", "fulltest");
-	
+
 	// Logcat tag
     private static final String LOG = "SoccerDatabaseHelper";
  
@@ -40,7 +43,7 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
  
     // Database Name
     private static final String DATABASE_NAME = "SoccerStats";
-	
+
     //Table Names
     private static final String TABLE_SOCCER_GAME_STATS = "soccer_game_stats";
     
@@ -87,7 +90,7 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
     private static final String CREATE_TABLE_GAMES = "CREATE TABLE IF NOT EXISTS " + TABLE_GAMES 
     		+ "(" + KEY_G_ID + " INTEGER PRIMARY KEY," + KEY_HOME_ID + " INTEGER," 
     		+ KEY_AWAY_ID + " INTEGER," + KEY_DATE + " DATE, "  
-			
+
     		+ KEY_HOME_SHOTS + " INTEGER, " + KEY_HOME_SOG + " INTEGER, " + KEY_HOME_GOALS + " INTEGER, "
 			+ KEY_HOME_AST + " INTEGER, " + KEY_HOME_FOULS + " INTEGER, " + KEY_HOME_PKA + " INTEGER, "
 			+ KEY_HOME_PKG + " INTEGER, " + KEY_HOME_YCARD + " INTEGER, " + KEY_HOME_RCARD + " INTEGER, "
@@ -153,13 +156,13 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 			int version) {
 		super(context, name, factory, version);
 		_context = context;
-		
-		
+
+
 	}
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		
+
         db.execSQL(CREATE_TABLE_GAMES);
         db.execSQL(CREATE_TABLE_SOCCER_GAME_STATS);
         db.execSQL(CREATE_TABLE_PLAYERS);
@@ -182,19 +185,19 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
         // create new tables
         onCreate(db);
 	}
-	
+
 	// ----------------------- GAMES table methods ------------------------- //
 
 	public long createGame(Games game){
 
-		
-		
-		
-		
+
+
+
+
 		//end test
-		
+
 		SQLiteDatabase db = this.getWritableDatabase();
-		 
+
         ContentValues values = new ContentValues();
         values.put(KEY_HOME_ID, game.gethomeid());
         values.put(KEY_AWAY_ID, game.getawayid());
@@ -243,7 +246,7 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
         }
         return g_id;
 	}
-	
+
 	//get single game
 	public Games getGame(long g_id) {
 		if(_local){
@@ -258,13 +261,13 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 	    SoccerGames game = new SoccerGames();
 	    //set cursor to beginning
 	    if (c != null && c.moveToFirst()){
-	        
+
 		    //create the instance of Games using cursor information
 		    game.setgid(c.getLong(c.getColumnIndex(KEY_G_ID)));
 		    game.sethomeid((c.getLong(c.getColumnIndex(KEY_HOME_ID))));
 		    game.setawayid((c.getLong(c.getColumnIndex(KEY_AWAY_ID))));
 		    game.setDate(c.getString(c.getColumnIndex(KEY_DATE)));
-		 
+
 		    game.sethomeshots((c.getInt(c.getColumnIndex(KEY_HOME_SHOTS))));
 		    game.sethomesog((c.getInt(c.getColumnIndex(KEY_HOME_SOG))));
 		    game.sethomegoals(c.getInt(c.getColumnIndex(KEY_HOME_GOALS)));
@@ -276,7 +279,7 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 		    game.sethomercard((c.getInt(c.getColumnIndex(KEY_HOME_RCARD))));
 		    game.sethomesaves((c.getInt(c.getColumnIndex(KEY_HOME_SAVES))));
 		    game.sethomegoalsallowed((c.getInt(c.getColumnIndex(KEY_HOME_GOALS_ALLOWED))));
-	
+
 		    game.setawayshots((c.getInt(c.getColumnIndex(KEY_AWAY_SHOTS))));
 		    game.setawaysog((c.getInt(c.getColumnIndex(KEY_AWAY_SOG))));
 		    game.setawaygoals(c.getInt(c.getColumnIndex(KEY_AWAY_GOALS)));
@@ -294,7 +297,7 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 			return _net.getGame(g_id);
 		}
 	}
-	
+
 	// Get all games played by a team
 	public List<Games> getAllGamesTeam(long t_id) {
 		if(_local){
@@ -304,9 +307,9 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 	    		+ " WHERE " + KEY_HOME_ID + " = " + t_id 
 	    		+ " OR " + KEY_AWAY_ID + " = " + t_id;
 	    Log.i(LOG, selectQuery);
-		 
+
 	    Cursor c = db.rawQuery(selectQuery, null);
-	 
+
 	    // looping through all rows and adding to list
 	    if (c.moveToFirst()) {
 	        do {
@@ -315,7 +318,7 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 	    	    game.sethomeid((c.getLong(c.getColumnIndex(KEY_HOME_ID))));
 	    	    game.setawayid((c.getLong(c.getColumnIndex(KEY_AWAY_ID))));
 	    	    game.setDate(c.getString(c.getColumnIndex(KEY_DATE)));
-	            
+
 	    	    game.sethomeshots((c.getInt(c.getColumnIndex(KEY_HOME_SHOTS))));
 	    	    game.sethomesog((c.getInt(c.getColumnIndex(KEY_HOME_SOG))));
 	    	    game.sethomegoals(c.getInt(c.getColumnIndex(KEY_HOME_GOALS)));
@@ -339,29 +342,29 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 	    	    game.setawayrcard((c.getInt(c.getColumnIndex(KEY_AWAY_RCARD))));
 	    	    game.setawaysaves((c.getInt(c.getColumnIndex(KEY_AWAY_SAVES))));
 	    	    game.setawaygoalsallowed((c.getInt(c.getColumnIndex(KEY_AWAY_GOALS_ALLOWED))));
-	    	    
+
 	    	    // adding to games list
 	            games.add(game);
 	        } while (c.moveToNext());
 	    }
-	 
+
 	    return games;
 		}else{
 		return _net.getAllGamesTeam(t_id);
 		}
 	}
-			    
+
 	//Get all Games
 	public List<Games> getAllGames() {
 		if (_local){
 	    List<Games> games = new ArrayList<Games>();
 	    SQLiteDatabase db = this.getReadableDatabase();
 	    String selectQuery = "SELECT  * FROM " + TABLE_GAMES;
-	 
+
 	    Log.i(LOG, selectQuery);
-	 
+
 	    Cursor c = db.rawQuery(selectQuery, null);
-	 
+
 	    // looping through all rows and adding to list
 	    if (c.moveToFirst()) {
 	        do {
@@ -370,7 +373,7 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 	    	    game.sethomeid((c.getLong(c.getColumnIndex(KEY_HOME_ID))));
 	    	    game.setawayid((c.getLong(c.getColumnIndex(KEY_AWAY_ID))));
 	    	    game.setDate(c.getString(c.getColumnIndex(KEY_DATE)));
-	            
+
 	    	    game.sethomeshots((c.getInt(c.getColumnIndex(KEY_HOME_SHOTS))));
 	    	    game.sethomesog((c.getInt(c.getColumnIndex(KEY_HOME_SOG))));
 	    	    game.sethomegoals(c.getInt(c.getColumnIndex(KEY_HOME_GOALS)));
@@ -394,18 +397,18 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 	    	    game.setawayrcard((c.getInt(c.getColumnIndex(KEY_AWAY_RCARD))));
 	    	    game.setawaysaves((c.getInt(c.getColumnIndex(KEY_AWAY_SAVES))));
 	    	    game.setawaygoalsallowed((c.getInt(c.getColumnIndex(KEY_AWAY_GOALS_ALLOWED))));
-	    	    
+
 	    	    // adding to games list
 	            games.add(game);
 	        } while (c.moveToNext());
 	    }
-	 
+
 	    return games;
 		}else{
 			return _net.getAllGames();
 		}
 	}
-	
+
 	//get single game stat for team
 		public int getTeamGameStat(long g_id, String stat) {
 			if(_local){
@@ -413,7 +416,7 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 		    //create query to select game
 		    String selectQuery = "SELECT " + stat + " FROM " + TABLE_GAMES + 
 		    	" WHERE " + KEY_G_ID + " = " + g_id;
-		    
+
 		    //Log the query
 		    Log.i(LOG, selectQuery);
 		    //perform the query and store data in cursor
@@ -429,33 +432,33 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 				return _net.getTeamGameStat(g_id, stat);
 			}
 		}
-		
+
 		//Adding value to points category of a player
 		@Override
 		public int addTeamStats(ArrayList<StatData> statlist){
-			
+
 		    SQLiteDatabase db = this.getWritableDatabase();
-		    
+
 		    _undoInstance.addtstats(statlist);
-		    
+
 		    for(StatData statdata: statlist){
-		    
+
 		    	long g_id = statdata.getgid();
 		    	String stat = statdata.getstat();
 		    	int value = statdata.getvalue();
-		    
+
 			    SoccerGames game = (SoccerGames) getGame(g_id);
-			    
+
 			    int old_value = getTeamGameStat(g_id,stat);
 			    int new_value = old_value + value;
-			    
+
 			    ContentValues values = new ContentValues();
-			    	
+
 		        values.put(KEY_G_ID, g_id);
 		        values.put(KEY_HOME_ID, game.gethomeid());
 		        values.put(KEY_AWAY_ID, game.getawayid());
 		        values.put(KEY_DATE, game.getDate());
-	
+
 		        if(stat==KEY_HOME_SHOTS)
 			    	values.put(KEY_HOME_SHOTS, new_value);
 			    else
@@ -500,7 +503,7 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 			    	values.put(KEY_HOME_GOALS_ALLOWED, new_value);
 			    else
 			    	values.put(KEY_HOME_GOALS_ALLOWED, game.gethomegoalsallowed());
-			    
+
 		        if(stat==KEY_AWAY_SHOTS)
 			    	values.put(KEY_AWAY_SHOTS, new_value);
 			    else
@@ -546,7 +549,7 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 			    else
 			    	values.put(KEY_AWAY_GOALS_ALLOWED, game.getawaygoalsallowed());
 			    //insert more stats here
-		        
+
 			    db.update(TABLE_GAMES,  values, KEY_G_ID + " = " + g_id, null);
 		    }
 		    if(!_local){
@@ -554,7 +557,7 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 		    }
 			return 1;
 		}
-	
+
 	// Delete a Game
 	public void deleteGame(long g_id) {
 		//deleteGameStats(g_id);
@@ -566,13 +569,13 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 	    _net.deleteGame(g_id);
 	    }
 	}
-	
-	
+
+
 	// ----------------------- GAME_STATS table methods ------------------------- //
-	
+
 	public void createGameStats(long p_id, long g_id){
 		SQLiteDatabase db = this.getWritableDatabase();
-		 
+
         ContentValues values = new ContentValues();
         values.put(KEY_P_ID, p_id);
         values.put(KEY_G_ID, g_id);
@@ -596,7 +599,7 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
         }
         
 	}
-	
+
 	//get single game stats for single player
 	public SoccerGameStats getPlayerGameStats(long g_id, long p_id) {
 		if(_local){
@@ -605,7 +608,7 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 	    String selectQuery = "SELECT  * FROM " + TABLE_SOCCER_GAME_STATS + 
 	    	" WHERE " + KEY_G_ID + " = " + g_id + 
 	    	" AND " + KEY_P_ID + " = " + p_id;
-	    
+
 	    //Log the query
 	    Log.i(LOG, selectQuery);
 	    //perform the query and store data in cursor
@@ -630,14 +633,14 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 	    stats.setgoalsallowed((c.getInt(c.getColumnIndex(KEY_GOALS_ALLOWED))));
 
 	    //Insert more stats here
-	    
+
 	    return stats;
 		}
 		else{
 			return _net.getPlayerGameStats(g_id, p_id);
 		}
 	}
-	
+
 	//get single game stats for single player
 	public int getPlayerGameStat(long g_id, long p_id, String stat) {
 		if(_local){
@@ -646,7 +649,7 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 	    String selectQuery = "SELECT " + stat + " FROM " + TABLE_SOCCER_GAME_STATS + 
 	    	" WHERE " + KEY_G_ID + " = " + g_id + 
 	    	" AND " + KEY_P_ID + " = " + p_id;
-	    
+
 	    //Log the query
 	    Log.i(LOG, selectQuery);
 	    //perform the query and store data in cursor
@@ -662,7 +665,7 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 			return _net.getPlayerGameStat(g_id, p_id, stat);
 		}
 	}
-	
+
 	//Get all GameStats for player
 	public List<SoccerGameStats> getPlayerAllGameStats(long p_id) {
 		if(_local){
@@ -670,11 +673,11 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 	    SQLiteDatabase db = this.getReadableDatabase();
 	    String selectQuery = "SELECT  * FROM " + TABLE_SOCCER_GAME_STATS
 	    		+ " WHERE " + KEY_P_ID + " = " + p_id ;
-	 
+
 	    Log.i(LOG, selectQuery);
-	 
+
 	    Cursor c = db.rawQuery(selectQuery, null);
-	 
+
 	    // looping through all rows and adding to list
 	    if (c.moveToFirst()) {
 	        do {
@@ -694,29 +697,29 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 	    	    stats.setsaves((c.getInt(c.getColumnIndex(KEY_SAVES))));
 	    	    stats.setgoalsallowed((c.getInt(c.getColumnIndex(KEY_GOALS_ALLOWED))));
 			    //Insert more stats here
-			    
+
 	            // adding to gameStats list
 	            gameStats.add(stats);
 	        } while (c.moveToNext());
 	    }
-	 
+
 	    return gameStats;
 		}else{
 			return _net.getPlayerAllGameStats(p_id);
 		}
 	}
-	
+
 	//Get all GameStats
 	public List<SoccerGameStats> getAllGameStats() {
 		if(_local){
 	    List<SoccerGameStats> gameStats = new ArrayList<SoccerGameStats>();
 	    SQLiteDatabase db = this.getReadableDatabase();
 	    String selectQuery = "SELECT  * FROM " + TABLE_SOCCER_GAME_STATS;
-	 
+
 	    Log.i(LOG, selectQuery);
-	 
+
 	    Cursor c = db.rawQuery(selectQuery, null);
-	 
+
 	    // looping through all rows and adding to list
 	    if (c.moveToFirst()) {
 	        do {
@@ -736,18 +739,18 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 	    	    stats.setsaves((c.getInt(c.getColumnIndex(KEY_SAVES))));
 	    	    stats.setgoalsallowed((c.getInt(c.getColumnIndex(KEY_GOALS_ALLOWED))));
 			    //Insert more stats here
-			    
+
 	            // adding to gameStats list
 	            gameStats.add(stats);
 	        } while (c.moveToNext());
 	    }
-	 
+
 	    return gameStats;
 		}else{
 			return _net.getAllGameStats();
 		}
 	}
-	
+
 	// Delete a GameStats
 	public void deleteGameStats(long g_id) {
 	    SQLiteDatabase db = this.getWritableDatabase();
@@ -757,30 +760,30 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 	    	_net.deleteGameStats(g_id);
 	    }
 	}
-	
+
 	//ADDING STATS
-	
+
 	//Adding value to points category of a player
 	@Override
 	public int addStats(ArrayList<StatData> statlist){
 	    SQLiteDatabase db = this.getWritableDatabase();
-	    
+
 	    _undoInstance.addpstats(statlist);
 
 	    for(StatData statdata: statlist){
-		    
+
 		    long g_id = statdata.getgid();
 		    long p_id = statdata.getpid();
 		    String stat = statdata.getstat();
 		    int value = statdata.getvalue();
-	    
+
 		    SoccerGameStats stats = getPlayerGameStats(g_id, p_id);
-		    
+
 		    int old_value = getPlayerGameStat(g_id,p_id,stat);
 		    int new_value = old_value + value;
-		    
+
 		    ContentValues values = new ContentValues();
-		    	
+
 		    values.put(KEY_P_ID, p_id);
 	        values.put(KEY_G_ID, g_id);
 		    if(stat==KEY_SHOTS)
@@ -828,7 +831,7 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 		    else
 		    	values.put(KEY_GOALS_ALLOWED, stats.getgoalsallowed());
 	        //insert more stats here
-	        
+
 		    db.update(TABLE_SOCCER_GAME_STATS,  values, KEY_P_ID + " = " + p_id + " AND " + KEY_G_ID + " = " + g_id, null);
 	    }
 	    if(!_local){
@@ -836,12 +839,12 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 	    }
 		return 1;
 	}
-	
+
 	// ----------------------- PLAYERS table methods ------------------------- //
 
 	public long createPlayers(SoccerPlayer player){
 		SQLiteDatabase db = this.getWritableDatabase();
-		 
+
         ContentValues values = new ContentValues();
         values.put(KEY_T_ID, player.gettid());
         values.put(KEY_P_NAME, player.getpname());
@@ -855,7 +858,7 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
  
         return p_id;
 	}
-	
+
 	//get single player
 	public SoccerPlayer getPlayer(long p_id) {
 		if(_local){
@@ -876,15 +879,227 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 	    player.settid(c.getLong(c.getColumnIndex(KEY_T_ID)));
 	    player.setpname((c.getString(c.getColumnIndex(KEY_P_NAME))));
 	    player.setpnum((c.getInt(c.getColumnIndex(KEY_P_NUM))));
-	 
+
 	    return player;
 		}else{
 			return _net.getPlayer(p_id);
 		}
 	}
-	
-	
-	
+
+	// ----------------------- PLAY_BY_PLAY table method --------------------- //
+
+			public long createPlayByPlay(PlayByPlay pbp){
+				long a_id = super.createPlayByPlay(pbp);
+				if (!_local){
+					Log.i("INTEG", "entering network pbp creation");
+					_net.createPlayByPlay(pbp, a_id);
+				}
+				return a_id;
+			}
+
+			public List<PlayByPlay> getPlayByPlayGame(long g_id){
+				if(_local){
+					return super.getPlayByPlayGame(g_id);
+				}
+				else{
+					return _net.getPlayByPlayGame(g_id);
+				}
+			}
+
+			// Delete PlayByPlay
+			public void deletePlayByPlay(long a_id) {
+				super.deletePlayByPlay(a_id);
+				if(!_local) {
+					_net.deletePlayByPlay(a_id);
+				}
+			}
+
+			// Delete PlayByPlay of a game
+			public void deletePlayByPlayGame(long g_id) {
+				super.deletePlayByPlayGame(g_id);
+				if(!_local){
+					_net.deletePlayByPlayGame(g_id);
+				}
+			}
+
+			// -------------------PLAYERS table methods----------------------------- //
+
+			public List<Players> getPlayersTeam(long t_id) {
+				if (_local){
+					return super.getPlayersTeam(t_id);
+				}
+				else {
+					return _net.getPlayersTeam(t_id);
+				}
+			}
+
+			public List<Players> getPlayersTeam2(long t_id)  {
+				if(_local){
+					return super.getPlayersTeam2(t_id);
+				}
+				else {
+					return _net.getPlayersTeam2(t_id);
+				}
+			}
+
+			public int updatePlayer(Players player){
+
+				if (!_local){
+					_net.updatePlayer(player);
+				}
+
+				return super.updatePlayer(player);
+			}
+
+			public List<Players> getAllPlayers() {
+				if(_local){
+					return super.getAllPlayers();
+				}
+				else {
+					return _net.getAllPlayers();
+				}
+			}
+
+			// Delete a Player
+			public void deletePlayer(long p_id) {
+				super.deletePlayer(p_id);
+				if(!_local){
+					_net.deletePlayer(p_id);
+				}
+			}
+
+
+			// Delete Players on a team
+			public void deletePlayers(long t_id) {
+				super.deletePlayers(t_id);
+				if(!_local){
+					_net.deletePlayer(t_id);
+				}
+			}
+
+
+			// -------------------SHOT_CHART_COORDS table methods ------------------ //
+
+			//create a row of shot chart coordinates
+			public long createShot(ShotChartCoords shot){
+				long shot_id = super.createShot(shot);
+				if(!_local){
+					_net.createShot(shot, shot_id);
+				}
+				return shot_id;
+			}
+
+			public List<ShotChartCoords> getAllShots(){
+				if(_local){
+					return super.getAllShots();
+				}
+				else {
+					return _net.getAllShots();
+				}
+			}
+
+			public List<ShotChartCoords> getAllTeamShots(long t_id){
+				if (_local){
+					return super.getAllTeamShots(t_id);
+				}
+				else {
+					return _net.getAllTeamShots(t_id);
+				}
+			}
+
+			public List<ShotChartCoords> getAllPlayerShots(long p_id){
+				if (_local){
+					return super.getAllPlayerShots(p_id);
+				}
+				else {
+					return _net.getAllPlayerShots(p_id);
+				}
+			}
+
+
+			public List<ShotChartCoords> getAllTeamShotsGame(long t_id, long g_id){
+				if(_local){
+					return super.getAllTeamShotsGame(t_id, g_id);
+				}
+				else{
+					return _net.getAllTeamShotsGame(t_id, g_id);
+				}
+			}
+
+			public List<ShotChartCoords> getAllPlayerShotsGame(long p_id, long g_id){
+				if(_local){
+					return super.getAllPlayerShotsGame(p_id, g_id);
+				}
+				else{
+					return _net.getAllPlayerShotsGame(p_id, g_id);
+				}
+			}
+
+			// Delete a Shot
+			public void deleteShot(long shot_id) {
+				super.deleteShot(shot_id);
+				if(!_local){
+					_net.deleteShot(shot_id);
+				}
+			}
+
+
+			// ----------------------- TEAMS table methods ------------------------- //
+
+			public long createTeams(Teams team){
+				long p_id = super.createTeams(team);
+				if(!_local){
+				_net.createTeams(team, p_id);
+				}
+
+				return p_id;
+			}
+
+			//get single team with id
+			public Teams getTeam(long t_id) {
+				if (_local){
+					return super.getTeam(t_id);
+				}
+				else{
+					return _net.getTeam(t_id);
+				}
+			}
+
+			//get single team with name
+			public Teams getTeam(String t_name) {
+				if(_local){
+					return super.getTeam(t_name);
+				}
+				else {
+					return _net.getTeam(t_name);
+				}
+			}
+
+			public List<Teams> getAllTeams(){
+				if(_local){
+					return super.getAllTeams();
+				}
+				else{
+					return _net.getAllTeams();
+				}
+			}
+
+			public int updateTeam(Teams team){
+				if(!_local){
+					_net.updateTeam(team);
+				}
+				return super.updateTeam(team);
+			}
+
+			// Delete a Team
+			public void deleteTeam(long t_id) {
+				super.deleteTeam(t_id);
+				if(!_local){
+					_net.deleteTeam(t_id);
+				}
+			}
+
+
 	// closing database
     public void closeDB() {
         SQLiteDatabase db = this.getReadableDatabase();

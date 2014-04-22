@@ -13,7 +13,9 @@ import com.seniordesign.ultimatescorecard.networkdatabase.helper.BasketballNetwo
 import com.seniordesign.ultimatescorecard.networkdatabase.helper.HockeyNetworkHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.DatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
+import com.seniordesign.ultimatescorecard.sqlite.helper.PlayByPlay;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
+import com.seniordesign.ultimatescorecard.sqlite.helper.ShotChartCoords;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 
 import android.content.ContentValues;
@@ -100,14 +102,14 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		 _local = true;
 	        //_net = new BasketballNetworkHelper("a","b","c");
-	        
+
 	        String[] login = new String[4];
 	        login[0] = "";
 	        login[1] = "";
 	        login[2] = "";
 	        login[3] = "";
 	        try {
-	       	 
+
 	            BufferedReader inputReader = new BufferedReader(new InputStreamReader(
 	                    context.openFileInput("myfile")));
 	            String inputString;
@@ -126,7 +128,7 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
 	            e.printStackTrace();
 
 	        }
-	        
+
 	        if(login[0].equalsIgnoreCase("false")){
 	        _local = false;
 	        _net = new HockeyNetworkHelper(login[1], login[2], login[3]);
@@ -1201,13 +1203,225 @@ public class HockeyDatabaseHelper extends DatabaseHelper{
 		for(Teams t: teams){
 			deleteTeam(t.gettid());
 		}
-		
+
 		if(!_local){
 			_net.deleteAll();
 		}
 
 	}
 
+	// ----------------------- PLAY_BY_PLAY table method --------------------- //
+
+			public long createPlayByPlay(PlayByPlay pbp){
+				long a_id = super.createPlayByPlay(pbp);
+				if (!_local){
+					Log.i("INTEG", "entering network pbp creation");
+					_net.createPlayByPlay(pbp, a_id);
+				}
+				return a_id;
+			}
+
+			public List<PlayByPlay> getPlayByPlayGame(long g_id){
+				if(_local){
+					return super.getPlayByPlayGame(g_id);
+				}
+				else{
+					return _net.getPlayByPlayGame(g_id);
+				}
+			}
+
+			// Delete PlayByPlay
+			public void deletePlayByPlay(long a_id) {
+				super.deletePlayByPlay(a_id);
+				if(!_local) {
+					_net.deletePlayByPlay(a_id);
+				}
+			}
+
+			// Delete PlayByPlay of a game
+			public void deletePlayByPlayGame(long g_id) {
+				super.deletePlayByPlayGame(g_id);
+				if(!_local){
+					_net.deletePlayByPlayGame(g_id);
+				}
+			}
+
+			// -------------------PLAYERS table methods----------------------------- //
+
+			public List<Players> getPlayersTeam(long t_id) {
+				if (_local){
+					return super.getPlayersTeam(t_id);
+				}
+				else {
+					return _net.getPlayersTeam(t_id);
+				}
+			}
+
+			public List<Players> getPlayersTeam2(long t_id)  {
+				if(_local){
+					return super.getPlayersTeam2(t_id);
+				}
+				else {
+					return _net.getPlayersTeam2(t_id);
+				}
+			}
+
+			public int updatePlayer(Players player){
+
+				if (!_local){
+					_net.updatePlayer(player);
+				}
+
+				return super.updatePlayer(player);
+			}
+
+			public List<Players> getAllPlayers() {
+				if(_local){
+					return super.getAllPlayers();
+				}
+				else {
+					return _net.getAllPlayers();
+				}
+			}
+
+			// Delete a Player
+			public void deletePlayer(long p_id) {
+				super.deletePlayer(p_id);
+				if(!_local){
+					_net.deletePlayer(p_id);
+				}
+			}
+
+
+			// Delete Players on a team
+			public void deletePlayers(long t_id) {
+				super.deletePlayers(t_id);
+				if(!_local){
+					_net.deletePlayer(t_id);
+				}
+			}
+
+
+			// -------------------SHOT_CHART_COORDS table methods ------------------ //
+
+			//create a row of shot chart coordinates
+			public long createShot(ShotChartCoords shot){
+				long shot_id = super.createShot(shot);
+				if(!_local){
+					_net.createShot(shot, shot_id);
+				}
+				return shot_id;
+			}
+
+			public List<ShotChartCoords> getAllShots(){
+				if(_local){
+					return super.getAllShots();
+				}
+				else {
+					return _net.getAllShots();
+				}
+			}
+
+			public List<ShotChartCoords> getAllTeamShots(long t_id){
+				if (_local){
+					return super.getAllTeamShots(t_id);
+				}
+				else {
+					return _net.getAllTeamShots(t_id);
+				}
+			}
+
+			public List<ShotChartCoords> getAllPlayerShots(long p_id){
+				if (_local){
+					return super.getAllPlayerShots(p_id);
+				}
+				else {
+					return _net.getAllPlayerShots(p_id);
+				}
+			}
+
+
+			public List<ShotChartCoords> getAllTeamShotsGame(long t_id, long g_id){
+				if(_local){
+					return super.getAllTeamShotsGame(t_id, g_id);
+				}
+				else{
+					return _net.getAllTeamShotsGame(t_id, g_id);
+				}
+			}
+
+			public List<ShotChartCoords> getAllPlayerShotsGame(long p_id, long g_id){
+				if(_local){
+					return super.getAllPlayerShotsGame(p_id, g_id);
+				}
+				else{
+					return _net.getAllPlayerShotsGame(p_id, g_id);
+				}
+			}
+
+			// Delete a Shot
+			public void deleteShot(long shot_id) {
+				super.deleteShot(shot_id);
+				if(!_local){
+					_net.deleteShot(shot_id);
+				}
+			}
+
+
+			// ----------------------- TEAMS table methods ------------------------- //
+
+			public long createTeams(Teams team){
+				long p_id = super.createTeams(team);
+				if(!_local){
+				_net.createTeams(team, p_id);
+				}
+
+				return p_id;
+			}
+
+			//get single team with id
+			public Teams getTeam(long t_id) {
+				if (_local){
+					return super.getTeam(t_id);
+				}
+				else{
+					return _net.getTeam(t_id);
+				}
+			}
+
+			//get single team with name
+			public Teams getTeam(String t_name) {
+				if(_local){
+					return super.getTeam(t_name);
+				}
+				else {
+					return _net.getTeam(t_name);
+				}
+			}
+
+			public List<Teams> getAllTeams(){
+				if(_local){
+					return super.getAllTeams();
+				}
+				else{
+					return _net.getAllTeams();
+				}
+			}
+
+			public int updateTeam(Teams team){
+				if(!_local){
+					_net.updateTeam(team);
+				}
+				return super.updateTeam(team);
+			}
+
+			// Delete a Team
+			public void deleteTeam(long t_id) {
+				super.deleteTeam(t_id);
+				if(!_local){
+					_net.deleteTeam(t_id);
+				}
+			}
 
 
 
