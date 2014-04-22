@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    
+	<item android:id="@+id/substitution"
+	    android:icon="@drawable/ic_substitution"
+	    android:title="Substitution"/>
+	
+	<item android:id="@+id/editTime"
+	    android:icon="@drawable/ic_time"
+	    android:title="Edit Time"/>
+	
+	<item android:id="@+id/nextQuarter"
+	    android:icon="@drawable/ic_zero_time"
+	    android:title="Next Quarter"/>
+	
+	<item android:id="@+id/boxscore"
+	    android:icon="@drawable/ic_boxscore"
+	    android:title="Boxscore"/>
+	
+	<item android:id="@+id/gameLog"
+	    android:icon="@drawable/ic_gamelog"
+	    android:title="Play by Play"/>
+	
+	<item android:id="@+id/undo"
+	    android:icon="@drawable/ic_undo"
+	    android:title="Undo"/>
+	
+	<item android:id="@+id/redo"
+	    android:icon="@drawable/ic_redo"
+	    android:title="Redo"/>
+</menu>

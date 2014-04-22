@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+<RelativeLayout
+    android:id="@+id/benchPlayerFrag"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+	<LinearLayout 
+	    android:id="@+id/bench1View"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:padding="@dimen/padding"
+	    android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/bench1Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        
+	</LinearLayout>	
+	
+    <LinearLayout 
+	    android:id="@+id/bench2View"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@id/bench1View"
+	    android:padding="@dimen/padding"
+	    android:orientation="vertical">
+		
+        <TextView
+            android:id="@+id/bench2Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+	</LinearLayout>	
+	
+    <LinearLayout 
+	    android:id="@+id/bench3View"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@id/bench2View"
+	    android:padding="@dimen/padding"
+	    android:orientation="vertical">
+		
+        <TextView
+            android:id="@+id/bench3Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        
+	</LinearLayout>	
+	
+    <LinearLayout 
+	    android:id="@+id/bench4View"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@id/bench3View"
+	    android:padding="@dimen/padding"
+	    android:orientation="vertical">
+		
+        <TextView
+            android:id="@+id/bench4Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        
+	</LinearLayout>	
+	
+    <LinearLayout 
+	    android:id="@+id/bench5View"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@id/bench4View"
+	    android:padding="@dimen/padding"
+	    android:orientation="vertical">
+		
+        <TextView
+            android:id="@+id/bench5Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        
+	</LinearLayout>	
+	
+        <LinearLayout 
+	    android:id="@+id/bench6View"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@id/bench5View"
+	    android:padding="@dimen/padding"
+	    android:orientation="vertical">
+		
+        <TextView
+            android:id="@+id/bench6Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        
+	</LinearLayout>	
+	
+    <LinearLayout 
+	    android:id="@+id/bench7View"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@id/bench6View"
+	    android:padding="@dimen/padding"
+	    android:orientation="vertical">
+		
+        <TextView
+            android:id="@+id/bench7Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        
+	</LinearLayout>	
+	
+    <LinearLayout 
+	    android:id="@+id/bench8View"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@id/bench7View"
+	    android:padding="@dimen/padding"
+	    android:orientation="vertical">
+		
+        <TextView
+            android:id="@+id/bench8Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        
+	</LinearLayout>	
+	
+    <LinearLayout 
+	    android:id="@+id/bench9View"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@id/bench8View"
+	    android:padding="@dimen/padding"
+	    android:orientation="vertical">
+		
+        <TextView
+            android:id="@+id/bench9Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        
+	</LinearLayout>	
+	
+    <LinearLayout 
+	    android:id="@+id/bench10View"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@id/bench9View"
+	    android:padding="@dimen/padding"
+	    android:orientation="vertical">
+		
+        <TextView
+            android:id="@+id/bench10Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        
+	</LinearLayout>	
+</RelativeLayout>
+</ScrollView>

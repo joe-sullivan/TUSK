@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+	
+    <TextView
+	        android:id="@+id/SubTitleText"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center"
+	        android:padding="@dimen/padding"
+	        android:text="@string/substitution_title" />
+    
+    <LinearLayout
+    	android:id="@+id/tabText"
+    	android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal" 
+	    android:layout_below="@+id/SubTitleText">
+		
+	    <TextView
+	        android:id="@+id/gameClocksText"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:gravity="center"
+	        android:padding="@dimen/padding"
+	        android:text="@string/game_clocks"/>
+	    
+	    <TextView
+	        android:id="@+id/graphicalText"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:gravity="center"
+	        android:padding="@dimen/padding"
+	        android:text="@string/graphical"/>
+	    
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/fragmentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tabText"
+        android:paddingBottom="@dimen/large_padding"
+        android:paddingLeft="@dimen/padding"
+        android:paddingRight="@dimen/padding"
+        android:paddingTop="@dimen/large_text" >
+
+    </RelativeLayout>
+    
+</RelativeLayout>
