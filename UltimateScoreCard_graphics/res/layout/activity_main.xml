@@ -14,22 +14,22 @@
 	        android:layout_width="fill_parent"
 	        android:layout_height="match_parent"
 	        android:layout_weight="1"
-	        android:background="@drawable/transparent_button"
+	        android:background="@drawable/sport_button"
 	        android:padding="@dimen/padding"
 	        android:drawableTop="@drawable/basketball"
 	        android:text="@string/basketball_button" 
-	        android:textColor="@color/black" />
+	        android:textColor="@color/white" />
     
    		<Button
 	        android:id="@+id/hockeyButton"
 	        android:layout_width="fill_parent"
 	        android:layout_height="match_parent"
 	        android:layout_weight="1"
-	        android:background="@drawable/transparent_button"
+	        android:background="@drawable/sport_button"
 	        android:padding="@dimen/padding"
 	        android:drawableTop="@drawable/hockey"
 	        android:text="@string/hockey_button" 
-	        android:textColor="@color/black" />
+	        android:textColor="@color/white" />
     </TableRow>
     
 	<TableRow
@@ -42,22 +42,22 @@
 	        android:layout_width="fill_parent"
 	        android:layout_height="match_parent"
 	        android:layout_weight="1"
-	       	android:background="@drawable/transparent_button"	        
+	       	android:background="@drawable/sport_button"	        
 	        android:padding="@dimen/padding"
 	        android:drawableTop="@drawable/football"
 	        android:text="@string/football_button" 
-	        android:textColor="@color/black" />
+	        android:textColor="@color/white" />
 	    
 	    <Button
 	        android:id="@+id/soccerButton"
 	        android:layout_width="fill_parent"
 	        android:layout_height="match_parent"
 	        android:layout_weight="1"
-	        android:background="@drawable/transparent_button"	        
+	        android:background="@drawable/sport_button"	        
 	        android:padding="@dimen/padding"
 	        android:drawableTop="@drawable/soccerball"
 	        android:text="@string/soccer_button" 
-	        android:textColor="@color/black" />
+	        android:textColor="@color/white" />
     </TableRow>
     
 	<Button
