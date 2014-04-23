@@ -984,7 +984,9 @@ public class MainActivity extends Activity{
 		}
 	};
 
-	private void confirmPassword(String username, final String password){
+	
+
+	private void confirmPassword(final String username, final String password){
 		Builder confirmDialog = new Builder(this);
 		confirmDialog.setTitle("Re-enter Password:");
 
@@ -996,8 +998,16 @@ public class MainActivity extends Activity{
 			@Override
 			public void onClick(DialogInterface dialog, int arg1) {
 				if(password.equals(editText.getText().toString())){
+					AdminNetworkHelper admin = new AdminNetworkHelper();
+					boolean check = admin.createUser(username, password);
+					if(check){
 					accountCreateSuccess();
 					dialog.dismiss();
+					}
+					else{
+						accountCreateFailedExists();
+						dialog.dismiss();
+					}
 				}
 				else{
 					accountCreateFailed();
@@ -1024,7 +1034,7 @@ public class MainActivity extends Activity{
 	private void accountLoginFailed(){
 		Builder failedDialog = new Builder(this);
 		failedDialog.setTitle("Failed");
-		failedDialog.setMessage("Invalid user. Please try again.");
+		failedDialog.setMessage("Invalid user and/or password. Please try again.");
 		failedDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener(){	
 			@Override
 			public void onClick(DialogInterface dialog, int arg1) {
