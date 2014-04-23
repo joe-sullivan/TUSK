@@ -126,9 +126,9 @@ public class BasketballBoxscoreFragment extends Fragment{
 		layout.removeAllViews();
 	}
 	
-	private TextView newTextView(String teamName){
+	private TextView newTextView(String name){
 		final TextView textView = new TextView(getActivity());
-		textView.setText(teamName);
+		textView.setText(name);
 		textView.setPadding(5,5,5,5);
 		textView.setTextSize(20);
 		textView.setOnClickListener(selectPlayerListener);
