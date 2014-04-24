@@ -9,7 +9,7 @@
 	        android:layout_height="wrap_content"
 	        android:gravity="center"
 	        android:padding="@dimen/padding"
-	        android:text="@string/substitution_title" />
+	        android:text="@string/title_activity_options" />
     
     <LinearLayout
     	android:id="@+id/tabText"

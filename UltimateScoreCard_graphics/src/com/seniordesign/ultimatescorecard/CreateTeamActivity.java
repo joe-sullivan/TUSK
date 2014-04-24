@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,6 +38,7 @@ public class CreateTeamActivity extends Activity{
 	private Teams _curTeam;
 	private boolean _editing = false;
 	private boolean _loggedIn;
+	private Button saveTeam;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,7 @@ public class CreateTeamActivity extends Activity{
 		findViewById(R.id.editPlayer).setOnClickListener(editPlayerListener);
 		findViewById(R.id.deletePlayer).setOnClickListener(deletePlayerListener);
 		findViewById(R.id.confirmTeam).setOnClickListener(confirmTeamListener);
+		saveTeam = (Button) findViewById(R.id.confirmTeam);	
 		
 		String teamEditor = getIntent().getStringExtra(StaticFinalVars.CREATE_EDIT);
 		_sportType = getIntent().getStringExtra(StaticFinalVars.SPORT_TYPE);
@@ -82,9 +85,13 @@ public class CreateTeamActivity extends Activity{
 			}
 			
 			//pull abbr and coach name
-			((EditText)findViewById(R.id.teamNameEditText)).setText(teamEditor);
-			((EditText)findViewById(R.id.teamAbbrEditText)).setText(_curTeam.getabbv());
-			((EditText)findViewById(R.id.coachNameEditText)).setText(_curTeam.getcname());
+			EditText teamName = ((EditText)findViewById(R.id.teamNameEditText));
+			EditText teamAbbr = ((EditText)findViewById(R.id.teamAbbrEditText));
+			EditText coachName = ((EditText)findViewById(R.id.coachNameEditText));
+			teamName.setText(teamEditor);
+			teamAbbr.setText(_curTeam.getabbv());
+			coachName.setText(_curTeam.getcname());
+			
 			
 			//get List of players on curTeam from database
 			ArrayList<Players> players = (ArrayList<Players>) _db.getPlayersTeam2(t_id);
@@ -142,107 +149,120 @@ public class CreateTeamActivity extends Activity{
 			String teamAbbr = ((EditText)findViewById(R.id.teamAbbrEditText)).getText().toString();
 			String coachName = ((EditText)findViewById(R.id.coachNameEditText)).getText().toString();
 			
-			long t_id = -1;
-			
-			if(!_editing){
-				t_id = _db.createTeams(new Teams(teamName, teamAbbr, coachName, _sportType));
+			if(teamName.equals("") || teamAbbr.equals("") || coachName.equals("")){
+				Builder d = new Builder(CreateTeamActivity.this);																
+				d.setTitle("Invalid Input");
+				d.setMessage("Must fill in team name, team abbreviation, and coach name");
+				d.setPositiveButton("Try Again", new DialogInterface.OnClickListener(){	
+					@Override
+					public void onClick(DialogInterface dialog, int arg1) {
+					}
+				});
+				d.show();
 			}
-			
-			for(int i=0; i<_playerList.getChildCount(); i++){
-				String playerName = ((TextView)((LinearLayout)_playerList.getChildAt(i)).getChildAt(1)).getText().toString();
-				int playerNumber = Integer.parseInt(((TextView)((LinearLayout)_playerList.getChildAt(i)).getChildAt(0)).getText().toString());
-			
+			else{
+				long t_id = -1;
+				
 				if(!_editing){
-					if(_sportType.equals("basketball")){
-						((BasketballDatabaseHelper) _db).createPlayers(new BasketballPlayer(t_id, playerName, playerNumber));
-					}
-					else if(_sportType.equals("soccer")){
-						((SoccerDatabaseHelper) _db).createPlayers(new SoccerPlayer(t_id, playerName, playerNumber));
-					}
-					else if(_sportType.equals("hockey")){
-						((HockeyDatabaseHelper) _db).createPlayers(new HockeyPlayer(t_id, playerName, playerNumber));
-					}
-					else if(_sportType.equals("football")){
-						((FootballDatabaseHelper) _db).createPlayers(new FootballPlayer(t_id, playerName, playerNumber));
-					}
-					//else if(other sports that could be added)... 
+					t_id = _db.createTeams(new Teams(teamName, teamAbbr, coachName, _sportType));
 				}
-			}
-			
-			if(_editing){
-				ArrayList<Teams> teams = (ArrayList<Teams>) _db.getAllTeams();
-				Teams cur = null;
-				for(Teams team: teams){
-					if(team.gettname().equals(_oldTeamName)){
-						cur = team;
-						break;
+				
+				for(int i=0; i<_playerList.getChildCount(); i++){
+					String playerName = ((TextView)((LinearLayout)_playerList.getChildAt(i)).getChildAt(1)).getText().toString();
+					int playerNumber = Integer.parseInt(((TextView)((LinearLayout)_playerList.getChildAt(i)).getChildAt(0)).getText().toString());
+				
+					if(!_editing){
+						if(_sportType.equals("basketball")){
+							((BasketballDatabaseHelper) _db).createPlayers(new BasketballPlayer(t_id, playerName, playerNumber));
+						}
+						else if(_sportType.equals("soccer")){
+							((SoccerDatabaseHelper) _db).createPlayers(new SoccerPlayer(t_id, playerName, playerNumber));
+						}
+						else if(_sportType.equals("hockey")){
+							((HockeyDatabaseHelper) _db).createPlayers(new HockeyPlayer(t_id, playerName, playerNumber));
+						}
+						else if(_sportType.equals("football")){
+							((FootballDatabaseHelper) _db).createPlayers(new FootballPlayer(t_id, playerName, playerNumber));
+						}
+						//else if(other sports that could be added)... 
 					}
 				}
 				
-				t_id = cur.gettid();
-				_db.updateTeam(new Teams(t_id, teamName,teamAbbr,coachName,_sportType));
-			}
-			_editing = false;
-
-			int num = _playerList.getChildCount();
-			if(_sportType.equals("basketball")&&num<5){
-				for(int i=num+1;i<=5;i++){
-					String pname = "Player " + i;
-					for(int j=0; j<_playerList.getChildCount(); j++){
-						String playerName = ((TextView)((LinearLayout)_playerList.getChildAt(j)).getChildAt(1)).getText().toString();
-						if(pname.equals(playerName)){
-							pname+="a";
+				if(_editing){
+					ArrayList<Teams> teams = (ArrayList<Teams>) _db.getAllTeams();
+					Teams cur = null;
+					for(Teams team: teams){
+						if(team.gettname().equals(_oldTeamName)){
+							cur = team;
+							break;
 						}
 					}
-					BasketballPlayer p = new BasketballPlayer(t_id, pname, 0);
-					((BasketballDatabaseHelper) _db).createPlayers(p);
+					
+					t_id = cur.gettid();
+					_db.updateTeam(new Teams(t_id, teamName,teamAbbr,coachName,_sportType));
 				}
-			}
-			else if(_sportType.equals("hockey")&&num<6){
-				for(int i=num+1;i<=6;i++){
-					String pname = "Player " + i;
-					for(int j=0; j<_playerList.getChildCount(); j++){
-						String playerName = ((TextView)((LinearLayout)_playerList.getChildAt(j)).getChildAt(1)).getText().toString();
-						if(pname.equals(playerName)){
-							pname+="a";
+				_editing = false;
+	
+				int num = _playerList.getChildCount();
+				if(_sportType.equals("basketball")&&num<5){
+					for(int i=num+1;i<=5;i++){
+						String pname = "Player " + i;
+						for(int j=0; j<_playerList.getChildCount(); j++){
+							String playerName = ((TextView)((LinearLayout)_playerList.getChildAt(j)).getChildAt(1)).getText().toString();
+							if(pname.equals(playerName)){
+								pname+="a";
+							}
 						}
+						BasketballPlayer p = new BasketballPlayer(t_id, pname, 0);
+						((BasketballDatabaseHelper) _db).createPlayers(p);
 					}
-					HockeyPlayer p = new HockeyPlayer(t_id, pname, 0);
-					((HockeyDatabaseHelper) _db).createPlayers(p);
 				}
-			}
-			else if(_sportType.equals("soccer")&&num<11){
-				for(int i=num+1;i<=11;i++){
-					String pname = "Player " + i;
-					for(int j=0; j<_playerList.getChildCount(); j++){
-						String playerName = ((TextView)((LinearLayout)_playerList.getChildAt(j)).getChildAt(1)).getText().toString();
-						if(pname.equals(playerName)){
-							pname+="a";
+				else if(_sportType.equals("hockey")&&num<6){
+					for(int i=num+1;i<=6;i++){
+						String pname = "Player " + i;
+						for(int j=0; j<_playerList.getChildCount(); j++){
+							String playerName = ((TextView)((LinearLayout)_playerList.getChildAt(j)).getChildAt(1)).getText().toString();
+							if(pname.equals(playerName)){
+								pname+="a";
+							}
 						}
+						HockeyPlayer p = new HockeyPlayer(t_id, pname, 0);
+						((HockeyDatabaseHelper) _db).createPlayers(p);
 					}
-					SoccerPlayer p = new SoccerPlayer(t_id, pname, 0);
-					((SoccerDatabaseHelper) _db).createPlayers(p);
 				}
-			}
-			else if(_sportType.equals("football")&&num<11){
-				for(int i=num+1;i<=11;i++){
-					String pname = "Player " + i;
-					for(int j=0; j<_playerList.getChildCount(); j++){
-						String playerName = ((TextView)((LinearLayout)_playerList.getChildAt(j)).getChildAt(1)).getText().toString();
-						if(pname.equals(playerName)){
-							pname+="a";
+				else if(_sportType.equals("soccer")&&num<11){
+					for(int i=num+1;i<=11;i++){
+						String pname = "Player " + i;
+						for(int j=0; j<_playerList.getChildCount(); j++){
+							String playerName = ((TextView)((LinearLayout)_playerList.getChildAt(j)).getChildAt(1)).getText().toString();
+							if(pname.equals(playerName)){
+								pname+="a";
+							}
 						}
+						SoccerPlayer p = new SoccerPlayer(t_id, pname, 0);
+						((SoccerDatabaseHelper) _db).createPlayers(p);
 					}
-					FootballPlayer p = new FootballPlayer(t_id, pname, 0);
-					((FootballDatabaseHelper) _db).createPlayers(p);
 				}
+				else if(_sportType.equals("football")&&num<11){
+					for(int i=num+1;i<=11;i++){
+						String pname = "Player " + i;
+						for(int j=0; j<_playerList.getChildCount(); j++){
+							String playerName = ((TextView)((LinearLayout)_playerList.getChildAt(j)).getChildAt(1)).getText().toString();
+							if(pname.equals(playerName)){
+								pname+="a";
+							}
+						}
+						FootballPlayer p = new FootballPlayer(t_id, pname, 0);
+						((FootballDatabaseHelper) _db).createPlayers(p);
+					}
+				}
+	
+				Intent intent = new Intent();
+				intent.putExtra(StaticFinalVars.TEAM_NAME, teamName);
+				intent.putExtra(StaticFinalVars.OLD_TEAM_NAME, _oldTeamName);
+				setResult(Activity.RESULT_OK, intent);
+				finish();	
 			}
-
-			Intent intent = new Intent();
-			intent.putExtra(StaticFinalVars.TEAM_NAME, teamName);
-			intent.putExtra(StaticFinalVars.OLD_TEAM_NAME, _oldTeamName);
-			setResult(Activity.RESULT_OK, intent);
-			finish();	
 		}
 	};
 	
@@ -250,6 +270,9 @@ public class CreateTeamActivity extends Activity{
 		@Override
 		public void onClick(View view) {
 			if(_viewSelected != view){
+				if(_viewSelected!=null){
+					_viewSelected.setBackgroundColor(getResources().getColor(R.color.white));
+				}
 				_viewSelected = view;
 				_viewSelected.setBackgroundColor(getResources().getColor(R.color.robin_egg_blue));
 			}
@@ -274,19 +297,53 @@ public class CreateTeamActivity extends Activity{
 				String name = ((EditText)layout.findViewById(R.id.playerNameEditText)).getText().toString();
 				String number = ((EditText)layout.findViewById(R.id.playerNumberEditText)).getText().toString();
 				if(!name.equals("") && !number.equals("")){
-					_playerList.addView(newPlayerItem(name, number));
-					if(_sportType.equals("basketball")){
-						((BasketballDatabaseHelper) _db).createPlayers(new BasketballPlayer(t_id, name, Integer.parseInt(number)));
+					boolean newName = true;
+					for(int i=0; i<_playerList.getChildCount(); i++){			
+						String playerName = ((TextView)((LinearLayout)_playerList.getChildAt(i)).getChildAt(1)).getText().toString();
+						if(name.equals(playerName)){
+							newName = false;
+						}
 					}
-					else if(_sportType.equals("football")){
-						((FootballDatabaseHelper) _db).createPlayers(new FootballPlayer(t_id, name, Integer.parseInt(number)));
-					}	
-					else if(_sportType.equals("hockey")){
-						((HockeyDatabaseHelper) _db).createPlayers(new HockeyPlayer(t_id, name, Integer.parseInt(number)));
+					if(newName){
+						_playerList.addView(newPlayerItem(name, number));
+						if(_sportType.equals("basketball")){
+							((BasketballDatabaseHelper) _db).createPlayers(new BasketballPlayer(t_id, name, Integer.parseInt(number)));
+						}
+						else if(_sportType.equals("football")){
+							((FootballDatabaseHelper) _db).createPlayers(new FootballPlayer(t_id, name, Integer.parseInt(number)));
+						}	
+						else if(_sportType.equals("hockey")){
+							((HockeyDatabaseHelper) _db).createPlayers(new HockeyPlayer(t_id, name, Integer.parseInt(number)));
+						}
+						else if(_sportType.equals("soccer")){
+							((SoccerDatabaseHelper) _db).createPlayers(new SoccerPlayer(t_id, name, Integer.parseInt(number)));
+						}
 					}
-					if(_sportType.equals("soccer")){
-						((SoccerDatabaseHelper) _db).createPlayers(new SoccerPlayer(t_id, name, Integer.parseInt(number)));
+					else{
+						Builder d = new Builder(CreateTeamActivity.this);																
+						d.setTitle("Invalid Input");
+						d.setMessage("Name Already Exists");
+						d.setPositiveButton("Try Again", new DialogInterface.OnClickListener(){	
+							@Override
+							public void onClick(DialogInterface dialog, int arg1) {
+								addingPlayers();
+							}
+						});
+						d.show();
 					}
+				}
+				else if(name.equals("") || number.equals("")){
+					
+					Builder d = new Builder(CreateTeamActivity.this);																
+					d.setTitle("Invalid Input");
+					d.setMessage("Must enter a name and number");
+					d.setPositiveButton("Try Again", new DialogInterface.OnClickListener(){	
+						@Override
+						public void onClick(DialogInterface dialog, int arg1) {
+							addingPlayers();
+						}
+					});
+					d.show();
 				}
 				dialog.dismiss();
 			}
@@ -328,13 +385,50 @@ public class CreateTeamActivity extends Activity{
 				String name = ((EditText)layout.findViewById(R.id.playerNameEditText)).getText().toString();
 				String number = ((EditText)layout.findViewById(R.id.playerNumberEditText)).getText().toString();
 				if(!name.equals("") && !number.equals("")){
-					((TextView)((LinearLayout)viewSelected).getChildAt(1)).setText(name);
-					((TextView)((LinearLayout)viewSelected).getChildAt(0)).setText(number);
-					_db.updatePlayer(new Players(curPlayer.getpid(), curPlayer.gettid(), name, Integer.parseInt(number)));
+					boolean newName = true;
+					for(int i=0; i<_playerList.getChildCount(); i++){			
+						String playerName = ((TextView)((LinearLayout)_playerList.getChildAt(i)).getChildAt(1)).getText().toString();
+						if(name.equals(playerName)){
+							newName = false;
+							if(name.equals(oldPName)){
+								newName = true;
+							}
+						}
+					}
+					if(newName){
+						((TextView)((LinearLayout)viewSelected).getChildAt(1)).setText(name);
+						((TextView)((LinearLayout)viewSelected).getChildAt(0)).setText(number);
+						_db.updatePlayer(new Players(curPlayer.getpid(), curPlayer.gettid(), name, Integer.parseInt(number)));
+						_viewSelected.setBackgroundColor(getResources().getColor(R.color.white));
+						_viewSelected = null;
+					}
+					else{
+						Builder d = new Builder(CreateTeamActivity.this);																
+						d.setTitle("Invalid Input");
+						d.setMessage("Name Already Exists");
+						d.setPositiveButton("Try Again", new DialogInterface.OnClickListener(){	
+							@Override
+							public void onClick(DialogInterface dialog, int arg1) {
+								editingPlayer(_viewSelected);
+							}
+						});
+						d.show();
+					}
 				}
-				dialog.dismiss();
-				_viewSelected.setBackgroundColor(getResources().getColor(R.color.white));
-				_viewSelected = null;	
+				else if(name.equals("") || number.equals("")){
+					
+					Builder d = new Builder(CreateTeamActivity.this);																
+					d.setTitle("Invalid Input");
+					d.setMessage("Must enter a name and number");
+					d.setPositiveButton("Try Again", new DialogInterface.OnClickListener(){	
+						@Override
+						public void onClick(DialogInterface dialog, int arg1) {
+							editingPlayer(_viewSelected);
+						}
+					});
+					d.show();
+				}
+				dialog.dismiss();	
 			}
 		});
 		confirmDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){		

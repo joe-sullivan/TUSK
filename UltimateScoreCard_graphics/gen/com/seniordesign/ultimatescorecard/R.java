@@ -119,7 +119,7 @@ public final class R {
     }
     public static final class id {
         public static final int AFG=0x7f0a00c0;
-        public static final int SubTitleText=0x7f0a0050;
+        public static final int SubTitleText=0x7f0a0051;
         public static final int active10Name=0x7f0a0094;
         public static final int active10View=0x7f0a0093;
         public static final int active11Name=0x7f0a0096;
@@ -311,7 +311,7 @@ public final class R {
         public static final int statsTitle=0x7f0a00ad;
         public static final int stealTotal=0x7f0a0041;
         public static final int substitution=0x7f0a00cc;
-        public static final int tabText=0x7f0a0051;
+        public static final int tabText=0x7f0a0050;
         public static final int teamAbbrEditText=0x7f0a002a;
         public static final int teamCreationTitle=0x7f0a0028;
         public static final int teamName=0x7f0a0039;

@@ -1,5 +1,6 @@
 package com.seniordesign.ultimatescorecard.options;
 
+import com.seniordesign.ultimatescorecard.CreateTeamActivity;
 import com.seniordesign.ultimatescorecard.R;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
@@ -61,7 +62,7 @@ public class ClockManagementFragment extends Fragment{
 			builder.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {					
-					buttonEnabler(true, false, false);
+					buttonEnabler(true, true, true);
 					resetButtonText(true, true, arrayAdapter.getItem(which));
 					_sportButton.setText(arrayAdapter.getItem(which));
 				}
@@ -93,7 +94,7 @@ public class ClockManagementFragment extends Fragment{
 			builder.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {					
-					buttonEnabler(true, true, false);
+					buttonEnabler(true, true, true);
 					resetButtonText(false, true, _sportButton.getText().toString());
 					_numPerButton.setText(arrayAdapter.getItem(which));
 				}
@@ -108,18 +109,11 @@ public class ClockManagementFragment extends Fragment{
 			Builder builder = new Builder(ClockManagementFragment.this.getActivity());
 			builder.setTitle("Period Length: (in minutes)");
 			final EditText input = new EditText(ClockManagementFragment.this.getActivity());
-			
-			if(_sportButton.getText().equals("Basketball")){
-				input.setText((_prefs.getString("perLenBasketball", getActivity().getResources().getString(R.string.period_length))).replace(" minutes" , ""));
+			if(_perLenButton.getText().equals("Length of Each Period")){
+				input.setText("");
 			}
-			else if (_sportButton.getText().equals("Football")){
-				input.setText((_prefs.getString("perLenFootball", getActivity().getResources().getString(R.string.period_length))).replace(" minutes" , ""));
-			}
-			else if (_sportButton.getText().equals("Hockey")){
-				input.setText((_prefs.getString("perLenHockey", getActivity().getResources().getString(R.string.period_length))).replace(" minutes" , ""));		
-			}
-			else if (_sportButton.getText().equals("Soccer")){
-				input.setText((_prefs.getString("perLenSoccer", getActivity().getResources().getString(R.string.period_length))).replace(" minutes" , ""));
+			else{
+				input.setText(((String) _perLenButton.getText()).replace(" minutes" , ""));
 			}
 			
 			builder.setView(input);
@@ -152,17 +146,11 @@ public class ClockManagementFragment extends Fragment{
 			builder.setTitle("Overtime Length: (in minutes)");
 			final EditText input = new EditText(ClockManagementFragment.this.getActivity());
 			
-			if(_sportButton.getText().equals("Basketball")){
-				input.setText((_prefs.getString("OTLenBasketball", getActivity().getResources().getString(R.string.ot_length))).replace(" minutes" , ""));
+			if(_otLenButton.getText().equals("Length of Overtime")){
+				input.setText("");
 			}
-			else if (_sportButton.getText().equals("Football")){
-				input.setText((_prefs.getString("OTLenFootball", getActivity().getResources().getString(R.string.ot_length))).replace(" minutes" , ""));
-			}
-			else if (_sportButton.getText().equals("Hockey")){
-				input.setText((_prefs.getString("OTLenHockey", getActivity().getResources().getString(R.string.ot_length))).replace(" minutes" , ""));		
-			}
-			else if (_sportButton.getText().equals("Soccer")){
-				input.setText((_prefs.getString("OTLenSoccer", getActivity().getResources().getString(R.string.ot_length))).replace(" minutes" , ""));
+			else{
+				input.setText(((String) _otLenButton.getText()).replace(" minutes" , ""));
 			}
 			
 			builder.setView(input);
@@ -191,30 +179,44 @@ public class ClockManagementFragment extends Fragment{
 	private OnClickListener saveButtonListener = new OnClickListener(){
 		@Override
 		public void onClick(View view) {
-			Builder builder = new Builder(ClockManagementFragment.this.getActivity());
-			builder.setTitle("Confirmation");	
-			builder.setMessage("Are you sure you want to save these settings?");
-			builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					if(!_sportButton.getText().toString().equals(getActivity().getResources().getString(R.string.choose_sport))){
-						_prefs.edit().putString("numPer"+_sportButton.getText().toString(), _numPerButton.getText().toString()).commit();
-						_prefs.edit().putString("perLen"+_sportButton.getText().toString(), _perLenButton.getText().toString()).commit();
-						_prefs.edit().putString("otLen"+_sportButton.getText().toString(), _otLenButton.getText().toString()).commit();
-						getActivity().onBackPressed();
+			if(_sportButton.getText().equals("Choose Sport") || _numPerButton.getText().equals("Number of Periods") || 
+					_perLenButton.getText().equals("Length of Each Period") || _otLenButton.getText().equals("Length of Overtime")){
+				Builder d = new Builder(ClockManagementFragment.this.getActivity());																
+				d.setTitle("Invalid Input");
+				d.setMessage("Must fill in each field with a valid input");
+				d.setPositiveButton("Try Again", new DialogInterface.OnClickListener(){	
+					@Override
+					public void onClick(DialogInterface dialog, int arg1) {
 					}
-					else{
+				});
+				d.show();
+			}
+			else{
+				Builder builder = new Builder(ClockManagementFragment.this.getActivity());
+				builder.setTitle("Confirmation");	
+				builder.setMessage("Are you sure you want to save these settings?");
+				builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						if(!_sportButton.getText().toString().equals(getActivity().getResources().getString(R.string.choose_sport))){
+							_prefs.edit().putString("numPer"+_sportButton.getText().toString(), _numPerButton.getText().toString()).commit();
+							_prefs.edit().putString("perLen"+_sportButton.getText().toString(), _perLenButton.getText().toString()).commit();
+							_prefs.edit().putString("otLen"+_sportButton.getText().toString(), _otLenButton.getText().toString()).commit();
+							getActivity().onBackPressed();
+						}
+						else{
+							dialog.dismiss();
+						}		
+					}
+				});
+				builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
 						dialog.dismiss();
 					}
-				}
-			});
-			builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
-				}
-			});
-			builder.show();
+				});
+				builder.show();
+			}
 		}		
 	};
 	
