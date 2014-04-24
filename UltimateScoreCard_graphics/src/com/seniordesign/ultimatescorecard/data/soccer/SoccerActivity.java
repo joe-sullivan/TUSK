@@ -690,7 +690,10 @@ public class SoccerActivity extends Activity{
 				int seconds = Integer.parseInt(((TextView)layout.findViewById(R.id.seconds_box)).getText().toString().substring(1));				
 				if(seconds > 0){ 
 					seconds--; 
-				}				
+				}	
+				else{
+					seconds = 59;
+				}
 				if(seconds < 10){
 					((TextView)layout.findViewById(R.id.seconds_box)).setText(":0"+seconds);
 				}
