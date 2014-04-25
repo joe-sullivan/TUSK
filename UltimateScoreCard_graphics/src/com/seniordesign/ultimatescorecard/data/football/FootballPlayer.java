@@ -54,7 +54,7 @@ public class FootballPlayer extends Players implements Serializable{
 		this.db = db;
 	}
 	public String getName(){
-		return _name;
+		return p_name;
 	}
 	public int getCompletion() {
 		return _completion;

@@ -10,6 +10,7 @@ import com.seniordesign.ultimatescorecard.data.football.FootballActivity;
 import com.seniordesign.ultimatescorecard.data.football.FootballGameTime;
 import com.seniordesign.ultimatescorecard.data.hockey.HockeyActivity;
 import com.seniordesign.ultimatescorecard.data.hockey.HockeyGameTime;
+import com.seniordesign.ultimatescorecard.data.hockey.HockeyPlayer;
 import com.seniordesign.ultimatescorecard.data.soccer.SoccerActivity;
 import com.seniordesign.ultimatescorecard.data.soccer.SoccerGameTime;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.BasketballDatabaseHelper;
@@ -29,6 +30,7 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
@@ -42,7 +44,6 @@ public class ChooseTeamActivity extends Activity{
 	Button _addEditTeam, _deleteButton;											// this is where we can store some information
 	private boolean _selectHomeTeam = false;
 	private boolean _selectAwayTeam = false;									// false = select Home team, true = select Away team
-	private boolean _setDelete = false;										    // false = we can delete a team, true = we can't delete a team
 	private Teams[] _teams = new Teams[2];										// Array of two Teams, used for passing teams to next activity
 	private TextView _teamSelectTitle;
 	private String _sportType;
@@ -160,21 +161,7 @@ public class ChooseTeamActivity extends Activity{
         			prepareListData();
 					return false;
         		}
-                if(_setDelete){										// if set delete is true	
-					Teams curTeam = null;
-					for(Teams t: teamList){
-						if(t.gettname().equals(_childHome)){
-							curTeam = t;
-							break;
-						}
-					}
-					_db.deleteTeam(curTeam.gettid());				// delete from database and refresh 		
-					_setDelete = false;
-					_deleteButton.setEnabled(true);	
-					_teamSelectTitle.setText(getResources().getString(R.string.home_team_select_title));
-					prepareListData();
-					return false;
-				}
+        		
                 if (_selectAwayTeam == true){
                 	if(!_teams[1].gettname().toString().equals(_childHome)){
                         listDataHeaderHome.set(groupPositionA, _childHome);                
@@ -182,7 +169,6 @@ public class ChooseTeamActivity extends Activity{
                         _teamSelectTitle.setText(getResources().getString(R.string.home_team_select_title));
     					_addEditTeam.setText("Create a New Team");
     					_selectHomeTeam = true;
-    					_deleteButton.setEnabled(false);
     					ex_ListViewHome.collapseGroup(groupPositionA); 
     					confirmTeams();
                 	}    
@@ -198,7 +184,6 @@ public class ChooseTeamActivity extends Activity{
 	                _teamSelectTitle.setText(getResources().getString(R.string.away_team_select_title));
 					_addEditTeam.setText("Edit Selected Team");
 					_selectHomeTeam = true;
-					_deleteButton.setEnabled(false);				
 					ex_ListViewHome.collapseGroup(groupPositionA);  
                 }
                 return false;
@@ -209,9 +194,6 @@ public class ChooseTeamActivity extends Activity{
             @Override
             public boolean onChildClick(ExpandableListView parentB, View v,
                                         int groupPositionB, int childPositionB, long id) {
-                /*Toast.makeText(getApplicationContext(), listDataHeaderAway.get(groupPositionB) + " : " +
-                        listDataChildAway.get(listDataHeaderAway.get(groupPositionB)).get(childPositionB), Toast.LENGTH_SHORT).show();
-                                */
                 _childAway = listDataChildAway.get(listDataHeaderAway.get(groupPositionB)).get(childPositionB);
                 teamList = (ArrayList<Teams>) _db.getAllTeams();        
         		for(Teams t: teamList){
@@ -223,22 +205,8 @@ public class ChooseTeamActivity extends Activity{
         			Toast.makeText(getApplicationContext(), "Create Another Team", Toast.LENGTH_SHORT).show();
         			prepareListData();
 					return false;
-        		}        			
-                if(_setDelete){											
-					Teams curTeam = null;
-					for(Teams t: teamList){
-						if(t.gettname().equals(_childAway)){
-							curTeam = t;
-							break;
-						}
-					}
-					_db.deleteTeam(curTeam.gettid());					
-					_setDelete = false;
-					_deleteButton.setEnabled(true);
-					_teamSelectTitle.setText(getResources().getString(R.string.home_team_select_title));
-					prepareListData();
-					return false;
-				}
+        		}        
+        		
                 if (_selectHomeTeam == true){
                 	if(!_teams[0].gettname().toString().equals(_childAway)){                		
 	                    listDataHeaderAway.set(groupPositionB, _childAway);   
@@ -246,7 +214,6 @@ public class ChooseTeamActivity extends Activity{
 		                _teamSelectTitle.setText(getResources().getString(R.string.home_team_select_title));
 	                    _addEditTeam.setText("Create a New Team");
 		                _selectAwayTeam = true;
-						_deleteButton.setEnabled(false); 
 						ex_ListViewAway.collapseGroup(groupPositionB); 
 						confirmTeams();
                 	}
@@ -262,7 +229,6 @@ public class ChooseTeamActivity extends Activity{
 	                _teamSelectTitle.setText(getResources().getString(R.string.home_team_select_title));
 					_addEditTeam.setText("Edit Selected Team");
 	                _selectAwayTeam = true;
-					_deleteButton.setEnabled(false);                
 	                ex_ListViewAway.collapseGroup(groupPositionB);   
                 }
                 return false;
@@ -332,6 +298,9 @@ public class ChooseTeamActivity extends Activity{
         listDataChildAway.put(listDataHeaderAway.get(0),TeamAway); // Header, Child Away data
         listAdapterAway = new ExpandableListAdapter(this, listDataHeaderAway, listDataChildAway);
         ex_ListViewAway.setAdapter(listAdapterAway);
+        _selectHomeTeam = false;
+        _selectAwayTeam = false;
+		_addEditTeam.setText("Create a New Team");
     }
 
 	//when back button is hit to return to this page (restart it)
@@ -359,21 +328,18 @@ public class ChooseTeamActivity extends Activity{
 			intent.putExtra(StaticFinalVars.CREATE_EDIT, "");
 			intent.putExtra(StaticFinalVars.SPORT_TYPE, _sportType);
 			startActivityForResult(intent, StaticFinalVars.CREATE_TEAM_CODE);	
-			_setDelete = false;	
 			_addEditTeam.setText("Create a New Team");
 		}
 		else if(_selectHomeTeam){
 			intent.putExtra(StaticFinalVars.CREATE_EDIT, _teams[0].gettname());
 			intent.putExtra(StaticFinalVars.SPORT_TYPE, _sportType);
 			startActivityForResult(intent, StaticFinalVars.EDIT_TEAM_CODE);	
-			_setDelete = false;	
 			_addEditTeam.setText("Create a New Team");
 		}
 		else if(_selectAwayTeam){
 			intent.putExtra(StaticFinalVars.CREATE_EDIT, _teams[1].gettname());
 			intent.putExtra(StaticFinalVars.SPORT_TYPE, _sportType);
 			startActivityForResult(intent, StaticFinalVars.EDIT_TEAM_CODE);
-			_setDelete = false;	
 			_addEditTeam.setText("Create a New Team");
 		}
 	}
@@ -390,7 +356,6 @@ public class ChooseTeamActivity extends Activity{
 				if(_sportType.equals("basketball")){
 					_addEditTeam.setBackgroundResource(R.drawable.view_style_slant);			
 					_deleteButton.setBackgroundResource(R.drawable.view_style_slant);
-					
 				}
 				else if(_sportType.equals("hockey")){
 					_addEditTeam.setBackgroundResource(R.drawable.view_style_gradiant);
@@ -456,12 +421,51 @@ public class ChooseTeamActivity extends Activity{
 	
 	//deleting a team if the database is not empty
 	public void deleteATeam(View view){
-		teamList = (ArrayList<Teams>) _db.getAllTeams();
-		if(!teamList.isEmpty()){
-			_teamSelectTitle.setText(getResources().getString(R.string.delete_team_title));
-			_setDelete = true;	
-			_deleteButton.setEnabled(false);
+		
+		Builder builder = new Builder(ChooseTeamActivity.this);
+		builder.setTitle("Delete Team:");
+		final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String> (ChooseTeamActivity.this,
+				android.R.layout.select_dialog_singlechoice);
+		for(Teams team : teamList){
+			arrayAdapter.add(team.gettname());
 		}
+		
+		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});			
+		builder.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				String teamName = arrayAdapter.getItem(which);
+				for(Teams t: teamList){
+					if(t.gettname().equals(teamName)){
+						final Teams team = t;
+						Builder b = new Builder(ChooseTeamActivity.this);
+						b.setTitle("Delete Team");
+						b.setMessage("Are you sure you want to delete the team '" + teamName + "'?");
+						
+						b.setPositiveButton("Yes", new DialogInterface.OnClickListener(){	
+							@Override
+							public void onClick(DialogInterface dialog, int arg1) {
+								_db.deleteTeam(team.gettid());
+						        prepareListData();
+							}
+						});
+						b.setNegativeButton("No", new DialogInterface.OnClickListener(){	
+							@Override
+							public void onClick(DialogInterface dialog, int arg1) {
+								
+							}
+						});
+						b.show();
+					}
+				}
+			}
+		});
+		builder.show();
 	}
 	
 	@Override

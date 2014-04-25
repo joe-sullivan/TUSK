@@ -10,7 +10,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/home_name" 
-            android:textColor="@color/white"
+            android:textColor="@color/robin_egg_blue"
             android:textAppearance="?android:attr/textAppearanceLarge"/>
     
     <LinearLayout
@@ -61,7 +61,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/away_name"
-        android:textColor="@color/white"
+        android:textColor="@color/robin_egg_blue"
         android:textAppearance="?android:attr/textAppearanceLarge" />
     
     <LinearLayout

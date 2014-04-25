@@ -1107,12 +1107,21 @@ public class BasketballActivity extends Activity{
 			@Override
 			public void onClick(View v) {
 				int minutes = Integer.parseInt(((TextView)layout.findViewById(R.id.minutes_box)).getText().toString());
-				
+				int seconds = Integer.parseInt(((TextView)layout.findViewById(R.id.seconds_box)).getText().toString().substring(1));				
+
 				if(ot == 0 && minutes < Integer.parseInt(prefs.getString("perLenBasketball", StaticFinalVars.BASKETBALL_DEFAULT).split(" ")[0])){
 					minutes++;
+					if(minutes==Integer.parseInt(prefs.getString("perLenBasketball", StaticFinalVars.BASKETBALL_DEFAULT).split(" ")[0])){
+						seconds = 0;
+						((TextView)layout.findViewById(R.id.seconds_box)).setText(":0"+seconds);
+					}
 				}
 				else if (ot != 0 && minutes < Integer.parseInt(prefs.getString("otLenBasketball", StaticFinalVars.BASKETBALL_OT_DEFAULT).split(" ")[0])){
 					minutes++;
+					if(minutes==Integer.parseInt(prefs.getString("otLenBasketball", StaticFinalVars.BASKETBALL_OT_DEFAULT).split(" ")[0])){
+						seconds = 0;
+						((TextView)layout.findViewById(R.id.seconds_box)).setText(":0"+seconds);
+					}
 				}				
 				if(minutes < 10){
 					((TextView)layout.findViewById(R.id.minutes_box)).setText("0"+minutes);
@@ -1143,11 +1152,22 @@ public class BasketballActivity extends Activity{
 			@Override
 			public void onClick(View v) {
 				int seconds = Integer.parseInt(((TextView)layout.findViewById(R.id.seconds_box)).getText().toString().substring(1));				
+				int minutes = Integer.parseInt(((TextView)layout.findViewById(R.id.minutes_box)).getText().toString());				
+
 				if(seconds > 0){ 
-					seconds--; 
-				}			
+					seconds--;
+				}
 				else{
 					seconds = 59;
+					if(minutes==Integer.parseInt(prefs.getString("perLenBasketball", StaticFinalVars.BASKETBALL_DEFAULT).split(" ")[0])){
+						minutes--;
+						if(minutes < 10){
+							((TextView)layout.findViewById(R.id.minutes_box)).setText("0"+minutes);
+						}
+						else{
+							((TextView)layout.findViewById(R.id.minutes_box)).setText(""+minutes);
+						}
+					}
 				}
 				if(seconds < 10){
 					((TextView)layout.findViewById(R.id.seconds_box)).setText(":0"+seconds);

@@ -1,5 +1,6 @@
 package com.seniordesign.ultimatescorecard.clock;
 
+import android.graphics.Color;
 import android.os.Handler;
 import android.widget.TextView;
 
@@ -19,10 +20,12 @@ public class GameClock {
 
 	public void start(){
 		_status = true;
+		_textView.setTextColor(Color.WHITE);
 	}
 	
 	public void stop(){
 		_status = false;
+		_textView.setTextColor(Color.RED);
 	}
 	
 	public long getCurrentTime(){
