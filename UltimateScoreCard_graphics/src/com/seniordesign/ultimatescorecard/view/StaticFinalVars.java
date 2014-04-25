@@ -6,6 +6,7 @@ public class StaticFinalVars {
 	//main screen to choose team activity
 	public static final String SPORT_TYPE = "sportType";
 	public static final String LOGIN_STATUS = "login_status";
+	public static final String COLOR_PREFS = "color";
 	
 	//create team activity
 	public static final String CREATE_EDIT = "createEdit";

@@ -160,7 +160,8 @@ public class HockeyActivity extends Activity{
 	}
 	
 	private void penaltyShotSet(){
-		buttonSwap(true);
+		buttonSwap(false);
+		enableButtons();
 		setTextAndListener(_option4Button, penaltyShotListener(false), "Saved");
 		setTextAndListener(_option5Button, penaltyShotListener(true), "Goal");
 		zeroTimeDisabler();	
@@ -312,17 +313,17 @@ public class HockeyActivity extends Activity{
 			@Override
 			public void onClick(View view) {
 				Builder builder = new Builder(HockeyActivity.this);
-				builder.setTitle("Penalty by:");
+				builder.setTitle("Penalty Shot taken by:");
 				final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String> (HockeyActivity.this,
 						android.R.layout.select_dialog_singlechoice);
 				
 				if(_gti.getPossession()){
-					for(HockeyPlayer hp : _gti.getTheHomeTeam().getRoster()){
+					for(HockeyPlayer hp : _gti.getTheAwayTeam().getRoster()){
 						arrayAdapter.add(hp.getpname());
 					}
 				}
 				else{
-					for(HockeyPlayer hp : _gti.getTheAwayTeam().getRoster()){
+					for(HockeyPlayer hp : _gti.getTheHomeTeam().getRoster()){
 						arrayAdapter.add(hp.getpname());
 					}
 				}			
@@ -335,13 +336,20 @@ public class HockeyActivity extends Activity{
 				builder.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						String player = arrayAdapter.getItem(which);
-						_gti.getTeam().getPlayer(player).scoreGoal();
-						_gti.getTeam().increaseScore(1);    //add these 2 lines, CTRL-F the word scoreGoal and add these methods (for Soccer too)
-						updateScore();	
-						_gameLog.penaltyShot(goal, player, _gti.getOppoTeam().getGoalie().getpname(),_gameClockView.getText().toString());						
-						_iceHockeyRink.setOnTouchListener(courtInteraction(true));
-						disableButtons();						
+						if(goal){
+							String player = arrayAdapter.getItem(which);					
+							_gti.getOppoTeam().getPlayer(player).scoreGoal();
+							_gti.getOppoTeam().increaseScore(1);    //add these 2 lines, CTRL-F the word scoreGoal and add these methods (for Soccer too)
+							updateScore();	
+							_gameLog.penaltyShot(goal, player, "",_gameClockView.getText().toString());						
+						}
+						else{
+							String player = arrayAdapter.getItem(which);
+							_gameLog.penaltyShot(goal, player, _gti.getTeam().getGoalie().getpname(),_gameClockView.getText().toString());
+						}
+						disableButtons();
+						mainButtonSet();
+						_iceHockeyRink.setOnTouchListener(courtInteraction(false));
 					}
 				});
 				builder.show();
@@ -379,24 +387,25 @@ public class HockeyActivity extends Activity{
 				if(type.equals("Minor")){
 					_gti.getTeam().getPlayer(player).minorPenalty();
 					_gameLog.penalty(player, type,_gameClockView.getText().toString());
+					allowMenuAndChangingPossession();
 				}
 				else if(type.equals("Major")){
 					_gti.getTeam().getPlayer(player).majorPenalty();
 					_gameLog.penalty(player, type,_gameClockView.getText().toString());
+					allowMenuAndChangingPossession();
 				}
 				else if(type.equals("Misconduct")){
 					_gti.getTeam().getPlayer(player).misconductPenalty();
 					_gameLog.penalty(player, type,_gameClockView.getText().toString());
+					allowMenuAndChangingPossession();
 				}
-				else if(type.equals("Penalty")){
+				else if(type.equals("Penalty Shot")){
 					_gti.getTeam().getPlayer(player).minorPenalty();
 					penaltyShotSet();
 				}
 				else{
 					//ejections?
-				}
-				allowMenuAndChangingPossession();
-
+				}	
 				dialog.dismiss();
 			}
 		});
@@ -1044,7 +1053,7 @@ public class HockeyActivity extends Activity{
 		alert.setTitle("Shootout:");
 		
 		LayoutInflater inflater = this.getLayoutInflater();
-		final View layout = inflater.inflate(R.layout.dialog_shootout, null);
+		final View layout = inflater.inflate(R.layout.dialog_shootout_hockey, null);
 		alert.setView(layout);
 		
 		if(home){
@@ -1065,7 +1074,7 @@ public class HockeyActivity extends Activity{
 		OnClickListener shootOutGoalMadeListener = new OnClickListener(){
 			@Override
 			public void onClick(View view) {
-				((ImageView)view).setImageDrawable(getApplicationContext().getResources().getDrawable(R.drawable.soccerball_check));
+				((ImageView)view).setImageDrawable(getApplicationContext().getResources().getDrawable(R.drawable.hplayer_checked));
 				if(home){
 					_team1SO[shotNumber] = 1;
 				}
@@ -1083,7 +1092,7 @@ public class HockeyActivity extends Activity{
 		OnClickListener shootOutGoalMadeListener = new OnClickListener(){
 			@Override
 			public void onClick(View view) {
-				((ImageView)view).setImageDrawable(getApplicationContext().getResources().getDrawable(R.drawable.soccerball_x));
+				((ImageView)view).setImageDrawable(getApplicationContext().getResources().getDrawable(R.drawable.hplayer_x));
 				if(home){
 					_team1SO[shotNumber] = -1;
 				}

@@ -910,7 +910,7 @@ public class SoccerActivity extends Activity{
 		alert.setTitle("Shootout:");
 		
 		LayoutInflater inflater = this.getLayoutInflater();
-		final View layout = inflater.inflate(R.layout.dialog_shootout, null);
+		final View layout = inflater.inflate(R.layout.dialog_shootout_soccer, null);
 		alert.setView(layout);
 		
 		if(home){

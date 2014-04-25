@@ -4,5 +4,114 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" >
+
+        <Button
+            android:id="@+id/buttonRed"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:background="@drawable/translight_button"
+            android:text="@string/red" />
+
+        <Button
+            android:id="@+id/buttonOrange"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+             android:textColor="@color/white"
+            android:background="@drawable/translight_button"
+            android:text="@string/orange" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" >
+
+        <Button
+            android:id="@+id/buttonYellow"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+             android:textColor="@color/white"
+            android:background="@drawable/translight_button"
+            android:text="@string/yellow" />
+
+        <Button
+            android:id="@+id/buttonGreen"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+             android:textColor="@color/white"
+            android:background="@drawable/translight_button"
+            android:text="@string/green" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" >
+
+        <Button
+            android:id="@+id/buttonTeal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+             android:textColor="@color/white"
+            android:background="@drawable/translight_button"
+            android:text="@string/teal" />
+
+        <Button
+            android:id="@+id/buttonBlue"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+             android:textColor="@color/white"
+            android:background="@drawable/translight_button"
+            android:text="@string/blue" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" >
+
+        <Button
+            android:id="@+id/buttonIndigo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+             android:textColor="@color/white"
+            android:background="@drawable/translight_button"
+            android:text="@string/indigo" />
+
+        <Button
+            android:id="@+id/buttonViolet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+             android:textColor="@color/white"
+            android:background="@drawable/translight_button"
+            android:text="@string/violet" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonSave"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+         android:textColor="@color/white"
+        android:background="@drawable/translight_button"
+        android:text="@string/save" />
     
 </LinearLayout>

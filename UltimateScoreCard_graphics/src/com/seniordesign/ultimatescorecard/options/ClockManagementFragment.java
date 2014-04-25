@@ -1,6 +1,5 @@
 package com.seniordesign.ultimatescorecard.options;
 
-import com.seniordesign.ultimatescorecard.CreateTeamActivity;
 import com.seniordesign.ultimatescorecard.R;
 import android.app.AlertDialog.Builder;
 import android.content.Context;

@@ -20,6 +20,7 @@
         <activity
             android:name="com.seniordesign.ultimatescorecard.MainActivity"
             android:label="@string/application_name" 
+            android:theme="@android:style/Theme.Translucent"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

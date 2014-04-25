@@ -834,20 +834,32 @@ public class MainActivity extends Activity{
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if(Calendar.getInstance().get(Calendar.HOUR_OF_DAY) >= 20){
-			findViewById(R.id.main_screen).setBackgroundResource(R.drawable.background_night);
+		if(_prefs.getString(StaticFinalVars.COLOR_PREFS, "").equals("red")){
+			findViewById(R.id.main_screen).setBackgroundResource(R.drawable.ace_red);
 		}
-		else if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) >= 16){
-			findViewById(R.id.main_screen).setBackgroundResource(R.drawable.background_dawn);
+		else if (_prefs.getString(StaticFinalVars.COLOR_PREFS, "").equals("orange")){
+			findViewById(R.id.main_screen).setBackgroundResource(R.drawable.ace_orange);
 		}
-		else if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) >= 12){
-			findViewById(R.id.main_screen).setBackgroundResource(R.drawable.background_day);
+		else if (_prefs.getString(StaticFinalVars.COLOR_PREFS, "").equals("yellow")){
+			findViewById(R.id.main_screen).setBackgroundResource(R.drawable.ace_yellow);
 		}
-		else if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) >= 5){
-			findViewById(R.id.main_screen).setBackgroundResource(R.drawable.background_dawn);
+		else if (_prefs.getString(StaticFinalVars.COLOR_PREFS, "").equals("green")){
+			findViewById(R.id.main_screen).setBackgroundResource(R.drawable.ace_green);
+		}
+		else if (_prefs.getString(StaticFinalVars.COLOR_PREFS, "").equals("teal")){
+			findViewById(R.id.main_screen).setBackgroundResource(R.drawable.ace_teal);
+		}
+		else if (_prefs.getString(StaticFinalVars.COLOR_PREFS, "").equals("blue")){
+			findViewById(R.id.main_screen).setBackgroundResource(R.drawable.ace_blue);
+		}
+		else if (_prefs.getString(StaticFinalVars.COLOR_PREFS, "").equals("indigo")){
+			findViewById(R.id.main_screen).setBackgroundResource(R.drawable.ace_indigo);
+		}
+		else if (_prefs.getString(StaticFinalVars.COLOR_PREFS, "").equals("violet")){
+			findViewById(R.id.main_screen).setBackgroundResource(R.drawable.ace_violet);
 		}
 		else {
-			findViewById(R.id.main_screen).setBackgroundResource(R.drawable.background_night);
+			findViewById(R.id.main_screen).setBackgroundResource(R.drawable.ace_teal);
 		}
 	}
 
