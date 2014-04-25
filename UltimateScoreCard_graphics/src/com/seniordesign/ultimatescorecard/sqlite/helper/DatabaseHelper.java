@@ -531,7 +531,7 @@ public abstract class DatabaseHelper extends SQLiteOpenHelper {
 		}
 	}
 
-	public List<ShotChartCoords> getAllPlayerShotsGame(long p_id, long g_id){
+	public List<ShotChartCoords> getAllPlayerShotsGame(long g_id, long p_id){
 		if(_local){
 			SQLiteDatabase db = this.getReadableDatabase();
 			List<ShotChartCoords> shots = new ArrayList<ShotChartCoords>();

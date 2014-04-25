@@ -1026,9 +1026,9 @@ public class SoccerDatabaseHelper extends DatabaseHelper{
 				}
 			}
 
-			public List<ShotChartCoords> getAllPlayerShotsGame(long p_id, long g_id){
+			public List<ShotChartCoords> getAllPlayerShotsGame(long g_id, long p_id){
 				if(_local){
-					return super.getAllPlayerShotsGame(p_id, g_id);
+					return super.getAllPlayerShotsGame(g_id, p_id);
 				}
 				else{
 					return _net.getAllPlayerShotsGame(p_id, g_id);

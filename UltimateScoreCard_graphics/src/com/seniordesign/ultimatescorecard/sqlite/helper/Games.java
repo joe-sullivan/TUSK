@@ -62,4 +62,10 @@ public class Games implements Serializable {
     public String getDate() {
         return this.date;
     }	
+    public String getHomeScoreText(){
+    	return null;
+    }
+    public String getAwayScoreText(){
+    	return null;
+    }
 }

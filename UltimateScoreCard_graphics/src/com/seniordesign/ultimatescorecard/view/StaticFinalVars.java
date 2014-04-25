@@ -46,10 +46,13 @@ public class StaticFinalVars {
 	public static final String HOME_OR_AWAY = "homeOrAway";
 	public static final String GAMES = "games";
 	public static final String PLAYER = "player";
-	public static final String TEAM_INFO2 = "teamInfo2";
 	public static final String TEAMS = "teams";
 	public static final String AVERAGE = "average";
-
+	public static final String IF_PLAYER_VIEW = "ifPlayerView";
+	public static final String IF_GAME_VIEW = "ifGameView";
+	public static final String TEAM = "team";
+	public static final String GAME = "game";
+	
 	public static final String SOCCER_OT_DEFAULT = "15 minutes";
 	public static final String SOCCER_DEFAULT = "45 minutes";
 	public static final String BASKETBALL_OT_DEFAULT = "5 minutes";

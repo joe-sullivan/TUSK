@@ -4,13 +4,9 @@ import java.util.ArrayList;
 
 import com.seniordesign.ultimatescorecard.R;
 import com.seniordesign.ultimatescorecard.data.GameInfo;
-import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyGames;
-import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
 import com.seniordesign.ultimatescorecard.sqlite.helper.ShotChartCoords;
-import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 import com.seniordesign.ultimatescorecard.stats.hockey.HockeyIndividualStatActivity;
-import com.seniordesign.ultimatescorecard.view.DoubleParamOnClickListener;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -30,12 +26,10 @@ public class HockeyIndividualShotChartFragment extends Fragment{
 	private RelativeLayout _shotIcons;
 	protected GameInfo _gameInfo;
 	private Button _option1Button, _option2Button, _option3Button;
-	private String name;
-	private Teams team;
-	private ArrayList<ShotChartCoords> shots;
-	private ArrayList<Players> players;
-	private String player;
-	private Games _game;
+	private String _name;
+	private ArrayList<ShotChartCoords> _shots;
+	private Players _player;
+	private boolean _ifGameView, _ifPlayerView;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,28 +49,33 @@ public class HockeyIndividualShotChartFragment extends Fragment{
 		setTextAndListener(_option2Button, madeListener(), "Made");
 		setTextAndListener(_option3Button, missedListener(), "Missed");
 		
-		shots = ((HockeyIndividualStatActivity) getActivity())._shots;
-		name = ((HockeyIndividualStatActivity) getActivity())._name;
-		players = ((HockeyIndividualStatActivity) getActivity())._players;
-		team = ((HockeyIndividualStatActivity) getActivity())._team;
-		_gameInfo = ((HockeyIndividualStatActivity) getActivity())._gameInfo;
-		
-		//NEW
-		_game = ((HockeyIndividualStatActivity) getActivity())._game;
+		_ifGameView = ((HockeyIndividualStatActivity) getActivity())._ifGameView;
+		_ifPlayerView = ((HockeyIndividualStatActivity) getActivity())._ifPlayerView;
 
-		String _player = ((HockeyIndividualStatActivity) getActivity())._player;
-		if(_player!=null){
-			if(!_player.equals("All Players")){
-				name = _player;
-				TextView homeScore = (TextView)getView().findViewById(R.id.homeScoreTextView);
-				homeScore.setText(((HockeyGames)_game).getHomeScoreText());
-				TextView awayScore = (TextView)getView().findViewById(R.id.awayScoreTextView);
-				homeScore.setText(((HockeyGames)_game).getAwayScoreText());
-				TextView homeAbbr = (TextView)getView().findViewById(R.id.homeTextView);
-				TextView awayAbbr = (TextView)getView().findViewById(R.id.awayTextView);
-			}
+		if(_ifGameView){
+			_shots = ((HockeyIndividualStatActivity) getActivity())._shots;
+			_name = ((HockeyIndividualStatActivity) getActivity())._name;
+			_gameInfo = ((HockeyIndividualStatActivity) getActivity())._gameInfo;
+			
+			TextView _nameText = (TextView)getView().findViewById(R.id.gameClock);
+			_nameText.setText(_name);
+			TextView homeScore = (TextView)getView().findViewById(R.id.homeScoreTextView);
+			homeScore.setText(_gameInfo.getHomeScore());
+			TextView awayScore = (TextView)getView().findViewById(R.id.awayScoreTextView);
+			awayScore.setText(_gameInfo.getAwayScore());
+			TextView homeAbbr = (TextView)getView().findViewById(R.id.homeTextView);
+			homeAbbr.setText(_gameInfo.getHomeTeam().getabbv());
+			TextView awayAbbr = (TextView)getView().findViewById(R.id.awayTextView);
+			awayAbbr.setText(_gameInfo.getAwayTeam().getabbv());
+
 		}
-		else{
+		else if(_ifPlayerView){
+			_player = ((HockeyIndividualStatActivity) getActivity())._player;
+			_shots = ((HockeyIndividualStatActivity) getActivity())._shots;
+			_gameInfo = ((HockeyIndividualStatActivity) getActivity())._gameInfo;
+			
+			TextView _nameText = (TextView)getView().findViewById(R.id.gameClock);
+			_nameText.setText(_player.getpname());
 			TextView homeScore = (TextView)getView().findViewById(R.id.homeScoreTextView);
 			homeScore.setText(_gameInfo.getHomeScore());
 			TextView awayScore = (TextView)getView().findViewById(R.id.awayScoreTextView);
@@ -86,52 +85,18 @@ public class HockeyIndividualShotChartFragment extends Fragment{
 			TextView awayAbbr = (TextView)getView().findViewById(R.id.awayTextView);
 			awayAbbr.setText(_gameInfo.getAwayTeam().getabbv());
 		}
-		TextView nameText = (TextView)getView().findViewById(R.id.gameClock);
-
-		//END NEW
-		if(name.equals(team.getabbv() + " Stats")){
-			nameText.setText(team.getabbv());
-			for(ShotChartCoords shot: shots){
-				if(shot.gettid()==team.gettid()){
-
-					int[] location = new int[2];
-					location[0] = shot.getx();
-					location[1] = shot.gety();
-					if(shot.getmade().equals("make")){
-						displayShots(true, location);
-					}
-					else if(shot.getmade().equals("miss")){
-						displayShots(false, location);
-					}		
-				}
-			}	
-		}
 		
-		else{
-			nameText.setText(name);
-
-			Players player = null;
-			for(Players p: players){
-				if(p.getpname().equals(name)){
-					player = p;
-				}
-			}		
-	
-			for(ShotChartCoords shot: shots){
-				if(player.getpid()==shot.getpid()){
-					int[] location = new int[2];
-					location[0] = shot.getx();
-					location[1] = shot.gety();
-					if(shot.getmade().equals("make")){
-						displayShots(true, location);
-					}
-					else if(shot.getmade().equals("miss")){
-						displayShots(false, location);
-					}
-				}
+		for(ShotChartCoords shot: _shots){
+			int[] location = new int[2];
+			location[0] = shot.getx();
+			location[1] = shot.gety();
+			if(shot.getmade().equals("make")){
+				displayShots(true, location);
+			}
+			else if(shot.getmade().equals("miss")){
+				displayShots(false, location);
 			}
 		}
-		
 	}
 	
 	private void addCourtImage(){
@@ -146,8 +111,6 @@ public class HockeyIndividualShotChartFragment extends Fragment{
 	
 	private void displayShots(boolean hitMiss, int[] shotLocation){
 		LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		//lp.leftMargin = shotLocation[0]+25;
-		//lp.topMargin = shotLocation[1]-60;
 		ImageView iv = new ImageView(getActivity());
 		if(hitMiss){
 			iv.setBackgroundResource(R.drawable.made_shot);
@@ -174,37 +137,15 @@ public class HockeyIndividualShotChartFragment extends Fragment{
 			@Override
 			public void onClick(View v) {
 				_shotIcons.removeAllViews();
-				if(name.equals(team.getabbv() + " Stats")){
-					for(ShotChartCoords shot: shots){
-						int[] location = new int[2];
-						location[0] = shot.getx();
-						location[1] = shot.gety();
-						if(shot.getmade().equals("make")){
-							displayShots(true, location);
-						}	
+				
+				for(ShotChartCoords shot: _shots){
+					int[] location = new int[2];
+					location[0] = shot.getx();
+					location[1] = shot.gety();
+					if(shot.getmade().equals("make")){
+						displayShots(true, location);
 					}	
-				}
-				
-				else{
-				
-					Players player = null;
-					for(Players p: players){
-						if(p.getpname().equals(name)){
-							player = p;
-						}
-					}		
-			
-					for(ShotChartCoords shot: shots){
-						if(player.getpid()==shot.getpid()){
-							int[] location = new int[2];
-							location[0] = shot.getx();
-							location[1] = shot.gety();
-							if(shot.getmade().equals("make")){
-								displayShots(true, location);
-							}
-						}
-					}
-				}
+				}	
 			}
 		};
 		return madeListener;
@@ -215,36 +156,14 @@ public class HockeyIndividualShotChartFragment extends Fragment{
 			@Override
 			public void onClick(View v) {
 				_shotIcons.removeAllViews();
-				if(name.equals(team.getabbv() + " Stats")){
-					for(ShotChartCoords shot: shots){
-						int[] location = new int[2];
-						location[0] = shot.getx();
-						location[1] = shot.gety();
-						if(shot.getmade().equals("miss")){
-							displayShots(false, location);
-						}		
+				
+				for(ShotChartCoords shot: _shots){
+					int[] location = new int[2];
+					location[0] = shot.getx();
+					location[1] = shot.gety();
+					if(shot.getmade().equals("miss")){
+						displayShots(false, location);
 					}	
-				}
-				
-				else{
-				
-					Players player = null;
-					for(Players p: players){
-						if(p.getpname().equals(name)){
-							player = p;
-						}
-					}		
-			
-					for(ShotChartCoords shot: shots){
-						if(player.getpid()==shot.getpid()){
-							int[] location = new int[2];
-							location[0] = shot.getx();
-							location[1] = shot.gety();
-							if(shot.getmade().equals("miss")){
-								displayShots(false, location);
-							}
-						}
-					}
 				}
 			}
 		};
@@ -256,42 +175,16 @@ public class HockeyIndividualShotChartFragment extends Fragment{
 			@Override
 			public void onClick(View v) {
 				_shotIcons.removeAllViews();
-				if(name.equals(team.getabbv() + " Stats")){
-					for(ShotChartCoords shot: shots){
-						int[] location = new int[2];
-						location[0] = shot.getx();
-						location[1] = shot.gety();
-						if(shot.getmade().equals("make")){
-							displayShots(true, location);
-						}	
-						else if(shot.getmade().equals("miss")){
-							displayShots(false, location);
-						}		
+				for(ShotChartCoords shot: _shots){
+					int[] location = new int[2];
+					location[0] = shot.getx();
+					location[1] = shot.gety();
+					if(shot.getmade().equals("make")){
+						displayShots(true, location);
 					}	
-				}
-				
-				else{
-				
-					Players player = null;
-					for(Players p: players){
-						if(p.getpname().equals(name)){
-							player = p;
-						}
+					else if(shot.getmade().equals("miss")){
+						displayShots(false, location);
 					}		
-			
-					for(ShotChartCoords shot: shots){
-						if(player.getpid()==shot.getpid()){
-							int[] location = new int[2];
-							location[0] = shot.getx();
-							location[1] = shot.gety();
-							if(shot.getmade().equals("make")){
-								displayShots(true, location);
-							}
-							else if(shot.getmade().equals("miss")){
-								displayShots(false, location);
-							}
-						}
-					}
 				}
 			}
 		};

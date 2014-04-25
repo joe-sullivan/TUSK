@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class HockeyPlayListFragment extends Fragment{
-
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = (View) inflater.inflate(R.layout.fragment_game_log, container, false);
@@ -31,7 +31,7 @@ public class HockeyPlayListFragment extends Fragment{
 	
 	private void addTextViews(){
 		LinearLayout layout = ((LinearLayout) getView().findViewById(R.id.listofPlays));
-		ArrayList<PlayByPlay> log = ((HockeyStatsActivity) getActivity()).getGameLog();
+		ArrayList<PlayByPlay> log = ((HockeyStatsActivity) getActivity())._gameLog;
 		
 		if(layout.getChildCount()==0){
 			for(PlayByPlay pbp: log){

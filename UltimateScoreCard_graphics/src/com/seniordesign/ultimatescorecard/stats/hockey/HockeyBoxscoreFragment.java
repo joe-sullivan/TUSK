@@ -6,10 +6,7 @@ import com.seniordesign.ultimatescorecard.R;
 import com.seniordesign.ultimatescorecard.data.GameInfo;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
-import com.seniordesign.ultimatescorecard.sqlite.helper.ShotChartCoords;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
-import com.seniordesign.ultimatescorecard.stats.basketball.BasketballStatsActivity;
-import com.seniordesign.ultimatescorecard.stats.soccer.SoccerStatsActivity;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
 
 import android.content.Intent;
@@ -24,54 +21,46 @@ import android.widget.TextView;
 
 public class HockeyBoxscoreFragment extends Fragment{ 
 	private boolean _lookingAtHome = true;
-	private String _player;
+	private Players _player;
 	private ArrayList<Games> _games;
-	boolean _playerView = false;
 	private ArrayList<Teams> _teams;
-
+	boolean _ifPlayerView, _ifGameView;
+	private Teams _team;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = (View) inflater.inflate(R.layout.fragment_boxscore, container, false);
 		view.setBackgroundResource(R.drawable.background_ice);
-		_player = ((HockeyStatsActivity) getActivity()).getPlayer();
-		//NEW
-		if(_player!=null){
-			//END NEW
-			if(_player.equals("All Players")){
-				_playerView=false;
-			}
-			else{
-				_playerView = true;
-			}
-		}
+		_ifPlayerView = ((HockeyStatsActivity) getActivity())._ifPlayerView;
+		_ifGameView = ((HockeyStatsActivity) getActivity())._ifGameView;
+		_player = ((HockeyStatsActivity) getActivity())._player;
         return view;
 	}
 	
 	@Override
 	public void onResume() {
 		super.onResume();
-		if(!_playerView){
-			((TextView)getView().findViewById(R.id.homeTeamStatText)).setText(((HockeyStatsActivity) getActivity()).getGameInfo().getHomeTeam().gettname());
-			((TextView)getView().findViewById(R.id.awayTeamStatText)).setText(((HockeyStatsActivity) getActivity()).getGameInfo().getAwayTeam().gettname());
+		if(_ifGameView){
+			((TextView)getView().findViewById(R.id.homeTeamStatText)).setText(((HockeyStatsActivity) getActivity())._gameInfo.getHomeTeam().gettname());
+			((TextView)getView().findViewById(R.id.awayTeamStatText)).setText(((HockeyStatsActivity) getActivity())._gameInfo.getAwayTeam().gettname());
 		}
-		else{
-			((TextView)getView().findViewById(R.id.homeTeamStatText)).setText(_player);
+		else if(_ifPlayerView){
+			((TextView)getView().findViewById(R.id.homeTeamStatText)).setText(_player.getpname());
 			((TextView)getView().findViewById(R.id.awayTeamStatText)).setVisibility(View.GONE);
 		}
 		if(_lookingAtHome){
-			if(!_playerView)
+			if(_ifGameView)
 				getView().findViewById(R.id.homeTeamStatText).setBackgroundColor(getResources().getColor(R.color.robin_egg_blue));
-			else
+			else if(_ifPlayerView)
 				getView().findViewById(R.id.homeTeamStatText).setBackgroundColor(getResources().getColor(R.color.white));
 			getView().findViewById(R.id.awayTeamStatText).setBackgroundColor(getResources().getColor(R.color.white));
 		}
 		else{
 			getView().findViewById(R.id.homeTeamStatText).setBackgroundColor(getResources().getColor(R.color.white));
-			if(!_playerView)
+			if(_ifGameView)
 				getView().findViewById(R.id.awayTeamStatText).setBackgroundColor(getResources().getColor(R.color.robin_egg_blue));
 		}
-		if(!_playerView){
+		if(_ifGameView){
 			getView().findViewById(R.id.homeTeamStatText).setOnClickListener(homeTeamListener);
 			getView().findViewById(R.id.awayTeamStatText).setOnClickListener(awayTeamListener);
 		}
@@ -81,13 +70,13 @@ public class HockeyBoxscoreFragment extends Fragment{
 	
 	private void addTextViews(){
 		LinearLayout layout = ((LinearLayout) getView().findViewById(R.id.playerListLayout));
-		GameInfo _gameInfo = ((HockeyStatsActivity) getActivity()).getGameInfo();
-		//NEW
-		_games = ((HockeyStatsActivity) getActivity()).getGames();
-		_player = ((HockeyStatsActivity) getActivity()).getPlayer();
-		_teams = ((HockeyStatsActivity) getActivity()).getTeams();
 
-		if(_playerView){
+		if(_ifPlayerView){
+			_games = ((HockeyStatsActivity) getActivity())._games;
+			_player = ((HockeyStatsActivity) getActivity())._player;
+			_team = ((HockeyStatsActivity) getActivity())._team;
+			_teams = ((HockeyStatsActivity) getActivity())._teams;
+
 			for(Games game: _games){
 				Teams _away = null;
 				Teams _home = null;
@@ -106,7 +95,9 @@ public class HockeyBoxscoreFragment extends Fragment{
 			layout.addView(newTextView("Average Stats"));
         }
         //END NEW
-        else{
+        else if(_ifGameView){
+    		GameInfo _gameInfo = ((HockeyStatsActivity) getActivity())._gameInfo;
+
 			if(_lookingAtHome){
 				for(Players p: _gameInfo.getHomePlayers()){
 					layout.addView(newTextView(p.getpname()));	
@@ -170,25 +161,14 @@ public class HockeyBoxscoreFragment extends Fragment{
 			v.setBackgroundColor(getResources().getColor(R.color.robin_egg_blue));
 			String aveTest = ((TextView)v).getText().toString();
 			boolean average = aveTest.equals("Average Stats");
-			if(_playerView){
+			
+			if(_ifPlayerView){
 				if(average){
-					intent.putExtra(StaticFinalVars.GAMES, _games);
-		        	
-		        	intent.putExtra(StaticFinalVars.TEAM_INFO, ((HockeyStatsActivity) getActivity()).getGameInfo().getHomeTeam());
-		        	intent.putExtra(StaticFinalVars.TEAM_INFO2, ((HockeyStatsActivity) getActivity()).getGameInfo().getAwayTeam());
-		        	ArrayList<Players> _ps = ((HockeyStatsActivity) getActivity()).getGameInfo().getHomePlayers();
-		        	_ps.addAll(((HockeyStatsActivity) getActivity()).getGameInfo().getAwayPlayers());
-					intent.putExtra(StaticFinalVars.PLAYERS_INFO, _ps);
-					intent.putExtra(StaticFinalVars.GAME_ID, ((HockeyStatsActivity) getActivity()).getGameInfo().getgid());
-					intent.putExtra(StaticFinalVars.HOME_OR_AWAY, _lookingAtHome);
-					intent.putExtra(StaticFinalVars.SHOT_CHART, new ArrayList<ShotChartCoords>());	
+		        	intent.putExtra(StaticFinalVars.PLAYER, _player);	        	
+		        	intent.putExtra(StaticFinalVars.TEAM, _team);
 				}
-				else if(!_player.equals("All Players")){
-		        	intent.putExtra(StaticFinalVars.TEAM_INFO, ((HockeyStatsActivity) getActivity()).getGameInfo().getHomeTeam());
-		        	intent.putExtra(StaticFinalVars.TEAM_INFO2, ((HockeyStatsActivity) getActivity()).getGameInfo().getAwayTeam());
-		        	ArrayList<Players> _ps = ((HockeyStatsActivity) getActivity()).getGameInfo().getHomePlayers();
-		        	_ps.addAll(((HockeyStatsActivity) getActivity()).getGameInfo().getAwayPlayers());
-					intent.putExtra(StaticFinalVars.PLAYERS_INFO, _ps);
+				else if(!average){
+					
 					Games game = null;
 					String[] lines = ((TextView)v).getText().toString().split("\n");
 					for(Games g: _games){
@@ -197,58 +177,28 @@ public class HockeyBoxscoreFragment extends Fragment{
 							break;
 						}
 					}
-					intent.putExtra(StaticFinalVars.GAME_ID, game.getgid());
-					intent.putExtra(StaticFinalVars.HOME_OR_AWAY, _lookingAtHome);
-					intent.putExtra(StaticFinalVars.SHOT_CHART, new ArrayList<ShotChartCoords>());			
+					
+					intent.putExtra(StaticFinalVars.PLAYER, _player);	        	
+		        	intent.putExtra(StaticFinalVars.TEAM, _team);	
+					intent.putExtra(StaticFinalVars.GAME, game);	        	
 		        }
-				else{
-					if(_lookingAtHome){
-						intent.putExtra(StaticFinalVars.TEAM_INFO, ((HockeyStatsActivity) getActivity()).getGameInfo().getHomeTeam());
-			        	intent.putExtra(StaticFinalVars.TEAM_INFO2, ((HockeyStatsActivity) getActivity()).getGameInfo().getAwayTeam());
-						intent.putExtra(StaticFinalVars.PLAYERS_INFO, ((HockeyStatsActivity) getActivity()).getGameInfo().getHomePlayers());
-						intent.putExtra(StaticFinalVars.GAME_ID, ((HockeyStatsActivity) getActivity()).getGameInfo().getgid());
-						intent.putExtra(StaticFinalVars.HOME_OR_AWAY, _lookingAtHome);
-						intent.putExtra(StaticFinalVars.SHOT_CHART, ((HockeyStatsActivity) getActivity()).getHomeShotChart());
-					}
-					else{
-						intent.putExtra(StaticFinalVars.TEAM_INFO, ((HockeyStatsActivity) getActivity()).getGameInfo().getAwayTeam());
-			        	intent.putExtra(StaticFinalVars.TEAM_INFO2, ((HockeyStatsActivity) getActivity()).getGameInfo().getHomeTeam());
-						intent.putExtra(StaticFinalVars.PLAYERS_INFO, ((HockeyStatsActivity) getActivity()).getGameInfo().getAwayPlayers());
-						intent.putExtra(StaticFinalVars.GAME_ID, ((HockeyStatsActivity) getActivity()).getGameInfo().getgid());
-						intent.putExtra(StaticFinalVars.HOME_OR_AWAY, _lookingAtHome);
-						intent.putExtra(StaticFinalVars.SHOT_CHART, ((HockeyStatsActivity) getActivity()).getAwayShotChart());
-					}
-					intent.putExtra(StaticFinalVars.PLAYER_NAME, ((TextView)v).getText().toString());
-					intent.putExtra(StaticFinalVars.GAME_INFO, ((HockeyStatsActivity) getActivity()).getGameInfo());
-					intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 0);
-				}
+				intent.putExtra(StaticFinalVars.AVERAGE, average);
 			}
-	        else{
+	        else if(_ifGameView){
 	        	//END NEW
 				if(_lookingAtHome){
-					intent.putExtra(StaticFinalVars.TEAM_INFO, ((HockeyStatsActivity) getActivity()).getGameInfo().getHomeTeam());
-		        	intent.putExtra(StaticFinalVars.TEAM_INFO2, ((HockeyStatsActivity) getActivity()).getGameInfo().getAwayTeam());
-					intent.putExtra(StaticFinalVars.PLAYERS_INFO, ((HockeyStatsActivity) getActivity()).getGameInfo().getHomePlayers());
-					intent.putExtra(StaticFinalVars.GAME_ID, ((HockeyStatsActivity) getActivity()).getGameInfo().getgid());
-					intent.putExtra(StaticFinalVars.HOME_OR_AWAY, _lookingAtHome);
-					intent.putExtra(StaticFinalVars.SHOT_CHART, ((HockeyStatsActivity) getActivity()).getHomeShotChart());
+					intent.putExtra(StaticFinalVars.SHOT_CHART, ((HockeyStatsActivity) getActivity())._homeShots);
 				}
 				else{
-					intent.putExtra(StaticFinalVars.TEAM_INFO, ((HockeyStatsActivity) getActivity()).getGameInfo().getAwayTeam());
-		        	intent.putExtra(StaticFinalVars.TEAM_INFO2, ((HockeyStatsActivity) getActivity()).getGameInfo().getHomeTeam());
-					intent.putExtra(StaticFinalVars.PLAYERS_INFO, ((HockeyStatsActivity) getActivity()).getGameInfo().getAwayPlayers());
-					intent.putExtra(StaticFinalVars.GAME_ID, ((HockeyStatsActivity) getActivity()).getGameInfo().getgid());
-					intent.putExtra(StaticFinalVars.HOME_OR_AWAY, _lookingAtHome);
-					intent.putExtra(StaticFinalVars.SHOT_CHART, ((HockeyStatsActivity) getActivity()).getAwayShotChart());
+					intent.putExtra(StaticFinalVars.SHOT_CHART, ((HockeyStatsActivity) getActivity())._awayShots);
 				}
+				intent.putExtra(StaticFinalVars.HOME_OR_AWAY, _lookingAtHome);
 				intent.putExtra(StaticFinalVars.PLAYER_NAME, ((TextView)v).getText().toString());
-				intent.putExtra(StaticFinalVars.GAME_INFO, ((HockeyStatsActivity) getActivity()).getGameInfo());
-				intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 0);
+				intent.putExtra(StaticFinalVars.GAME_INFO, ((HockeyStatsActivity) getActivity())._gameInfo);
 	        }
-			//NEW
-			intent.putExtra(StaticFinalVars.PLAYER, _player);
-			intent.putExtra(StaticFinalVars.AVERAGE, average);
-			//END NEW
+			intent.putExtra(StaticFinalVars.IF_PLAYER_VIEW, _ifPlayerView);
+			intent.putExtra(StaticFinalVars.IF_GAME_VIEW, _ifGameView);
+			intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 0);
 			startActivity(intent);
 		}
 	};

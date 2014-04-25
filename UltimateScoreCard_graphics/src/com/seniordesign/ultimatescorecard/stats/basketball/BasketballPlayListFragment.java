@@ -31,7 +31,7 @@ public class BasketballPlayListFragment extends Fragment{
 	
 	private void addTextViews(){
 		LinearLayout layout = ((LinearLayout) getView().findViewById(R.id.listofPlays));
-		ArrayList<PlayByPlay> log = ((BasketballStatsActivity) getActivity()).getGameLog();
+		ArrayList<PlayByPlay> log = ((BasketballStatsActivity) getActivity())._gameLog;
 		
 		if(layout.getChildCount()==0){
 			for(PlayByPlay pbp: log){
