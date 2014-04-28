@@ -20,9 +20,10 @@ public class FootballGameTime extends GameTime{
 	private static final long serialVersionUID = 3840132882537431776L;
 	private FootballTeam _homeTeam;
 	private FootballTeam _awayTeam;
-	private String[] _lineOfScrimmage = new String[]{"OWN","0"};
-	private int[] _downDistance = new int[]{0,0};
-	private boolean _aReturn = false;
+	private String[] _lineOfScrimmage = new String[2];
+	private int[] _downDistance = new int[2];
+	private String _gameState;
+	
 	//databases
 	public FootballDatabaseHelper _football_db;
 	private long g_id;
@@ -98,7 +99,6 @@ public class FootballGameTime extends GameTime{
 		_gameInfo = gameInfo;
 		_homeTeam.setTeamOrder(_gameInfo.getHomePlayers());
 		_awayTeam.setTeamOrder(_gameInfo.getAwayPlayers());
-
 	}
 		
 	//Getter and setter for team names
@@ -117,12 +117,12 @@ public class FootballGameTime extends GameTime{
 		return _awayTeam.getTeamAbbr();
 	}
 	
-	public void scoreChange(boolean team, int point, String player1, String player2){
+	public void scoreChange(boolean team, String type, int point, String player1, String player2){
 		if(team){
-			_homeTeam.scoreChange(point, player1, player2);
+			_homeTeam.scoreChange(type, point, player1, player2);
 		}
 		else{
-			_awayTeam.scoreChange(point, player1, player2);
+			_awayTeam.scoreChange(type, point, player1, player2);
 		}
 	}
 	
@@ -157,70 +157,80 @@ public class FootballGameTime extends GameTime{
 		return _awayTeam;
 	}	
 	
-	public void setLineOfScrimmage (int viewNum){
-		if (yardsGained(viewNum) >= _downDistance[1] || _downDistance[0] == 0 || isReturned()){
-			_downDistance[0] = 1;
-			_downDistance[1] = 10;
+	public String getGameState(){
+		return _gameState;
+	}
+	
+	public void setGameState(String gameState){
+		_gameState = gameState;
+	}
+	
+	public void setLineOfScrimmage(int value){
+		if(value < 50){
+			_lineOfScrimmage[0] = "OPP";
+			_lineOfScrimmage[1] = Integer.toString(value);
 		}
-		else if (_downDistance[0] >= 4){
-			changePossession();
-			_downDistance[0] = 1;
-			_downDistance[1] = 10;
-			if(_lineOfScrimmage[0].equals("OWN")) {
-				_lineOfScrimmage[0] = "OPP";
-			}
-			else if(_lineOfScrimmage[0].equals("OPP")){
-				_lineOfScrimmage[0] = "OWN";
-			}
-			else{
-				_lineOfScrimmage[0] = "MID";
-			}
+		else if (value > 50){
+			_lineOfScrimmage[0] = "OWN";
+			_lineOfScrimmage[1] = Integer.toString(100-value);
 		}
 		else{
-			_downDistance[0]++;
-			_downDistance[1]-= yardsGained(viewNum);
-		}
-		
-		if(viewNum < 50){
-			_lineOfScrimmage[0] = "OPP";
-			_lineOfScrimmage[1] = viewNum+"";
-		}
-		else if (viewNum == 50){
 			_lineOfScrimmage[0] = "MID";
 			_lineOfScrimmage[1] = "50";
 		}
-		else{
-			_lineOfScrimmage[0] = "OWN";
-			_lineOfScrimmage[1] = 100-viewNum+"";
-		}
-		Log.e("POSSESSION:", getPossession()+"!");
 	}
 	
-	public int getLineOfScrimmage (){
-		if(_lineOfScrimmage[0].equals("OPP")){
+	public int getLineOfScrimmageAsValue(){
+		if(_lineOfScrimmage[0].equals("OWN")){
+			return (100-Integer.parseInt(_lineOfScrimmage[1]));
+		}
+		else if (_lineOfScrimmage[0].equals("OPP")){
 			return Integer.parseInt(_lineOfScrimmage[1]);
 		}
-		else if(_lineOfScrimmage[0].equals("MID")){
+		else {
 			return 50;
 		}
-		else{
-			return (Integer.parseInt(_lineOfScrimmage[1])-100)*-1;
+	}
+	
+	public void setFirstDown(){
+		_downDistance[0] = 1;
+		_downDistance[1] = 10;
+	}
+	
+	public int getDowns(){
+		return _downDistance[0];
+	}
+	public int increaseDownsByOne(){
+		return _downDistance[0]++;
+	}
+	
+	public int getDistance(){
+		return _downDistance[1];
+	}
+	
+	public void switchField(){
+		if(_lineOfScrimmage[0].equals("OWN")){
+			_lineOfScrimmage[0] = "OPP";
+		}
+		else if (_lineOfScrimmage[0].equals("OPP")){
+			_lineOfScrimmage[0] = "OWN";
 		}
 	}
 	
-	public int[] getDownDistance(){
-		return _downDistance;
+	//increase the down by one and change the distance
+	//WARNING: DOWNS CAN BECOME LARGER THAN 4 IF USED INCORRECTLY, ALWAYS SURROUND METHOD CALL WITH CONDITION STATEMENT
+	public void advanceDownAndDistance(int oldLOS, int newLOS){
+		_downDistance[0]++;
+		if(oldLOS-newLOS < _downDistance[1]){
+			_downDistance[1] -= (oldLOS-newLOS);
+		}
+		else{
+			setFirstDown();
+		}
 	}
 	
-	private int yardsGained(int viewNum){
-		return getLineOfScrimmage() - viewNum;
-	}
-	
-	public boolean isReturned(){
-		return _aReturn;
-	}
-	
-	public void returning (boolean aReturn){
-		_aReturn = aReturn;
+	//check if yardage gain if enough for first down
+	public boolean checkFirstDown(int oldLOS, int newLOS){
+		return oldLOS-newLOS > _downDistance[1];
 	}
 }

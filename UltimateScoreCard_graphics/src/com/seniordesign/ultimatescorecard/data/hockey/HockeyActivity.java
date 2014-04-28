@@ -900,6 +900,10 @@ public class HockeyActivity extends Activity{
 			intent.putExtra(StaticFinalVars.GAME_LOG, _playbyplay);
 			intent.putExtra(StaticFinalVars.SHOT_CHART_HOME, _homeShots);
 			intent.putExtra(StaticFinalVars.SHOT_CHART_AWAY, _awayShots);
+			//SAM
+			intent.putExtra(StaticFinalVars.IF_PLAYER_VIEW, false);
+			intent.putExtra(StaticFinalVars.IF_GAME_VIEW, true);
+			//END SAM
 			intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 0);
 			startActivity(intent);		
 			break;
@@ -916,6 +920,10 @@ public class HockeyActivity extends Activity{
 			intent.putExtra(StaticFinalVars.GAME_LOG, _playbyplay);
 			intent.putExtra(StaticFinalVars.SHOT_CHART_HOME, _homeShots);
 			intent.putExtra(StaticFinalVars.SHOT_CHART_AWAY, _awayShots);
+			//SAM
+			intent.putExtra(StaticFinalVars.IF_PLAYER_VIEW, false);
+			intent.putExtra(StaticFinalVars.IF_GAME_VIEW, true);
+			//END SAM
 			intent.putExtra(StaticFinalVars.DISPLAY_TYPE, 1);
 			startActivity(intent);
 			break;

@@ -181,15 +181,43 @@ public class FootballTeam extends Team{
 		}
 		return -1;
 	}
-	public void scoreChange(int point, String player1, String player2){
+	public void scoreChange(String type, int point, String player1, String player2){
 		_score += point;
-		if(player2.equals(null)){
-			getPlayer(player1).rushTD();
+		if(point == 6){
+			if(type.equals("passing")){
+				//getPlayer(player1).passTD();
+				//getPlayer(player2).recTD();
+			}
+			else if(type.equals("rushing")){
+				//getPlayer(player1).rushTD();
+			}
+			else if(type.equals("kick returning")){
+				
+			}
+			else if(type.equals("punt returning")){
+				
+			}
+			else if(type.equals("int return")){
+				
+			}
+			else if(type.equals("fum return")){
+				
+			}
+		}
+		else if(point == 3){
+			
+		}
+		else if(point == 2){
+			if(type.equals("safety")){
+				
+			}
+			else{
+				
+			}
 		}
 		else{
-			getPlayer(player1).passTD();
-			getPlayer(player2).recTD();
-		}
+			
+		}	
 	}	
 	
 	public int numberPlayers() {

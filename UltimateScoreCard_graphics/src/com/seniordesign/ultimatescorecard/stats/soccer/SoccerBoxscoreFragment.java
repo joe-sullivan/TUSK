@@ -10,6 +10,7 @@ import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 import com.seniordesign.ultimatescorecard.view.StaticFinalVars;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -49,6 +50,8 @@ public class SoccerBoxscoreFragment extends Fragment{
 			((TextView)getView().findViewById(R.id.homeTeamStatText)).setText(_player.getpname());
 			((TextView)getView().findViewById(R.id.awayTeamStatText)).setVisibility(View.GONE);
 		}
+		//SAM
+		((TextView)getView().findViewById(R.id.statisticTitle)).setTextColor(Color.WHITE);
 		if(_lookingAtHome){
 			if(_ifGameView)
 				getView().findViewById(R.id.homeTeamStatText).setBackgroundColor(getResources().getColor(R.color.robin_egg_blue));
@@ -124,6 +127,8 @@ public class SoccerBoxscoreFragment extends Fragment{
 		textView.setText(teamName);
 		textView.setPadding(5,5,5,5);
 		textView.setTextSize(20);
+		//SAM
+		textView.setTextColor(Color.WHITE);
 		textView.setOnClickListener(selectPlayerListener);
 		return textView;
 	}
