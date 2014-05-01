@@ -312,6 +312,7 @@ public class ChooseTeamActivity extends Activity{
 		_teamSelectTitle.setText(getResources().getString(R.string.home_team_select_title));			//change the text of title
 		_teams[0] = null;																				//empty array of team names to be sent along
 		_teams[1] = null;
+		prepareListData();
 		_deleteButton.setEnabled(true);																	//reset the delete button
 		
 	}

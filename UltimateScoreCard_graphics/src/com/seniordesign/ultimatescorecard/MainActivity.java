@@ -2,8 +2,6 @@ package com.seniordesign.ultimatescorecard;
 
 
 import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.Calendar;
 
 import com.seniordesign.ultimatescorecard.data.basketball.BasketballPlayer;
 import com.seniordesign.ultimatescorecard.data.football.FootballPlayer;
@@ -13,9 +11,6 @@ import com.seniordesign.ultimatescorecard.networkdatabase.helper.AdminNetworkHel
 import com.seniordesign.ultimatescorecard.options.OptionsActivity;
 import com.seniordesign.ultimatescorecard.sqlite.basketball.*;
 import com.seniordesign.ultimatescorecard.sqlite.football.FootballDatabaseHelper;
-import com.seniordesign.ultimatescorecard.sqlite.helper.Games;
-import com.seniordesign.ultimatescorecard.sqlite.helper.Players;
-import com.seniordesign.ultimatescorecard.sqlite.helper.ShotChartCoords;
 import com.seniordesign.ultimatescorecard.sqlite.helper.Teams;
 import com.seniordesign.ultimatescorecard.sqlite.hockey.HockeyDatabaseHelper;
 import com.seniordesign.ultimatescorecard.sqlite.soccer.SoccerDatabaseHelper;
@@ -158,14 +153,14 @@ public class MainActivity extends Activity{
 			BasketballPlayer JL7 = new BasketballPlayer(rockets_id, "Jeremy Lin", 7);
 			BasketballPlayer FG32 = new BasketballPlayer(rockets_id, "Francisco Garcia", 32);
 			BasketballPlayer OC18 = new BasketballPlayer(rockets_id, "Omri Casspi", 18);
-			BasketballPlayer DM20 = new BasketballPlayer(rockets_id, "Donatas Motigjunas", 20);
+			BasketballPlayer DM20 = new BasketballPlayer(rockets_id, "Donatas Motiejunas", 20);
 			BasketballPlayer OA3 = new BasketballPlayer(rockets_id, "Omer Asik", 3);
 			BasketballPlayer AB0 = new BasketballPlayer(rockets_id, "Aaron Brooks", 0);
 			BasketballPlayer JH5 = new BasketballPlayer(rockets_id, "Jordan Hamilton", 5);
 			BasketballPlayer GS4 = new BasketballPlayer(rockets_id, "Greg Smith", 4);
 
 			BasketballPlayer JC8 = new BasketballPlayer(mavericks_id, "Jose Calderon", 8);
-			BasketballPlayer ME11 = new BasketballPlayer(mavericks_id, "Monte Ellis", 11);
+			BasketballPlayer ME11 = new BasketballPlayer(mavericks_id, "Monta Ellis", 11);
 			BasketballPlayer SM0 = new BasketballPlayer(mavericks_id, "Shawn Marion", 0);
 			BasketballPlayer DN41 = new BasketballPlayer(mavericks_id, "Dirk Nowitzki", 41);
 			BasketballPlayer SD1 = new BasketballPlayer(mavericks_id, "Samuel Dalembert", 1);
@@ -308,8 +303,10 @@ public class MainActivity extends Activity{
 			long NA23_id = _basketball_db.createPlayers(NA23);
 			long TW25_id = _basketball_db.createPlayers(TW25);
 
+		}
+		if(_football_db.getAllTeams().size()==0){
 			//Test Football Teams and players
-			Teams patriots = new Teams("New England Patriots", "NWE", "Bill Belichick", "Football");
+			Teams patriots = new Teams("New England Patriots", "NE", "Bill Belichick", "Football");
 			Teams jets = new Teams("New York Jets", "NYJ", "Rex Ryan", "Football");
 			Teams bears = new Teams("Chicago Bears", "CHI", "Marc Trestman", "Football");
 			Teams cowboys = new Teams("Dallas Cowboys", "DAL", "Jason Garrett", "Football");
@@ -461,7 +458,8 @@ public class MainActivity extends Activity{
 			long CL50_id = _football_db.createPlayers(CL50);
 			long MJ27_id = _football_db.createPlayers(MJ27);
 
-
+		}
+		if(_hockey_db.getAllTeams().size()==0){
 
 			//Test Hockey Teams and players
 			Teams rangers = new Teams("New York Rangers", "NYR", "Alain Vigneault", "Hockey");
@@ -605,9 +603,9 @@ public class MainActivity extends Activity{
 			long JW14_id = _hockey_db.createPlayers(JW14);
 			long DK74_id = _hockey_db.createPlayers(DK74);
 			long DB23_id = _hockey_db.createPlayers(DB23);		
+		}
 
-
-
+		if(_soccer_db.getAllTeams().size()==0){
 			//Test Soccer Teams and players
 			Teams america = new Teams("United States", "USA", "Jurgen Klinsmann", "Soccer");
 			Teams spain = new Teams("Spain", "ESP", "Vincente del Bosque", "Soccer");
@@ -794,7 +792,6 @@ public class MainActivity extends Activity{
 			long R7_id = _soccer_db.createPlayers(R7);
 			long Ne10_id = _soccer_db.createPlayers(Ne10);
 		}
-
 
 
 		/*	
